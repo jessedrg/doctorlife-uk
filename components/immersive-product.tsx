@@ -25,14 +25,11 @@ export function ImmersiveProduct() {
         </Reveal>
 
         {/* floating render */}
-        <Parallax speed={46} className="relative mx-auto mt-[14px] h-[420px] w-[520px] max-w-[90vw]">
-          <PenArt height={340} className="anim-floatB absolute left-[42%] top-[8%]" />
-          <PillArt size={150} className="anim-floatA absolute left-[14%] top-[30%]" />
-          <PillArt
-            size={96}
-            glyph={false}
-            bg="radial-gradient(60% 60% at 38% 32%,#f3c79a,#d49a63 55%,#a65f3b)"
-            className="anim-floatC absolute right-[9%] top-[46%]"
+        <Parallax speed={46} className="relative mx-auto mt-[14px] h-[420px] w-[680px] max-w-[92vw]">
+          <img
+            src="/products/maren-lineup.png"
+            alt="Gama de productos Maren: plumas inyectoras y pastillas GLP‑1"
+            className="anim-floatA absolute inset-0 h-full w-full object-contain"
           />
         </Parallax>
 
