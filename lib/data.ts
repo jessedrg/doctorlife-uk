@@ -127,13 +127,43 @@ export const quizSteps: QuizStep[] = [
   { q: "¿Cuál es tu horizonte?", opts: ["Próximos 3 meses", "6–12 meses", "A largo plazo"] },
 ];
 
-export type FooterColumn = { title: string; links: string[] };
+export type FooterLink = { label: string; href: string };
+export type FooterColumn = { title: string; links: FooterLink[] };
 
 export const footerColumns: FooterColumn[] = [
-  { title: "Cuidado", links: ["Pérdida de peso", "Salud hormonal", "Analíticas", "Salud mental", "Piel"] },
-  { title: "Popular", links: ["Opciones GLP‑1", "Semaglutida", "Tirzepatida", "Menopausia", "Sueño"] },
-  { title: "Maren", links: ["Sobre nosotros", "Cómo funciona", "Excelencia clínica", "Empleo", "Prensa"] },
-  { title: "Contacto", links: ["Centro de ayuda", "Contacto", "Privacidad", "Términos"] },
+  {
+    title: "Tratamiento",
+    links: [
+      { label: "Cómo funciona", href: "#product" },
+      { label: "Pérdida de peso", href: "#product" },
+      { label: "Planes y precios", href: "#planes" },
+      { label: "Primera visita 25 €", href: "#planes" },
+    ],
+  },
+  {
+    title: "Resultados",
+    links: [
+      { label: "Historias reales", href: "#transform" },
+      { label: "Empezar ahora", href: "#cta" },
+      { label: "Reservar visita", href: "#cta" },
+    ],
+  },
+  {
+    title: "Maren",
+    links: [
+      { label: "Inicio", href: "#top" },
+      { label: "Equipo médico", href: "#product" },
+      { label: "Seguimiento con app", href: "#planes" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacidad", href: "#top" },
+      { label: "Términos", href: "#top" },
+      { label: "Consentimiento de telemedicina", href: "#top" },
+    ],
+  },
 ];
 
 /** Porcentaje usado en los textos ("Pierde hasta un {LOSS}%"). */

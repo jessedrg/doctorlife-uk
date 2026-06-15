@@ -41,8 +41,8 @@ export function Footer() {
             <div className="mb-4 text-xs uppercase tracking-[.14em] text-clay">{col.title}</div>
             <div className="flex flex-col gap-[11px] text-[15px] text-ink-soft">
               {col.links.map((l) => (
-                <a key={l} href="#top" className="text-inherit no-underline hover:text-ink">
-                  {l}
+                <a key={l.label} href={l.href} className="text-inherit no-underline hover:text-ink">
+                  {l.label}
                 </a>
               ))}
             </div>
