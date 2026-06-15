@@ -140,8 +140,8 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { label: "Cómo funciona", href: "/#product" },
       { label: "Planes y precios", href: "/#planes" },
-      { label: "Primera visita 25 €", href: "/#planes" },
       { label: "Historias reales", href: "/#transform" },
+      { label: "Reservar visita", href: "/#cta" },
     ],
   },
   {
@@ -151,14 +151,6 @@ export const footerColumns: FooterColumn[] = [
       { label: "Comprar Wegovy Barcelona", href: "/blog/comprar-wegovy-barcelona" },
       { label: "Comprar Mounjaro Barcelona", href: "/blog/comprar-mounjaro-barcelona" },
       { label: "Wegovy precio España", href: "/blog/wegovy-precio-espana" },
-    ],
-  },
-  {
-    title: "Empezar",
-    links: [
-      { label: "Reservar visita", href: "/#cta" },
-      { label: "Empezar ahora", href: "/#cta" },
-      { label: "Inicio", href: "/#top" },
     ],
   },
 ];
