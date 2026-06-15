@@ -26,7 +26,7 @@ export const products: Product[] = [
     img: "/products/maren-oral.png",
     features: [
       "Evaluación médica completa con un endocrino",
-      "Receta de GLP‑1 asignada para tu caso",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
       "Seguimiento mensual desde la app",
       "Mensajería con tu equipo clínico",
       "Ajustes de dosis según tu evolución",
@@ -41,7 +41,7 @@ export const products: Product[] = [
     featured: true,
     features: [
       "Todo lo del plan Basic",
-      "Receta de GLP‑1 asignada para tu caso",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
       "Nutricionista asignado y plan personalizado",
       "Plan de entrenamiento adaptado",
       "Seguimiento quincenal desde la app",
@@ -57,7 +57,7 @@ export const products: Product[] = [
     img: "/products/maren-hd.png",
     features: [
       "Todo lo del plan Plus",
-      "Receta de GLP‑1 asignada para tu caso",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
       "Revisiones médicas quincenales",
       "Acceso prioritario a tu equipo",
       "Informes de progreso detallados",
@@ -73,7 +73,7 @@ export const products: Product[] = [
     img: "/products/maren-daily.png",
     features: [
       "Estrategia anti‑rebote personalizada",
-      "Receta de GLP‑1 asignada para tu caso",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
       "Plan de mantenimiento tras el GLP‑1",
       "Seguimiento mensual desde la app",
       "Pautas de nutrición y hábitos",
@@ -88,7 +88,7 @@ export const products: Product[] = [
     img: "/products/maren-balance.png",
     features: [
       "Médico dedicado en exclusiva",
-      "Receta de GLP‑1 asignada para tu caso",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
       "Analíticas avanzadas (130+ biomarcadores)",
       "Optimización hormonal personalizada",
       "Plan de longevidad y prevención",
