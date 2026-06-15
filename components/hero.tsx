@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <section id="top" className="mx-auto -mt-[84px] max-w-[1180px] scroll-mt-[90px] px-[18px] pt-[84px]">
+    <section id="top" className="mx-auto mt-5 max-w-[1180px] scroll-mt-[100px] px-[18px]">
       <div className="relative min-h-[760px] overflow-hidden rounded-[36px]">
         {/* base brand color block */}
         <div
