@@ -1,16 +1,30 @@
+import { QuizProvider } from "@/components/quiz-context";
+import { Announcement } from "@/components/announcement";
+import { Navbar } from "@/components/navbar";
+import { Hero } from "@/components/hero";
+import { ImmersiveProduct } from "@/components/immersive-product";
+import { Transformation } from "@/components/transformation";
+import { Labs } from "@/components/labs";
+import { Experts } from "@/components/experts";
+import { FinalCta } from "@/components/final-cta";
+import { Footer } from "@/components/footer";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Maren glp1
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
-          </p>
-        </div>
-      </main>
-    </div>
+    <QuizProvider>
+      <div className="overflow-x-clip">
+        <Announcement />
+        <Navbar />
+        <main>
+          <Hero />
+          <ImmersiveProduct />
+          <Transformation />
+          <Labs />
+          <Experts />
+          <FinalCta />
+        </main>
+        <Footer />
+      </div>
+    </QuizProvider>
   );
 }
