@@ -14,7 +14,7 @@ export function ImmersiveProduct() {
     >
       <div className="anim-glow absolute left-1/2 top-[-10%] h-[80%] w-[60%] -translate-x-1/2" style={{ background: "radial-gradient(closest-side,rgba(227,181,130,.22),transparent)", filter: "blur(20px)" }} />
 
-      <div className="relative mx-auto max-w-[1280px] px-[30px] text-center">
+      <div className="relative mx-auto max-w-[1440px] px-[30px] text-center">
         <Reveal>
           <h2 className="m-0 text-[clamp(40px,6vw,86px)] font-light leading-[.96] tracking-[-.03em]">
             Una nueva era del
