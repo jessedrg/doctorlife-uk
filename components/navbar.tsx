@@ -30,14 +30,11 @@ export function Navbar() {
         <a
           href="/#top"
           onClick={() => setOpen(false)}
-          className="flex items-center gap-[10px] text-ink no-underline"
+          className="flex items-center text-ink no-underline"
           aria-label="Maren — inicio"
         >
-          <span className="flex h-[38px] w-[38px] items-center justify-center rounded-[12px] bg-ink font-serif text-[24px] font-bold leading-none text-paper sm:h-[40px] sm:w-[40px] sm:text-[25px]">
+          <span className="flex h-[32px] w-[32px] items-center justify-center rounded-[10px] bg-ink font-serif text-[18px] font-bold leading-none text-paper">
             M
-          </span>
-          <span className="hidden font-serif text-[24px] leading-none tracking-[-.01em] sm:inline sm:text-[26px]">
-            maren
           </span>
         </a>
 
