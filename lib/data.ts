@@ -158,6 +158,7 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { label: "Política de privacidad", href: "/privacidad" },
       { label: "Términos y condiciones", href: "/terminos" },
+      { label: "Política de cookies", href: "/cookies" },
     ],
   },
 ];
