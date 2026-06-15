@@ -97,7 +97,7 @@ export const posts: Post[] = [
         ],
       },
       {
-        h2: "¿Es seguro?",
+        h2: "¿Es seguro tomar Wegovy?",
         blocks: [
           {
             type: "p",
@@ -107,6 +107,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar Wegovy?",
+        a: "Sí, Wegovy es seguro cuando se toma bajo supervisión médica y con la dosis ajustada de forma progresiva. Los efectos secundarios más comunes (náuseas, digestiones lentas) suelen ser leves y temporales. No debe usarse sin valoración ni seguimiento médico.",
+      },
       {
         q: "¿Puedo comprar Wegovy sin receta en Barcelona?",
         a: "No. Wegovy requiere receta médica. Comprarlo sin prescripción es ilegal y conlleva riesgos serios para la salud.",
@@ -198,6 +202,10 @@ export const posts: Post[] = [
     ],
     faqs: [
       {
+        q: "¿Es seguro tomar Mounjaro?",
+        a: "Sí, Mounjaro (tirzepatida) es seguro bajo supervisión médica, empezando por dosis bajas que se aumentan poco a poco. Los efectos secundarios habituales son digestivos, leves y temporales, y se gestionan con el seguimiento. Siempre requiere valoración y receta médica.",
+      },
+      {
         q: "¿Mounjaro adelgaza más que Wegovy?",
         a: "En estudios, la tirzepatida (Mounjaro) muestra una pérdida de peso media algo superior, pero la respuesta es individual y debe valorarla tu médico.",
       },
@@ -269,6 +277,10 @@ export const posts: Post[] = [
     ],
     faqs: [
       {
+        q: "¿Es seguro tomar Wegovy?",
+        a: "Sí, siempre que se use con prescripción y seguimiento médico. La dosis se ajusta de forma escalonada para minimizar efectos secundarios, que suelen ser leves y pasajeros. Por eso el precio de un tratamiento serio incluye la supervisión médica, no solo el fármaco.",
+      },
+      {
         q: "¿Por qué varía tanto el precio de Wegovy?",
         a: "Porque depende de la dosis de la pluma y de si el precio incluye o no la consulta y el seguimiento médico.",
       },
@@ -336,6 +348,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar Ozempic, Wegovy o Mounjaro?",
+        a: "Los tres son seguros cuando los prescribe y supervisa un médico, con la dosis ajustada de forma progresiva. Sus perfiles de efectos secundarios son similares (sobre todo digestivos y temporales). La elección del fármaco más adecuado y seguro para ti la hace el médico según tu caso.",
+      },
       {
         q: "¿Ozempic y Wegovy son lo mismo?",
         a: "Comparten principio activo (semaglutida), pero Wegovy está aprobado para pérdida de peso a dosis m��s altas y Ozempic para diabetes tipo 2.",
@@ -407,6 +423,10 @@ export const posts: Post[] = [
     ],
     faqs: [
       {
+        q: "¿Es seguro tomar Wegovy?",
+        a: "Sí, es seguro siempre que la receta venga de una valoración médica real y haya seguimiento posterior. Lo peligroso no es Wegovy en sí, sino conseguirlo sin prescripción ni control médico. La telemedicina permite hacerlo de forma legal y segura.",
+      },
+      {
         q: "¿Puedo tener la receta sin ver a un médico?",
         a: "No. Siempre debe haber una valoración médica, aunque sea online. Es lo que diferencia un servicio legal de uno fraudulento.",
       },
@@ -456,6 +476,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar Mounjaro?",
+        a: "Sí, la tirzepatida es segura bajo prescripción y seguimiento médico, con la dosis ajustada de forma gradual. Los efectos secundarios suelen ser digestivos, leves y temporales. Un tratamiento completo (no solo el fármaco) es lo que garantiza que se use de forma segura.",
+      },
       {
         q: "¿Mounjaro es más caro que Wegovy?",
         a: "Los rangos de precio son similares y dependen de la dosis. La diferencia real está en la respuesta individual y la tolerancia.",
@@ -520,6 +544,10 @@ export const posts: Post[] = [
     ],
     faqs: [
       {
+        q: "¿Es seguro tomar semaglutida?",
+        a: "Sí, la semaglutida es segura cuando se toma con receta y seguimiento médico, ajustando la dosis poco a poco. Los efectos secundarios más frecuentes son digestivos, leves y temporales. No debe tomarse sin valoración médica previa.",
+      },
+      {
         q: "¿Semaglutida y Wegovy son lo mismo?",
         a: "Wegovy es una marca de semaglutida aprobada para pérdida de peso. La semaglutida es el principio activo.",
       },
@@ -530,7 +558,7 @@ export const posts: Post[] = [
     ],
   },
 
-  /* 8 ───────────────────────────────────────────── */
+  /* 8 ─────���─────────────────────────────────────── */
   {
     slug: "tirzepatida-para-adelgazar",
     title: "Tirzepatida para adelgazar",
@@ -582,6 +610,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar tirzepatida para adelgazar?",
+        a: "Sí, es segura bajo supervisión médica y con la dosis aumentada de forma escalonada. Los efectos secundarios habituales (náuseas, digestiones lentas) suelen ser leves y temporales, y el seguimiento ayuda a minimizarlos. Requiere siempre valoración médica previa.",
+      },
       {
         q: "¿Cuánto peso se pierde con tirzepatida?",
         a: "Depende de cada persona y de la dosis, pero los estudios muestran pérdidas medias muy significativas con seguimiento médico.",
@@ -637,6 +669,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar Wegovy?",
+        a: "Sí, siempre que lo prescriba y supervise una clínica con médicos colegiados y seguimiento real. La seguridad depende más de la calidad del acompañamiento médico que del formato (presencial u online). Desconfía de cualquier clínica que lo venda sin valoración.",
+      },
       {
         q: "¿Es mejor una clínica presencial?",
         a: "No necesariamente. Una clínica online con médicos colegiados y buen seguimiento ofrece la misma seguridad con más comodidad.",
@@ -702,6 +738,10 @@ export const posts: Post[] = [
       },
     ],
     faqs: [
+      {
+        q: "¿Es seguro tomar un GLP‑1 para perder peso?",
+        a: "Sí, los GLP‑1 (Wegovy, Mounjaro) son seguros dentro de un plan con prescripción y seguimiento médico. La clave es la dosis progresiva, el acompañamiento nutricional y el control de efectos. Un fármaco solo, sin plan ni supervisión, no es la forma segura ni eficaz de usarlo.",
+      },
       {
         q: "¿Recuperaré el peso al dejar el GLP‑1?",
         a: "El riesgo de rebote existe, por eso el plan incluye una fase de mantenimiento con estrategia específica para conservar los resultados.",
