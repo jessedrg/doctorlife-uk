@@ -8,16 +8,13 @@ export function Hero() {
           style={{ background: "linear-gradient(155deg,#6b774a 0%,#5f6a3e 45%,#454d2e 100%)" }}
         />
 
-        {/* PLACEHOLDER — foto de personas (sustituir luego) */}
+        {/* foto principal */}
         <div className="absolute inset-y-0 right-0 w-full md:w-[64%]">
-          <div className="flex h-full w-full items-center justify-center bg-olive/30">
-            <div className="flex flex-col items-center gap-3 text-paper/70">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-dashed border-paper/50 text-3xl font-light">
-                +
-              </div>
-              <span className="text-sm font-medium tracking-wide">Foto de personas</span>
-            </div>
-          </div>
+          <img
+            src="/hero/woman.png"
+            alt="Paciente de Maren sonriendo"
+            className="h-full w-full object-cover object-top"
+          />
           {/* color overlay para fundir la foto con el bloque */}
           <div
             className="pointer-events-none absolute inset-0"
