@@ -18,7 +18,18 @@ export function Labs() {
         </div>
 
         {/* floating dashboard */}
-        <Parallax speed={30} className="relative mx-auto mt-[30px] h-[300px] max-w-[880px]">
+        <Parallax speed={30} className="relative mx-auto mt-[30px] h-[460px] max-w-[880px]">
+          {/* phone mockup placeholder — sustituir por imagen de la app en una mano */}
+          <div className="anim-floatA absolute left-1/2 top-1/2 z-[3] flex h-[420px] w-[210px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[38px] border-2 border-dashed border-teal/40 text-center" style={{ background: "rgba(20,28,40,.55)" }}>
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-teal/40 text-teal text-2xl font-light">＋</div>
+            <div className="px-6 text-[13px] font-medium leading-snug text-[#cdd6e2]">
+              Mockup de la app
+            </div>
+            <div className="mt-1 px-6 text-[11.5px] leading-snug text-[#9aa6b6]">
+              Móvil en una mano
+            </div>
+          </div>
+
           <div className="anim-floatA absolute left-0 top-[30px] w-[240px] rounded-[18px] border border-[#e9ecf2]/[.12] p-[18px] backdrop-blur-md" style={{ background: "rgba(20,28,40,.7)" }}>
             <div className="text-xs text-[#9aa6b6]">Índice de salud</div>
             <div className="mt-3 flex items-center gap-4">
