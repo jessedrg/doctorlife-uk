@@ -1,11 +1,3 @@
-import { QuizTrigger } from "./quiz-trigger";
-
-const bullets = [
-  "Dirigido por médicos endocrinos",
-  "Tratamiento farmacológico supervisado",
-  "Apoyo de equipo clínico multidisciplinar",
-];
-
 export function Hero() {
   return (
     <section id="top" className="mx-auto -mt-[84px] max-w-[1180px] scroll-mt-[90px] px-[18px] pt-[84px]">
@@ -35,30 +27,17 @@ export function Hero() {
 
         {/* contenido */}
         <div className="relative z-[2] flex min-h-[760px] items-center px-5 py-16 sm:px-10">
-          <div className="w-full max-w-[560px] rounded-[28px] bg-paper p-8 shadow-[0_30px_80px_-30px_rgba(34,29,23,.45)] sm:p-12">
-            <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-clay">
+          <div className="max-w-[600px]">
+            <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage">
               Tu clínica 100% digital
             </div>
-            <h1 className="mt-6 text-balance text-[clamp(38px,5.2vw,66px)] font-light leading-[1.02] tracking-[-.03em] text-ink">
+            <h1 className="mt-6 text-balance text-[clamp(38px,5.6vw,72px)] font-light leading-[1.02] tracking-[-.03em] text-paper">
               El tratamiento médico para la{" "}
-              <span className="font-serif italic text-olive">pérdida de peso</span>, adaptado a tu realidad
+              <span className="font-serif italic text-sage">pérdida de peso</span>, adaptado a tu realidad
             </h1>
-
-            <ul className="mt-9 flex flex-col gap-[14px]">
-              {bullets.map((b) => (
-                <li key={b} className="flex items-center gap-3 text-[clamp(15px,1.4vw,18px)] text-ink-soft">
-                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-sage text-sm text-olive">
-                    →
-                  </span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-
-            <QuizTrigger className="mt-10 inline-flex items-center gap-[10px] rounded-full bg-ink px-8 py-[16px] text-base font-medium text-paper">
-              Calcula tu IMC
-              <span className="text-[13px]">↗</span>
-            </QuizTrigger>
+            <p className="mt-7 max-w-[36ch] text-balance text-[clamp(17px,1.6vw,21px)] font-light leading-[1.5] text-paper/80">
+              Cuidado dirigido por médicos, diseñado en torno a tu cuerpo.
+            </p>
           </div>
         </div>
       </div>
