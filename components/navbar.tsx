@@ -28,11 +28,17 @@ export function Navbar() {
         style={{ background: "rgba(246,240,230,.82)" }}
       >
         <a
-          href="#top"
+          href="/#top"
           onClick={() => setOpen(false)}
-          className="font-serif text-[24px] leading-none tracking-[-.01em] text-ink no-underline sm:text-[26px]"
+          className="flex items-center gap-[10px] text-ink no-underline"
+          aria-label="Maren — inicio"
         >
-          maren
+          <span className="flex h-[38px] w-[38px] items-center justify-center rounded-[12px] bg-ink font-serif text-[24px] font-bold leading-none text-paper sm:h-[40px] sm:w-[40px] sm:text-[25px]">
+            M
+          </span>
+          <span className="hidden font-serif text-[24px] leading-none tracking-[-.01em] sm:inline sm:text-[26px]">
+            maren
+          </span>
         </a>
 
         {/* enlaces desktop */}
