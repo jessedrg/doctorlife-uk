@@ -4,7 +4,7 @@ import { experts } from "@/lib/data";
 
 export function Experts() {
   return (
-    <section id="experts" className="mx-auto max-w-[1760px] scroll-mt-[90px] px-5 pb-10 pt-[104px] text-center sm:px-8 lg:px-12 xl:px-16">
+    <section id="experts" className="mx-auto max-w-none scroll-mt-[90px] px-3 pb-10 pt-[104px] text-center sm:px-4 lg:px-5">
       <Reveal>
         <h2 className="m-0 text-[clamp(34px,5vw,68px)] font-light leading-[.98] tracking-[-.025em]">
           El mejor cuidado, de la mano

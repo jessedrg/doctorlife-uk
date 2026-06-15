@@ -2,7 +2,7 @@ import { Reveal } from "./reveal";
 
 export function Labs() {
   return (
-    <section id="labs" className="mx-auto max-w-[1760px] scroll-mt-[90px] px-5 pt-6 sm:px-8 lg:px-12 xl:px-16">
+    <section id="labs" className="mx-auto max-w-none scroll-mt-[90px] px-3 pt-6 sm:px-4 lg:px-5">
       <Reveal className="relative overflow-hidden rounded-[40px] px-[54px] py-16 text-[#e9ecf2]" >
         <div className="absolute inset-0" style={{ background: "radial-gradient(110% 90% at 20% 0%,#243042 0%,#171f2c 55%,#0e131c 100%)" }} />
         <div className="absolute -right-[5%] -top-[20%] h-[90%] w-1/2" style={{ background: "radial-gradient(closest-side,rgba(95,179,163,.22),transparent)", filter: "blur(10px)" }} />
