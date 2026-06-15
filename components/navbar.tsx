@@ -29,7 +29,13 @@ export function Navbar() {
       >
         <a
           href="/#top"
-          onClick={() => setOpen(false)}
+          onClick={(e) => {
+            setOpen(false);
+            if (window.location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
           className="flex items-center text-ink no-underline"
           aria-label="Maren — inicio"
         >
