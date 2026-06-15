@@ -5,7 +5,6 @@ import { Hero } from "@/components/hero";
 import { ImmersiveProduct } from "@/components/immersive-product";
 import { Transformation } from "@/components/transformation";
 import { Labs } from "@/components/labs";
-import { Experts } from "@/components/experts";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
@@ -20,7 +19,6 @@ export default function Home() {
           <ImmersiveProduct />
           <Transformation />
           <Labs />
-          <Experts />
           <FinalCta />
         </main>
         <Footer />
