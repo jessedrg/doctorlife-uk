@@ -50,17 +50,26 @@ export function Transformation() {
           </div>
 
           <div className="flex flex-col justify-between rounded-[26px] border border-paper/15 p-[34px] backdrop-blur-md" style={{ background: "rgba(30,36,40,.42)" }}>
+            <div className="mb-7 overflow-hidden rounded-[20px]" style={{ background: "linear-gradient(160deg,#5f6a3e,#2c3439)" }}>
+              <img
+                src="/testimonials/daniel.png"
+                alt="Daniel, paciente de Maren"
+                className="h-[260px] w-full object-cover object-top"
+              />
+            </div>
             <div className="font-serif text-[clamp(22px,2.4vw,30px)] font-normal italic leading-[1.3]">
               &ldquo;Por primera vez el peso se fue y{" "}
               <span className="text-sage">no volvió</span>. Maren se sintió como
               cuidado de verdad, no como una transacción.&rdquo;
             </div>
             <div className="mt-[26px] flex items-center gap-4">
-              <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full font-serif text-2xl" style={{ background: "linear-gradient(140deg,#c98a4f,#7a4a2b)" }}>
-                H
-              </div>
+              <img
+                src="/testimonials/daniel.png"
+                alt="Daniel"
+                className="h-[60px] w-[60px] rounded-full object-cover object-top"
+              />
               <div>
-                <div className="text-base font-medium">Hannah, 41</div>
+                <div className="text-base font-medium">Daniel, 38</div>
                 <div className="text-[13.5px] text-paper/60">9 meses · Semaglutida + analíticas</div>
               </div>
             </div>
