@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { products } from "@/lib/data";
 
@@ -46,16 +45,7 @@ export function ProductCarousel() {
                   Médico colegiado
                 </span>
               </div>
-              <div className="relative mx-auto my-2 h-[180px] w-full">
-                <Image
-                  src={p.img}
-                  alt={p.name}
-                  fill
-                  sizes="300px"
-                  className="anim-floatA object-contain"
-                />
-              </div>
-              <div className="text-[21px] font-normal">{p.name}</div>
+              <div className="mt-7 text-[21px] font-normal">{p.name}</div>
               <div className="mb-[14px] mt-[3px] text-sm leading-[1.4] text-paper/70">{p.subtitle}</div>
               <div className="text-[15px] font-medium text-sage">Desde {p.price}</div>
             </div>
