@@ -155,7 +155,10 @@ export const footerColumns: FooterColumn[] = [
   },
   {
     title: "Legal",
-    links: [{ label: "Política de privacidad", href: "/privacidad" }],
+    links: [
+      { label: "Política de privacidad", href: "/privacidad" },
+      { label: "Términos y condiciones", href: "/terminos" },
+    ],
   },
 ];
 
