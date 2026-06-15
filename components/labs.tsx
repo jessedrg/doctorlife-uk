@@ -1,5 +1,4 @@
 import { Reveal } from "./reveal";
-import { Parallax } from "./parallax";
 
 export function Labs() {
   return (
@@ -17,10 +16,9 @@ export function Labs() {
           </h2>
         </div>
 
-        {/* floating dashboard */}
-        <Parallax speed={30} className="relative mx-auto mt-[30px] h-[460px] max-w-[880px]">
-          {/* phone mockup placeholder — sustituir por imagen de la app en una mano */}
-          <div className="anim-floatA absolute left-1/2 top-1/2 z-[3] flex h-[420px] w-[210px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[38px] border-2 border-dashed border-teal/40 text-center" style={{ background: "rgba(20,28,40,.55)" }}>
+        {/* phone mockup placeholder — sustituir por imagen de la app en una mano */}
+        <div className="relative z-[2] mx-auto mt-[30px] flex justify-center">
+          <div className="flex h-[460px] w-[230px] flex-col items-center justify-center rounded-[38px] border-2 border-dashed border-teal/40 text-center" style={{ background: "rgba(20,28,40,.55)" }}>
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-teal/40 text-teal text-2xl font-light">＋</div>
             <div className="px-6 text-[13px] font-medium leading-snug text-[#cdd6e2]">
               Mockup de la app
@@ -29,40 +27,7 @@ export function Labs() {
               Móvil en una mano
             </div>
           </div>
-
-          <div className="anim-floatA absolute left-0 top-[30px] w-[240px] rounded-[18px] border border-[#e9ecf2]/[.12] p-[18px] backdrop-blur-md" style={{ background: "rgba(20,28,40,.7)" }}>
-            <div className="text-xs text-[#9aa6b6]">Índice de salud</div>
-            <div className="mt-3 flex items-center gap-4">
-              <div className="flex h-[84px] w-[84px] items-center justify-center rounded-full" style={{ background: "conic-gradient(#5fb3a3 0% 72%,rgba(233,236,242,.12) 72% 100%)" }}>
-                <div className="flex h-[62px] w-[62px] items-center justify-center rounded-full text-2xl font-light" style={{ background: "#141c28" }}>66</div>
-              </div>
-              <div className="text-[12.5px] leading-[1.7]">
-                <div><span className="text-teal">●</span> Óptimo · 66</div>
-                <div><span className="text-amber-light">●</span> En rango · 3</div>
-                <div><span style={{ color: "#d98a8a" }}>●</span> Fuera · 6</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="anim-floatC absolute right-0 top-0 w-[280px] rounded-[18px] border border-[#e9ecf2]/[.12] p-5 backdrop-blur-md" style={{ background: "rgba(20,28,40,.7)" }}>
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[#9aa6b6]">Edad biológica</span>
-              <span className="text-[11px] text-teal">−3 años</span>
-            </div>
-            <div className="my-[6px] text-[54px] font-light">41</div>
-            <div className="mt-[6px] flex h-[46px] items-end gap-[5px]">
-              {[40, 62, 48, 80, 58, 70, 90].map((h, i) => (
-                <span key={i} className="flex-1 rounded-[3px]" style={{ height: `${h}%`, background: i === 3 ? "#7fcebe" : i === 4 ? "#e3b582" : "#5fb3a3" }} />
-              ))}
-            </div>
-          </div>
-
-          <div className="anim-floatA absolute bottom-0 left-1/2 w-[160px] -translate-x-1/2 rounded-[16px] border border-[#e9ecf2]/[.12] p-4 backdrop-blur-md" style={{ background: "rgba(20,28,40,.78)", animationDelay: ".5s" }}>
-            <div className="text-[11.5px] text-[#9aa6b6]">Salud cardiovascular</div>
-            <div className="mt-2 flex justify-between text-[13px]"><span>LDL</span><span className="text-teal">Óptimo</span></div>
-            <div className="mt-[5px] flex justify-between text-[13px]"><span>ApoB</span><span className="text-amber-light">En rango</span></div>
-          </div>
-        </Parallax>
+        </div>
 
         <div className="relative z-[2] mt-[30px] grid grid-cols-1 gap-[18px] md:grid-cols-2">
           <div className="rounded-[26px] border border-[#e9ecf2]/10 p-9" style={{ background: "rgba(20,28,40,.5)" }}>
