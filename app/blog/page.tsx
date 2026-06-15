@@ -29,7 +29,7 @@ export default function BlogIndex() {
     <QuizProvider>
       <div className="overflow-x-clip bg-paper">
         <Navbar />
-        <main className="mx-auto max-w-[1180px] px-[18px] pb-10 pt-10">
+        <main className="mx-auto max-w-none px-3 pb-10 pt-10 sm:px-4 lg:px-5">
           <header className="mx-auto max-w-[760px] py-12 text-center sm:py-16">
             <span className="text-[13px] font-semibold uppercase tracking-[.18em] text-clay">
               Blog Maren
@@ -44,16 +44,16 @@ export default function BlogIndex() {
 
           <BlogCard post={lead} large />
 
-          <div className="mt-8 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.slice(0, 3).map((p) => (
+          <div className="mt-8 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {rest.slice(0, 4).map((p) => (
               <BlogCard key={p.slug} post={p} />
             ))}
           </div>
 
           <BlogFunnel />
 
-          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.slice(3).map((p) => (
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {rest.slice(4).map((p) => (
               <BlogCard key={p.slug} post={p} />
             ))}
           </div>

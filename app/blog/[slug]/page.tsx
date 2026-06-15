@@ -108,7 +108,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <div className="overflow-x-clip bg-paper">
         <Navbar />
         <main>
-          <article className="mx-auto max-w-[760px] px-[18px] pb-6 pt-10">
+          <article className="mx-auto max-w-[760px] px-5 pb-6 pt-10 lg:max-w-[820px] 2xl:max-w-[900px]">
             {/* breadcrumb */}
             <nav className="mb-8 flex items-center gap-2 text-[13px] text-ink-mute">
               <a href="/" className="no-underline hover:text-ink">Inicio</a>
@@ -133,13 +133,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </article>
 
-          <div className="mx-auto max-w-[920px] px-[18px]">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px]">
-              <img src={post.cover || "/placeholder.svg"} alt={post.coverAlt} className="h-full w-full object-cover object-top" />
+          <div className="mx-auto max-w-[1200px] px-5 lg:max-w-[1320px]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px] lg:aspect-[2.2/1]">
+              <img src={post.cover || "/placeholder.svg"} alt={post.coverAlt} className="h-full w-full object-cover object-[center_25%]" />
             </div>
           </div>
 
-          <article className="mx-auto max-w-[760px] px-[18px] pb-4 pt-2">
+          <article className="mx-auto max-w-[760px] px-5 pb-4 pt-2 lg:max-w-[820px] 2xl:max-w-[900px]">
             <p className="mt-8 text-[19px] leading-[1.6] text-ink">{post.excerpt}</p>
 
             {post.sections.map((section, idx) => (
@@ -183,11 +183,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
           {/* relacionados */}
           {related.length > 0 && (
-            <section className="mx-auto max-w-[1180px] px-[18px] pb-6 pt-10">
+            <section className="mx-auto max-w-none px-3 pb-6 pt-10 sm:px-4 lg:px-5">
               <h2 className="mb-7 text-[clamp(22px,2.6vw,30px)] font-light text-ink">
                 Sigue leyendo
               </h2>
-              <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {related.map((p) => (
                   <BlogCard key={p.slug} post={p} />
                 ))}

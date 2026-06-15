@@ -6,11 +6,11 @@ export function BlogCard({ post, large = false }: { post: Post; large?: boolean 
       href={`/blog/${post.slug}`}
       className="group flex flex-col overflow-hidden rounded-[26px] bg-warm no-underline shadow-[0_18px_50px_-30px_rgba(34,29,23,.5)] ring-1 ring-ink/[.06] transition-shadow hover:shadow-[0_24px_60px_-26px_rgba(34,29,23,.5)]"
     >
-      <div className={`relative w-full overflow-hidden ${large ? "aspect-[16/10]" : "aspect-[16/11]"}`}>
+      <div className={`relative w-full overflow-hidden ${large ? "aspect-[16/10] sm:aspect-[2.6/1]" : "aspect-[16/11]"}`}>
         <img
           src={post.cover || "/placeholder.svg"}
           alt={post.coverAlt}
-          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+          className="h-full w-full object-cover object-[center_25%] transition-transform duration-700 group-hover:scale-[1.04]"
         />
         <span className="absolute left-4 top-4 rounded-full bg-paper/90 px-[11px] py-[5px] text-[11px] font-semibold uppercase tracking-[.1em] text-ink backdrop-blur-sm">
           {post.category}
