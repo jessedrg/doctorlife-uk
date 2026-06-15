@@ -61,6 +61,13 @@ export function Hero() {
               puedes perder
             </div>
           </div>
+          <Parallax speed={28} className="pointer-events-none absolute bottom-[64px] right-[24px] z-[2] w-[58%]">
+            <img
+              src="/products/maren-scale.png"
+              alt="Báscula digital Maren"
+              className="anim-floatA h-full w-full object-contain"
+            />
+          </Parallax>
           <div className="absolute bottom-[34px] left-[38px] z-[2] flex items-center gap-2 text-[18px] font-normal">
             <span className="text-xl">↓</span> Pierde hasta un {LOSS_STAT}%
             <span className="align-super text-[12px]">*</span>
