@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { QuizTrigger } from "./quiz-trigger";
 
 const links = [
-  { label: "Cómo funciona", href: "#product" },
-  { label: "Planes y precios", href: "#planes" },
-  { label: "Resultados", href: "#transform" },
-  { label: "Empezar", href: "#cta" },
+  { label: "Cómo funciona", href: "/#product" },
+  { label: "Planes y precios", href: "/#planes" },
+  { label: "Blog", href: "/blog" },
+  { label: "Empezar", href: "/#cta" },
 ];
 
 export function Navbar() {

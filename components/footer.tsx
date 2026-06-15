@@ -3,35 +3,24 @@ import { footerColumns } from "@/lib/data";
 export function Footer() {
   return (
     <footer className="mt-[100px] bg-cream pb-10 pt-[72px]">
-      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-10 px-[30px] md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
-        <div className="col-span-2 md:col-span-3 lg:col-span-1">
-          <div className="max-w-[280px] rounded-[26px] bg-paper p-7">
-            <div className="text-[22px] font-light leading-[1.1]">
-              Cuidado integral.
-              <br />
-              En tu bolsillo.
-            </div>
-            <div className="mt-5 flex items-center gap-4">
-              <div
-                className="h-[62px] w-[62px] rounded-[12px] border-4 border-paper"
-                style={{
-                  background:
-                    "repeating-conic-gradient(#221d17 0% 25%,#f6f0e6 0% 50%) 0 0/14px 14px",
-                  boxShadow: "0 0 0 1px #ddd0bb",
-                }}
-              />
-              <div className="text-[13px] leading-[1.4] text-ink-mute">
-                Escanea para descargar
-                <br />
-                en iOS y Android
-              </div>
-            </div>
-          </div>
+      <div className="mx-auto grid max-w-[1280px] grid-cols-2 gap-10 px-[30px] md:grid-cols-4">
+        <div className="col-span-2 md:col-span-1">
+          <a href="/#top" className="font-serif text-[30px] leading-none tracking-[-.01em] text-ink no-underline">
+            maren
+          </a>
+          <p className="mt-4 max-w-[260px] text-[15px] leading-relaxed text-ink-soft">
+            Cuidado del peso dirigido por médicos colegiados, con seguimiento real y tratamiento GLP‑1 supervisado.
+          </p>
           <div className="mt-6 flex gap-3">
             {["f", "in", "ig"].map((s) => (
-              <span key={s} className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-ink text-[15px] text-paper">
+              <a
+                key={s}
+                href="/#top"
+                aria-label={`Maren en ${s}`}
+                className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-ink text-[15px] text-paper no-underline"
+              >
                 {s}
-              </span>
+              </a>
             ))}
           </div>
         </div>

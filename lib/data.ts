@@ -134,34 +134,27 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Tratamiento",
     links: [
-      { label: "Cómo funciona", href: "#product" },
-      { label: "Pérdida de peso", href: "#product" },
-      { label: "Planes y precios", href: "#planes" },
-      { label: "Primera visita 25 €", href: "#planes" },
+      { label: "Cómo funciona", href: "/#product" },
+      { label: "Planes y precios", href: "/#planes" },
+      { label: "Primera visita 25 €", href: "/#planes" },
+      { label: "Historias reales", href: "/#transform" },
     ],
   },
   {
-    title: "Resultados",
+    title: "Recursos",
     links: [
-      { label: "Historias reales", href: "#transform" },
-      { label: "Empezar ahora", href: "#cta" },
-      { label: "Reservar visita", href: "#cta" },
+      { label: "Blog", href: "/blog" },
+      { label: "Comprar Wegovy Barcelona", href: "/blog/comprar-wegovy-barcelona" },
+      { label: "Comprar Mounjaro Barcelona", href: "/blog/comprar-mounjaro-barcelona" },
+      { label: "Wegovy precio España", href: "/blog/wegovy-precio-espana" },
     ],
   },
   {
-    title: "Maren",
+    title: "Empezar",
     links: [
-      { label: "Inicio", href: "#top" },
-      { label: "Equipo médico", href: "#product" },
-      { label: "Seguimiento con app", href: "#planes" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacidad", href: "#top" },
-      { label: "Términos", href: "#top" },
-      { label: "Consentimiento de telemedicina", href: "#top" },
+      { label: "Reservar visita", href: "/#cta" },
+      { label: "Empezar ahora", href: "/#cta" },
+      { label: "Inicio", href: "/#top" },
     ],
   },
 ];
