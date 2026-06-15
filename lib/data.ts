@@ -153,6 +153,10 @@ export const footerColumns: FooterColumn[] = [
       { label: "Wegovy precio España", href: "/blog/wegovy-precio-espana" },
     ],
   },
+  {
+    title: "Legal",
+    links: [{ label: "Política de privacidad", href: "/privacidad" }],
+  },
 ];
 
 /** Porcentaje usado en los textos ("Pierde hasta un {LOSS}%"). */
