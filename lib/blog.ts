@@ -338,7 +338,7 @@ export const posts: Post[] = [
     faqs: [
       {
         q: "¿Ozempic y Wegovy son lo mismo?",
-        a: "Comparten principio activo (semaglutida), pero Wegovy está aprobado para pérdida de peso a dosis más altas y Ozempic para diabetes tipo 2.",
+        a: "Comparten principio activo (semaglutida), pero Wegovy está aprobado para pérdida de peso a dosis m��s altas y Ozempic para diabetes tipo 2.",
       },
       {
         q: "¿Puedo elegir yo el fármaco?",
@@ -726,4 +726,4 @@ export function getRelated(slug: string, limit = 3): Post[] {
   return [...sameCat, ...rest].slice(0, limit);
 }
 
-export const SITE_URL = "https://maren.health";
+export const SITE_URL = "https://doctorlife.io";

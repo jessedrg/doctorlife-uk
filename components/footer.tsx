@@ -10,10 +10,10 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <a
               href="/#top"
-              aria-label="Maren — inicio"
+              aria-label="DoctorLife — inicio"
               className="flex h-[44px] w-[44px] items-center justify-center rounded-[14px] bg-sage font-serif text-[26px] font-bold leading-none text-ink no-underline"
             >
-              M
+              D
             </a>
             <p className="mt-5 max-w-[280px] text-[15px] leading-relaxed text-paper/65">
               Cuidado del peso dirigido por médicos colegiados, con seguimiento
@@ -40,7 +40,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-paper/10 px-8 py-6 text-[12.5px] text-paper/45 md:px-14">
-          <span>© 2026 Maren Health. Marca ficticia creada con fines de diseño.</span>
+          <span>© 2026 DoctorLife · doctorlife.io · Marca ficticia creada con fines de diseño.</span>
           <span>Tratamiento sujeto a evaluación médica.</span>
         </div>
       </div>

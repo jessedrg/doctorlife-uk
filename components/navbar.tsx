@@ -37,10 +37,10 @@ export function Navbar() {
             }
           }}
           className="flex items-center text-ink no-underline"
-          aria-label="Maren — inicio"
+          aria-label="DoctorLife — inicio"
         >
           <span className="flex h-[32px] w-[32px] items-center justify-center rounded-[10px] bg-ink font-serif text-[18px] font-bold leading-none text-paper">
-            M
+            D
           </span>
         </a>
 

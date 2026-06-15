@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://maren.health'),
+  metadataBase: new URL('https://doctorlife.io'),
   title: 'Maren — Tu cuerpo, por fin entendido',
   description:
     'Cuidado del peso y hormonal dirigido por médicos, diseñado en torno a tu cuerpo — no a un protocolo único.',
