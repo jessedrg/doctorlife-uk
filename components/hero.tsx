@@ -1,7 +1,6 @@
 import { Reveal } from "./reveal";
 import { Parallax } from "./parallax";
 import { QuizTrigger } from "./quiz-trigger";
-import { PenArt, PillArt } from "./art";
 import { LOSS_STAT } from "@/lib/data";
 
 export function Hero() {
@@ -36,9 +35,12 @@ export function Hero() {
             Encuentra tu plan
             <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-paper/40">→</span>
           </QuizTrigger>
-          <Parallax speed={34} className="pointer-events-none absolute bottom-0 right-6 top-[38px] w-[46%]">
-            <PenArt height={280} dose="2.4mg" className="anim-floatB absolute right-[18%] top-[6%]" />
-            <PillArt size={118} className="anim-floatA absolute right-[54%] top-[34%]" />
+          <Parallax speed={34} className="pointer-events-none absolute bottom-0 right-0 top-[20px] w-[52%]">
+            <img
+              src="/products/maren-lineup.png"
+              alt="Gama de productos Maren: plumas inyectoras y pastillas GLP‑1"
+              className="anim-floatA absolute inset-0 h-full w-full object-contain object-right"
+            />
           </Parallax>
         </Reveal>
 
