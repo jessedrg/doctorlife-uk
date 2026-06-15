@@ -8,13 +8,13 @@ export function Hero() {
   return (
     <section id="top" className="mx-auto max-w-[1280px] scroll-mt-[90px] px-[30px] pt-16">
       <h1 className="m-0 max-w-[14ch] text-[clamp(52px,9vw,138px)] font-light leading-[.93] tracking-[-.035em]">
-        Your body,
+        Tu cuerpo,
         <br />
-        finally <span className="font-serif font-normal italic">understood</span>.
+        por fin <span className="font-serif font-normal italic">entendido</span>.
       </h1>
       <p className="mt-[26px] max-w-[46ch] text-[clamp(17px,1.5vw,20px)] font-light leading-[1.5] text-ink-soft">
-        Doctor‑led weight and hormonal care, designed around your body — not a
-        one‑size protocol.
+        Cuidado del peso y hormonal dirigido por médicos, diseñado en torno a tu
+        cuerpo — no a un protocolo único.
       </p>
 
       {/* big cards */}
@@ -27,13 +27,13 @@ export function Hero() {
           />
           <div className="relative z-[2] max-w-[60%]">
             <div className="text-[clamp(22px,2.2vw,30px)] font-light leading-[1.12]">
-              Begin your
+              Empieza tu
               <br />
-              weight care
+              cuidado del peso
             </div>
           </div>
           <QuizTrigger className="absolute bottom-[34px] left-[38px] z-[2] inline-flex items-center gap-[10px] text-[17px] font-normal text-paper">
-            Find your Rx match
+            Encuentra tu plan
             <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-paper/40">→</span>
           </QuizTrigger>
           <Parallax speed={34} className="pointer-events-none absolute bottom-0 right-6 top-[38px] w-[46%]">
@@ -54,13 +54,13 @@ export function Hero() {
           />
           <div className="relative z-[2]">
             <div className="text-[clamp(22px,2.2vw,30px)] font-light leading-[1.12]">
-              See how much
+              Descubre cuánto
               <br />
-              you can lose
+              puedes perder
             </div>
           </div>
           <div className="absolute bottom-[34px] left-[38px] z-[2] flex items-center gap-2 text-[18px] font-normal">
-            <span className="text-xl">↓</span> Lose up to {LOSS_STAT}%
+            <span className="text-xl">↓</span> Pierde hasta un {LOSS_STAT}%
             <span className="align-super text-[12px]">*</span>
           </div>
           <QuizTrigger
@@ -74,15 +74,15 @@ export function Hero() {
 
       {/* secondary cards */}
       <div className="mt-[18px] grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
-        <SecondaryCard label="Balance" accent="hormones" delay={0.04} dot="rounded-[11px]" dotBg="radial-gradient(60% 60% at 38% 32%,#fff,#dcd0bb 60%,#b9aa8e)" />
-        <SecondaryCard label="Sleep &" accent="energy" delay={0.1} dot="rounded-[11px]" dotBg="radial-gradient(60% 60% at 38% 32%,#f3c79a,#c98a4f 60%,#9a5a33)" />
-        <SecondaryCard label="Get a" accent="lab panel" delay={0.16} dot="rounded-full" dotBg="conic-gradient(from 140deg,#c98a4f,#9aa472,#8c8f9e,#c98a4f)" />
+        <SecondaryCard label="Equilibra tus" accent="hormonas" delay={0.04} dot="rounded-[11px]" dotBg="radial-gradient(60% 60% at 38% 32%,#fff,#dcd0bb 60%,#b9aa8e)" />
+        <SecondaryCard label="Sueño y" accent="energía" delay={0.1} dot="rounded-[11px]" dotBg="radial-gradient(60% 60% at 38% 32%,#f3c79a,#c98a4f 60%,#9a5a33)" />
+        <SecondaryCard label="Pide tu" accent="analítica" delay={0.16} dot="rounded-full" dotBg="conic-gradient(from 140deg,#c98a4f,#9aa472,#8c8f9e,#c98a4f)" />
         <Reveal delay={0.22}>
           <QuizTrigger className="flex min-h-[120px] w-full items-center justify-between gap-[14px] rounded-[26px] bg-ink p-[28px] text-left text-paper">
             <span className="text-[19px] font-light leading-[1.2]">
-              Unsure where
+              ¿No sabes por
               <br />
-              to begin? <span className="font-medium">Start here</span>
+              dónde empezar? <span className="font-medium">Empieza aquí</span>
             </span>
             <span className="flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-full border border-paper/40 text-xl">
               +

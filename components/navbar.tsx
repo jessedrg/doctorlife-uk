@@ -1,11 +1,11 @@
 import { QuizTrigger } from "./quiz-trigger";
 
 const links = [
-  { label: "Weight", href: "#product" },
-  { label: "Hormones", href: "#transform" },
-  { label: "Labs", href: "#labs" },
-  { label: "Care team", href: "#experts" },
-  { label: "How it works", href: "#cta" },
+  { label: "Peso", href: "#product" },
+  { label: "Hormonas", href: "#transform" },
+  { label: "Analíticas", href: "#labs" },
+  { label: "Equipo médico", href: "#experts" },
+  { label: "Cómo funciona", href: "#cta" },
 ];
 
 export function Navbar() {
@@ -24,10 +24,10 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-3">
           <button type="button" className="whitespace-nowrap rounded-full border border-ink/15 bg-warm px-[22px] py-[10px] text-[15px] font-medium text-ink">
-            Log in
+            Iniciar sesión
           </button>
           <QuizTrigger className="whitespace-nowrap rounded-full bg-ink px-[22px] py-[11px] text-[15px] font-medium text-paper">
-            Get started
+            Empezar
           </QuizTrigger>
         </div>
       </div>

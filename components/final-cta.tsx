@@ -10,27 +10,27 @@ export function FinalCta() {
 
         <div className="relative z-[2] p-[54px]">
           <h2 className="m-0 text-[clamp(30px,3.4vw,46px)] font-light leading-[1.04] tracking-[-.02em]">
-            Start with a plan
+            Empieza con un plan
             <br />
-            built around <span className="font-serif italic text-sage">you</span>
+            creado en torno a <span className="font-serif italic text-sage">ti</span>
           </h2>
           <p className="mb-[26px] mt-4 max-w-[36ch] text-base font-light leading-[1.5] text-paper/[.78]">
-            Get your free Balancing Your Hormones guide, written by
-            board‑certified doctors to support your journey.
+            Recibe gratis tu guía «Equilibra tus hormonas», escrita por médicos
+            colegiados para acompañarte en tu camino.
           </p>
           <div className="flex max-w-[380px] flex-col gap-3">
             <input
-              placeholder="Email address"
+              placeholder="Correo electrónico"
               className="rounded-[14px] border border-paper/[.28] px-[18px] py-4 text-[15px] text-paper outline-none placeholder:text-paper/50"
               style={{ background: "rgba(246,240,230,.1)" }}
             />
             <QuizTrigger className="rounded-[14px] bg-paper py-4 text-base font-semibold text-ink">
-              Get the guide
+              Conseguir la guía
             </QuizTrigger>
           </div>
           <p className="mt-4 max-w-[40ch] text-[11.5px] text-paper/50">
-            By entering your email you agree to our Terms &amp; Conditions and
-            acknowledge the Privacy Policy.
+            Al introducir tu correo aceptas nuestros Términos y Condiciones y
+            reconoces la Política de Privacidad.
           </p>
         </div>
 

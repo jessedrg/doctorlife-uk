@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-import { PenArt, PillArt } from "./art";
 import { products } from "@/lib/data";
 
 const CARD_STEP = 320; // 300px card + 20px gap
@@ -15,13 +15,13 @@ export function ProductCarousel() {
     <div className="mt-[84px] text-left">
       <div className="mb-6 flex items-end justify-between">
         <div className="text-[clamp(22px,2.4vw,30px)] font-light">
-          Access our full <span className="font-serif italic">GLP‑1 lineup</span>
+          Descubre todos nuestros <span className="font-serif italic">planes</span>
         </div>
         <div className="flex gap-[10px]">
-          <button type="button" onClick={prev} aria-label="Previous" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={prev} aria-label="Anterior" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
             ‹
           </button>
-          <button type="button" onClick={next} aria-label="Next" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={next} aria-label="Siguiente" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
             ›
           </button>
         </div>
@@ -43,28 +43,30 @@ export function ProductCarousel() {
                   {p.tag}
                 </span>
                 <span className="rounded-full border border-paper/20 px-[10px] py-[5px] text-[10.5px] uppercase tracking-[.12em] text-paper/70">
-                  FDA‑approved
+                  Médico colegiado
                 </span>
               </div>
-              <div className="flex h-[180px] items-center justify-center">
-                {p.kind === "pen" ? (
-                  <PenArt height={200} className="anim-floatA" />
-                ) : (
-                  <PillArt size={118} bg={p.pillBg} className="anim-floatA" />
-                )}
+              <div className="relative mx-auto my-2 h-[180px] w-full">
+                <Image
+                  src={p.img}
+                  alt={p.name}
+                  fill
+                  sizes="300px"
+                  className="anim-floatA object-contain"
+                />
               </div>
               <div className="text-[21px] font-normal">{p.name}</div>
-              <div className="mb-[14px] mt-[3px] text-sm text-paper/70">{p.mol}</div>
-              <div className="text-[15px] font-medium text-sage">{p.price}</div>
+              <div className="mb-[14px] mt-[3px] text-sm leading-[1.4] text-paper/70">{p.subtitle}</div>
+              <div className="text-[15px] font-medium text-sage">Desde {p.price}</div>
             </div>
           ))}
         </div>
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
-        *Price reflects medication only, if prescribed. An active Maren membership
-        is required. Medication is only available if prescribed after a medical
-        consultation.
+        *El precio refleja únicamente el plan de seguimiento. La medicación solo
+        está disponible si es prescrita tras una consulta médica. Requiere una
+        membresía Maren activa.
       </p>
     </div>
   );

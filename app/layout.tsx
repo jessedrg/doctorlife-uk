@@ -24,9 +24,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Maren — Your body, finally understood',
+  title: 'Maren — Tu cuerpo, por fin entendido',
   description:
-    'Doctor-led weight and hormonal care, designed around your body — not a one-size protocol.',
+    'Cuidado del peso y hormonal dirigido por médicos, diseñado en torno a tu cuerpo — no a un protocolo único.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -62,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${hanken.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
     >
       <body className="bg-paper text-ink font-sans antialiased">

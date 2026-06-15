@@ -57,7 +57,7 @@ export function QuizModal() {
           {isQuestion && (
             <>
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">
-                Step {step + 1} of {total}
+                Paso {step + 1} de {total}
               </div>
               <h3 className="mb-[22px] mt-2 text-[30px] font-light leading-[1.1] tracking-[-.02em]">
                 {quizSteps[step].q}
@@ -81,7 +81,7 @@ export function QuizModal() {
                   onClick={back}
                   className="mt-5 text-sm text-ink-mute"
                 >
-                  ← Back
+                  ← Atrás
                 </button>
               )}
             </>
@@ -90,18 +90,18 @@ export function QuizModal() {
           {isEmail && (
             <>
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">
-                Last step
+                Último paso
               </div>
               <h3 className="mb-[10px] mt-2 text-[30px] font-light leading-[1.1] tracking-[-.02em]">
-                We&apos;ve got your match
+                Tenemos tu plan ideal
               </h3>
               <p className="mb-[22px] text-[15.5px] leading-relaxed text-ink-soft">
-                Add your email and a Maren clinician will review your answers and
-                build your personalized plan.
+                Añade tu correo y un médico de Maren revisará tus respuestas y
+                creará tu plan personalizado.
               </p>
               <div className="flex flex-col gap-3">
                 <input
-                  placeholder="Email address"
+                  placeholder="Correo electrónico"
                   className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[15.5px] text-ink outline-none"
                 />
                 <button
@@ -109,7 +109,7 @@ export function QuizModal() {
                   onClick={finish}
                   className="rounded-[14px] bg-ink py-4 text-base font-semibold text-paper"
                 >
-                  See my plan
+                  Ver mi plan
                 </button>
               </div>
               <button
@@ -117,7 +117,7 @@ export function QuizModal() {
                 onClick={back}
                 className="mt-[18px] text-sm text-ink-mute"
               >
-                ← Back
+                ← Atrás
               </button>
             </>
           )}
@@ -134,18 +134,18 @@ export function QuizModal() {
                 ✓
               </div>
               <h3 className="mb-[10px] mt-6 text-[30px] font-light tracking-[-.02em]">
-                Your plan is on its way
+                Tu plan está en camino
               </h3>
               <p className="mx-auto mb-6 max-w-[36ch] text-[15.5px] leading-relaxed text-ink-soft">
-                A board-certified clinician will review your answers within 24
-                hours. Welcome to Maren.
+                Un médico colegiado revisará tus respuestas en menos de 24 horas.
+                Bienvenido a Maren.
               </p>
               <button
                 type="button"
                 onClick={close}
                 className="rounded-full bg-amber px-[38px] py-[15px] text-base font-semibold text-white"
               >
-                Done
+                Hecho
               </button>
             </div>
           )}

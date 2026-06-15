@@ -18,9 +18,9 @@ export function ImmersiveProduct() {
       <div className="relative mx-auto max-w-[1280px] px-[30px] text-center">
         <Reveal>
           <h2 className="m-0 text-[clamp(40px,6vw,86px)] font-light leading-[.96] tracking-[-.03em]">
-            A new era of
+            Una nueva era del
             <br />
-            <span className="font-serif italic text-sage">weight care</span> is here
+            <span className="font-serif italic text-sage">cuidado del peso</span> ya está aquí
           </h2>
         </Reveal>
 
@@ -38,11 +38,11 @@ export function ImmersiveProduct() {
 
         <Reveal className="mx-auto mt-2 max-w-[34ch]">
           <p className="text-[clamp(20px,2.2vw,28px)] font-light leading-[1.32]">
-            <span className="text-sage">Lose up to {LOSS_STAT}% body weight</span>{" "}
-            with clinically‑backed GLP‑1 — now with more options than ever.
+            <span className="text-sage">Pierde hasta un {LOSS_STAT}% de peso corporal</span>{" "}
+            con GLP‑1 respaldado clínicamente — ahora con más opciones que nunca.
           </p>
           <QuizTrigger className="mt-[26px] rounded-full bg-sage px-[38px] py-[15px] text-base font-semibold text-ink">
-            Get started
+            Empezar
           </QuizTrigger>
         </Reveal>
 
@@ -66,20 +66,20 @@ export function ImmersiveProduct() {
             <div className="absolute inset-0" style={{ background: "linear-gradient(150deg,#2a2114,#171009)" }} />
             <div className="relative z-[2] flex items-start justify-between">
               <div className="text-[clamp(26px,2.6vw,36px)] font-light leading-[1.05]">
-                The perfect
+                La absorción
                 <br />
-                <span className="font-serif italic text-sage">absorption</span>
+                <span className="font-serif italic text-sage">perfecta</span>
               </div>
               <button type="button" className="rounded-full bg-sage px-5 py-[10px] text-sm font-semibold text-ink">
-                See the science
+                Ver la ciencia
               </button>
             </div>
             <div className="absolute bottom-[34px] left-[38px] right-[38px] z-[2] flex items-end justify-between">
               <div className="max-w-[18ch] text-[13.5px] leading-[1.4] text-paper/70">
-                Activates GLP‑1 receptors that quiet appetite signals
+                Activa los receptores GLP‑1 que silencian el apetito
               </div>
               <div className="max-w-[18ch] text-right text-[13.5px] leading-[1.4] text-paper/70">
-                Enhanced uptake in the stomach lining
+                Mayor absorción en el revestimiento del estómago
               </div>
             </div>
             <PillArt size={120} glyph={false} className="absolute -bottom-[30px] left-1/2 -translate-x-1/2" />
@@ -89,19 +89,19 @@ export function ImmersiveProduct() {
             <div className="absolute inset-0" style={{ background: "radial-gradient(90% 80% at 50% 80%,#3a4029,#1d160f)" }} />
             <div className="relative z-[2]">
               <span className="rounded-full px-[14px] py-[5px] text-xs font-semibold text-sage" style={{ background: "rgba(205,217,160,.16)" }}>
-                New high dose
+                Nueva dosis alta
               </span>
               <div className="mt-[14px] text-[clamp(26px,2.8vw,38px)] font-light leading-[1.04]">
-                Lose up to {LOSS_STAT}%
+                Pierde hasta un {LOSS_STAT}%
                 <br />
-                <span className="font-serif italic text-sage">body weight</span>
+                <span className="font-serif italic text-sage">de peso corporal</span>
                 <span className="align-super text-sm">*</span>
               </div>
               <div className="mt-[26px] flex items-center justify-center">
                 <PenArt height={170} className="anim-floatA" />
               </div>
               <QuizTrigger className="mt-[22px] rounded-full bg-sage px-[26px] py-[11px] text-sm font-semibold text-ink">
-                Explore the pen
+                Conoce la pluma
               </QuizTrigger>
             </div>
           </Reveal>

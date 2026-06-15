@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "./reveal";
 import { experts } from "@/lib/data";
 
@@ -6,22 +7,27 @@ export function Experts() {
     <section id="experts" className="mx-auto max-w-[1280px] scroll-mt-[90px] px-[30px] pb-10 pt-[104px] text-center">
       <Reveal>
         <h2 className="m-0 text-[clamp(34px,5vw,68px)] font-light leading-[.98] tracking-[-.025em]">
-          The best care, by the
+          El mejor cuidado, de la mano
           <br />
-          best in <span className="font-serif italic text-clay">medicine</span>
+          de los mejores en <span className="font-serif italic text-clay">medicina</span>
         </h2>
         <p className="mx-auto mt-[18px] max-w-[48ch] text-[17px] font-light text-ink-soft">
-          A team of leading specialists with decades of combined experience
-          across the things that move your health.
+          Un equipo de especialistas de referencia con décadas de experiencia
+          combinada en todo lo que mueve tu salud.
         </p>
       </Reveal>
 
       <Reveal delay={0.1} className="mt-[54px] grid grid-cols-2 gap-[18px] text-left sm:grid-cols-3 lg:grid-cols-5">
         {experts.map((e) => (
           <div key={e.name} className="overflow-hidden rounded-[24px] bg-cream">
-            <div className="relative flex h-[150px] items-end justify-center" style={{ background: e.av }}>
-              <div className="absolute left-4 top-4 font-serif text-[30px] text-white/55">{e.initials}</div>
-              <div className="h-[74px] w-[74px] rounded-t-[50%]" style={{ background: "rgba(255,255,255,.22)" }} />
+            <div className="relative h-[190px] w-full overflow-hidden bg-cream-2">
+              <Image
+                src={e.img}
+                alt={`Retrato de ${e.name}`}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                className="object-cover object-top"
+              />
             </div>
             <div className="p-[18px]">
               <div className="text-base font-medium">{e.name}</div>
