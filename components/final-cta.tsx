@@ -36,7 +36,12 @@ export function FinalCta() {
 
         <div className="relative hidden overflow-hidden md:block">
           <div className="absolute inset-0" style={{ background: "linear-gradient(200deg,#c98a4f 0%,#7a4a2b 50%,#2a2114 100%)" }} />
-          <div className="absolute inset-0" style={{ background: "radial-gradient(60% 50% at 40% 25%,rgba(246,240,230,.4),transparent 55%)" }} />
+          <img
+            src="/testimonials/maria.png"
+            alt="Paciente de Maren sonriendo"
+            className="absolute inset-0 h-full w-full object-cover object-top"
+          />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#171009 0%,transparent 28%)" }} />
           <div className="grain absolute inset-0" />
         </div>
       </Reveal>
