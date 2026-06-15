@@ -54,7 +54,7 @@ export function Transformation() {
               <img
                 src="/testimonials/daniel.png"
                 alt="Daniel, paciente de Maren"
-                className="h-[260px] w-full object-cover object-top"
+                className="h-[260px] w-full object-cover object-[center_20%] lg:h-[340px] 2xl:h-[400px]"
               />
             </div>
             <div className="font-serif text-[clamp(22px,2.4vw,30px)] font-normal italic leading-[1.3]">
@@ -66,7 +66,7 @@ export function Transformation() {
               <img
                 src="/testimonials/daniel.png"
                 alt="Daniel"
-                className="h-[60px] w-[60px] rounded-full object-cover object-top"
+                className="h-[60px] w-[60px] rounded-full object-cover object-[center_20%]"
               />
               <div>
                 <div className="text-base font-medium">Daniel, 38</div>

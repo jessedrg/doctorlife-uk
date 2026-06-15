@@ -39,7 +39,7 @@ export function FinalCta() {
           <img
             src="/testimonials/maria.png"
             alt="Paciente de Maren sonriendo"
-            className="absolute inset-0 h-full w-full object-cover object-top"
+            className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
           />
           <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#171009 0%,transparent 28%)" }} />
           <div className="grain absolute inset-0" />
