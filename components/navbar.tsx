@@ -22,7 +22,7 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <nav className="sticky top-4 z-[90] mx-auto mt-4 w-full max-w-[1180px] px-[18px]">
+    <nav className="sticky top-4 z-[90] mx-auto mt-4 w-full max-w-[1280px] px-[18px] sm:px-[30px]">
       <div
         className="flex h-[64px] items-center justify-between gap-4 rounded-full border border-ink/10 pl-6 pr-[10px] shadow-[0_12px_40px_-12px_rgba(34,29,23,.28)] backdrop-blur-xl sm:h-[68px] sm:pl-7"
         style={{ background: "rgba(246,240,230,.82)" }}

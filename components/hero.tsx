@@ -1,7 +1,7 @@
 export function Hero() {
   return (
-    <section id="top" className="mx-auto mt-5 max-w-[1180px] scroll-mt-[100px] px-[18px]">
-      <div className="relative min-h-[760px] overflow-hidden rounded-[36px]">
+    <section id="top" className="mx-auto mt-5 max-w-[1280px] scroll-mt-[100px] px-[18px] sm:px-[30px]">
+      <div className="relative min-h-[640px] overflow-hidden rounded-[36px] lg:min-h-[720px] 2xl:min-h-[820px]">
         {/* base brand color block */}
         <div
           className="absolute inset-0"
@@ -23,16 +23,16 @@ export function Hero() {
         </div>
 
         {/* contenido */}
-        <div className="relative z-[2] flex min-h-[760px] items-center px-5 py-16 sm:px-10">
-          <div className="max-w-[600px]">
-            <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage">
+        <div className="relative z-[2] flex min-h-[640px] items-center px-5 py-16 sm:px-10 lg:min-h-[720px] lg:px-14 2xl:min-h-[820px] 2xl:px-20">
+          <div className="max-w-[600px] 2xl:max-w-[720px]">
+            <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage 2xl:text-[15px]">
               Tu clínica 100% digital
             </div>
-            <h1 className="mt-6 text-balance text-[clamp(38px,5.6vw,72px)] font-light leading-[1.02] tracking-[-.03em] text-paper">
+            <h1 className="mt-6 text-balance text-[clamp(38px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper">
               El tratamiento médico para la{" "}
               <span className="font-serif italic text-sage">pérdida de peso</span>, adaptado a tu realidad
             </h1>
-            <p className="mt-7 max-w-[36ch] text-balance text-[clamp(17px,1.6vw,21px)] font-light leading-[1.5] text-paper/80">
+            <p className="mt-7 max-w-[40ch] text-balance text-[clamp(17px,1.4vw,24px)] font-light leading-[1.5] text-paper/80">
               Cuidado dirigido por médicos, diseñado en torno a tu cuerpo.
             </p>
           </div>

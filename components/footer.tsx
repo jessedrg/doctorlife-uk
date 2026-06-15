@@ -4,7 +4,7 @@ import { QuizTrigger } from "./quiz-trigger";
 export function Footer() {
   return (
     <footer className="px-[18px] pb-6 pt-[60px]">
-      <div className="mx-auto max-w-[1180px] overflow-hidden rounded-[32px] bg-ink text-paper">
+      <div className="mx-auto max-w-[1280px] overflow-hidden rounded-[32px] bg-ink text-paper">
         <div className="grid grid-cols-2 gap-10 px-8 pb-12 pt-12 md:grid-cols-[1.5fr_1fr_1fr] md:px-14">
           {/* marca + CTA */}
           <div className="col-span-2 md:col-span-1">
