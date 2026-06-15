@@ -3,7 +3,7 @@ import { QuizTrigger } from "./quiz-trigger";
 
 export function Transformation() {
   return (
-    <section id="transform" className="mx-auto max-w-[1440px] scroll-mt-[90px] px-[30px] pt-24">
+    <section id="transform" className="mx-auto max-w-[1760px] scroll-mt-[90px] px-5 pt-24 sm:px-8 lg:px-12 xl:px-16">
       <Reveal className="grain relative min-h-[680px] overflow-hidden rounded-[40px] p-[54px] text-paper" >
         <div className="absolute inset-0" style={{ background: "linear-gradient(165deg,#7d8a9a 0%,#4f5b63 40%,#2c3439 100%)" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 30% 12%,rgba(246,240,230,.42),transparent 55%),radial-gradient(80% 70% at 90% 95%,rgba(40,48,52,.6),transparent 60%)" }} />

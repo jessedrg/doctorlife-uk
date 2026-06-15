@@ -3,7 +3,7 @@ import { QuizTrigger } from "./quiz-trigger";
 
 export function FinalCta() {
   return (
-    <section id="cta" className="mx-auto max-w-[1440px] px-[30px] pt-10">
+    <section id="cta" className="mx-auto max-w-[1760px] px-5 pt-10 sm:px-8 lg:px-12 xl:px-16">
       <Reveal className="relative grid min-h-[460px] grid-cols-1 overflow-hidden rounded-[40px] text-paper md:grid-cols-2" >
         <div className="absolute inset-0" style={{ background: "linear-gradient(120deg,#3a4029 0%,#2a2114 60%,#171009 100%)" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(70% 80% at 95% 60%,rgba(227,181,130,.4),transparent 55%)" }} />
