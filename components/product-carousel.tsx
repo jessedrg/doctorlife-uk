@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { products } from "@/lib/data";
+import { QuizTrigger } from "./quiz-trigger";
 
-const CARD_STEP = 320; // 300px card + 20px gap
+const CARD_STEP = 360; // 340px card + 20px gap
 
 export function ProductCarousel() {
   const [index, setIndex] = useState(0);
@@ -12,6 +13,23 @@ export function ProductCarousel() {
 
   return (
     <div className="mt-[84px] text-left">
+      {/* primera visita */}
+      <div className="mb-10 flex flex-col items-start gap-5 rounded-[28px] border border-sage/30 p-7 md:flex-row md:items-center md:justify-between" style={{ background: "rgba(205,217,160,.07)" }}>
+        <div>
+          <div className="text-[clamp(20px,2.2vw,26px)] font-light leading-[1.2]">
+            Tu primera visita son solo{" "}
+            <span className="font-serif italic text-sage">25 €</span>
+          </div>
+          <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
+            Y se descuentan íntegramente de tu tratamiento si decides empezar.
+            Todo tu seguimiento se gestiona desde la app interna de Maren.
+          </p>
+        </div>
+        <QuizTrigger className="shrink-0 whitespace-nowrap rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
+          Reservar primera visita
+        </QuizTrigger>
+      </div>
+
       <div className="mb-6 flex items-end justify-between">
         <div className="text-[clamp(22px,2.4vw,30px)] font-light">
           Descubre todos nuestros <span className="font-serif italic">planes</span>
@@ -34,8 +52,11 @@ export function ProductCarousel() {
           {products.map((p) => (
             <div
               key={p.name}
-              className="flex-[0_0_300px] rounded-[28px] border border-paper/[.12] p-6 backdrop-blur-sm"
-              style={{ background: "rgba(246,240,230,.05)" }}
+              className="flex flex-[0_0_340px] flex-col rounded-[28px] border p-7 backdrop-blur-sm"
+              style={{
+                background: p.featured ? "rgba(205,217,160,.1)" : "rgba(246,240,230,.05)",
+                borderColor: p.featured ? "rgba(205,217,160,.5)" : "rgba(246,240,230,.12)",
+              }}
             >
               <div className="flex items-start justify-between">
                 <span className="rounded-full bg-sage px-[11px] py-1 text-xs font-semibold text-ink">
@@ -45,9 +66,35 @@ export function ProductCarousel() {
                   Médico colegiado
                 </span>
               </div>
-              <div className="mt-7 text-[21px] font-normal">{p.name}</div>
-              <div className="mb-[14px] mt-[3px] text-sm leading-[1.4] text-paper/70">{p.subtitle}</div>
-              <div className="text-[15px] font-medium text-sage">Desde {p.price}</div>
+              <div className="mt-7 text-[22px] font-normal">{p.name}</div>
+              <div className="mb-5 mt-[3px] text-sm leading-[1.4] text-paper/70">{p.subtitle}</div>
+
+              <div className="flex items-baseline gap-1">
+                <span className="text-[28px] font-light text-sage">{p.price.split("/")[0]}</span>
+                <span className="text-sm text-paper/55">/mes</span>
+              </div>
+
+              <ul className="mb-7 mt-6 flex flex-col gap-[11px] border-t border-paper/[.12] pt-6">
+                {p.features.map((f) => (
+                  <li key={f} className="flex items-start gap-[10px] text-[14px] leading-[1.35] text-paper/85">
+                    <span className="mt-[2px] flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-sage/25 text-[11px] text-sage">
+                      ✓
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <QuizTrigger
+                className="mt-auto w-full rounded-full py-[13px] text-center text-[14.5px] font-semibold"
+                style={
+                  p.featured
+                    ? { background: "#cdd9a0", color: "#221d17" }
+                    : { background: "rgba(246,240,230,.08)", color: "#f6f0e6", border: "1px solid rgba(246,240,230,.25)" }
+                }
+              >
+                Empezar con este plan
+              </QuizTrigger>
             </div>
           ))}
         </div>

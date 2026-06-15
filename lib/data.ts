@@ -10,47 +10,87 @@ export type Product = {
   price: string;
   tag: string;
   img: string;
+  features: string[];
   featured?: boolean;
 };
 
 /* Catálogo enfocado en cuidado del peso (los 4 productos clave
-   + dos planes de entrada y mantenimiento). */
+   + dos planes de entrada y mantenimiento). Cada plan incluye
+   seguimiento continuo desde la app interna de Maren. */
 export const products: Product[] = [
   {
     name: "Weight Loss Basic",
-    subtitle: "Evaluación médica, receta GLP‑1 si procede y seguimiento mensual.",
+    subtitle: "Empieza tu tratamiento con acompañamiento médico real.",
     price: "149€/mes",
     tag: "Entrada",
     img: "/products/maren-oral.png",
+    features: [
+      "Evaluación médica completa con un endocrino",
+      "Prescripción de GLP‑1 si procede",
+      "Seguimiento mensual desde la app",
+      "Mensajería con tu equipo clínico",
+      "Ajustes de dosis según tu evolución",
+    ],
   },
   {
     name: "Weight Loss Plus",
-    subtitle: "Todo lo anterior + nutricionista asignado y plan personalizado.",
+    subtitle: "El plan más completo para resultados sostenibles.",
     price: "199€/mes",
     tag: "Recomendado",
     img: "/products/maren-pen.png",
     featured: true,
+    features: [
+      "Todo lo del plan Basic",
+      "Nutricionista asignado y plan personalizado",
+      "Plan de entrenamiento adaptado",
+      "Seguimiento quincenal desde la app",
+      "Recordatorios y registro de progreso",
+      "Soporte por chat en horario ampliado",
+    ],
   },
   {
     name: "Weight Loss Premium",
-    subtitle: "Revisiones quincenales, acceso prioritario e informes de progreso.",
+    subtitle: "Atención prioritaria y máximo acompañamiento.",
     price: "249€/mes",
     tag: "Premium",
     img: "/products/maren-hd.png",
+    features: [
+      "Todo lo del plan Plus",
+      "Revisiones médicas quincenales",
+      "Acceso prioritario a tu equipo",
+      "Informes de progreso detallados",
+      "Analíticas de control incluidas",
+      "Coordinación con tu médico de cabecera",
+    ],
   },
   {
     name: "Weight Maintenance",
-    subtitle: "Estrategia anti‑rebote y plan de mantenimiento tras el GLP‑1.",
+    subtitle: "Mantén tu peso tras finalizar el tratamiento.",
     price: "99€/mes",
     tag: "Mantenimiento",
     img: "/products/maren-daily.png",
+    features: [
+      "Estrategia anti‑rebote personalizada",
+      "Plan de mantenimiento tras el GLP‑1",
+      "Seguimiento mensual desde la app",
+      "Pautas de nutrición y hábitos",
+      "Revisión médica trimestral",
+    ],
   },
   {
     name: "Longevity Premium",
-    subtitle: "Médico dedicado, analíticas avanzadas y optimización hormonal.",
+    subtitle: "Salud metabólica y hormonal al máximo nivel.",
     price: "499€/mes",
     tag: "Longevidad",
     img: "/products/maren-balance.png",
+    features: [
+      "Médico dedicado en exclusiva",
+      "Analíticas avanzadas (130+ biomarcadores)",
+      "Optimización hormonal personalizada",
+      "Plan de longevidad y prevención",
+      "Seguimiento continuo desde la app",
+      "Acceso a especialistas de la red Maren",
+    ],
   },
 ];
 

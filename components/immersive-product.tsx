@@ -2,7 +2,6 @@ import { Reveal } from "./reveal";
 import { Parallax } from "./parallax";
 import { Counter } from "./counter";
 import { QuizTrigger } from "./quiz-trigger";
-import { PenArt, PillArt } from "./art";
 import { ProductCarousel } from "./product-carousel";
 import { metrics, LOSS_STAT } from "@/lib/data";
 
@@ -56,53 +55,6 @@ export function ImmersiveProduct() {
         </Reveal>
 
         <ProductCarousel />
-
-        {/* two feature cards */}
-        <div className="mt-[30px] grid grid-cols-1 gap-5 md:grid-cols-2">
-          <Reveal className="relative min-h-[300px] overflow-hidden rounded-[30px] p-[38px] text-left" >
-            <div className="absolute inset-0" style={{ background: "linear-gradient(150deg,#2a2114,#171009)" }} />
-            <div className="relative z-[2] flex items-start justify-between">
-              <div className="text-[clamp(26px,2.6vw,36px)] font-light leading-[1.05]">
-                La absorción
-                <br />
-                <span className="font-serif italic text-sage">perfecta</span>
-              </div>
-              <button type="button" className="rounded-full bg-sage px-5 py-[10px] text-sm font-semibold text-ink">
-                Ver la ciencia
-              </button>
-            </div>
-            <div className="absolute bottom-[34px] left-[38px] right-[38px] z-[2] flex items-end justify-between">
-              <div className="max-w-[18ch] text-[13.5px] leading-[1.4] text-paper/70">
-                Activa los receptores GLP‑1 que silencian el apetito
-              </div>
-              <div className="max-w-[18ch] text-right text-[13.5px] leading-[1.4] text-paper/70">
-                Mayor absorción en el revestimiento del estómago
-              </div>
-            </div>
-            <PillArt size={120} glyph={false} className="absolute -bottom-[30px] left-1/2 -translate-x-1/2" />
-          </Reveal>
-
-          <Reveal delay={0.08} className="relative min-h-[300px] overflow-hidden rounded-[30px] p-[38px] text-center">
-            <div className="absolute inset-0" style={{ background: "radial-gradient(90% 80% at 50% 80%,#3a4029,#1d160f)" }} />
-            <div className="relative z-[2]">
-              <span className="rounded-full px-[14px] py-[5px] text-xs font-semibold text-sage" style={{ background: "rgba(205,217,160,.16)" }}>
-                Nueva dosis alta
-              </span>
-              <div className="mt-[14px] text-[clamp(26px,2.8vw,38px)] font-light leading-[1.04]">
-                Pierde hasta un {LOSS_STAT}%
-                <br />
-                <span className="font-serif italic text-sage">de peso corporal</span>
-                <span className="align-super text-sm">*</span>
-              </div>
-              <div className="mt-[26px] flex items-center justify-center">
-                <PenArt height={170} className="anim-floatA" />
-              </div>
-              <QuizTrigger className="mt-[22px] rounded-full bg-sage px-[26px] py-[11px] text-sm font-semibold text-ink">
-                Conoce la pluma
-              </QuizTrigger>
-            </div>
-          </Reveal>
-        </div>
       </div>
     </section>
   );
