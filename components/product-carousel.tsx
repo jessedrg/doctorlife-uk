@@ -46,8 +46,12 @@ export function ProductCarousel() {
 
       <div className="overflow-hidden">
         <div
-          className="flex gap-5 transition-transform duration-[550ms] ease-[cubic-bezier(.16,.84,.44,1)]"
-          style={{ transform: `translateX(${-index * CARD_STEP}px)` }}
+          className="flex gap-5"
+          style={{
+            transform: `translate3d(${-index * CARD_STEP}px,0,0)`,
+            transition: "transform 800ms cubic-bezier(.22,1,.36,1)",
+            willChange: "transform",
+          }}
         >
           {products.map((p) => (
             <div
