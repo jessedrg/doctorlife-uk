@@ -125,7 +125,7 @@ export const metrics: Metric[] = [
 export type QuizStep = { q: string; opts: string[] };
 
 export const quizSteps: QuizStep[] = [
-  { q: "¿Qué te trae a Maren?", opts: ["Perder peso", "Equilibrar mis hormonas", "Ambas cosas", "Solo estoy explorando"] },
+  { q: "¿Qué te trae a DoctorLife?", opts: ["Perder peso", "Equilibrar mis hormonas", "Ambas cosas", "Solo estoy explorando"] },
   { q: "¿Has usado un GLP‑1 antes?", opts: ["Ahora mismo lo uso", "En el pasado", "Nunca"] },
   { q: "¿Cómo prefieres tomarlo?", opts: ["Oral a diario", "Pluma semanal", "Sin preferencia"] },
   { q: "¿Cuál es tu horizonte?", opts: ["Próximos 3 meses", "6–12 meses", "A largo plazo"] },
