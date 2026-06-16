@@ -6,7 +6,6 @@ import { quizSteps, products } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
 import { BrandLogo } from "./brand-logo";
 
-const FIELDS = ["goal", "glp1Experience", "formatPreference", "timeline"] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type Phase = "questions" | "bmi" | "plan" | "details" | "submitting" | "done";
@@ -144,9 +143,9 @@ export function QuizModal() {
     const res = await saveLead({
       name,
       email,
-      goal: answers[0],
-      glp1Experience: answers[1],
-      formatPreference: answers[2],
+      goal: "Perder peso",
+      glp1Experience: answers[0],
+      formatPreference: "Pluma semanal",
       timeline: estTimeline || undefined,
       plan: plan || undefined,
       heightCm: h > 0 ? h : null,
