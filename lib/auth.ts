@@ -2,6 +2,14 @@ import { betterAuth } from "better-auth"
 import { pool } from "@/lib/db"
 import { sendResetPasswordEmail } from "@/lib/email"
 
+/** Scopes de Google Calendar que pide el médico al conectar su cuenta. */
+const GOOGLE_CALENDAR_SCOPES = [
+  "https://www.googleapis.com/auth/calendar.events",
+  "https://www.googleapis.com/auth/calendar.readonly",
+]
+
+const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+
 export const auth = betterAuth({
   database: pool,
   baseURL:
