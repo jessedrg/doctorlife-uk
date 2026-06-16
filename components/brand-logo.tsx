@@ -10,7 +10,7 @@ type BrandLogoProps = {
 };
 
 /** Marca: círculo verde + media luna terracota (sin el recuadro de fondo del SVG original). */
-function Mark({ size }: { size: number }) {
+export function BrandMark({ size }: { size: number }) {
   // Proporción original del icono: 42 x 48
   const w = (size * 42) / 48;
   return (
@@ -32,30 +32,14 @@ function Mark({ size }: { size: number }) {
   );
 }
 
-/** Texto "DoctorLife" en negrita con la primera "o" alargada horizontalmente. */
+/** Texto "DoctorLife" en negrita geométrica. */
 function Wordmark({ size, className }: { size: number; className: string }) {
-  // La "o" se ensancha con scaleX. Como transform no reserva ancho de layout,
-  // compensamos con márgenes laterales para que el espaciado sea correcto.
-  const scale = 1.55;
-  const oWidthEm = 0.58; // ancho aprox. de la "o" en em a este peso
-  const sideMarginEm = (oWidthEm * (scale - 1)) / 2;
   return (
     <span
       className={`leading-none tracking-[-.03em] ${className}`}
       style={{ fontSize: size, fontFamily: "var(--font-sora), system-ui, sans-serif", fontWeight: 800 }}
     >
-      D
-      <span
-        className="inline-block origin-center"
-        style={{
-          transform: `scaleX(${scale})`,
-          marginLeft: `${sideMarginEm}em`,
-          marginRight: `${sideMarginEm}em`,
-        }}
-      >
-        o
-      </span>
-      ctorLife
+      DoctorLife
     </span>
   );
 }
@@ -70,7 +54,7 @@ export function BrandLogo({
     return (
       <span className="flex items-center gap-3">
         <span className="flex items-center justify-center rounded-[14px] bg-sage p-2">
-          <Mark size={markSize} />
+          <BrandMark size={markSize} />
         </span>
         <Wordmark size={textSize} className={textClassName} />
       </span>
@@ -78,7 +62,7 @@ export function BrandLogo({
   }
   return (
     <span className="flex items-center gap-2.5">
-      <Mark size={markSize} />
+      <BrandMark size={markSize} />
       <Wordmark size={textSize} className={textClassName} />
     </span>
   );

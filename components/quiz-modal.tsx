@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuiz } from "./quiz-context";
 import { quizSteps } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
+import { BrandLogo } from "./brand-logo";
 
 const FIELDS = ["goal", "glp1Experience", "formatPreference", "timeline"] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -124,12 +125,7 @@ export function QuizModal() {
         <div className="px-7 pb-8 pt-7 sm:px-9 sm:pb-9 sm:pt-8">
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-[30px] w-[30px] items-center justify-center rounded-[9px] bg-ink font-serif text-[17px] font-bold leading-none text-paper">
-                D
-              </span>
-              <span className="text-[17px] font-semibold tracking-[-.01em] text-ink">DoctorLife</span>
-            </div>
+            <BrandLogo markSize={26} textSize={18} textClassName="text-ink" />
             <button
               type="button"
               onClick={close}
