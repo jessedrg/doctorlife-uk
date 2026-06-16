@@ -2,14 +2,31 @@ import Link from "next/link"
 import { requireRole } from "@/lib/session"
 import { getNextAppointment } from "@/app/actions/booking"
 import { getMyPlan } from "@/app/actions/patient"
+import { getMySubscription, syncSubscriptionBySession } from "@/app/actions/subscription"
 import { AppointmentSummary } from "@/components/appointment-summary"
+import { SubscriptionCard } from "@/components/subscription-card"
 
 export const metadata = { title: "Mi portal — DoctorLife" }
 
-export default async function PortalHome() {
+export default async function PortalHome({
+  searchParams,
+}: {
+  searchParams: Promise<{ subscription?: string; session_id?: string }>
+}) {
   const user = await requireRole("patient")
   const firstName = user.name.split(" ")[0]
-  const [next, plan] = await Promise.all([getNextAppointment(), getMyPlan()])
+
+  // Al volver de Stripe, sincronizamos la suscripción antes de leer su estado.
+  const sp = await searchParams
+  if (sp.subscription === "ok" && sp.session_id) {
+    await syncSubscriptionBySession(sp.session_id)
+  }
+
+  const [next, plan, subscription] = await Promise.all([
+    getNextAppointment(),
+    getMyPlan(),
+    getMySubscription(),
+  ])
 
   return (
     <div>
@@ -43,6 +60,10 @@ export default async function PortalHome() {
         )}
 
         <PlanCard plan={plan} />
+      </div>
+
+      <div className="mt-4">
+        <SubscriptionCard subscription={subscription} />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">

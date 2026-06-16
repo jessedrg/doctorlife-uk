@@ -43,6 +43,8 @@ export default async function AdminHome() {
           value={eur(metrics.platformFeesCents)}
           hint="Application fees acumuladas"
         />
+        <MetricCard label="Suscripciones activas" value={String(metrics.activeSubscriptions)} />
+        <MetricCard label="MRR" value={eur(metrics.mrrCents)} hint="Ingreso recurrente mensual" />
       </div>
 
       <div className="mt-7 max-w-[640px]">

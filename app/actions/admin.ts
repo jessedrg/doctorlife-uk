@@ -1,9 +1,11 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { user as userTable, doctorProfiles, appointments, leads } from "@/lib/db/schema"
+import { user as userTable, doctorProfiles, appointments, leads, subscriptions } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
-import { count, desc, eq, sum } from "drizzle-orm"
+import { count, desc, eq, inArray, sum } from "drizzle-orm"
+
+const ACTIVE_SUB_STATES = ["active", "trialing", "past_due"]
 import { revalidatePath } from "next/cache"
 
 async function requireAdmin() {
@@ -60,20 +62,29 @@ export async function listUsers() {
 export async function getAdminMetrics() {
   await requireAdmin()
 
-  const [[doctors], [patients], [leadCount], [confirmed], [revenue], [fees]] = await Promise.all([
-    db.select({ n: count() }).from(userTable).where(eq(userTable.role, "doctor")),
-    db.select({ n: count() }).from(userTable).where(eq(userTable.role, "patient")),
-    db.select({ n: count() }).from(leads),
-    db.select({ n: count() }).from(appointments).where(eq(appointments.status, "confirmed")),
-    db
-      .select({ s: sum(appointments.amountCents) })
-      .from(appointments)
-      .where(eq(appointments.status, "confirmed")),
-    db
-      .select({ s: sum(appointments.applicationFeeCents) })
-      .from(appointments)
-      .where(eq(appointments.status, "confirmed")),
-  ])
+  const [[doctors], [patients], [leadCount], [confirmed], [revenue], [fees], [activeSubs], [mrr]] =
+    await Promise.all([
+      db.select({ n: count() }).from(userTable).where(eq(userTable.role, "doctor")),
+      db.select({ n: count() }).from(userTable).where(eq(userTable.role, "patient")),
+      db.select({ n: count() }).from(leads),
+      db.select({ n: count() }).from(appointments).where(eq(appointments.status, "confirmed")),
+      db
+        .select({ s: sum(appointments.amountCents) })
+        .from(appointments)
+        .where(eq(appointments.status, "confirmed")),
+      db
+        .select({ s: sum(appointments.applicationFeeCents) })
+        .from(appointments)
+        .where(eq(appointments.status, "confirmed")),
+      db
+        .select({ n: count() })
+        .from(subscriptions)
+        .where(inArray(subscriptions.status, ACTIVE_SUB_STATES)),
+      db
+        .select({ s: sum(subscriptions.priceCents) })
+        .from(subscriptions)
+        .where(inArray(subscriptions.status, ACTIVE_SUB_STATES)),
+    ])
 
   return {
     doctors: doctors?.n ?? 0,
@@ -82,7 +93,30 @@ export async function getAdminMetrics() {
     confirmedAppointments: confirmed?.n ?? 0,
     grossRevenueCents: Number(revenue?.s ?? 0),
     platformFeesCents: Number(fees?.s ?? 0),
+    activeSubscriptions: activeSubs?.n ?? 0,
+    mrrCents: Number(mrr?.s ?? 0),
   }
+}
+
+/** Suscripciones para el panel de admin. */
+export async function listSubscriptions() {
+  await requireAdmin()
+  return db
+    .select({
+      id: subscriptions.id,
+      plan: subscriptions.plan,
+      priceCents: subscriptions.priceCents,
+      status: subscriptions.status,
+      cancelAtPeriodEnd: subscriptions.cancelAtPeriodEnd,
+      currentPeriodEnd: subscriptions.currentPeriodEnd,
+      patientName: userTable.name,
+      doctorName: doctorProfiles.fullName,
+    })
+    .from(subscriptions)
+    .leftJoin(userTable, eq(userTable.id, subscriptions.patientId))
+    .leftJoin(doctorProfiles, eq(doctorProfiles.userId, subscriptions.doctorId))
+    .orderBy(desc(subscriptions.id))
+    .limit(200)
 }
 
 /** Médicos con su perfil y estado de Stripe. */

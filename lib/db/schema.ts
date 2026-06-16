@@ -180,6 +180,29 @@ export type Prescription = typeof prescriptions.$inferSelect
 export type NewPrescription = typeof prescriptions.$inferInsert
 
 /**
+ * Suscripción mensual de tratamiento del paciente con su médico.
+ * status refleja el estado de Stripe: incomplete | active | trialing | past_due | canceled.
+ */
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  plan: text("plan").notNull(),
+  priceCents: integer("priceCents").notNull(),
+  currency: text("currency").notNull().default("eur"),
+  stripeCustomerId: text("stripeCustomerId"),
+  stripeSubscriptionId: text("stripeSubscriptionId"),
+  status: text("status").notNull().default("incomplete"),
+  currentPeriodEnd: timestamp("currentPeriodEnd", { withTimezone: true }),
+  cancelAtPeriodEnd: boolean("cancelAtPeriodEnd").notNull().default(false),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type Subscription = typeof subscriptions.$inferSelect
+export type NewSubscription = typeof subscriptions.$inferInsert
+
+/**
  * Leads capturados desde el quiz "Comenzar".
  * Son envíos públicos (sin cuenta de usuario), por eso no hay userId.
  */

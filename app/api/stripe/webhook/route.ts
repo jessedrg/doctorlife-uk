@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server"
+import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
 import { finalizeAppointment } from "@/app/actions/booking"
+import {
+  applySubscriptionState,
+  findSubscriptionRowByStripeId,
+  syncSubscriptionBySession,
+} from "@/app/actions/subscription"
 
 /**
- * Webhook de Stripe. Confirma la cita cuando el pago se completa.
- * Requiere STRIPE_WEBHOOK_SECRET; mientras no esté configurado, la confirmación
- * se hace igualmente desde la página de éxito (confirmAppointmentBySession).
+ * Webhook de Stripe. Confirma citas (pago único) y mantiene el estado de las
+ * suscripciones mensuales. Requiere STRIPE_WEBHOOK_SECRET; mientras no esté
+ * configurado, la confirmación se hace desde las páginas de éxito.
  */
 export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET
@@ -19,7 +25,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Falta firma" }, { status: 400 })
   }
 
-  let event
+  let event: Stripe.Event
   try {
     event = stripe.webhooks.constructEvent(body, signature, secret)
   } catch (e) {
@@ -29,13 +35,74 @@ export async function POST(req: Request) {
     )
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object
-    const appointmentId = Number(session.metadata?.appointmentId)
-    if (appointmentId && session.payment_status === "paid") {
-      await finalizeAppointment(appointmentId, session.payment_intent as string | null)
+  try {
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session
+        if (session.mode === "subscription") {
+          await syncSubscriptionBySession(session.id)
+        } else {
+          const appointmentId = Number(session.metadata?.appointmentId)
+          if (appointmentId && session.payment_status === "paid") {
+            await finalizeAppointment(appointmentId, session.payment_intent as string | null)
+          }
+        }
+        break
+      }
+
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        const sub = event.data.object as Stripe.Subscription
+        const row = await findSubscriptionRowByStripeId(sub.id)
+        if (row) {
+          await applySubscriptionState(
+            row.id,
+            {
+              id: sub.id,
+              status: sub.status,
+              cancel_at_period_end: sub.cancel_at_period_end,
+              current_period_end: periodEnd(sub),
+            },
+            sub.customer as string,
+          )
+        }
+        break
+      }
+
+      case "invoice.paid": {
+        const invoice = event.data.object as Stripe.Invoice
+        const subId = (invoice as unknown as { subscription?: string }).subscription
+        if (subId) {
+          const row = await findSubscriptionRowByStripeId(subId)
+          if (row) {
+            const sub = await stripe.subscriptions.retrieve(subId)
+            await applySubscriptionState(
+              row.id,
+              {
+                id: sub.id,
+                status: sub.status,
+                cancel_at_period_end: sub.cancel_at_period_end,
+                current_period_end: periodEnd(sub),
+              },
+              sub.customer as string,
+            )
+          }
+        }
+        break
+      }
     }
+  } catch (e) {
+    console.log("[v0] stripe webhook handler error:", e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: "handler error" }, { status: 500 })
   }
 
   return NextResponse.json({ received: true })
+}
+
+/** current_period_end puede vivir en la sub o en su primer item según la versión de API. */
+function periodEnd(sub: Stripe.Subscription): number | undefined {
+  const top = (sub as unknown as { current_period_end?: number }).current_period_end
+  if (typeof top === "number") return top
+  const item = sub.items?.data?.[0] as unknown as { current_period_end?: number } | undefined
+  return item?.current_period_end
 }
