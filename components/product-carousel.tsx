@@ -22,7 +22,7 @@ export function ProductCarousel() {
           </div>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
             Y se descuentan íntegramente de tu tratamiento si decides empezar.
-            Todo tu seguimiento se gestiona desde la app interna de Maren.
+            Todo tu seguimiento se gestiona desde la app interna de DoctorLife.
           </p>
         </div>
         <QuizTrigger className="shrink-0 whitespace-nowrap rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
@@ -56,9 +56,9 @@ export function ProductCarousel() {
           {products.map((p) => (
             <div
               key={p.name}
-              className="flex flex-[0_0_340px] flex-col rounded-[28px] border p-7 backdrop-blur-sm"
+              className="flex flex-[0_0_340px] flex-col rounded-[28px] border p-7"
               style={{
-                background: p.featured ? "rgba(205,217,160,.1)" : "rgba(246,240,230,.05)",
+                background: p.featured ? "rgba(86,96,58,.55)" : "rgba(40,44,30,.45)",
                 borderColor: p.featured ? "rgba(205,217,160,.5)" : "rgba(246,240,230,.12)",
               }}
             >
@@ -107,7 +107,7 @@ export function ProductCarousel() {
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
         *El precio refleja únicamente el plan de seguimiento. La medicación solo
         está disponible si es prescrita tras una consulta médica. Requiere una
-        membresía Maren activa.
+        membresía DoctorLife activa.
       </p>
     </div>
   );
