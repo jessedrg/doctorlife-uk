@@ -4,6 +4,8 @@ import { db } from "@/lib/db"
 import { prescriptions, doctorProfiles, user as userTable, appointments } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
 import { buildPrescriptionPdf } from "@/lib/prescriptions/pdf"
+import { sendPrescriptionReadyEmail } from "@/lib/email"
+import { hasActiveSubscription } from "@/app/actions/subscription"
 import { put } from "@vercel/blob"
 import { and, desc, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -46,7 +48,7 @@ export async function issuePrescription(input: {
   if (!link) return { error: "Solo puedes recetar a tus pacientes." }
 
   const [patient] = await db
-    .select({ name: userTable.name })
+    .select({ name: userTable.name, email: userTable.email })
     .from(userTable)
     .where(eq(userTable.id, input.patientId))
     .limit(1)
@@ -87,6 +89,20 @@ export async function issuePrescription(input: {
     blobPathname: blob.pathname,
     issuedAt,
   })
+
+  // Avisamos al paciente. Si aún no tiene tratamiento activo, el email le invita
+  // a desbloquear la receta activando la suscripción.
+  try {
+    const unlocked = await hasActiveSubscription(input.patientId)
+    await sendPrescriptionReadyEmail({
+      to: patient.email,
+      name: patient.name,
+      doctorName: profile?.fullName ?? me.name,
+      locked: !unlocked,
+    })
+  } catch (e) {
+    console.log("[v0] prescription email error:", e instanceof Error ? e.message : e)
+  }
 
   revalidatePath("/medico/recetas")
   revalidatePath("/portal/recetas")

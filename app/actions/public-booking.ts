@@ -1,17 +1,16 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { appointments, subscriptions, user, doctorProfiles } from "@/lib/db/schema"
+import { appointments, user, doctorProfiles } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
 import { stripe, PLATFORM_FEE_PERCENT } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
-import { MAIN_PLAN } from "@/lib/plans"
+import { FIRST_VISIT_CENTS, FIRST_VISIT_LABEL } from "@/lib/plans"
 import { getPooledSlots } from "@/lib/scheduling/pool"
 import { generateTempPassword } from "@/lib/credentials"
 import { sendCredentialsEmail, sendBookingConfirmationEmail } from "@/lib/email"
 import { maybeCreateMeeting } from "@/lib/google/calendar"
 import { eq } from "drizzle-orm"
-import type Stripe from "stripe"
 import type { PooledSlot } from "@/lib/scheduling/types"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -24,9 +23,10 @@ export async function getPublicSlots(days = 14): Promise<PooledSlot[]> {
 }
 
 /**
- * Flujo público (sin cuenta): el visitante elige hora y paga la suscripción
- * mensual. La cuenta del paciente se crea DESPUÉS del pago (ver provisionFromSession),
- * y se le envían las credenciales por email.
+ * Flujo público (sin cuenta): el visitante elige hora y paga la PRIMERA VISITA
+ * (pago único de 25 €). La cuenta del paciente se crea DESPUÉS del pago (ver
+ * provisionFromSession) y se le envían las credenciales por email. La suscripción
+ * mensual se activa más tarde, cuando el paciente desbloquea su receta.
  */
 export async function startPublicCheckout(input: {
   name: string
@@ -41,7 +41,7 @@ export async function startPublicCheckout(input: {
   const [existing] = await db.select({ id: user.id }).from(user).where(eq(user.email, email)).limit(1)
   if (existing) {
     return {
-      error: "Ya existe una cuenta con este correo. Inicia sesión para gestionar tu suscripción.",
+      error: "Ya existe una cuenta con este correo. Inicia sesión para reservar desde tu panel.",
     }
   }
 
@@ -61,33 +61,30 @@ export async function startPublicCheckout(input: {
     .from(doctorProfiles)
     .where(eq(doctorProfiles.userId, slot.doctorId))
     .limit(1)
-  const subscriptionData: Record<string, unknown> = {
-    metadata: { kind: "public_signup", doctorId: slot.doctorId },
-  }
+  const paymentIntentData: Record<string, unknown> = {}
   if (doc?.stripeAccountId && doc.chargesEnabled) {
-    subscriptionData.application_fee_percent = PLATFORM_FEE_PERCENT
-    subscriptionData.transfer_data = { destination: doc.stripeAccountId }
+    paymentIntentData.application_fee_amount = Math.round((FIRST_VISIT_CENTS * PLATFORM_FEE_PERCENT) / 100)
+    paymentIntentData.transfer_data = { destination: doc.stripeAccountId }
   }
 
   try {
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
+      mode: "payment",
       customer_email: email,
       line_items: [
         {
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: MAIN_PLAN.priceCents,
-            recurring: { interval: "month" },
+            unit_amount: FIRST_VISIT_CENTS,
             product_data: {
-              name: `${MAIN_PLAN.name} · DoctorLife`,
-              description: "Endocrino asignado, videollamada mensual y chat en vivo (IVA incluido).",
+              name: "Primera visita · DoctorLife",
+              description: "Evaluación con tu endocrino. Incluye acceso a tu panel privado.",
             },
           },
         },
       ],
-      subscription_data: subscriptionData,
+      ...(Object.keys(paymentIntentData).length ? { payment_intent_data: paymentIntentData } : {}),
       metadata: {
         kind: "public_signup",
         name,
@@ -106,18 +103,11 @@ export async function startPublicCheckout(input: {
   }
 }
 
-/** current_period_end puede vivir en la sub o en su primer item según la versión de API. */
-function periodEnd(sub: Stripe.Subscription): number | undefined {
-  const top = (sub as unknown as { current_period_end?: number }).current_period_end
-  if (typeof top === "number") return top
-  const item = sub.items?.data?.[0] as unknown as { current_period_end?: number } | undefined
-  return item?.current_period_end
-}
-
 /**
- * Crea la cuenta del paciente, su cita y su suscripción a partir de una sesión
- * de Checkout pagada del flujo público. Idempotente: se llama desde la página
- * de éxito y desde el webhook; solo envía emails la primera vez.
+ * Crea la cuenta del paciente y su primera cita a partir de una sesión de
+ * Checkout pagada (pago único de 25 €). NO crea suscripción: esa se activa
+ * después, cuando el paciente desbloquea su receta. Idempotente: se llama desde
+ * la página de éxito y desde el webhook; solo envía emails la primera vez.
  */
 export async function provisionFromSession(sessionId: string): Promise<{ email: string } | null> {
   const session = await stripe.checkout.sessions.retrieve(sessionId)
@@ -153,7 +143,7 @@ export async function provisionFromSession(sessionId: string): Promise<{ email: 
     }
   }
 
-  // 2) Cita confirmada (incluida en la suscripción → importe 0). Idempotente por sesión.
+  // 2) Cita confirmada de la primera visita (pago único 25 €). Idempotente por sesión.
   const [existingAppt] = await db
     .select({ id: appointments.id })
     .from(appointments)
@@ -170,8 +160,9 @@ export async function provisionFromSession(sessionId: string): Promise<{ email: 
         startsAt: start,
         endsAt: end,
         status: "confirmed",
-        amountCents: 0,
+        amountCents: FIRST_VISIT_CENTS,
         applicationFeeCents: 0,
+        stripePaymentIntentId: (session.payment_intent as string | null) ?? null,
         stripeSessionId: session.id,
       })
       .returning({ id: appointments.id })
@@ -202,38 +193,7 @@ export async function provisionFromSession(sessionId: string): Promise<{ email: 
     }
   }
 
-  // 3) Suscripción — idempotente por paciente.
-  const stripeSubId = (session.subscription as string | null) ?? null
-  const [existingSub] = await db
-    .select({ id: subscriptions.id })
-    .from(subscriptions)
-    .where(eq(subscriptions.patientId, userId))
-    .limit(1)
-  if (!existingSub) {
-    let status = "active"
-    let currentPeriodEnd: Date | null = null
-    let cancelAtPeriodEnd = false
-    if (stripeSubId) {
-      const sub = await stripe.subscriptions.retrieve(stripeSubId)
-      status = sub.status
-      cancelAtPeriodEnd = Boolean(sub.cancel_at_period_end)
-      const pe = periodEnd(sub)
-      currentPeriodEnd = pe ? new Date(pe * 1000) : null
-    }
-    await db.insert(subscriptions).values({
-      patientId: userId,
-      doctorId,
-      plan: MAIN_PLAN.name,
-      priceCents: MAIN_PLAN.priceCents,
-      status,
-      stripeCustomerId: (session.customer as string | null) ?? undefined,
-      stripeSubscriptionId: stripeSubId ?? undefined,
-      currentPeriodEnd,
-      cancelAtPeriodEnd,
-    })
-  }
-
-  // 4) Emails — solo la primera vez (cuenta recién creada).
+  // 3) Emails — solo la primera vez (cuenta recién creada).
   if (freshlyCreated && tempPassword) {
     try {
       await sendCredentialsEmail({ to: email, name, tempPassword })
@@ -247,7 +207,7 @@ export async function provisionFromSession(sessionId: string): Promise<{ email: 
         name,
         doctorName: doc?.fullName ?? null,
         startsAt: new Date(startUtcISO),
-        amountLabel: MAIN_PLAN.totalLabel,
+        amountLabel: FIRST_VISIT_LABEL,
       })
     } catch (e) {
       console.log("[v0] provision email error:", e instanceof Error ? e.message : e)

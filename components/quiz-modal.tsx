@@ -430,14 +430,15 @@ export function QuizModal() {
                 Tu plan de seguimiento con endocrino. Pronto añadiremos más planes.
               </p>
 
-              {/* Aviso del precio de la suscripción */}
+              {/* Aviso del precio: hoy 25 €, suscripción al recibir la receta */}
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
-                  65€
+                  25€
                 </span>
                 <p className="text-[13.5px] leading-snug text-ink-soft">
-                  <span className="font-semibold text-ink">65&nbsp;€/mes + IVA</span>: endocrino asignado, videollamada
-                  mensual y chat en vivo con tu médico. Cancela cuando quieras.
+                  <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
+                  Si tu médico te receta tratamiento, lo desbloqueas con la suscripción de 65&nbsp;€/mes + IVA
+                  (endocrino, videollamada mensual y chat). Cancela cuando quieras.
                 </p>
               </div>
 
@@ -660,9 +661,9 @@ export function QuizModal() {
                 Elige tu primera cita
               </h3>
               <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-ink-soft">
-                Reserva tu videollamada con un endocrino. Al confirmar pagarás{" "}
-                <span className="font-medium text-ink">65&nbsp;€/mes + IVA</span> y crearemos tu cuenta
-                automáticamente.
+                Reserva tu videollamada con un endocrino. Al confirmar pagarás tu{" "}
+                <span className="font-medium text-ink">primera visita por 25&nbsp;€</span> y crearemos
+                tu cuenta automáticamente.
               </p>
 
               {slots === null ? (

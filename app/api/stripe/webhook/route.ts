@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
         if (session.metadata?.kind === "public_signup") {
-          // Flujo público: crea cuenta + cita + suscripción y envía credenciales.
+          // Flujo público (pago único 25 €): crea cuenta + primera cita y envía credenciales.
           await provisionFromSession(session.id)
         } else if (session.mode === "subscription") {
           await syncSubscriptionBySession(session.id)

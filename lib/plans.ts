@@ -13,6 +13,12 @@ export const IVA_RATE = 0.21
 /** Precio base mensual, sin IVA, en céntimos. */
 export const BASE_PRICE_CENTS = 6500
 
+/** Pago único de la primera visita (céntimos). Se abona en la landing. */
+export const FIRST_VISIT_CENTS = 2500
+
+/** Etiqueta del pago único de la primera visita. */
+export const FIRST_VISIT_LABEL = "25 €"
+
 export interface PlanInfo {
   name: string
   /** Precio base sin IVA (céntimos). */

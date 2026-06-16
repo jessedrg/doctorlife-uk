@@ -4,38 +4,63 @@ import { getBaseUrl } from "@/lib/base-url"
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 /**
- * Remitente. Por defecto usa el sandbox de Resend (onboarding@resend.dev), que
- * solo entrega al email de la cuenta. Para producción, verifica un dominio en
- * Resend y define RESEND_FROM_EMAIL="DoctorLife <hola@tudominio.com>".
+ * Remitente. El dominio doctorlife.io está verificado en Resend. Se puede
+ * sobreescribir con RESEND_FROM_EMAIL.
  */
-const FROM = process.env.RESEND_FROM_EMAIL ?? "DoctorLife <onboarding@resend.dev>"
+const FROM = process.env.RESEND_FROM_EMAIL ?? "DoctorLife <hola@doctorlife.io>"
 
-const BRAND = "#0E7C66"
-const INK = "#14201d"
-const SOFT = "#5b6b66"
+/* ── Paleta de la app (Maren) ── */
+const PAPER = "#f6f0e6"
+const WARM = "#fffdf8"
+const INK = "#221d17"
+const INK_SOFT = "#5b5147"
+const INK_MUTE = "#7a6f60"
+const LINE = "#e3d6c1"
+const AMBER = "#c98a4f"
 
-function shell(title: string, body: string) {
+const FONT =
+  "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
+const SERIF = "'Iowan Old Style','Palatino Linotype',Georgia,'Times New Roman',serif"
+
+/** Cabecera, tarjeta y pie minimalistas con la estética cálida de la app. */
+function shell(opts: { title: string; body: string; preheader?: string }) {
   return `<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="margin:0;background:#f3f6f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:${INK};">
-  <div style="max-width:520px;margin:0 auto;padding:32px 20px;">
-    <div style="font-size:20px;font-weight:600;letter-spacing:-.02em;color:${BRAND};margin-bottom:20px;">DoctorLife</div>
-    <div style="background:#ffffff;border:1px solid #e6ece9;border-radius:16px;padding:28px;">
-      <h1 style="margin:0 0 12px;font-size:20px;font-weight:600;letter-spacing:-.02em;color:${INK};">${title}</h1>
-      ${body}
+<body style="margin:0;padding:0;background:${PAPER};font-family:${FONT};color:${INK};">
+  ${opts.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${opts.preheader}</div>` : ""}
+  <div style="max-width:512px;margin:0 auto;padding:40px 20px;">
+    <div style="display:flex;align-items:center;gap:8px;margin:0 0 22px;">
+      <span style="display:inline-block;width:22px;height:22px;border-radius:50%;background:${AMBER};"></span>
+      <span style="font-size:18px;font-weight:600;letter-spacing:-.01em;color:${INK};">DoctorLife</span>
     </div>
-    <p style="margin:20px 4px 0;font-size:12px;line-height:1.6;color:${SOFT};">
-      Este es un correo automático de DoctorLife. Si no esperabas este mensaje, puedes ignorarlo.
+    <div style="background:${WARM};border:1px solid ${LINE};border-radius:20px;padding:30px;">
+      <h1 style="margin:0 0 14px;font-family:${SERIF};font-size:24px;font-weight:400;line-height:1.2;letter-spacing:-.01em;color:${INK};">${opts.title}</h1>
+      ${opts.body}
+    </div>
+    <p style="margin:18px 6px 0;font-size:12px;line-height:1.6;color:${INK_MUTE};">
+      DoctorLife · Salud y bienestar con médicos colegiados. Si no esperabas este correo, puedes ignorarlo.
     </p>
   </div>
 </body></html>`
 }
 
-function button(href: string, label: string) {
-  return `<a href="${href}" style="display:inline-block;background:${BRAND};color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:12px 22px;border-radius:10px;">${label}</a>`
+function p(text: string) {
+  return `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:${INK_SOFT};">${text}</p>`
 }
 
-function p(text: string) {
-  return `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:${SOFT};">${text}</p>`
+function button(href: string, label: string) {
+  return `<a href="${href}" style="display:inline-block;background:${INK};color:${PAPER};text-decoration:none;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px;">${label}</a>`
+}
+
+/** Caja de datos (etiqueta + valor) sobre fondo papel. */
+function dataBox(rows: { label: string; value: string; mono?: boolean }[]) {
+  const inner = rows
+    .map(
+      (r, i) => `
+      <p style="margin:${i === 0 ? "0" : "12px"} 0 4px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:${INK_MUTE};">${r.label}</p>
+      <p style="margin:0;font-size:${r.mono ? "18px" : "15px"};font-weight:${r.mono ? "700" : "600"};${r.mono ? `letter-spacing:.04em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;` : ""}color:${INK};">${r.value}</p>`,
+    )
+    .join("")
+  return `<div style="background:${PAPER};border:1px solid ${LINE};border-radius:14px;padding:18px;margin:0 0 18px;">${inner}</div>`
 }
 
 async function send(to: string, subject: string, html: string) {
@@ -51,29 +76,27 @@ async function send(to: string, subject: string, html: string) {
   return { id: data?.id }
 }
 
-/** Credenciales de acceso tras el pago de la suscripción. */
-export async function sendCredentialsEmail(opts: {
-  to: string
-  name: string
-  tempPassword: string
-}) {
+/** Credenciales de acceso tras el pago de la primera visita (25 €). */
+export async function sendCredentialsEmail(opts: { to: string; name: string; tempPassword: string }) {
   const loginUrl = `${getBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
-    ${p(`Hola ${firstName}, tu plan de seguimiento con endocrino ya está activo. Hemos creado tu cuenta para acceder a tu panel privado.`)}
-    <div style="background:#f3f6f5;border:1px solid #e6ece9;border-radius:12px;padding:16px;margin:0 0 18px;">
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Usuario (tu email)</p>
-      <p style="margin:0 0 14px;font-size:15px;font-weight:600;color:${INK};">${opts.to}</p>
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Contraseña temporal</p>
-      <p style="margin:0;font-size:18px;font-weight:700;letter-spacing:.04em;color:${INK};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${opts.tempPassword}</p>
-    </div>
+    ${p(`Hola ${firstName}, gracias por reservar tu primera visita. Hemos creado tu cuenta para acceder a tu panel privado, donde tendrás tu cita, el chat con tu médico y tus recetas.`)}
+    ${dataBox([
+      { label: "Usuario (tu email)", value: opts.to },
+      { label: "Contraseña temporal", value: opts.tempPassword, mono: true },
+    ])}
     ${p("Por seguridad, cámbiala desde <strong>Mi cuenta</strong> la primera vez que entres.")}
     <div style="margin:22px 0 4px;">${button(loginUrl, "Entrar a mi panel")}</div>
   `
-  return send(opts.to, "Tus credenciales de acceso a DoctorLife", shell("Tu cuenta está lista", body))
+  return send(
+    opts.to,
+    "Tus credenciales de acceso a DoctorLife",
+    shell({ title: "Tu cuenta está lista", body, preheader: "Accede a tu panel privado de DoctorLife." }),
+  )
 }
 
-/** Confirmación de pago y de la primera cita. */
+/** Confirmación de la primera visita y del pago único. */
 export async function sendBookingConfirmationEmail(opts: {
   to: string
   name: string
@@ -90,41 +113,70 @@ export async function sendBookingConfirmationEmail(opts: {
     minute: "2-digit",
     timeZone: "Europe/Madrid",
   }).format(opts.startsAt)
+  const rows = [{ label: "Tu primera visita", value: when }]
+  if (opts.doctorName) rows.push({ label: "Endocrino", value: opts.doctorName })
+  rows.push({ label: "Importe", value: opts.amountLabel })
   const body = `
-    ${p(`Hola ${firstName}, hemos recibido tu pago correctamente y tu suscripción está activa.`)}
-    <div style="background:#f3f6f5;border:1px solid #e6ece9;border-radius:12px;padding:16px;margin:0 0 18px;">
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Tu primera consulta</p>
-      <p style="margin:0 0 12px;font-size:15px;font-weight:600;color:${INK};text-transform:capitalize;">${when}</p>
-      ${opts.doctorName ? `<p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Endocrino asignado</p><p style="margin:0 0 12px;font-size:15px;font-weight:600;color:${INK};">${opts.doctorName}</p>` : ""}
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Importe</p>
-      <p style="margin:0;font-size:15px;font-weight:600;color:${INK};">${opts.amountLabel}</p>
-    </div>
-    ${p("Encontrarás el enlace de la videollamada y tu chat con el médico en tu panel.")}
+    ${p(`Hola ${firstName}, hemos recibido tu pago correctamente y tu primera visita está reservada.`)}
+    ${dataBox(rows)}
+    ${p("Encontrarás el enlace de la videollamada y tu chat con el médico en tu panel. Tras la consulta, si tu médico te receta tratamiento, podrás activarlo desde ahí.")}
     <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal`, "Ir a mi panel")}</div>
   `
-  return send(opts.to, "Confirmación de tu suscripción y cita — DoctorLife", shell("Pago confirmado", body))
+  return send(
+    opts.to,
+    "Confirmación de tu primera visita — DoctorLife",
+    shell({ title: "Pago confirmado", body, preheader: "Tu primera visita está reservada." }),
+  )
+}
+
+/** Aviso al paciente de que su médico ha emitido una receta. */
+export async function sendPrescriptionReadyEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  locked: boolean
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const body = opts.locked
+    ? `
+      ${p(`Hola ${firstName}, ${doc} ha preparado tu tratamiento. Para ver los detalles y descargar tu receta en PDF, activa tu suscripción mensual.`)}
+      ${p("Incluye endocrino asignado, videollamada mensual y chat en vivo con tu médico. Puedes cancelar cuando quieras.")}
+      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Desbloquear mi receta")}</div>
+    `
+    : `
+      ${p(`Hola ${firstName}, ${doc} ha emitido una nueva receta. Ya está disponible en tu panel para descargar en PDF.`)}
+      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Ver mi receta")}</div>
+    `
+  return send(
+    opts.to,
+    "Tu receta está lista — DoctorLife",
+    shell({
+      title: "Tienes una nueva receta",
+      body,
+      preheader: opts.locked ? "Actívala para verla y descargarla." : "Ya disponible en tu panel.",
+    }),
+  )
 }
 
 /** Credenciales de acceso para un médico creado por el admin. */
-export async function sendDoctorWelcomeEmail(opts: {
-  to: string
-  name: string
-  tempPassword: string
-}) {
+export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; tempPassword: string }) {
   const loginUrl = `${getBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
-    ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes y el chat.`)}
-    <div style="background:#f3f6f5;border:1px solid #e6ece9;border-radius:12px;padding:16px;margin:0 0 18px;">
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Usuario (tu email)</p>
-      <p style="margin:0 0 14px;font-size:15px;font-weight:600;color:${INK};">${opts.to}</p>
-      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Contraseña temporal</p>
-      <p style="margin:0;font-size:18px;font-weight:700;letter-spacing:.04em;color:${INK};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${opts.tempPassword}</p>
-    </div>
+    ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes, el chat y las recetas.`)}
+    ${dataBox([
+      { label: "Usuario (tu email)", value: opts.to },
+      { label: "Contraseña temporal", value: opts.tempPassword, mono: true },
+    ])}
     ${p("Por seguridad, cámbiala desde <strong>Mi cuenta</strong> la primera vez que entres.")}
     <div style="margin:22px 0 4px;">${button(loginUrl, "Entrar a mi panel")}</div>
   `
-  return send(opts.to, "Tu acceso de médico en DoctorLife", shell("Tu cuenta de médico está lista", body))
+  return send(
+    opts.to,
+    "Tu acceso de médico en DoctorLife",
+    shell({ title: "Tu cuenta de médico está lista", body, preheader: "Gestiona tu agenda y pacientes." }),
+  )
 }
 
 /** Restablecer contraseña (usado por Better Auth). */
@@ -136,5 +188,9 @@ export async function sendResetPasswordEmail(opts: { to: string; name?: string; 
     <div style="margin:18px 0 8px;">${button(opts.url, "Restablecer contraseña")}</div>
     ${p("Si no fuiste tú, ignora este correo y tu contraseña seguirá igual.")}
   `
-  return send(opts.to, "Restablece tu contraseña — DoctorLife", shell("Restablecer contraseña", body))
+  return send(
+    opts.to,
+    "Restablece tu contraseña — DoctorLife",
+    shell({ title: "Restablecer contraseña", body, preheader: "Crea una contraseña nueva." }),
+  )
 }

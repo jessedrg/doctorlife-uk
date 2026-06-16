@@ -50,9 +50,9 @@ export default async function BienvenidoPage({
         <p className="mx-auto mt-3 max-w-[42ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft">
           {ok ? (
             <>
-              Tu suscripción ya está activa y tu primera cita reservada. Hemos enviado tus
-              credenciales de acceso{email ? <> a <span className="font-medium text-ink">{email}</span></> : ""}.
-              Revisa tu correo (incluida la carpeta de spam) para entrar a tu panel.
+              Tu primera visita está reservada. Hemos enviado tus credenciales de acceso
+              {email ? <> a <span className="font-medium text-ink">{email}</span></> : ""}. Revisa
+              tu correo (incluida la carpeta de spam) para entrar a tu panel.
             </>
           ) : (
             <>

@@ -34,6 +34,21 @@ export async function getMySubscription() {
   return row ?? null
 }
 
+/** ¿El paciente tiene una suscripción que da acceso al tratamiento/recetas? */
+export async function hasActiveSubscription(patientId: string): Promise<boolean> {
+  const [row] = await db
+    .select({ id: subscriptions.id })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.patientId, patientId),
+        inArray(subscriptions.status, ["active", "trialing", "past_due"]),
+      ),
+    )
+    .limit(1)
+  return Boolean(row)
+}
+
 /** Médico asignado al paciente: el de su cita más reciente. */
 async function getAssignedDoctorId(patientId: string): Promise<string | null> {
   const [appt] = await db
@@ -131,8 +146,8 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
       ],
       subscription_data: subscriptionData,
       metadata: { subscriptionRowId: String(pending.id) },
-      success_url: `${getBaseUrl()}/portal?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl()}/portal?subscription=cancelled`,
+      success_url: `${getBaseUrl()}/portal/recetas?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBaseUrl()}/portal/recetas?subscription=cancelled`,
     })
 
     if (!session.url) {
