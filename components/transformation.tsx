@@ -35,7 +35,16 @@ export function Transformation() {
               <QuizTrigger className="absolute bottom-6 right-6 rounded-full border border-paper/30 px-[18px] py-[9px] text-[13.5px]" style={{ background: "rgba(246,240,230,.16)" }}>
                 Empezar
               </QuizTrigger>
-              <div className="absolute bottom-6 left-6 h-16 w-16 rounded-full" style={{ background: "radial-gradient(60% 60% at 38% 32%,#cdd9a0,#9aa472 60%,#5f6a3e)", boxShadow: "0 14px 26px rgba(0,0,0,.35)" }} />
+              <div
+                className="absolute bottom-6 left-6 flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-2xl border border-paper/15"
+                style={{ background: "radial-gradient(70% 70% at 35% 28%,rgba(205,217,160,.32),rgba(47,52,57,.5))", boxShadow: "0 14px 26px rgba(0,0,0,.35)" }}
+              >
+                <img
+                  src="/glp1-pen.png"
+                  alt="Pluma inyectora GLP-1"
+                  className="h-[52px] w-[52px] -rotate-[18deg] object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,.35)]"
+                />
+              </div>
             </div>
             <div className="rounded-[26px] border border-paper/15 p-7 backdrop-blur-md" style={{ background: "rgba(30,36,40,.42)" }}>
               <div className="text-[13px] uppercase tracking-[.14em] text-paper/60">¿Cuál es tu objetivo?</div>
