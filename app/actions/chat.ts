@@ -3,6 +3,7 @@
 import { db } from "@/lib/db"
 import { appointments, conversations, messages, user } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
+import { hasActiveSubscription } from "@/app/actions/subscription"
 import { and, asc, desc, eq, gt, ne, or } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -104,7 +105,13 @@ export async function getMessages(conversationId: number, after = 0) {
 /** Envía un mensaje a la conversación (solo participantes). */
 export async function sendMessage(conversationId: number, body: string) {
   const me = await requireUser()
-  await requireParticipant(conversationId, me.id)
+  const conv = await requireParticipant(conversationId, me.id)
+
+  // El chat en vivo con la doctora asignada requiere suscripción activa.
+  // (El médico siempre puede responder; solo se bloquea al paciente.)
+  if (conv.patientId === me.id && !(await hasActiveSubscription(me.id))) {
+    return { ok: false as const, error: "Activa tu tratamiento para chatear con tu médico." }
+  }
 
   const text = body.trim()
   if (!text) return { ok: false as const, error: "Mensaje vacío" }

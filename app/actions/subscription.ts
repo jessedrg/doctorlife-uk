@@ -6,7 +6,7 @@ import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe } from "@/lib/stripe"
 import { PLATFORM_FEE_PERCENT } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
-import { getPlan, defaultPlan, type PlanInfo } from "@/lib/plans"
+import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
 import { and, desc, eq, inArray } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -127,9 +127,19 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
   }
 
   try {
+    // El primer mes se descuentan los 25 € ya abonados en la primera visita:
+    // 65 € − 25 € = 40 €. Los meses siguientes se cobran al precio normal.
+    const firstMonthCoupon = await stripe.coupons.create({
+      amount_off: FIRST_VISIT_CENTS,
+      currency: "eur",
+      duration: "once",
+      name: "Primera visita ya abonada",
+    })
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: patient.email,
+      discounts: [{ coupon: firstMonthCoupon.id }],
       line_items: [
         {
           quantity: 1,
@@ -139,7 +149,7 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
             recurring: { interval: "month" },
             product_data: {
               name: `${plan.name} · DoctorLife`,
-              description: "Tratamiento mensual con seguimiento médico",
+              description: "Tratamiento mensual con seguimiento médico (primer mes: 25 € de descuento)",
             },
           },
         },
