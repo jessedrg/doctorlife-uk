@@ -224,10 +224,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           </article>
 
-          <div className="mx-auto max-w-[1200px] px-5 lg:max-w-[1320px]">
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[28px] lg:aspect-[2.2/1]">
-              <img src={post.cover || "/placeholder.svg"} alt={post.coverAlt} className="h-full w-full object-cover object-[center_25%]" />
-            </div>
+          <div className="mx-auto max-w-[760px] px-5 lg:max-w-[820px] 2xl:max-w-[900px]">
+            <hr className="border-t border-ink/10" />
           </div>
 
           <article className="mx-auto max-w-[760px] px-5 pb-4 pt-2 lg:max-w-[820px] 2xl:max-w-[900px]">

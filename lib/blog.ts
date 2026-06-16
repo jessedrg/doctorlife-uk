@@ -1098,6 +1098,417 @@ export const posts: Post[] = [
       },
     ],
   },
+
+  /* ─────────────── OZEMPIC ─────────────── */
+  {
+    slug: "ozempic-para-adelgazar",
+    title: "Ozempic para adelgazar",
+    h1: "Ozempic para adelgazar: cómo funciona, dosis y resultados reales",
+    metaTitle: "Ozempic para adelgazar: cómo funciona, dosis y resultados | DoctorLife",
+    metaDescription:
+      "¿Sirve Ozempic para adelgazar? Cómo actúa la semaglutida, cuánto peso se pierde, dosis por semana y por qué necesita receta y seguimiento médico.",
+    excerpt:
+      "Ozempic se ha vuelto famoso por la pérdida de peso, pero está aprobado para la diabetes. Te explicamos cómo funciona, qué resultados esperar y cómo usarlo de forma segura.",
+    category: "Ozempic",
+    keyword: "ozempic para adelgazar",
+    readMins: 8,
+    date: "2026-05-20",
+    updated: "2026-06-16",
+    cover: "/blog/ozempic-adelgazar.png",
+    coverAlt: "Pluma de Ozempic sobre fondo neutro",
+    featured: true,
+    sections: [
+      {
+        h2: "¿Ozempic sirve para adelgazar?",
+        blocks: [
+          {
+            type: "p",
+            text: "Ozempic (semaglutida) está aprobado en España para la diabetes tipo 2, no para perder peso. Sin embargo, al ser la misma molécula que Wegovy, también reduce el apetito y ayuda a adelgazar. Por eso muchos médicos lo conocen bien, aunque para pérdida de peso la indicación específica es Wegovy.",
+          },
+          {
+            type: "p",
+            text: "Usar Ozempic con el objetivo de adelgazar siempre debe hacerse bajo criterio y seguimiento médico, nunca por cuenta propia ni comprándolo sin receta.",
+          },
+        ],
+      },
+      {
+        h2: "¿Cómo funciona la semaglutida?",
+        blocks: [
+          {
+            type: "p",
+            text: "La semaglutida imita a la hormona GLP‑1, que tu cuerpo libera al comer. Actúa de tres formas: ralentiza el vaciado del estómago, reduce el apetito y mejora el control del azúcar en sangre. El resultado es que comes menos sin pasar hambre constante.",
+          },
+          {
+            type: "list",
+            items: [
+              "Mayor saciedad y menos antojos.",
+              "Digestiones más lentas, que sacian durante más tiempo.",
+              "Mejor control de la glucosa.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Dosis de Ozempic por semana",
+        blocks: [
+          {
+            type: "p",
+            text: "Ozempic se inyecta una vez por semana y la dosis se sube de forma escalonada para minimizar efectos secundarios. Estas son las dosis habituales (siempre según indicación médica):",
+          },
+          {
+            type: "table",
+            caption: "Escalado orientativo de dosis de Ozempic",
+            head: ["Dosis", "Fase", "Duración habitual"],
+            rows: [
+              ["0,25 mg", "Inicio (adaptación)", "4 semanas"],
+              ["0,5 mg", "Mantenimiento bajo", "4+ semanas"],
+              ["1 mg", "Escalado", "según respuesta"],
+              ["2 mg", "Dosis máxima", "mantenimiento"],
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Cuánto peso se pierde con Ozempic?",
+        blocks: [
+          {
+            type: "p",
+            text: "La pérdida de peso es individual, pero de forma orientativa suele situarse entre un 6 % y un 10 % del peso corporal a lo largo de varios meses, algo menos que con Wegovy (dosis más alta) o Mounjaro. Los mejores resultados se dan combinando el fármaco con alimentación y actividad física.",
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Ozempic vs Wegovy vs Mounjaro: cuál elegir", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+              { label: "Ozempic precio en España por pluma", href: "/blog/ozempic-precio-espana" },
+              { label: "Plan para perder peso con GLP‑1 paso a paso", href: "/blog/plan-perder-peso-glp1" },
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Cómo empezar de forma segura",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Primera visita médica por 25 € (descontables del tratamiento).",
+              "Valoración de tu caso por un médico colegiado.",
+              "Prescripción y pauta de dosis si es adecuado para ti.",
+              "Seguimiento desde la app con ajustes y soporte continuo.",
+            ],
+          },
+          { type: "quote", text: PRICE_NOTE },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Es seguro tomar Ozempic para adelgazar?",
+        a: "Ozempic es seguro bajo supervisión médica, pero está aprobado para la diabetes tipo 2, no para pérdida de peso. Para adelgazar, el fármaco con esa indicación es Wegovy (misma molécula). En ambos casos se requiere receta, dosis progresiva y seguimiento.",
+      },
+      {
+        q: "¿Ozempic y Wegovy son lo mismo?",
+        a: "Ambos contienen semaglutida. Ozempic está aprobado para la diabetes y Wegovy para la pérdida de peso, a dosis más altas. La molécula es la misma, cambia la indicación y la dosis máxima.",
+      },
+      {
+        q: "¿Puedo comprar Ozempic sin receta?",
+        a: "No. Ozempic requiere receta médica en España. Comprarlo sin prescripción es ilegal y peligroso. El camino seguro es una valoración médica que determine si es adecuado para ti.",
+      },
+      {
+        q: "¿Cuánto se tarda en ver resultados?",
+        a: "Los primeros efectos sobre el apetito aparecen en las primeras semanas, pero la pérdida de peso significativa se observa a partir del segundo o tercer mes, según la dosis y los hábitos.",
+      },
+    ],
+  },
+  {
+    slug: "ozempic-precio-espana",
+    title: "Ozempic precio España",
+    h1: "Ozempic precio en España 2026: cuánto cuesta y de qué depende",
+    metaTitle: "Ozempic precio en España 2026: cuánto cuesta por pluma | DoctorLife",
+    metaDescription:
+      "Cuánto cuesta Ozempic en España en 2026, precio por dosis, si lo cubre la Seguridad Social y qué incluye un tratamiento completo con seguimiento médico.",
+    excerpt:
+      "El precio de Ozempic varía según la dosis y si está financiado. Te explicamos cuánto cuesta de forma realista y qué deberías tener en cuenta antes de empezar.",
+    category: "Ozempic",
+    keyword: "ozempic precio españa",
+    readMins: 7,
+    date: "2026-05-22",
+    updated: "2026-06-16",
+    cover: "/blog/ozempic-precio.png",
+    coverAlt: "Pluma de Ozempic junto a documentos de precio",
+    sections: [
+      {
+        h2: "¿Cuánto cuesta Ozempic en España?",
+        blocks: [
+          {
+            type: "p",
+            text: "El precio de Ozempic en España depende de la dosis, de si tienes receta financiada y de la farmacia. De forma orientativa, sin financiación pública, suele situarse entre 130 € y 250 € al mes.",
+          },
+          {
+            type: "table",
+            caption: "Ozempic precio orientativo por dosis (2026)",
+            head: ["Dosis", "Presentación", "Precio orientativo/mes"],
+            rows: [
+              ["0,25 / 0,5 mg", "1 pluma mensual", "130–180 €"],
+              ["1 mg", "1 pluma mensual", "170–220 €"],
+              ["2 mg", "1 pluma mensual", "200–250 €"],
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Lo cubre la Seguridad Social?",
+        blocks: [
+          {
+            type: "p",
+            text: "Ozempic está financiado para personas con diabetes tipo 2 que cumplen ciertos criterios. Si se usa fuera de esa indicación (por ejemplo, solo para perder peso), normalmente no está financiado y el coste es privado.",
+          },
+        ],
+      },
+      {
+        h2: "¿Por qué varía tanto el precio?",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "La dosis: a mayor dosis, mayor coste de la pluma.",
+              "La financiación: con receta financiada pagas solo una parte.",
+              "El tratamiento completo: la consulta y el seguimiento se suman al fármaco.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Cuando compares precios, comprueba si la cifra incluye solo el medicamento o también la valoración médica y el seguimiento, que son los que hacen que el tratamiento funcione.",
+          },
+        ],
+      },
+      {
+        h2: "Qué incluye un tratamiento completo",
+        blocks: [
+          {
+            type: "p",
+            text: "En DoctorLife separamos el coste: el plan de seguimiento médico tiene un precio fijo mensual y la medicación se adquiere en farmacia solo si el médico la prescribe.",
+          },
+          { type: "quote", text: PRICE_NOTE },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Ozempic para adelgazar: cómo funciona", href: "/blog/ozempic-para-adelgazar" },
+              { label: "Wegovy precio en España por dosis", href: "/blog/wegovy-precio-espana" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: comparativa", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+            ],
+          },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Es seguro tomar Ozempic?",
+        a: "Sí, Ozempic es seguro bajo prescripción y seguimiento médico, con la dosis ajustada de forma progresiva. Los efectos secundarios habituales son digestivos, leves y temporales. Siempre requiere receta.",
+      },
+      {
+        q: "¿Es más barato Ozempic que Wegovy?",
+        a: "Suele ser algo más económico porque sus dosis son más bajas, pero la diferencia no es grande. Lo importante es elegir el fármaco adecuado para tu objetivo, no solo el más barato.",
+      },
+      {
+        q: "¿Puedo conseguir Ozempic financiado para adelgazar?",
+        a: "Por lo general no: la financiación es para diabetes tipo 2. Para pérdida de peso el tratamiento suele ser privado, y el fármaco con indicación específica es Wegovy.",
+      },
+    ],
+  },
+  {
+    slug: "comprar-ozempic-online",
+    title: "Comprar Ozempic online",
+    h1: "Comprar Ozempic online con receta en España: cómo hacerlo de forma legal y segura",
+    metaTitle: "Comprar Ozempic online con receta en España | DoctorLife",
+    metaDescription:
+      "Cómo comprar Ozempic online de forma legal en España: por qué necesitas receta, cómo conseguirla por telemedicina y qué webs evitar para no poner en riesgo tu salud.",
+    excerpt:
+      "Comprar Ozempic online es posible y legal si hay receta y seguimiento médico de por medio. Te explicamos el camino seguro y las señales de alerta a evitar.",
+    category: "Ozempic",
+    keyword: "comprar ozempic online",
+    readMins: 7,
+    date: "2026-05-24",
+    updated: "2026-06-16",
+    cover: "/blog/comprar-ozempic.png",
+    coverAlt: "Persona consultando el móvil para un tratamiento médico online",
+    sections: [
+      {
+        h2: "¿Se puede comprar Ozempic online en España?",
+        blocks: [
+          {
+            type: "p",
+            text: "Ozempic es un medicamento que requiere receta médica, así que no se puede comprar libremente por internet. Lo que sí es legal es conseguir la receta mediante una consulta médica online y luego adquirir el fármaco en una farmacia autorizada.",
+          },
+          {
+            type: "p",
+            text: "Cualquier web que ofrezca Ozempic 'sin receta' está actuando de forma ilegal y supone un riesgo serio para tu salud (productos falsificados, dosis incorrectas, sin seguimiento).",
+          },
+        ],
+      },
+      {
+        h2: "Cómo conseguir Ozempic online de forma legal",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Reserva una consulta médica online con un profesional colegiado.",
+              "El médico valora tu caso, tu historial y si el tratamiento es adecuado.",
+              "Si procede, emite una receta válida en cualquier farmacia.",
+              "Recoges la medicación en farmacia y haces el seguimiento desde la app.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Señales de alerta a evitar",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Webs que venden Ozempic 'sin receta'.",
+              "Precios sospechosamente bajos o pago en cripto.",
+              "Ausencia de médicos colegiados identificables.",
+              "Sin seguimiento ni soporte tras la compra.",
+            ],
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Ozempic para adelgazar: cómo funciona y dosis", href: "/blog/ozempic-para-adelgazar" },
+              { label: "Cómo conseguir la receta de Wegovy online", href: "/blog/receta-wegovy-online" },
+              { label: "Comprar semaglutida con receta de forma segura", href: "/blog/semaglutida-comprar-con-receta" },
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Empieza con DoctorLife",
+        blocks: [
+          {
+            type: "p",
+            text: "Con DoctorLife haces toda la valoración online, con médicos colegiados y seguimiento desde la app, sin desplazamientos ni listas de espera.",
+          },
+          { type: "quote", text: PRICE_NOTE },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Es seguro tomar Ozempic comprado online?",
+        a: "Es seguro solo si la receta viene de una valoración médica real y el fármaco se adquiere en una farmacia autorizada. Comprar Ozempic en webs sin receta es ilegal y peligroso por el riesgo de falsificaciones.",
+      },
+      {
+        q: "¿Es legal comprar Ozempic por internet?",
+        a: "Es legal conseguir la receta por telemedicina y comprar el medicamento en una farmacia. No es legal adquirir Ozempic sin receta en webs no autorizadas.",
+      },
+      {
+        q: "¿Necesito ver a un médico para conseguir la receta?",
+        a: "Sí, siempre debe haber una valoración médica. Con la telemedicina esa consulta se hace online de forma rápida y segura.",
+      },
+    ],
+  },
+  {
+    slug: "ozempic-efectos-secundarios",
+    title: "Efectos secundarios de Ozempic",
+    h1: "Efectos secundarios de Ozempic: cuáles son y cómo reducirlos",
+    metaTitle: "Efectos secundarios de Ozempic: cuáles son y cómo evitarlos | DoctorLife",
+    metaDescription:
+      "Efectos secundarios de Ozempic (semaglutida): náuseas, digestiones lentas y otros síntomas, cuánto duran y cómo minimizarlos con dosis progresiva y seguimiento médico.",
+    excerpt:
+      "La mayoría de efectos secundarios de Ozempic son digestivos, leves y pasajeros. Te explicamos cuáles son, cuánto duran y cómo reducirlos con un buen seguimiento.",
+    category: "Ozempic",
+    keyword: "ozempic efectos secundarios",
+    readMins: 7,
+    date: "2026-05-26",
+    updated: "2026-06-16",
+    cover: "/blog/ozempic-efectos.png",
+    coverAlt: "Persona revisando su tratamiento con apoyo médico",
+    sections: [
+      {
+        h2: "¿Cuáles son los efectos secundarios más comunes?",
+        blocks: [
+          {
+            type: "p",
+            text: "La mayoría de efectos secundarios de Ozempic son digestivos y aparecen sobre todo al iniciar el tratamiento o al subir de dosis. Suelen ser leves y mejorar con el tiempo.",
+          },
+          {
+            type: "table",
+            caption: "Efectos secundarios de Ozempic por frecuencia",
+            head: ["Frecuencia", "Síntomas habituales"],
+            rows: [
+              ["Muy frecuentes", "Náuseas, diarrea, vómitos, estreñimiento"],
+              ["Frecuentes", "Digestiones lentas, hinchazón, dolor abdominal, fatiga"],
+              ["Menos frecuentes", "Mareos, alteraciones del gusto, reacciones en el punto de inyección"],
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Cuánto duran los efectos secundarios?",
+        blocks: [
+          {
+            type: "p",
+            text: "Lo más habitual es que las molestias digestivas aparezcan en las primeras semanas y se reduzcan a medida que el cuerpo se adapta. Subir la dosis demasiado rápido es la causa más frecuente de que se intensifiquen, por eso el escalado debe ser gradual y supervisado.",
+          },
+        ],
+      },
+      {
+        h2: "Cómo reducir los efectos secundarios",
+        blocks: [
+          {
+            type: "list",
+            items: [
+              "Subir la dosis poco a poco, según indicación médica.",
+              "Comer raciones más pequeñas y evitar comidas muy grasas.",
+              "Mantener una buena hidratación.",
+              "Comunicar las molestias a tu equipo médico para ajustar la pauta.",
+            ],
+          },
+          {
+            type: "p",
+            text: "Acude a urgencias si aparece dolor abdominal intenso y persistente, vómitos que no cesan o signos de reacción alérgica. Son poco frecuentes, pero conviene conocerlos.",
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Ozempic para adelgazar: cómo funciona y dosis", href: "/blog/ozempic-para-adelgazar" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: comparativa", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+              { label: "Plan para perder peso con GLP‑1 paso a paso", href: "/blog/plan-perder-peso-glp1" },
+            ],
+          },
+        ],
+      },
+      {
+        h2: "El seguimiento marca la diferencia",
+        blocks: [
+          {
+            type: "p",
+            text: "La mejor forma de evitar y gestionar los efectos secundarios es un buen acompañamiento: ajustar la dosis a tu tolerancia y tener a quién preguntar. Eso es justo lo que ofrece un tratamiento con seguimiento.",
+          },
+          { type: "quote", text: PRICE_NOTE },
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Es seguro tomar Ozempic a pesar de los efectos secundarios?",
+        a: "Sí, Ozempic es seguro bajo supervisión médica. La mayoría de efectos secundarios son digestivos, leves y temporales, y se reducen con una dosis progresiva y seguimiento. Los efectos graves son poco frecuentes.",
+      },
+      {
+        q: "¿Las náuseas de Ozempic desaparecen?",
+        a: "En la mayoría de personas las náuseas mejoran a medida que el cuerpo se adapta, sobre todo si la dosis se sube de forma gradual y se cuidan las comidas.",
+      },
+      {
+        q: "¿Qué hago si los efectos secundarios son fuertes?",
+        a: "Comunícalo a tu equipo médico: muchas veces basta con mantener la dosis más tiempo antes de subirla. Ante síntomas graves o persistentes, busca atención médica.",
+      },
+    ],
+  },
 ];
 
 export function getPost(slug: string): Post | undefined {
