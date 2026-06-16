@@ -94,6 +94,21 @@ export function QuizModal() {
           ? { label: "Sobrepeso", color: "text-amber" }
           : { label: "Obesidad", color: "text-clay" };
 
+  // Calculadora de tiempo seguro para alcanzar un peso saludable.
+  // Objetivo: IMC 24 (centro del rango saludable). Ritmo seguro: 0,5–0,85 kg/sem,
+  // ajustado ligeramente por edad (el metabolismo se ralentiza con los años).
+  const ageNum = parseInt(age) || 0;
+  const heightM = h / 100;
+  const targetWeight = h > 0 ? 24 * heightM * heightM : 0;
+  const kgToLose = bmi && bmi >= 25 ? Math.max(0, w - targetWeight) : 0;
+  const ageFactor = ageNum >= 60 ? 0.8 : ageNum >= 45 ? 0.9 : 1;
+  const fastRate = 0.85 * ageFactor; // kg por semana (ritmo alto seguro)
+  const slowRate = 0.5 * ageFactor; // kg por semana (ritmo conservador)
+  const monthsFast = kgToLose > 0 ? Math.max(1, Math.round(kgToLose / fastRate / 4.345)) : 0;
+  const monthsSlow = kgToLose > 0 ? Math.max(monthsFast + 1, Math.round(kgToLose / slowRate / 4.345)) : 0;
+  const estTimeline =
+    kgToLose > 0 ? `≈ ${monthsFast}–${monthsSlow} meses · objetivo ${targetWeight.toFixed(0)} kg` : null;
+
   const choose = (opt: string) => {
     const next = [...answers];
     next[step] = opt;
@@ -132,7 +147,7 @@ export function QuizModal() {
       goal: answers[0],
       glp1Experience: answers[1],
       formatPreference: answers[2],
-      timeline: answers[3],
+      timeline: estTimeline || undefined,
       plan: plan || undefined,
       heightCm: h > 0 ? h : null,
       weightKg: w > 0 ? w : null,
@@ -237,10 +252,10 @@ export function QuizModal() {
                 Paso {total + 1} de {total + 1}
               </div>
               <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
-                Calcula tu IMC
+                Tu objetivo, sin arriesgar tu salud
               </h3>
               <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
-                Tu índice de masa corporal ayuda al médico a personalizar tu plan. Solo tomará un momento.
+                Con tu altura, peso y edad estimamos cuánto tardarías en llegar a un peso saludable a un ritmo seguro.
               </p>
 
               <div className="grid grid-cols-2 gap-3">
@@ -276,24 +291,58 @@ export function QuizModal() {
                 </label>
               </div>
 
-              {/* Live BMI result */}
+              {/* Live result: BMI + safe weight-loss estimate */}
               <div
-                className={`mt-5 flex items-center justify-between rounded-[16px] border px-5 py-4 transition-all duration-300 ${
+                className={`mt-5 rounded-[18px] border transition-all duration-300 ${
                   bmi ? "border-sage/40 bg-sage/10 opacity-100" : "border-ink/10 bg-warm opacity-70"
                 }`}
               >
-                <span className="text-[14px] text-ink-soft">Tu IMC</span>
-                {bmi ? (
-                  <span className="flex items-baseline gap-2">
-                    <span className="text-[24px] font-semibold text-ink">{bmi.toFixed(1)}</span>
-                    <span className={`text-[13.5px] font-medium ${bmiCategory(bmi).color}`}>
-                      {bmiCategory(bmi).label}
+                <div className="flex items-center justify-between px-5 py-4">
+                  <span className="text-[14px] text-ink-soft">Tu IMC</span>
+                  {bmi ? (
+                    <span className="flex items-baseline gap-2">
+                      <span className="text-[24px] font-semibold text-ink">{bmi.toFixed(1)}</span>
+                      <span className={`text-[13.5px] font-medium ${bmiCategory(bmi).color}`}>
+                        {bmiCategory(bmi).label}
+                      </span>
                     </span>
-                  </span>
-                ) : (
-                  <span className="text-[14px] text-ink-mute">Introduce altura y peso</span>
+                  ) : (
+                    <span className="text-[14px] text-ink-mute">Introduce altura y peso</span>
+                  )}
+                </div>
+
+                {/* Estimación de tiempo */}
+                {bmi && kgToLose > 0 && (
+                  <div className="border-t border-sage/30 px-5 py-4">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="text-[14px] text-ink-soft">Tiempo estimado</span>
+                      <span className="text-right text-[20px] font-semibold text-ink">
+                        {monthsFast}–{monthsSlow}
+                        <span className="ml-1 text-[13.5px] font-normal text-ink-soft">meses</span>
+                      </span>
+                    </div>
+                    <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[12.5px] text-ink-mute">
+                      <span>
+                        Hasta tu peso saludable (~{targetWeight.toFixed(0)} kg, −{kgToLose.toFixed(0)} kg)
+                      </span>
+                      <span>Ritmo seguro: 0,5–0,85 kg/sem</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Ya en rango saludable */}
+                {bmi && bmi < 25 && bmi >= 18.5 && (
+                  <div className="border-t border-sage/30 px-5 py-4 text-[13.5px] text-ink-soft">
+                    Ya te encuentras en un rango de peso saludable. Tu plan se centrará en mantenerlo y en tu bienestar metabólico.
+                  </div>
                 )}
               </div>
+
+              {bmi && kgToLose > 0 && (
+                <p className="mt-3 text-[12px] leading-snug text-ink-mute">
+                  Estimación orientativa basada en una pérdida de peso gradual y segura. Tu médico ajustará el ritmo a tu caso.
+                </p>
+              )}
 
               {error && <p className="mt-3 text-[13.5px] text-clay">{error}</p>}
 
@@ -472,6 +521,11 @@ export function QuizModal() {
                 {bmi && (
                   <span className="rounded-full border border-sage/50 bg-sage/15 px-3 py-1.5 text-[13px] font-medium text-ink">
                     IMC {bmi.toFixed(1)}
+                  </span>
+                )}
+                {kgToLose > 0 && (
+                  <span className="rounded-full border border-olive/40 bg-olive/10 px-3 py-1.5 text-[13px] font-medium text-ink">
+                    {monthsFast}–{monthsSlow} meses estim.
                   </span>
                 )}
               </div>
