@@ -142,7 +142,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@type": "Organization",
     name: BRAND,
     url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` },
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
   };
 
   const articleLd = {

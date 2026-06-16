@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     'Cuidado del peso y hormonal dirigido por médicos, diseñado en torno a tu cuerpo — no a un protocolo único.',
   generator: 'v0.app',
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    icon: [{ url: '/icon.png', type: 'image/png' }],
     apple: '/apple-icon.png',
   },
 }
