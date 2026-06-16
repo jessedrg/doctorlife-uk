@@ -3,8 +3,7 @@
 import { db } from "@/lib/db"
 import { subscriptions, appointments, doctorProfiles, leads } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
-import { stripe } from "@/lib/stripe"
-import { PLATFORM_FEE_PERCENT } from "@/lib/stripe"
+import { stripe, DOCTOR_SHARE_CENTS } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
 import { and, desc, eq, inArray } from "drizzle-orm"
@@ -99,12 +98,6 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
 
   const plan = await getPatientPlan(patient.email)
 
-  const [doc] = await db
-    .select({ stripeAccountId: doctorProfiles.stripeAccountId, chargesEnabled: doctorProfiles.chargesEnabled })
-    .from(doctorProfiles)
-    .where(eq(doctorProfiles.userId, doctorId))
-    .limit(1)
-
   // Guardamos (o reutilizamos) una fila de suscripción en estado incompleto.
   const [pending] = await db
     .insert(subscriptions)
@@ -117,13 +110,12 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
     })
     .returning({ id: subscriptions.id })
 
-  const connectReady = Boolean(doc?.stripeAccountId && doc.chargesEnabled)
+  // El cobro de la suscripción se hace ÍNTEGRO a la plataforma (la empresa).
+  // El reparto al médico (25 € fijos por pago) se realiza con una transferencia
+  // separada al confirmarse cada factura (ver payoutDoctorForInvoice en el
+  // webhook invoice.paid). Así "el resto" se queda en la cuenta de la empresa.
   const subscriptionData: Record<string, unknown> = {
     metadata: { subscriptionRowId: String(pending.id), patientId: patient.id, doctorId },
-  }
-  if (connectReady) {
-    subscriptionData.application_fee_percent = PLATFORM_FEE_PERCENT
-    subscriptionData.transfer_data = { destination: doc!.stripeAccountId }
   }
 
   try {
@@ -222,6 +214,61 @@ export async function cancelMySubscription(): Promise<{ ok: boolean; error?: str
     return { ok: true }
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "No se pudo cancelar." }
+  }
+}
+
+/**
+ * Transfiere al médico asignado su parte fija (25 €) de un pago de suscripción.
+ * El cobro entró íntegro en la cuenta de la empresa; aquí movemos 25 € al médico
+ * mediante una transferencia separada usando el cargo de la factura como origen.
+ * Idempotente: la idempotency key por factura evita pagos duplicados si el
+ * webhook se reintenta.
+ */
+export async function payoutDoctorForInvoice(invoice: {
+  id?: string
+  subscription?: string | null
+  charge?: string | null
+  amount_paid?: number | null
+}): Promise<void> {
+  const subId = invoice.subscription
+  const chargeId = invoice.charge
+  if (!subId || !chargeId || !invoice.id) return
+
+  // Localizamos la suscripción y su médico asignado.
+  const [row] = await db
+    .select({ doctorId: subscriptions.doctorId })
+    .from(subscriptions)
+    .where(eq(subscriptions.stripeSubscriptionId, subId))
+    .limit(1)
+  if (!row?.doctorId) return
+
+  const [doc] = await db
+    .select({
+      stripeAccountId: doctorProfiles.stripeAccountId,
+      chargesEnabled: doctorProfiles.chargesEnabled,
+    })
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, row.doctorId))
+    .limit(1)
+  if (!doc?.stripeAccountId || !doc.chargesEnabled) return
+
+  // Nunca transferimos más de lo cobrado en la factura.
+  const amount = Math.min(DOCTOR_SHARE_CENTS, invoice.amount_paid ?? DOCTOR_SHARE_CENTS)
+  if (amount <= 0) return
+
+  try {
+    await stripe.transfers.create(
+      {
+        amount,
+        currency: "eur",
+        destination: doc.stripeAccountId,
+        source_transaction: chargeId,
+        metadata: { kind: "subscription_doctor_share", invoiceId: invoice.id, doctorId: row.doctorId },
+      },
+      { idempotencyKey: `sub-payout-${invoice.id}` },
+    )
+  } catch (e) {
+    console.log("[v0] subscription payout to doctor failed:", e instanceof Error ? e.message : e)
   }
 }
 

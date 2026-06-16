@@ -3,7 +3,7 @@
 import { db } from "@/lib/db"
 import { appointments, user, doctorProfiles } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
-import { stripe, PLATFORM_FEE_PERCENT } from "@/lib/stripe"
+import { stripe } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { FIRST_VISIT_CENTS, FIRST_VISIT_LABEL } from "@/lib/plans"
 import { getPooledSlots } from "@/lib/scheduling/pool"
@@ -55,7 +55,9 @@ export async function startPublicCheckout(input: {
   const slot = slots.find((s) => s.startUtc === start.toISOString())
   if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
 
-  // Comisión + transferencia al médico solo si su cuenta Connect está lista.
+  // La primera consulta (25 €) va ÍNTEGRA al médico asignado a la llamada: es un
+  // cargo con destino (destination charge) sin comisión de plataforma, siempre
+  // que su cuenta Connect esté lista para cobrar.
   const [doc] = await db
     .select({ stripeAccountId: doctorProfiles.stripeAccountId, chargesEnabled: doctorProfiles.chargesEnabled })
     .from(doctorProfiles)
@@ -63,7 +65,7 @@ export async function startPublicCheckout(input: {
     .limit(1)
   const paymentIntentData: Record<string, unknown> = {}
   if (doc?.stripeAccountId && doc.chargesEnabled) {
-    paymentIntentData.application_fee_amount = Math.round((FIRST_VISIT_CENTS * PLATFORM_FEE_PERCENT) / 100)
+    // Sin application_fee_amount => el médico recibe el importe completo.
     paymentIntentData.transfer_data = { destination: doc.stripeAccountId }
   }
 

@@ -6,6 +6,7 @@ import { provisionFromSession } from "@/app/actions/public-booking"
 import {
   applySubscriptionState,
   findSubscriptionRowByStripeId,
+  payoutDoctorForInvoice,
   syncSubscriptionBySession,
 } from "@/app/actions/subscription"
 
@@ -75,7 +76,13 @@ export async function POST(req: Request) {
 
       case "invoice.paid": {
         const invoice = event.data.object as Stripe.Invoice
-        const subId = (invoice as unknown as { subscription?: string }).subscription
+        const raw = invoice as unknown as {
+          id?: string
+          subscription?: string
+          charge?: string
+          amount_paid?: number
+        }
+        const subId = raw.subscription
         if (subId) {
           const row = await findSubscriptionRowByStripeId(subId)
           if (row) {
@@ -91,6 +98,13 @@ export async function POST(req: Request) {
               sub.customer as string,
             )
           }
+          // Reparto: 25 € fijos al médico asignado; el resto se queda en la empresa.
+          await payoutDoctorForInvoice({
+            id: raw.id,
+            subscription: subId,
+            charge: raw.charge ?? null,
+            amount_paid: raw.amount_paid ?? null,
+          })
         }
         break
       }
