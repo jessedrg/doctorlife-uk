@@ -69,6 +69,10 @@ export const auth = betterAuth({
     ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
+    // Dominios del preview de v0 (el iframe se sirve desde subdominios de
+    // vusercontent.net) y los preview deployments de Vercel.
+    "https://*.vusercontent.net",
+    "https://*.vercel.app",
     ...(process.env.NODE_ENV === "development"
       ? ["http://localhost:3000", "http://127.0.0.1:3000"]
       : []),
