@@ -105,6 +105,28 @@ export async function sendBookingConfirmationEmail(opts: {
   return send(opts.to, "Confirmación de tu suscripción y cita — DoctorLife", shell("Pago confirmado", body))
 }
 
+/** Credenciales de acceso para un médico creado por el admin. */
+export async function sendDoctorWelcomeEmail(opts: {
+  to: string
+  name: string
+  tempPassword: string
+}) {
+  const loginUrl = `${getBaseUrl()}/sign-in`
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const body = `
+    ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes y el chat.`)}
+    <div style="background:#f3f6f5;border:1px solid #e6ece9;border-radius:12px;padding:16px;margin:0 0 18px;">
+      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Usuario (tu email)</p>
+      <p style="margin:0 0 14px;font-size:15px;font-weight:600;color:${INK};">${opts.to}</p>
+      <p style="margin:0 0 6px;font-size:13px;color:${SOFT};">Contraseña temporal</p>
+      <p style="margin:0;font-size:18px;font-weight:700;letter-spacing:.04em;color:${INK};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${opts.tempPassword}</p>
+    </div>
+    ${p("Por seguridad, cámbiala desde <strong>Mi cuenta</strong> la primera vez que entres.")}
+    <div style="margin:22px 0 4px;">${button(loginUrl, "Entrar a mi panel")}</div>
+  `
+  return send(opts.to, "Tu acceso de médico en DoctorLife", shell("Tu cuenta de médico está lista", body))
+}
+
 /** Restablecer contraseña (usado por Better Auth). */
 export async function sendResetPasswordEmail(opts: { to: string; name?: string; url: string }) {
   const firstName = opts.name?.split(" ")[0] || "hola"

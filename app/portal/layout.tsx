@@ -13,6 +13,7 @@ export default async function PortalLayout({ children }: { children: React.React
         { href: "/portal/citas", label: "Mis citas" },
         { href: "/portal/chat", label: "Chat" },
         { href: "/portal/recetas", label: "Recetas" },
+        { href: "/portal/cuenta", label: "Mi cuenta" },
       ]}
     >
       {children}

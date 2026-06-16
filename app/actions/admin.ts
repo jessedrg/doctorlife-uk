@@ -4,9 +4,12 @@ import { db } from "@/lib/db"
 import { user as userTable, doctorProfiles, appointments, leads, subscriptions } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
 import { count, desc, eq, inArray, sum } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import { auth } from "@/lib/auth"
+import { generateTempPassword } from "@/lib/credentials"
+import { sendDoctorWelcomeEmail } from "@/lib/email"
 
 const ACTIVE_SUB_STATES = ["active", "trialing", "past_due"]
-import { revalidatePath } from "next/cache"
 
 async function requireAdmin() {
   const u = await getSessionUser()
@@ -14,32 +17,52 @@ async function requireAdmin() {
   return u
 }
 
-/** Promotes a user (by email) to the doctor role and seeds a doctor profile. */
-export async function promoteToDoctor(email: string) {
+/**
+ * Crea una cuenta de médico con contraseña temporal y le envía sus credenciales.
+ * Los médicos no se registran solos: solo el admin puede crearlos.
+ */
+export async function createDoctor(input: {
+  name: string
+  email: string
+  specialty?: string
+}) {
   await requireAdmin()
-  const [target] = await db
-    .select()
-    .from(userTable)
-    .where(eq(userTable.email, email.trim().toLowerCase()))
-    .limit(1)
+  const name = input.name.trim()
+  const email = input.email.trim().toLowerCase()
+  const specialty = input.specialty?.trim() || null
 
-  if (!target) return { ok: false, error: "No existe ningún usuario con ese email." }
+  if (!name) return { ok: false, error: "Introduce el nombre del médico." }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: "Introduce un email válido." }
+  }
+
+  const [existing] = await db
+    .select({ id: userTable.id })
+    .from(userTable)
+    .where(eq(userTable.email, email))
+    .limit(1)
+  if (existing) return { ok: false, error: "Ya existe una cuenta con ese email." }
+
+  const tempPassword = generateTempPassword()
+
+  // Better Auth crea el usuario y hashea la contraseña.
+  const created = await auth.api.signUpEmail({ body: { name, email, password: tempPassword } })
+  const userId = created?.user?.id
+  if (!userId) return { ok: false, error: "No se pudo crear la cuenta del médico." }
 
   await db
     .update(userTable)
     .set({ role: "doctor", updatedAt: new Date() })
-    .where(eq(userTable.id, target.id))
+    .where(eq(userTable.id, userId))
 
-  const [existing] = await db
-    .select()
-    .from(doctorProfiles)
-    .where(eq(doctorProfiles.userId, target.id))
-    .limit(1)
+  await db
+    .insert(doctorProfiles)
+    .values({ userId, fullName: name, specialty })
+    .onConflictDoNothing({ target: doctorProfiles.userId })
 
-  if (!existing) {
-    await db.insert(doctorProfiles).values({ userId: target.id, fullName: target.name })
-  }
+  await sendDoctorWelcomeEmail({ to: email, name, tempPassword })
 
+  revalidatePath("/admin/medicos")
   revalidatePath("/admin")
   return { ok: true }
 }

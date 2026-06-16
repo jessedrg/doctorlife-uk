@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/session"
 import { listDoctors } from "@/app/actions/admin"
 import { AdminDoctorToggle } from "@/components/admin-doctor-toggle"
+import { AdminCreateDoctor } from "@/components/admin-create-doctor"
 
 export const metadata = { title: "Médicos — DoctorLife" }
 
@@ -16,6 +17,10 @@ export default async function AdminDoctorsPage() {
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
         Gestiona los médicos de la plataforma y su estado de cobros.
       </p>
+
+      <div className="mt-6 max-w-[680px]">
+        <AdminCreateDoctor />
+      </div>
 
       <div className="mt-6 overflow-x-auto rounded-[18px] border border-ink/10">
         <table className="w-full text-left text-[14px]">
@@ -52,7 +57,7 @@ export default async function AdminDoctorsPage() {
             {doctors.length === 0 && (
               <tr className="bg-warm">
                 <td colSpan={4} className="px-4 py-6 text-center text-ink-mute">
-                  Aún no hay médicos. Promociona un usuario desde la pantalla de inicio.
+                  Aún no hay médicos. Crea el primero con el formulario de arriba.
                 </td>
               </tr>
             )}

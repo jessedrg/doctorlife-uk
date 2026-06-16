@@ -51,6 +51,17 @@ export function QuizModal() {
 
   // Solo hay un plan contratable: el destacado. Lo preseleccionamos siempre.
   const mainPlan = useMemo(() => products.find((p) => !p.comingSoon) ?? products[0], []);
+
+  // Agrupa los huecos por día para el selector de la fase "slot".
+  const slotsByDate = useMemo(() => {
+    const map = new Map<string, PooledSlot[]>();
+    for (const s of slots ?? []) {
+      const list = map.get(s.date) ?? [];
+      list.push(s);
+      map.set(s.date, list);
+    }
+    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [slots]);
   useEffect(() => {
     if (open) setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
   }, [open, initialPlan, mainPlan]);
@@ -76,8 +87,8 @@ export function QuizModal() {
 
   if (!open) return null;
 
-  // Etapas: preguntas (total) + IMC (1) + plan (1) + datos (1) + done
-  const totalStages = total + 3;
+  // Etapas: preguntas (total) + IMC (1) + plan (1) + datos (1) + cita (1) + done
+  const totalStages = total + 4;
   const completed =
     phase === "questions"
       ? step
@@ -85,9 +96,13 @@ export function QuizModal() {
         ? total
         : phase === "plan"
           ? total + 1
-          : phase === "done"
-            ? totalStages
-            : total + 2;
+          : phase === "details" || phase === "submitting"
+            ? total + 2
+            : phase === "slot"
+              ? total + 3
+              : phase === "done"
+                ? totalStages
+                : total + 2;
   const progress = Math.round((completed / totalStages) * 100);
 
   const h = parseFloat(height);
@@ -195,16 +210,6 @@ export function QuizModal() {
     setPaying(false);
   };
 
-  // Agrupa los huecos por día para el selector de la fase "slot".
-  const slotsByDate = useMemo(() => {
-    const map = new Map<string, PooledSlot[]>();
-    for (const s of slots ?? []) {
-      const list = map.get(s.date) ?? [];
-      list.push(s);
-      map.set(s.date, list);
-    }
-    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  }, [slots]);
   const activeSlots = slotsByDate.find(([d]) => d === activeDate)?.[1] ?? [];
 
   return (
@@ -612,10 +617,10 @@ export function QuizModal() {
                   {phase === "submitting" ? (
                     <>
                       <span className="quiz-spinner h-[18px] w-[18px] rounded-full border-2 border-paper/30 border-t-paper" />
-                      Creando tu plan…
+                      Buscando tu cita…
                     </>
                   ) : (
-                    "Ver mi plan"
+                    "Elegir mi cita"
                   )}
                 </button>
               </div>
@@ -625,7 +630,7 @@ export function QuizModal() {
                 <a href="/privacidad" className="underline decoration-ink/25 underline-offset-2 hover:text-ink">
                   política de privacidad
                 </a>
-                . Sin compromiso ni cobros automáticos.
+                . El pago se realiza en el siguiente paso, tras elegir tu cita.
               </p>
 
               {phase !== "submitting" && (
@@ -633,6 +638,89 @@ export function QuizModal() {
                   ← Atrás
                 </button>
               )}
+            </div>
+          )}
+
+          {/* SLOT: elegir hora y pagar */}
+          {phase === "slot" && (
+            <div className="quiz-fade">
+              <h3 className="text-[24px] font-light tracking-[-.02em] sm:text-[27px]">
+                Elige tu primera cita
+              </h3>
+              <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-ink-soft">
+                Reserva tu videollamada con un endocrino. Al confirmar pagarás{" "}
+                <span className="font-medium text-ink">65&nbsp;€/mes + IVA</span> y crearemos tu cuenta
+                automáticamente.
+              </p>
+
+              {slots === null ? (
+                <div className="flex items-center justify-center py-12 text-ink-mute">
+                  <span className="quiz-spinner mr-2 inline-block h-5 w-5 rounded-full border-2 border-ink/20 border-t-ink/60" />
+                  Buscando huecos disponibles…
+                </div>
+              ) : slotsByDate.length === 0 ? (
+                <div className="mt-6 rounded-2xl bg-ink/[.04] p-6 text-center text-[15px] text-ink-soft">
+                  Ahora mismo no hay huecos disponibles. Escríbenos a{" "}
+                  <span className="font-medium text-ink">hola@doctorlife.app</span> y te ayudamos a reservar.
+                </div>
+              ) : (
+                <>
+                  {/* Selector de día */}
+                  <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+                    {slotsByDate.map(([date, list]) => {
+                      const d = new Date(list[0].startUtc);
+                      const active = date === activeDate;
+                      return (
+                        <button
+                          key={date}
+                          type="button"
+                          onClick={() => setActiveDate(date)}
+                          className={`shrink-0 rounded-xl px-3.5 py-2 text-center transition-colors ${
+                            active ? "bg-ink text-paper" : "bg-ink/[.05] text-ink-soft hover:bg-ink/10"
+                          }`}
+                        >
+                          <span className="block text-[11px] uppercase tracking-wide opacity-70">
+                            {d.toLocaleDateString("es-ES", { weekday: "short" })}
+                          </span>
+                          <span className="block text-[15px] font-medium">
+                            {d.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Horas del día activo */}
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {activeSlots.map((s) => (
+                      <button
+                        key={s.startUtc}
+                        type="button"
+                        disabled={paying}
+                        onClick={() => payForSlot(s.startUtc)}
+                        className="rounded-xl border border-ink/12 py-2.5 text-[14.5px] font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[.04] disabled:opacity-50"
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+
+              {paying && (
+                <p className="mt-4 text-center text-sm text-ink-mute">Redirigiendo al pago seguro…</p>
+              )}
+
+              <button
+                type="button"
+                onClick={back}
+                disabled={paying}
+                className="mt-4 text-sm text-ink-mute hover:text-ink disabled:opacity-50"
+              >
+                ← Atrás
+              </button>
             </div>
           )}
 

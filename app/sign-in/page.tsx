@@ -7,5 +7,5 @@ export const metadata = { title: "Iniciar sesión — DoctorLife" }
 export default async function SignInPage() {
   const user = await getSessionUser()
   if (user) redirect(homePathForRole(user.role))
-  return <AuthForm mode="sign-in" />
+  return <AuthForm />
 }

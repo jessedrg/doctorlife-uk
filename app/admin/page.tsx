@@ -1,6 +1,5 @@
 import { requireRole } from "@/lib/session"
 import { getAdminMetrics, listUsers } from "@/app/actions/admin"
-import { AdminPromoteDoctor } from "@/components/admin-promote-doctor"
 import { MetricCard } from "@/components/metric-card"
 
 export const metadata = { title: "Administración — DoctorLife" }
@@ -45,10 +44,6 @@ export default async function AdminHome() {
         />
         <MetricCard label="Suscripciones activas" value={String(metrics.activeSubscriptions)} />
         <MetricCard label="MRR" value={eur(metrics.mrrCents)} hint="Ingreso recurrente mensual" />
-      </div>
-
-      <div className="mt-7 max-w-[640px]">
-        <AdminPromoteDoctor />
       </div>
 
       <div className="mt-7">
