@@ -2,7 +2,6 @@ import { db } from "@/lib/db"
 import { doctorAvailability, availabilityExceptions, doctorProfiles } from "@/lib/db/schema"
 import { and, eq } from "drizzle-orm"
 import { generateSlots } from "./slots"
-import { getBusyIntervals } from "@/lib/google/calendar"
 import type { SchedulingProvider, SlotRange, WeeklyRule } from "./types"
 
 /**
@@ -68,10 +67,6 @@ export const nativeScheduling: SchedulingProvider = {
     const rules: WeeklyRule[] = await this.getWeeklyRules(doctorUserId)
     const exceptions = new Set(await this.getExceptions(doctorUserId))
 
-    // Eventos ya existentes en el Google Calendar del médico (si está conectado).
-    // Devuelve [] cuando no hay conexión, así que no afecta a quienes no la usan.
-    const busyIntervals = await getBusyIntervals(doctorUserId, range.from, range.to)
-
     return generateSlots({
       rules,
       exceptions,
@@ -79,7 +74,6 @@ export const nativeScheduling: SchedulingProvider = {
       slotMinutes: profile.slotMinutes,
       timeZone: profile.timezone,
       takenStartUtc,
-      busyIntervals,
     })
   },
 }

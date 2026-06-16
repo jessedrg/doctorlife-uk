@@ -6,7 +6,6 @@ import { quizSteps, products } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
 import { getPublicSlots, startPublicCheckout } from "@/app/actions/public-booking";
 import type { PooledSlot } from "@/lib/scheduling/types";
-import { SchedulerCalendar } from "./scheduler-calendar";
 import { BrandLogo } from "./brand-logo";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,6 +26,7 @@ export function QuizModal() {
   const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [slots, setSlots] = useState<PooledSlot[] | null>(null);
+  const [activeDate, setActiveDate] = useState<string | null>(null);
   const [paying, setPaying] = useState(false);
 
   const total = quizSteps.length;
@@ -45,12 +45,23 @@ export function QuizModal() {
     setExpandedPlan(null);
     setError(null);
     setSlots(null);
+    setActiveDate(null);
     setPaying(false);
   };
 
   // Solo hay un plan contratable: el destacado. Lo preseleccionamos siempre.
   const mainPlan = useMemo(() => products.find((p) => !p.comingSoon) ?? products[0], []);
 
+  // Agrupa los huecos por día para el selector de la fase "slot".
+  const slotsByDate = useMemo(() => {
+    const map = new Map<string, PooledSlot[]>();
+    for (const s of slots ?? []) {
+      const list = map.get(s.date) ?? [];
+      list.push(s);
+      map.set(s.date, list);
+    }
+    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [slots]);
   useEffect(() => {
     if (open) setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
   }, [open, initialPlan, mainPlan]);
@@ -177,16 +188,17 @@ export function QuizModal() {
     try {
       const available = await getPublicSlots(14);
       setSlots(available);
+      setActiveDate(available[0]?.date ?? null);
     } catch {
       setSlots([]);
     }
   };
 
-  const payForSlot = async (slot: PooledSlot) => {
+  const payForSlot = async (startUtc: string) => {
     setError(null);
     setPaying(true);
     try {
-      const result = await startPublicCheckout({ name, email, startUtcISO: slot.startUtc });
+      const result = await startPublicCheckout({ name, email, startUtcISO: startUtc });
       if ("url" in result) {
         window.location.href = result.url;
         return;
@@ -197,6 +209,8 @@ export function QuizModal() {
     }
     setPaying(false);
   };
+
+  const activeSlots = slotsByDate.find(([d]) => d === activeDate)?.[1] ?? [];
 
   return (
     <div
@@ -657,22 +671,56 @@ export function QuizModal() {
                   <span className="quiz-spinner mr-2 inline-block h-5 w-5 rounded-full border-2 border-ink/20 border-t-ink/60" />
                   Buscando huecos disponibles…
                 </div>
-              ) : slots.length === 0 ? (
+              ) : slotsByDate.length === 0 ? (
                 <div className="mt-6 rounded-2xl bg-ink/[.04] p-6 text-center text-[15px] text-ink-soft">
                   Ahora mismo no hay huecos disponibles. Escríbenos a{" "}
                   <span className="font-medium text-ink">hola@doctorlife.app</span> y te ayudamos a reservar.
                 </div>
               ) : (
-                <div className="mt-5">
-                  <SchedulerCalendar
-                    slots={slots}
-                    onSelect={payForSlot}
-                    pendingStart={paying ? "pending" : null}
-                    error={error}
-                    footnote="Recibirás un enlace de Google Meet por correo y se añadirá la cita al calendario de tu médico."
-                  />
-                </div>
+                <>
+                  {/* Selector de día */}
+                  <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+                    {slotsByDate.map(([date, list]) => {
+                      const d = new Date(list[0].startUtc);
+                      const active = date === activeDate;
+                      return (
+                        <button
+                          key={date}
+                          type="button"
+                          onClick={() => setActiveDate(date)}
+                          className={`shrink-0 rounded-xl px-3.5 py-2 text-center transition-colors ${
+                            active ? "bg-ink text-paper" : "bg-ink/[.05] text-ink-soft hover:bg-ink/10"
+                          }`}
+                        >
+                          <span className="block text-[11px] uppercase tracking-wide opacity-70">
+                            {d.toLocaleDateString("es-ES", { weekday: "short" })}
+                          </span>
+                          <span className="block text-[15px] font-medium">
+                            {d.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Horas del día activo */}
+                  <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {activeSlots.map((s) => (
+                      <button
+                        key={s.startUtc}
+                        type="button"
+                        disabled={paying}
+                        onClick={() => payForSlot(s.startUtc)}
+                        className="rounded-xl border border-ink/12 py-2.5 text-[14.5px] font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[.04] disabled:opacity-50"
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
               )}
+
+              {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
               {paying && (
                 <p className="mt-4 text-center text-sm text-ink-mute">Redirigiendo al pago seguro…</p>

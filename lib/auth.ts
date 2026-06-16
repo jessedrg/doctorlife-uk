@@ -2,14 +2,6 @@ import { betterAuth } from "better-auth"
 import { pool } from "@/lib/db"
 import { sendResetPasswordEmail } from "@/lib/email"
 
-/** Scopes de Google Calendar que pide el médico al conectar su cuenta. */
-const GOOGLE_CALENDAR_SCOPES = [
-  "https://www.googleapis.com/auth/calendar.events",
-  "https://www.googleapis.com/auth/calendar.readonly",
-]
-
-const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
-
 export const auth = betterAuth({
   database: pool,
   baseURL:
@@ -24,30 +16,6 @@ export const auth = betterAuth({
     autoSignIn: true,
     sendResetPassword: async ({ user, url }) => {
       await sendResetPasswordEmail({ to: user.email, name: user.name, url })
-    },
-  },
-  // Google se usa SOLO como cuenta enlazable por los médicos (Calendar/Meet),
-  // no como método de inicio de sesión. Se omite si faltan las credenciales.
-  ...(googleConfigured
-    ? {
-        socialProviders: {
-          google: {
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            scope: GOOGLE_CALENDAR_SCOPES,
-            // offline + consent garantizan que recibimos un refresh_token.
-            accessType: "offline" as const,
-            prompt: "consent" as const,
-          },
-        },
-      }
-    : {}),
-  account: {
-    accountLinking: {
-      enabled: true,
-      trustedProviders: ["google"],
-      // El email de Google del médico puede diferir del de su cuenta DoctorLife.
-      allowDifferentEmails: true,
     },
   },
   user: {
@@ -69,8 +37,12 @@ export const auth = betterAuth({
     ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
-    // Dominios del preview de v0 (el iframe se sirve desde subdominios de
-    // vusercontent.net) y los preview deployments de Vercel.
+    // Dominios propios del proyecto.
+    "https://doctorlife.io",
+    "https://www.doctorlife.io",
+    "https://dev.doctorlife.io",
+    // Preview de v0 (el iframe se sirve desde subdominios de vusercontent.net)
+    // y los preview deployments de Vercel.
     "https://*.vusercontent.net",
     "https://*.vercel.app",
     ...(process.env.NODE_ENV === "development"
@@ -80,6 +52,16 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
+  },
+  // Límite de peticiones más permisivo (entorno de pruebas) para no bloquear
+  // tras unos pocos intentos de inicio de sesión.
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+    customRules: {
+      "/sign-in/email": { window: 60, max: 30 },
+    },
   },
   ...(process.env.NODE_ENV === "development"
     ? {
