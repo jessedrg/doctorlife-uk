@@ -1,5 +1,6 @@
 import { footerColumns } from "@/lib/data";
 import { QuizTrigger } from "./quiz-trigger";
+import { BrandLogo } from "./brand-logo";
 
 export function Footer() {
   return (
@@ -11,12 +12,9 @@ export function Footer() {
             <a
               href="/#top"
               aria-label="DoctorLife — inicio"
-              className="flex items-center gap-3 no-underline"
+              className="inline-flex no-underline"
             >
-              <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[14px] bg-sage font-serif text-[26px] font-bold leading-none text-ink">
-                D
-              </span>
-              <span className="text-[22px] font-semibold tracking-[-.01em] text-paper">DoctorLife</span>
+              <BrandLogo boxed markSize={28} textSize={23} textClassName="text-paper" />
             </a>
             <p className="mt-5 max-w-[280px] text-[15px] leading-relaxed text-paper/65">
               Cuidado del peso dirigido por médicos colegiados, con seguimiento
