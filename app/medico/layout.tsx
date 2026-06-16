@@ -1,0 +1,20 @@
+import { requireRole } from "@/lib/session"
+import { PortalShell } from "@/components/portal-shell"
+
+export default async function MedicoLayout({ children }: { children: React.ReactNode }) {
+  const user = await requireRole("doctor")
+  return (
+    <PortalShell
+      user={user}
+      badge="Médico"
+      nav={[
+        { href: "/medico", label: "Inicio" },
+        { href: "/medico/disponibilidad", label: "Disponibilidad" },
+        { href: "/medico/pacientes", label: "Pacientes" },
+        { href: "/medico/pagos", label: "Pagos" },
+      ]}
+    >
+      {children}
+    </PortalShell>
+  )
+}
