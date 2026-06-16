@@ -58,6 +58,33 @@ export const verification = pgTable("verification", {
 
 export type User = typeof user.$inferSelect
 
+/* ------------------------------------------------------------------ */
+/* App tables                                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Perfil de cada médico + estado de su cuenta de Stripe Connect.
+ * Se escala por `userId` en cada query (no hay RLS en Neon).
+ */
+export const doctorProfiles = pgTable("doctor_profiles", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").notNull().unique(),
+  fullName: text("fullName").notNull(),
+  specialty: text("specialty"),
+  licenseNumber: text("licenseNumber"),
+  bio: text("bio"),
+  stripeAccountId: text("stripeAccountId"),
+  stripeOnboarded: boolean("stripeOnboarded").notNull().default(false),
+  chargesEnabled: boolean("chargesEnabled").notNull().default(false),
+  payoutsEnabled: boolean("payoutsEnabled").notNull().default(false),
+  acceptingPatients: boolean("acceptingPatients").notNull().default(true),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+})
+
+export type DoctorProfile = typeof doctorProfiles.$inferSelect
+export type NewDoctorProfile = typeof doctorProfiles.$inferInsert
+
 /**
  * Leads capturados desde el quiz "Comenzar".
  * Son envíos públicos (sin cuenta de usuario), por eso no hay userId.
