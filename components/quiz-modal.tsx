@@ -427,17 +427,17 @@ export function QuizModal() {
                 Elige tu plan
               </h3>
               <p className="mb-4 text-[15.5px] leading-relaxed text-ink-soft">
-                Selecciona el plan que mejor se adapta a ti. Podrás cambiarlo más adelante con tu médico.
+                Tu plan de seguimiento con endocrino. Pronto añadiremos más planes.
               </p>
 
-              {/* Aviso del precio de la primera visita */}
+              {/* Aviso del precio de la suscripción */}
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
-                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[13px] font-bold text-ink">
-                  25€
+                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
+                  65€
                 </span>
                 <p className="text-[13.5px] leading-snug text-ink-soft">
-                  <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita médica.
-                  Si continúas con el plan, abonas el resto de la mensualidad.
+                  <span className="font-semibold text-ink">65&nbsp;€/mes + IVA</span>: endocrino asignado, videollamada
+                  mensual y chat en vivo con tu médico. Cancela cuando quieras.
                 </p>
               </div>
 
@@ -449,32 +449,44 @@ export function QuizModal() {
                     <div
                       key={p.name}
                       className={`overflow-hidden rounded-2xl border transition-all duration-150 ${
-                        selected ? "border-sage bg-sage/25" : "border-ink/15 bg-warm"
+                        p.comingSoon
+                          ? "border-ink/10 bg-warm/60 opacity-70"
+                          : selected
+                            ? "border-sage bg-sage/25"
+                            : "border-ink/15 bg-warm"
                       }`}
                     >
                       <button
                         type="button"
+                        disabled={p.comingSoon}
                         onClick={() => {
+                          if (p.comingSoon) return;
                           setPlan(p.name);
                           setError(null);
                         }}
                         aria-pressed={selected}
-                        className="flex w-full items-center justify-between gap-3 px-4 py-[14px] text-left sm:px-5"
+                        className="flex w-full items-center justify-between gap-3 px-4 py-[14px] text-left disabled:cursor-not-allowed sm:px-5"
                       >
                         <span className="flex min-w-0 flex-col">
                           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                             <span className="text-[15.5px] font-medium text-ink sm:text-[16.5px]">{p.name}</span>
-                            {p.featured && (
-                              <span className="rounded-full bg-sage px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[.08em] text-ink">
-                                {p.tag}
-                              </span>
-                            )}
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[.08em] ${
+                                p.comingSoon ? "bg-ink/10 text-ink-soft" : "bg-sage text-ink"
+                              }`}
+                            >
+                              {p.tag}
+                            </span>
                           </span>
                           <span className="mt-0.5 text-[13.5px] text-ink-mute">{p.price}</span>
                         </span>
                         <span
                           className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
-                            selected ? "bg-sage text-ink" : "border border-ink/20 text-transparent"
+                            p.comingSoon
+                              ? "border border-dashed border-ink/20 text-transparent"
+                              : selected
+                                ? "bg-sage text-ink"
+                                : "border border-ink/20 text-transparent"
                           }`}
                         >
                           ✓
@@ -545,20 +557,20 @@ export function QuizModal() {
           {/* DETAILS (name + email + plan summary) */}
           {(phase === "details" || phase === "submitting") && (
             <div className="quiz-fade">
-              <div className="text-[13px] uppercase tracking-[.14em] text-clay">Último paso</div>
+              <div className="text-[13px] uppercase tracking-[.14em] text-clay">Casi listo</div>
               <h3 className="mb-[10px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] sm:text-[30px]">
-                Tu plan está listo
+                Tus datos de acceso
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
-                Déjanos tu correo y un médico colegiado de DoctorLife revisará tus respuestas y creará tu
-                plan personalizado en menos de 24 horas.
+                Usaremos tu correo como usuario para entrar a tu panel. En el siguiente paso eliges tu
+                primera cita con el endocrino y completas el pago.
               </p>
 
               {/* Plan summary chips */}
               <div className="mb-6 flex flex-wrap gap-2">
                 {plan && (
                   <span className="rounded-full border border-amber/50 bg-amber/15 px-3 py-1.5 text-[13px] font-medium text-ink">
-                    Plan {plan}
+                    {plan}
                   </span>
                 )}
                 {answers.filter(Boolean).map((a, i) => (

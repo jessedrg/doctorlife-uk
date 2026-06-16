@@ -1,15 +1,17 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { appointments, doctorProfiles, user } from "@/lib/db/schema"
+import { appointments, doctorProfiles, subscriptions, user } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { maybeCreateMeeting } from "@/lib/google/calendar"
-import { and, asc, eq, gte, ne } from "drizzle-orm"
+import { and, asc, desc, eq, gte, inArray, ne } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import type { PooledSlot } from "@/lib/scheduling/types"
+
+const SUB_ACTIVE_STATES = ["active", "trialing", "past_due"]
 
 const CONSULT_PRICE_CENTS = 2500
 /** Comisión de la plataforma sobre el importe de la consulta (20%). */
@@ -106,6 +108,98 @@ export async function createBookingCheckout(
     await db.delete(appointments).where(eq(appointments.id, appointmentId))
     return { error: e instanceof Error ? e.message : "No se pudo iniciar el pago." }
   }
+}
+
+/**
+ * Reserva una cita de seguimiento incluida en la suscripción activa (sin pago).
+ * Se usa desde el portal del paciente para las videollamadas mensuales.
+ */
+export async function createIncludedBooking(
+  startUtcISO: string,
+): Promise<{ ok: true } | { error: string }> {
+  const patient = await requireRole("patient")
+
+  // Debe tener una suscripción activa para reservar gratis.
+  const [sub] = await db
+    .select({ doctorId: subscriptions.doctorId, status: subscriptions.status })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.patientId, patient.id),
+        inArray(subscriptions.status, SUB_ACTIVE_STATES),
+      ),
+    )
+    .orderBy(desc(subscriptions.id))
+    .limit(1)
+  if (!sub) {
+    return { error: "Necesitas una suscripción activa para reservar tu videollamada." }
+  }
+
+  const start = new Date(startUtcISO)
+  if (Number.isNaN(start.getTime()) || start.getTime() < Date.now()) {
+    return { error: "Ese horario ya no es válido." }
+  }
+
+  const slots = await getPooledSlots({
+    from: new Date(),
+    to: new Date(Date.now() + 30 * 24 * 60 * 60_000),
+  })
+  const slot = slots.find((s) => s.startUtc === start.toISOString())
+  if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
+
+  // Preferimos mantener al endocrino asignado en la suscripción si está libre.
+  let doctorId = slot.doctorId
+  if (sub.doctorId && (await isSlotFree(sub.doctorId, start))) {
+    doctorId = sub.doctorId
+  } else if (!(await isSlotFree(slot.doctorId, start))) {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  let appointmentId: number
+  try {
+    const [row] = await db
+      .insert(appointments)
+      .values({
+        patientId: patient.id,
+        doctorId,
+        startsAt: start,
+        endsAt: new Date(slot.endUtc),
+        status: "confirmed",
+        amountCents: 0,
+        applicationFeeCents: 0,
+      })
+      .returning({ id: appointments.id })
+    appointmentId = row.id
+  } catch {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  // Crea el enlace de la videollamada (si Google está configurado).
+  const [doc] = await db
+    .select({ email: user.email })
+    .from(doctorProfiles)
+    .innerJoin(user, eq(user.id, doctorProfiles.userId))
+    .where(eq(doctorProfiles.userId, doctorId))
+  const [pat] = await db.select({ email: user.email }).from(user).where(eq(user.id, patient.id))
+  const meeting = await maybeCreateMeeting({
+    doctorId,
+    doctorEmail: doc?.email ?? "",
+    patientEmail: pat?.email ?? "",
+    summary: "Seguimiento mensual · DoctorLife",
+    startUtc: start,
+    endUtc: new Date(slot.endUtc),
+  })
+  if (meeting.meetingUrl || meeting.googleEventId) {
+    await db
+      .update(appointments)
+      .set({ meetingUrl: meeting.meetingUrl, googleEventId: meeting.googleEventId, updatedAt: new Date() })
+      .where(eq(appointments.id, appointmentId))
+  }
+
+  revalidatePath("/portal/citas")
+  revalidatePath("/portal")
+  revalidatePath("/medico/citas")
+  return { ok: true }
 }
 
 /**

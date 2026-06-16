@@ -21,7 +21,7 @@ export function Footer() {
               real desde la app y tratamiento GLP‑1 supervisado.
             </p>
             <QuizTrigger className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink">
-              Empieza por 25 €
+              Empieza por 65 €/mes
               <span className="text-[13px]">↗</span>
             </QuizTrigger>
           </div>

@@ -1,7 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { createBookingCheckout } from "@/app/actions/booking"
+import { useRouter } from "next/navigation"
+import { createIncludedBooking } from "@/app/actions/booking"
 import type { PooledSlot } from "@/lib/scheduling/types"
 
 function formatDateLabel(iso: string) {
@@ -25,6 +26,7 @@ export function BookingCalendar({ slots }: { slots: PooledSlot[] }) {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]))
   }, [slots])
 
+  const router = useRouter()
   const [activeDate, setActiveDate] = useState<string | null>(dates[0]?.[0] ?? null)
   const [pendingStart, setPendingStart] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -35,14 +37,14 @@ export function BookingCalendar({ slots }: { slots: PooledSlot[] }) {
     setError(null)
     setPendingStart(startUtc)
     try {
-      const result = await createBookingCheckout(startUtc)
-      if ("url" in result) {
-        window.location.href = result.url
+      const result = await createIncludedBooking(startUtc)
+      if ("ok" in result) {
+        router.push("/portal/citas?reservada=1")
         return
       }
       setError(result.error)
     } catch {
-      setError("No se pudo iniciar la reserva. Inténtalo de nuevo.")
+      setError("No se pudo completar la reserva. Inténtalo de nuevo.")
     }
     setPendingStart(null)
   }
@@ -106,8 +108,8 @@ export function BookingCalendar({ slots }: { slots: PooledSlot[] }) {
       ) : null}
 
       <p className="text-xs text-ink/50">
-        El importe de la primera consulta es de 25&nbsp;€. Se te asignará un médico disponible para la
-        hora elegida.
+        Tu videollamada de seguimiento está incluida en tu suscripción. Se te asignará tu endocrino o,
+        si no tiene hueco, otro médico disponible para la hora elegida.
       </p>
     </div>
   )

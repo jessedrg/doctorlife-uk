@@ -6,7 +6,7 @@ import { QuizTrigger } from "./quiz-trigger";
  */
 export function BlogFunnel({
   title = "Empieza tu tratamiento con médicos colegiados",
-  subtitle = "Tu primera visita son solo 25 € y se descuentan del tratamiento. Todo el seguimiento, desde nuestra app.",
+  subtitle = "Endocrino asignado, videollamada mensual y chat en vivo con tu médico por 65 €/mes + IVA. Todo el seguimiento, desde nuestra app.",
 }: {
   title?: string;
   subtitle?: string;
@@ -16,7 +16,7 @@ export function BlogFunnel({
       <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr]">
         <div className="p-8 sm:p-10">
           <span className="inline-block rounded-full bg-sage px-[13px] py-[5px] text-xs font-semibold text-ink">
-            Primera visita 25 €
+            65 €/mes + IVA
           </span>
           <h3 className="mt-5 text-balance text-[clamp(24px,3vw,32px)] font-light leading-[1.1]">
             {title}
@@ -24,7 +24,7 @@ export function BlogFunnel({
           <p className="mt-3 max-w-[46ch] text-[15px] leading-relaxed text-paper/75">{subtitle}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <QuizTrigger className="rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
-              Reservar primera visita
+              Empezar ahora
             </QuizTrigger>
             <a
               href="/#planes"
