@@ -401,6 +401,11 @@ export function QuizModal() {
 
               {/* Plan summary chips */}
               <div className="mb-6 flex flex-wrap gap-2">
+                {plan && (
+                  <span className="rounded-full border border-amber/50 bg-amber/15 px-3 py-1.5 text-[13px] font-medium text-ink">
+                    Plan {plan}
+                  </span>
+                )}
                 {answers.filter(Boolean).map((a, i) => (
                   <span
                     key={i}
