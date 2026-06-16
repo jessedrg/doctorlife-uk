@@ -2,6 +2,14 @@ import { betterAuth } from "better-auth"
 import { pool } from "@/lib/db"
 import { sendResetPasswordEmail } from "@/lib/email"
 
+/** Scopes de Google Calendar que pide el médico al conectar su cuenta. */
+const GOOGLE_CALENDAR_SCOPES = [
+  "https://www.googleapis.com/auth/calendar.events",
+  "https://www.googleapis.com/auth/calendar.readonly",
+]
+
+const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+
 export const auth = betterAuth({
   database: pool,
   baseURL:
@@ -16,6 +24,30 @@ export const auth = betterAuth({
     autoSignIn: true,
     sendResetPassword: async ({ user, url }) => {
       await sendResetPasswordEmail({ to: user.email, name: user.name, url })
+    },
+  },
+  // Google se usa SOLO como cuenta enlazable por los médicos (Calendar/Meet),
+  // no como método de inicio de sesión. Se omite si faltan las credenciales.
+  ...(googleConfigured
+    ? {
+        socialProviders: {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            scope: GOOGLE_CALENDAR_SCOPES,
+            // offline + consent garantizan que recibimos un refresh_token.
+            accessType: "offline" as const,
+            prompt: "consent" as const,
+          },
+        },
+      }
+    : {}),
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+      // El email de Google del médico puede diferir del de su cuenta DoctorLife.
+      allowDifferentEmails: true,
     },
   },
   user: {

@@ -87,10 +87,13 @@ export function generateSlots(opts: {
   slotMinutes: number
   timeZone: string
   takenStartUtc?: Set<string>
+  /** Intervalos ocupados (ms epoch) del calendario externo del médico (Google). */
+  busyIntervals?: { start: number; end: number }[]
   now?: Date
 }): Slot[] {
   const { rules, exceptions, range, slotMinutes, timeZone } = opts
   const taken = opts.takenStartUtc ?? new Set<string>()
+  const busy = opts.busyIntervals ?? []
   const now = opts.now ?? new Date()
   if (rules.length === 0 || slotMinutes <= 0) return []
 
@@ -126,6 +129,10 @@ export function generateSlots(opts: {
         const iso = startUtc.toISOString()
         if (taken.has(iso)) continue
         const endUtc = new Date(startUtc.getTime() + slotMinutes * 60_000)
+        // Descartar huecos que solapen con eventos existentes (Google Calendar).
+        const startMs = startUtc.getTime()
+        const endMs = endUtc.getTime()
+        if (busy.some((b) => startMs < b.end && endMs > b.start)) continue
         slots.push({
           startUtc: iso,
           endUtc: endUtc.toISOString(),
