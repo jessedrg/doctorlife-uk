@@ -22,6 +22,7 @@ export function QuizModal() {
   const [weight, setWeight] = useState("");
   const [age, setAge] = useState("");
   const [plan, setPlan] = useState<string | null>(null);
+  const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const total = quizSteps.length;
@@ -37,6 +38,7 @@ export function QuizModal() {
     setWeight("");
     setAge("");
     setPlan(null);
+    setExpandedPlan(null);
     setError(null);
   };
 
@@ -154,19 +156,23 @@ export function QuizModal() {
       aria-label="Crea tu plan personalizado"
     >
       <div
-        className="quiz-card w-full max-w-[580px] overflow-hidden rounded-t-[30px] bg-paper sm:rounded-[30px]"
+        className="quiz-card flex max-h-[94dvh] w-full max-w-[580px] flex-col overflow-hidden rounded-t-[28px] bg-paper sm:max-h-[90dvh] sm:rounded-[30px]"
         style={{ boxShadow: "0 40px 90px rgba(0,0,0,.4)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Progress bar */}
-        <div className="h-[5px] bg-cream-2">
+        <div className="h-[5px] flex-shrink-0 bg-cream-2">
           <div
             className="h-full bg-amber transition-[width] duration-[450ms] ease-out"
             style={{ width: `${Math.max(progress, 6)}%` }}
           />
         </div>
 
-        <div className="px-7 pb-8 pt-7 sm:px-9 sm:pb-9 sm:pt-8">
+        <div className="overflow-y-auto overscroll-contain px-5 pb-7 pt-6 sm:px-9 sm:pb-9 sm:pt-8">
+          <div
+            aria-hidden
+            className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink/15 sm:hidden"
+          />
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <BrandLogo markSize={26} textSize={18} textClassName="text-ink" />
@@ -327,40 +333,78 @@ export function QuizModal() {
               <div className="flex flex-col gap-[11px]">
                 {products.map((p) => {
                   const selected = plan === p.name;
+                  const expanded = expandedPlan === p.name;
                   return (
-                    <button
+                    <div
                       key={p.name}
-                      type="button"
-                      onClick={() => {
-                        setPlan(p.name);
-                        setError(null);
-                      }}
-                      aria-pressed={selected}
-                      className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[15px] text-left transition-all duration-150 ${
-                        selected
-                          ? "border-sage bg-sage/25"
-                          : "border-ink/15 bg-warm hover:border-amber hover:bg-cream"
+                      className={`overflow-hidden rounded-2xl border transition-all duration-150 ${
+                        selected ? "border-sage bg-sage/25" : "border-ink/15 bg-warm"
                       }`}
                     >
-                      <span className="flex flex-col">
-                        <span className="flex items-center gap-2">
-                          <span className="text-[16.5px] font-medium text-ink">{p.name}</span>
-                          {p.featured && (
-                            <span className="rounded-full bg-sage px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[.08em] text-ink">
-                              {p.tag}
-                            </span>
-                          )}
-                        </span>
-                        <span className="mt-0.5 text-[13.5px] text-ink-mute">{p.price}</span>
-                      </span>
-                      <span
-                        className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
-                          selected ? "bg-sage text-ink" : "border border-ink/20 text-transparent"
-                        }`}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPlan(p.name);
+                          setError(null);
+                        }}
+                        aria-pressed={selected}
+                        className="flex w-full items-center justify-between gap-3 px-4 py-[14px] text-left sm:px-5"
                       >
-                        ✓
-                      </span>
-                    </button>
+                        <span className="flex min-w-0 flex-col">
+                          <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span className="text-[15.5px] font-medium text-ink sm:text-[16.5px]">{p.name}</span>
+                            {p.featured && (
+                              <span className="rounded-full bg-sage px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[.08em] text-ink">
+                                {p.tag}
+                              </span>
+                            )}
+                          </span>
+                          <span className="mt-0.5 text-[13.5px] text-ink-mute">{p.price}</span>
+                        </span>
+                        <span
+                          className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
+                            selected ? "bg-sage text-ink" : "border border-ink/20 text-transparent"
+                          }`}
+                        >
+                          ✓
+                        </span>
+                      </button>
+
+                      {/* Toggle "Ver qué incluye" */}
+                      <button
+                        type="button"
+                        onClick={() => setExpandedPlan(expanded ? null : p.name)}
+                        aria-expanded={expanded}
+                        className="flex w-full items-center justify-between gap-2 border-t border-ink/10 px-4 py-2.5 text-left text-[13px] font-medium text-clay transition-colors hover:bg-cream/60 sm:px-5"
+                      >
+                        {expanded ? "Ocultar detalles" : "Ver qué incluye"}
+                        <span
+                          className={`text-[11px] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+                          aria-hidden
+                        >
+                          ▼
+                        </span>
+                      </button>
+
+                      {/* Features list */}
+                      <div
+                        className="grid transition-all duration-300 ease-out"
+                        style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
+                      >
+                        <div className="overflow-hidden">
+                          <ul className="flex flex-col gap-2 px-4 pb-4 pt-1 sm:px-5">
+                            {p.features.map((f) => (
+                              <li key={f} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-soft">
+                                <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-sage/40 text-[10px] text-ink">
+                                  ✓
+                                </span>
+                                <span>{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
