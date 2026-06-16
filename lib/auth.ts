@@ -37,6 +37,14 @@ export const auth = betterAuth({
     ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
+    // Dominios propios del proyecto.
+    "https://doctorlife.io",
+    "https://www.doctorlife.io",
+    "https://dev.doctorlife.io",
+    // Preview de v0 (el iframe se sirve desde subdominios de vusercontent.net)
+    // y los preview deployments de Vercel.
+    "https://*.vusercontent.net",
+    "https://*.vercel.app",
     ...(process.env.NODE_ENV === "development"
       ? ["http://localhost:3000", "http://127.0.0.1:3000"]
       : []),
@@ -44,6 +52,16 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
+  },
+  // Límite de peticiones más permisivo (entorno de pruebas) para no bloquear
+  // tras unos pocos intentos de inicio de sesión.
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+    customRules: {
+      "/sign-in/email": { window: 60, max: 30 },
+    },
   },
   ...(process.env.NODE_ENV === "development"
     ? {
