@@ -26,6 +26,30 @@ export const auth = betterAuth({
       await sendResetPasswordEmail({ to: user.email, name: user.name, url })
     },
   },
+  // Google solo se usa para que el médico enlace su Calendar/Meet (no es un
+  // método de inicio de sesión). Se registra únicamente si hay credenciales.
+  ...(googleConfigured
+    ? {
+        socialProviders: {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            // Scopes adicionales de Calendar/Meet, además de email/profile.
+            scope: GOOGLE_CALENDAR_SCOPES,
+            // offline + consent garantizan que Google entregue un refresh_token
+            // (necesario para crear eventos sin que el médico esté presente).
+            accessType: "offline" as const,
+            prompt: "consent" as const,
+          },
+        },
+        account: {
+          accountLinking: {
+            enabled: true,
+            trustedProviders: ["google"],
+          },
+        },
+      }
+    : {}),
   user: {
     additionalFields: {
       // 'patient' | 'doctor' | 'admin'. Defaults to patient and is NOT

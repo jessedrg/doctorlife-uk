@@ -102,6 +102,8 @@ export function generateSlots(opts: {
   }
 
   const slots: Slot[] = []
+  // Evita huecos duplicados cuando dos franjas del mismo día se solapan.
+  const seen = new Set<string>()
   // Iteramos día a día por el calendario local del médico.
   const cursor = new Date(range.from.getTime())
   // Normalizamos al inicio del día en UTC para no saltarnos días por horas.
@@ -125,6 +127,8 @@ export function generateSlots(opts: {
         if (startUtc.getTime() >= range.to.getTime()) continue
         const iso = startUtc.toISOString()
         if (taken.has(iso)) continue
+        if (seen.has(iso)) continue
+        seen.add(iso)
         const endUtc = new Date(startUtc.getTime() + slotMinutes * 60_000)
         slots.push({
           startUtc: iso,
