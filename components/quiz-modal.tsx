@@ -2,17 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useQuiz } from "./quiz-context";
-import { quizSteps } from "@/lib/data";
+import { quizSteps, products } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
 import { BrandLogo } from "./brand-logo";
 
 const FIELDS = ["goal", "glp1Experience", "formatPreference", "timeline"] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Phase = "questions" | "bmi" | "details" | "submitting" | "done";
+type Phase = "questions" | "bmi" | "plan" | "details" | "submitting" | "done";
 
 export function QuizModal() {
-  const { open, closeQuiz } = useQuiz();
+  const { open, initialPlan, closeQuiz } = useQuiz();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [phase, setPhase] = useState<Phase>("questions");
@@ -21,6 +21,7 @@ export function QuizModal() {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [age, setAge] = useState("");
+  const [plan, setPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const total = quizSteps.length;
@@ -35,8 +36,14 @@ export function QuizModal() {
     setHeight("");
     setWeight("");
     setAge("");
+    setPlan(null);
     setError(null);
   };
+
+  // Preselecciona el plan si el usuario abrió el quiz desde una tarjeta de plan
+  useEffect(() => {
+    if (open) setPlan(initialPlan);
+  }, [open, initialPlan]);
 
   const close = () => {
     closeQuiz();
@@ -59,10 +66,18 @@ export function QuizModal() {
 
   if (!open) return null;
 
-  // Etapas: preguntas (total) + IMC (1) + datos (1) + done
-  const totalStages = total + 2;
+  // Etapas: preguntas (total) + IMC (1) + plan (1) + datos (1) + done
+  const totalStages = total + 3;
   const completed =
-    phase === "questions" ? step : phase === "bmi" ? total : phase === "done" ? totalStages : total + 1;
+    phase === "questions"
+      ? step
+      : phase === "bmi"
+        ? total
+        : phase === "plan"
+          ? total + 1
+          : phase === "done"
+            ? totalStages
+            : total + 2;
   const progress = Math.round((completed / totalStages) * 100);
 
   const h = parseFloat(height);
@@ -90,6 +105,8 @@ export function QuizModal() {
   const back = () => {
     setError(null);
     if (phase === "details") {
+      setPhase("plan");
+    } else if (phase === "plan") {
       setPhase("bmi");
     } else if (phase === "bmi") {
       setPhase("questions");
@@ -114,6 +131,7 @@ export function QuizModal() {
       glp1Experience: answers[1],
       formatPreference: answers[2],
       timeline: answers[3],
+      plan: plan || undefined,
       heightCm: h > 0 ? h : null,
       weightKg: w > 0 ? w : null,
       age: parseInt(age) || null,
@@ -278,6 +296,82 @@ export function QuizModal() {
                 onClick={() => {
                   if (!(h > 0 && w > 0)) {
                     setError("Introduce tu altura y peso para continuar.");
+                    return;
+                  }
+                  setError(null);
+                  setPhase("plan");
+                }}
+                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                Continuar
+              </button>
+              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
+                ← Atrás
+              </button>
+            </div>
+          )}
+
+          {/* PLAN SELECTION */}
+          {phase === "plan" && (
+            <div className="quiz-fade">
+              <div className="text-[13px] uppercase tracking-[.14em] text-clay">
+                Paso {total + 2} de {total + 2}
+              </div>
+              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+                Elige tu plan
+              </h3>
+              <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
+                Selecciona el plan que mejor se adapta a ti. Podrás cambiarlo más adelante con tu médico.
+              </p>
+
+              <div className="flex flex-col gap-[11px]">
+                {products.map((p) => {
+                  const selected = plan === p.name;
+                  return (
+                    <button
+                      key={p.name}
+                      type="button"
+                      onClick={() => {
+                        setPlan(p.name);
+                        setError(null);
+                      }}
+                      aria-pressed={selected}
+                      className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[15px] text-left transition-all duration-150 ${
+                        selected
+                          ? "border-sage bg-sage/25"
+                          : "border-ink/15 bg-warm hover:border-amber hover:bg-cream"
+                      }`}
+                    >
+                      <span className="flex flex-col">
+                        <span className="flex items-center gap-2">
+                          <span className="text-[16.5px] font-medium text-ink">{p.name}</span>
+                          {p.featured && (
+                            <span className="rounded-full bg-sage px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-[.08em] text-ink">
+                              {p.tag}
+                            </span>
+                          )}
+                        </span>
+                        <span className="mt-0.5 text-[13.5px] text-ink-mute">{p.price}</span>
+                      </span>
+                      <span
+                        className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
+                          selected ? "bg-sage text-ink" : "border border-ink/20 text-transparent"
+                        }`}
+                      >
+                        ✓
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {error && <p className="mt-3 text-[13.5px] text-clay">{error}</p>}
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (!plan) {
+                    setError("Selecciona un plan para continuar.");
                     return;
                   }
                   setError(null);

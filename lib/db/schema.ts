@@ -12,6 +12,7 @@ export const leads = pgTable("leads", {
   glp1Experience: text("glp1_experience"),
   formatPreference: text("format_preference"),
   timeline: text("timeline"),
+  plan: text("plan"),
   heightCm: integer("height_cm"),
   weightKg: integer("weight_kg"),
   age: integer("age"),

@@ -92,6 +92,7 @@ export function ProductCarousel() {
               </ul>
 
               <QuizTrigger
+                plan={p.name}
                 className="mt-auto w-full rounded-full py-[13px] text-center text-[14.5px] font-semibold"
                 style={
                   p.featured

@@ -5,7 +5,8 @@ import { QuizModal } from "./quiz-modal";
 
 type QuizContextValue = {
   open: boolean;
-  openQuiz: () => void;
+  initialPlan: string | null;
+  openQuiz: (plan?: string) => void;
   closeQuiz: () => void;
 };
 
@@ -17,9 +18,11 @@ const QuizContext = createContext<QuizContextValue | null>(null);
  */
 export function QuizProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [initialPlan, setInitialPlan] = useState<string | null>(null);
 
-  const openQuiz = () => {
+  const openQuiz = (plan?: string) => {
     if (typeof document !== "undefined") document.body.style.overflow = "hidden";
+    setInitialPlan(plan ?? null);
     setOpen(true);
   };
   const closeQuiz = () => {
@@ -28,7 +31,7 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <QuizContext.Provider value={{ open, openQuiz, closeQuiz }}>
+    <QuizContext.Provider value={{ open, initialPlan, openQuiz, closeQuiz }}>
       {children}
       <QuizModal />
     </QuizContext.Provider>

@@ -10,6 +10,7 @@ export type LeadInput = {
   glp1Experience?: string
   formatPreference?: string
   timeline?: string
+  plan?: string
   heightCm?: number | null
   weightKg?: number | null
   age?: number | null
@@ -40,6 +41,7 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
       glp1Experience: input.glp1Experience || null,
       formatPreference: input.formatPreference || null,
       timeline: input.timeline || null,
+      plan: input.plan || null,
       heightCm,
       weightKg,
       age,
