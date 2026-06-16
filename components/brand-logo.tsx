@@ -41,8 +41,8 @@ function Wordmark({ size, className }: { size: number; className: string }) {
   const sideMarginEm = (oWidthEm * (scale - 1)) / 2;
   return (
     <span
-      className={`font-sans font-extrabold leading-none tracking-[-.01em] ${className}`}
-      style={{ fontSize: size }}
+      className={`leading-none tracking-[-.03em] ${className}`}
+      style={{ fontSize: size, fontFamily: "var(--font-sora), system-ui, sans-serif", fontWeight: 800 }}
     >
       D
       <span

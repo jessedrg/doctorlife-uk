@@ -1,12 +1,19 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist_Mono, Hanken_Grotesk, Instrument_Serif } from 'next/font/google'
+import { Geist_Mono, Hanken_Grotesk, Instrument_Serif, Sora } from 'next/font/google'
 import './globals.css'
 
 const hanken = Hanken_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-hanken',
+  display: 'swap',
+})
+
+const sora = Sora({
+  subsets: ['latin'],
+  weight: ['700', '800'],
+  variable: '--font-sora',
   display: 'swap',
 })
 
@@ -64,7 +71,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${hanken.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
+      className={`${hanken.variable} ${sora.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
     >
       <body className="bg-paper text-ink font-sans antialiased">
         {children}
