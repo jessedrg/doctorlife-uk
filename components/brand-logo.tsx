@@ -34,16 +34,28 @@ function Mark({ size }: { size: number }) {
 
 /** Texto "DoctorLife" en negrita con la primera "o" alargada horizontalmente. */
 function Wordmark({ size, className }: { size: number; className: string }) {
+  // La "o" se ensancha con scaleX. Como transform no reserva ancho de layout,
+  // compensamos con márgenes laterales para que el espaciado sea correcto.
+  const scale = 1.55;
+  const oWidthEm = 0.58; // ancho aprox. de la "o" en em a este peso
+  const sideMarginEm = (oWidthEm * (scale - 1)) / 2;
   return (
     <span
-      className={`font-sans font-extrabold leading-none tracking-[-.02em] ${className}`}
+      className={`font-sans font-extrabold leading-none tracking-[-.01em] ${className}`}
       style={{ fontSize: size }}
     >
       D
-      <span className="inline-block origin-center scale-x-[1.7]">o</span>
-      <span className="inline-block" style={{ marginLeft: size * 0.06 }}>
-        ctorLife
+      <span
+        className="inline-block origin-center"
+        style={{
+          transform: `scaleX(${scale})`,
+          marginLeft: `${sideMarginEm}em`,
+          marginRight: `${sideMarginEm}em`,
+        }}
+      >
+        o
       </span>
+      ctorLife
     </span>
   );
 }
