@@ -10,7 +10,7 @@ export default async function MedicoLayout({ children }: { children: React.React
       nav={[
         { href: "/medico", label: "Inicio" },
         { href: "/medico/disponibilidad", label: "Disponibilidad" },
-        { href: "/medico/pacientes", label: "Pacientes" },
+        { href: "/medico/chat", label: "Mensajes" },
         { href: "/medico/pagos", label: "Pagos" },
       ]}
     >

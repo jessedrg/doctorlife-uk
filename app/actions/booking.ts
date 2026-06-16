@@ -7,7 +7,7 @@ import { stripe } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { maybeCreateMeeting } from "@/lib/google/calendar"
-import { and, eq } from "drizzle-orm"
+import { and, asc, eq, gte, ne } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import type { PooledSlot } from "@/lib/scheduling/types"
 
@@ -211,4 +211,31 @@ export async function getMyAppointments() {
     .leftJoin(doctorProfiles, eq(doctorProfiles.userId, appointments.doctorId))
     .where(and(eq(appointments.patientId, me.id)))
     .orderBy(appointments.startsAt)
+}
+
+/** Próxima cita futura no cancelada del paciente (o null). */
+export async function getNextAppointment() {
+  const me = await getSessionUser()
+  if (!me) return null
+  const [next] = await db
+    .select({
+      id: appointments.id,
+      startsAt: appointments.startsAt,
+      endsAt: appointments.endsAt,
+      status: appointments.status,
+      meetingUrl: appointments.meetingUrl,
+      doctorName: doctorProfiles.fullName,
+    })
+    .from(appointments)
+    .leftJoin(doctorProfiles, eq(doctorProfiles.userId, appointments.doctorId))
+    .where(
+      and(
+        eq(appointments.patientId, me.id),
+        ne(appointments.status, "cancelled"),
+        gte(appointments.startsAt, new Date()),
+      ),
+    )
+    .orderBy(asc(appointments.startsAt))
+    .limit(1)
+  return next ?? null
 }
