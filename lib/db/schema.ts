@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, numeric, timestamp, boolean } from "drizzle-orm/pg-core"
+import { pgTable, serial, text, integer, numeric, timestamp, boolean, date } from "drizzle-orm/pg-core"
 
 /* ------------------------------------------------------------------ */
 /* Better Auth tables (do not rename columns — camelCase is required)  */
@@ -78,12 +78,39 @@ export const doctorProfiles = pgTable("doctor_profiles", {
   chargesEnabled: boolean("chargesEnabled").notNull().default(false),
   payoutsEnabled: boolean("payoutsEnabled").notNull().default(false),
   acceptingPatients: boolean("acceptingPatients").notNull().default(true),
+  slotMinutes: integer("slotMinutes").notNull().default(30),
+  timezone: text("timezone").notNull().default("Europe/Madrid"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
 
 export type DoctorProfile = typeof doctorProfiles.$inferSelect
 export type NewDoctorProfile = typeof doctorProfiles.$inferInsert
+
+/**
+ * Disponibilidad semanal recurrente del médico.
+ * dayOfWeek: 0 = domingo … 6 = sábado. Minutos desde medianoche (hora local del médico).
+ */
+export const doctorAvailability = pgTable("doctor_availability", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").notNull(),
+  dayOfWeek: integer("dayOfWeek").notNull(),
+  startMinute: integer("startMinute").notNull(),
+  endMinute: integer("endMinute").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
+
+export type DoctorAvailability = typeof doctorAvailability.$inferSelect
+
+/** Fechas puntuales bloqueadas (vacaciones, festivos…). */
+export const availabilityExceptions = pgTable("availability_exceptions", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").notNull(),
+  date: date("date").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
+
+export type AvailabilityException = typeof availabilityExceptions.$inferSelect
 
 /**
  * Leads capturados desde el quiz "Comenzar".
