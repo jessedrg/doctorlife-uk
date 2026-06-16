@@ -7,12 +7,12 @@ import { BlogFunnel } from "@/components/blog-funnel";
 import { posts, SITE_URL } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog Maren — Wegovy, Mounjaro y pérdida de peso con GLP‑1",
+  title: "Blog DoctorLife — Wegovy, Mounjaro y pérdida de peso con GLP‑1",
   description:
     "Guías claras y médicas sobre Wegovy, Mounjaro, semaglutida y tirzepatida: precios, recetas y cómo empezar tu tratamiento de pérdida de peso en España.",
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
-    title: "Blog Maren — Cuidado del peso con GLP‑1",
+    title: "Blog DoctorLife — Cuidado del peso con GLP‑1",
     description:
       "Guías sobre Wegovy, Mounjaro y pérdida de peso con GLP‑1: precios, recetas y cómo empezar con seguimiento médico.",
     url: `${SITE_URL}/blog`,
@@ -32,7 +32,7 @@ export default function BlogIndex() {
         <main className="mx-auto max-w-none px-3 pb-10 pt-10 sm:px-4 lg:px-5">
           <header className="mx-auto max-w-[760px] py-12 text-center sm:py-16">
             <span className="text-[13px] font-semibold uppercase tracking-[.18em] text-clay">
-              Blog Maren
+              Blog DoctorLife
             </span>
             <h1 className="mt-4 text-balance text-[clamp(34px,5vw,58px)] font-light leading-[1.04] tracking-[-.02em] text-ink">
               Todo sobre el <span className="font-serif italic text-olive">cuidado del peso</span> con GLP‑1

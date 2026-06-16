@@ -1,13 +1,17 @@
 /* ───────────────────────────────────────────────────────────
-   Contenido del blog de Maren. Posts SEO con alta intención de
-   compra para el mercado español (GLP‑1, Wegovy, Mounjaro…).
+   Contenido del blog de DoctorLife. Posts SEO con alta intención
+   de compra para el mercado español (GLP‑1, Wegovy, Mounjaro…).
    Cambia/añade posts aquí y todo el blog + sitemap se actualiza.
    ─────────────────────────────────────────────────────────── */
+
+export type InlineLink = { label: string; href: string };
 
 export type Block =
   | { type: "p"; text: string }
   | { type: "list"; items: string[] }
-  | { type: "quote"; text: string };
+  | { type: "quote"; text: string }
+  | { type: "table"; caption?: string; head: string[]; rows: string[][] }
+  | { type: "links"; title?: string; items: InlineLink[] };
 
 export type Section = { h2: string; blocks: Block[] };
 export type Faq = { q: string; a: string };
@@ -31,8 +35,18 @@ export type Post = {
   faqs: Faq[];
 };
 
+/* Marca y autoría médica (E‑E‑A‑T para contenido YMYL de salud) */
+export const BRAND = "DoctorLife";
+
+export const MEDICAL_REVIEWER = {
+  name: "Dra. Laura Méndez",
+  role: "Médica especialista en Endocrinología y Nutrición",
+  credentials: "Nº de colegiada 28/2841 · Colegio de Médicos de Barcelona",
+  bio: "Endocrinóloga colegiada con más de 12 años de experiencia en obesidad y tratamiento con análogos del GLP‑1. Revisa el contenido clínico de DoctorLife.",
+};
+
 const PRICE_NOTE =
-  "En Maren tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
+  "En DoctorLife tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
 
 export const posts: Post[] = [
   /* 1 ───────────────────────────────────────────── */
@@ -76,9 +90,34 @@ export const posts: Post[] = [
           },
           {
             type: "p",
-            text: "En Maren separamos el coste: el plan de seguimiento médico tiene un precio fijo mensual desde 149 €, y la medicación se adquiere en farmacia solo si el médico la prescribe. Así sabes exactamente qué pagas por cada cosa.",
+            text: "En DoctorLife separamos el coste: el plan de seguimiento médico tiene un precio fijo mensual desde 149 €, y la medicación se adquiere en farmacia solo si el médico la prescribe. Así sabes exactamente qué pagas por cada cosa.",
+          },
+          {
+            type: "table",
+            caption: "Precio orientativo de Wegovy por dosis en Barcelona",
+            head: ["Dosis de la pluma", "Fase del tratamiento", "Precio orientativo/mes"],
+            rows: [
+              ["0,25 mg", "Inicio (semanas 1–4)", "200–230 €"],
+              ["0,5 mg", "Adaptación", "200–250 €"],
+              ["1 mg", "Escalado", "230–270 €"],
+              ["1,7 mg", "Escalado", "250–290 €"],
+              ["2,4 mg", "Mantenimiento", "270–300 €"],
+            ],
           },
           { type: "quote", text: PRICE_NOTE },
+        ],
+      },
+      {
+        h2: "¿Hay desabastecimiento de Wegovy en Barcelona?",
+        blocks: [
+          {
+            type: "p",
+            text: "La disponibilidad de Wegovy ha sido irregular en España, con periodos de desabastecimiento sobre todo en las dosis bajas de inicio. En Barcelona la situación ha ido mejorando, pero conviene confirmar el stock en tu farmacia antes de empezar y contar con un equipo médico que pueda ajustar la pauta si una dosis concreta no está disponible.",
+          },
+          {
+            type: "p",
+            text: "Si una presentación falta, el médico puede valorar alternativas dentro de la misma familia (por ejemplo, otra dosis o un GLP‑1 distinto) para no interrumpir tu progreso. Por eso es mejor empezar con seguimiento que comprar la pluma por tu cuenta.",
+          },
         ],
       },
       {
@@ -103,6 +142,15 @@ export const posts: Post[] = [
             type: "p",
             text: "Wegovy es seguro cuando se usa bajo supervisión médica. Los efectos secundarios más comunes (náuseas, digestiones lentas) suelen ser leves y temporales, y se gestionan ajustando la dosis poco a poco. Por eso el seguimiento es tan importante: no es solo comprar la pluma, es acompañar todo el proceso.",
           },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Wegovy precio en España: cuánto cuesta por dosis", href: "/blog/wegovy-precio-espana" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: cuál elegir", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+              { label: "Cómo conseguir la receta de Wegovy online", href: "/blog/receta-wegovy-online" },
+            ],
+          },
         ],
       },
     ],
@@ -116,7 +164,7 @@ export const posts: Post[] = [
         a: "No. Wegovy requiere receta médica. Comprarlo sin prescripción es ilegal y conlleva riesgos serios para la salud.",
       },
       {
-        q: "¿Cuánto cuesta empezar con Maren?",
+        q: "¿Cuánto cuesta empezar con DoctorLife?",
         a: "La primera visita médica son 25 € y se descuentan del tratamiento. El plan de seguimiento empieza desde 149 €/mes; la medicación se compra aparte en farmacia si se prescribe.",
       },
       {
@@ -165,7 +213,36 @@ export const posts: Post[] = [
             type: "p",
             text: "El precio de Mounjaro en farmacia depende de la dosis e suele oscilar entre 200 € y 350 € al mes. Igual que con Wegovy, requiere receta médica y no debe comprarse por canales no autorizados.",
           },
+          {
+            type: "table",
+            caption: "Precio orientativo de Mounjaro (tirzepatida) por dosis",
+            head: ["Dosis", "Fase", "Precio orientativo/mes"],
+            rows: [
+              ["2,5 mg", "Inicio", "200–250 €"],
+              ["5 mg", "Adaptación", "230–280 €"],
+              ["7,5–10 mg", "Escalado", "280–330 €"],
+              ["12,5–15 mg", "Mantenimiento", "300–350 €"],
+            ],
+          },
           { type: "quote", text: PRICE_NOTE },
+        ],
+      },
+      {
+        h2: "Dosis, pluma y conservación de Mounjaro",
+        blocks: [
+          {
+            type: "p",
+            text: "Mounjaro se administra una vez por semana en inyección subcutánea (abdomen, muslo o brazo). La dosis empieza en 2,5 mg y se aumenta de forma escalonada (5, 7,5, 10, 12,5 y hasta 15 mg) según tolerancia y objetivos, siempre bajo indicación médica.",
+          },
+          {
+            type: "list",
+            items: [
+              "Conserva las plumas en nevera (2–8 °C) hasta su uso.",
+              "Una vez en uso, pueden mantenerse a temperatura ambiente según ficha técnica.",
+              "Nunca congeles la pluma ni la uses si ha estado expuesta a calor.",
+              "Cambia el punto de inyección cada semana para evitar molestias.",
+            ],
+          },
         ],
       },
       {
@@ -181,12 +258,12 @@ export const posts: Post[] = [
           },
           {
             type: "p",
-            text: "No existe un 'mejor' universal. Por eso en Maren personalizamos la recomendación tras tu valoración médica en lugar de aplicar un protocolo único.",
+            text: "No existe un 'mejor' universal. Por eso en DoctorLife personalizamos la recomendación tras tu valoración médica en lugar de aplicar un protocolo único.",
           },
         ],
       },
       {
-        h2: "Cómo empezar con Mounjaro en Maren",
+        h2: "Cómo empezar con Mounjaro en DoctorLife",
         blocks: [
           {
             type: "list",
@@ -195,6 +272,15 @@ export const posts: Post[] = [
               "Valoración de tu caso por un endocrino colegiado.",
               "Prescripción y pauta de dosis si es adecuado para ti.",
               "Seguimiento desde la app con ajustes y soporte continuo.",
+            ],
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Mounjaro precio en España por dosis", href: "/blog/mounjaro-precio-espana" },
+              { label: "Tirzepatida para adelgazar: resultados y efectos", href: "/blog/tirzepatida-para-adelgazar" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: comparativa", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
             ],
           },
         ],
@@ -246,12 +332,37 @@ export const posts: Post[] = [
             text: "El precio de Wegovy depende de la dosis de la pluma. Como el tratamiento empieza bajo y se va aumentando, el coste también es escalonado. De forma orientativa, una pluma mensual se sitúa entre 200 € y 300 €.",
           },
           {
+            type: "table",
+            caption: "Wegovy precio en España por dosis (2026, orientativo)",
+            head: ["Dosis", "Fase del tratamiento", "Precio orientativo/mes"],
+            rows: [
+              ["0,25 mg", "Inicio", "200–230 €"],
+              ["0,5 mg", "Adaptación", "200–250 €"],
+              ["1 mg", "Escalado", "230–270 €"],
+              ["1,7 mg", "Escalado", "250–290 €"],
+              ["2,4 mg", "Mantenimiento", "270–300 €"],
+            ],
+          },
+          {
             type: "list",
             items: [
               "Dosis de inicio (0,25 mg y 0,5 mg): fase de adaptación.",
               "Dosis intermedias (1 mg y 1,7 mg): se ajusta según tolerancia.",
               "Dosis de mantenimiento (2,4 mg): dosis objetivo habitual.",
             ],
+          },
+        ],
+      },
+      {
+        h2: "¿Por qué Wegovy es tan caro?",
+        blocks: [
+          {
+            type: "p",
+            text: "Wegovy es un medicamento innovador y de patente, lo que explica buena parte de su precio. A eso se suma que no está financiado por la Seguridad Social para pérdida de peso en la mayoría de casos, por lo que el coste recae en el paciente. Cuando comparas precios, asegúrate de saber si la cifra incluye solo el fármaco o también la consulta y el seguimiento.",
+          },
+          {
+            type: "p",
+            text: "Las opciones 'baratas' que se anuncian sin receta o como fórmulas magistrales de semaglutida sin control médico no son una alternativa segura: el ahorro real está en un tratamiento bien hecho que evite empezar y parar.",
           },
         ],
       },
@@ -272,6 +383,15 @@ export const posts: Post[] = [
             type: "p",
             text: "Actualmente Wegovy no está financiado para pérdida de peso en el sistema público en la mayoría de casos, por lo que el tratamiento suele ser privado. Por eso es clave tener claros todos los costes desde el principio.",
           },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Wegovy en Barcelona: receta y cómo empezar", href: "/blog/comprar-wegovy-barcelona" },
+              { label: "Mounjaro precio en España por dosis", href: "/blog/mounjaro-precio-espana" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: cuál elegir", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+            ],
+          },
         ],
       },
     ],
@@ -285,7 +405,7 @@ export const posts: Post[] = [
         a: "Porque depende de la dosis de la pluma y de si el precio incluye o no la consulta y el seguimiento médico.",
       },
       {
-        q: "¿La primera visita en Maren se descuenta?",
+        q: "¿La primera visita en DoctorLife se descuenta?",
         a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
       },
     ],
@@ -321,6 +441,28 @@ export const posts: Post[] = [
               "Mounjaro = tirzepatida, doble acción GIP/GLP‑1, muy potente para perder peso.",
             ],
           },
+          {
+            type: "table",
+            caption: "Ozempic vs Wegovy vs Mounjaro: comparativa rápida",
+            head: ["", "Ozempic", "Wegovy", "Mounjaro"],
+            rows: [
+              ["Principio activo", "Semaglutida", "Semaglutida", "Tirzepatida"],
+              ["Mecanismo", "GLP‑1", "GLP‑1", "GIP + GLP‑1"],
+              ["Indicación principal", "Diabetes tipo 2", "Pérdida de peso", "Diabetes / peso"],
+              ["Pérdida de peso media", "~6–10 %", "~15 %", "~20–25 %"],
+              ["Administración", "Semanal", "Semanal", "Semanal"],
+              ["Precio orientativo/mes", "150–250 €", "200–300 €", "200–350 €"],
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Cuál tiene menos efectos secundarios?",
+        blocks: [
+          {
+            type: "p",
+            text: "Los tres comparten un perfil de efectos secundarios parecido, sobre todo digestivos (náuseas, estreñimiento o diarrea, digestiones lentas), que suelen ser leves y aparecen al subir de dosis. La tolerancia es individual: algunas personas llevan mejor la semaglutida y otras la tirzepatida. Subir la dosis de forma lenta y con seguimiento es lo que más reduce las molestias, independientemente del fármaco.",
+          },
         ],
       },
       {
@@ -344,6 +486,15 @@ export const posts: Post[] = [
             text: "Esa decisión es médica. En tu valoración se tiene en cuenta tu IMC, tu historial, otros tratamientos y cómo toleras el fármaco. Lo importante es no automedicarse y empezar con la opción adecuada para ti.",
           },
           { type: "quote", text: PRICE_NOTE },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Wegovy en Barcelona: precio y receta", href: "/blog/comprar-wegovy-barcelona" },
+              { label: "Comprar Mounjaro en Barcelona: guía completa", href: "/blog/comprar-mounjaro-barcelona" },
+              { label: "Plan para perder peso con GLP‑1 paso a paso", href: "/blog/plan-perder-peso-glp1" },
+            ],
+          },
         ],
       },
     ],
@@ -391,7 +542,7 @@ export const posts: Post[] = [
         ],
       },
       {
-        h2: "Cómo funciona en Maren",
+        h2: "Cómo funciona en DoctorLife",
         blocks: [
           {
             type: "list",
@@ -416,6 +567,28 @@ export const posts: Post[] = [
               "Precios sospechosamente bajos o pago en cripto.",
               "Ausencia de médicos colegiados identificables.",
               "Sin seguimiento ni soporte tras la compra.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Receta de Wegovy por la Seguridad Social o privada?",
+        blocks: [
+          {
+            type: "p",
+            text: "En el sistema público es difícil obtener Wegovy para pérdida de peso, ya que no suele estar financiado con esa indicación. Por eso la mayoría de pacientes acude a la vía privada, donde un médico colegiado puede valorar el caso y emitir una receta privada válida en cualquier farmacia.",
+          },
+          {
+            type: "p",
+            text: "La receta privada online es totalmente legal en España siempre que exista una consulta médica real y un seguimiento posterior. No confundas 'receta privada' con 'comprar sin receta': son cosas distintas.",
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Wegovy en Barcelona: precio y receta", href: "/blog/comprar-wegovy-barcelona" },
+              { label: "Wegovy precio en España por dosis", href: "/blog/wegovy-precio-espana" },
+              { label: "Comprar semaglutida con receta de forma segura", href: "/blog/semaglutida-comprar-con-receta" },
             ],
           },
         ],
@@ -462,6 +635,36 @@ export const posts: Post[] = [
             type: "p",
             text: "Mounjaro se presenta en plumas de distintas dosis (2,5 a 15 mg). El precio en farmacia suele oscilar entre 200 € y 350 € al mes según la dosis. Como con cualquier GLP‑1, se empieza por dosis bajas y se sube poco a poco.",
           },
+          {
+            type: "table",
+            caption: "Mounjaro precio en España por dosis (2026, orientativo)",
+            head: ["Dosis", "Fase del tratamiento", "Precio orientativo/mes"],
+            rows: [
+              ["2,5 mg", "Inicio", "200–250 €"],
+              ["5 mg", "Adaptación", "230–280 €"],
+              ["7,5 mg", "Escalado", "260–300 €"],
+              ["10 mg", "Escalado", "280–330 €"],
+              ["12,5–15 mg", "Mantenimiento", "300–350 €"],
+            ],
+          },
+        ],
+      },
+      {
+        h2: "¿Mounjaro o Wegovy: cuál sale más a cuenta?",
+        blocks: [
+          {
+            type: "p",
+            text: "Los rangos de precio de Mounjaro y Wegovy son muy similares, así que la decisión no debería basarse solo en el coste mensual del fármaco. Lo que de verdad marca la rentabilidad es la respuesta individual (cuánto peso pierdes por euro invertido) y evitar empezar y parar el tratamiento, que es lo que más dinero hace perder.",
+          },
+        ],
+      },
+      {
+        h2: "¿Lo cubre la Seguridad Social?",
+        blocks: [
+          {
+            type: "p",
+            text: "En general, Mounjaro no está financiado por la Seguridad Social para pérdida de peso, por lo que el tratamiento suele ser privado. Por eso conviene conocer todos los costes (consulta, seguimiento y medicación) desde el principio.",
+          },
         ],
       },
       {
@@ -469,9 +672,18 @@ export const posts: Post[] = [
         blocks: [
           {
             type: "p",
-            text: "Más allá del fármaco, un tratamiento bien hecho incluye la consulta médica, la prescripción, el ajuste de dosis y el seguimiento. En Maren el plan de seguimiento es un precio fijo mensual y la medicación se adquiere aparte en farmacia.",
+            text: "Más allá del fármaco, un tratamiento bien hecho incluye la consulta médica, la prescripción, el ajuste de dosis y el seguimiento. En DoctorLife el plan de seguimiento es un precio fijo mensual y la medicación se adquiere aparte en farmacia.",
           },
           { type: "quote", text: PRICE_NOTE },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Mounjaro en Barcelona: guía completa", href: "/blog/comprar-mounjaro-barcelona" },
+              { label: "Tirzepatida para adelgazar: resultados y dosis", href: "/blog/tirzepatida-para-adelgazar" },
+              { label: "Ozempic vs Wegovy vs Mounjaro: comparativa", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+            ],
+          },
         ],
       },
     ],
@@ -541,6 +753,43 @@ export const posts: Post[] = [
           { type: "quote", text: PRICE_NOTE },
         ],
       },
+      {
+        h2: "¿Y la semaglutida genérica o en fórmula magistral?",
+        blocks: [
+          {
+            type: "p",
+            text: "Con la alta demanda han aparecido ofertas de 'semaglutida genérica' o preparada como fórmula magistral a precios muy bajos. Conviene mucha cautela: a fecha de hoy no existe un genérico autorizado de semaglutida para pérdida de peso, y las preparaciones sin garantías de calidad pueden contener dosis incorrectas o productos no equivalentes.",
+          },
+          {
+            type: "p",
+            text: "Lo seguro es usar presentaciones autorizadas (como Ozempic, Wegovy o Rybelsus) con receta y seguimiento médico. Ahorrar en el origen del fármaco puede salir caro en salud.",
+          },
+        ],
+      },
+      {
+        h2: "Rybelsus vs Ozempic vs Wegovy",
+        blocks: [
+          {
+            type: "table",
+            caption: "Presentaciones de semaglutida disponibles",
+            head: ["Marca", "Forma", "Indicación principal"],
+            rows: [
+              ["Ozempic", "Inyección semanal", "Diabetes tipo 2"],
+              ["Rybelsus", "Comprimido diario", "Diabetes tipo 2"],
+              ["Wegovy", "Inyección semanal", "Pérdida de peso"],
+            ],
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Ozempic vs Wegovy vs Mounjaro: cuál elegir", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+              { label: "Wegovy precio en España por dosis", href: "/blog/wegovy-precio-espana" },
+              { label: "Cómo conseguir la receta de Wegovy online", href: "/blog/receta-wegovy-online" },
+            ],
+          },
+        ],
+      },
     ],
     faqs: [
       {
@@ -596,6 +845,29 @@ export const posts: Post[] = [
         ],
       },
       {
+        h2: "¿Cuánto se adelgaza al mes con tirzepatida?",
+        blocks: [
+          {
+            type: "p",
+            text: "La pérdida de peso es progresiva y muy individual, pero de forma orientativa muchos pacientes pierden entre un 1,5 % y un 3 % de su peso al mes durante las primeras fases, acelerando al subir la dosis. No es una cifra garantizada: depende de la dosis, la nutrición, la actividad física y la constancia.",
+          },
+          {
+            type: "table",
+            caption: "Evolución orientativa de pérdida de peso con tirzepatida",
+            head: ["Periodo", "Pérdida de peso orientativa", "Fase"],
+            rows: [
+              ["Mes 1–3", "4–8 %", "Inicio y adaptación"],
+              ["Mes 4–6", "8–15 %", "Escalado de dosis"],
+              ["Mes 6–12+", "Hasta 20–25 %", "Mantenimiento"],
+            ],
+          },
+          {
+            type: "p",
+            text: "Las fotos de 'antes y después' que circulan por redes son casos individuales y no representan un resultado garantizado. Lo realista es fijar objetivos con tu médico y medir el progreso de forma constante.",
+          },
+        ],
+      },
+      {
         h2: "Dosis y efectos secundarios",
         blocks: [
           {
@@ -604,6 +876,15 @@ export const posts: Post[] = [
               "Se empieza por dosis bajas y se sube de forma escalonada.",
               "Efectos comunes: náuseas y digestiones lentas, normalmente leves y temporales.",
               "El ajuste de dosis y el seguimiento minimizan las molestias.",
+            ],
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Mounjaro en Barcelona: guía completa", href: "/blog/comprar-mounjaro-barcelona" },
+              { label: "Mounjaro precio en España por dosis", href: "/blog/mounjaro-precio-espana" },
+              { label: "Plan para perder peso con GLP‑1 paso a paso", href: "/blog/plan-perder-peso-glp1" },
             ],
           },
         ],
@@ -667,6 +948,34 @@ export const posts: Post[] = [
           { type: "quote", text: PRICE_NOTE },
         ],
       },
+      {
+        h2: "Qué preguntar antes de elegir una clínica de Wegovy en Barcelona",
+        blocks: [
+          {
+            type: "p",
+            text: "Antes de contratar cualquier clínica (presencial u online) en Barcelona, plantea estas preguntas. Las respuestas te dirán si es un servicio médico serio o solo un canal de venta.",
+          },
+          {
+            type: "list",
+            items: [
+              "¿Quién es el médico que me atiende y cuál es su número de colegiado?",
+              "¿Qué incluye el precio: consulta, seguimiento y ajustes de dosis?",
+              "¿La medicación se compra aparte en farmacia o me la 'venden' ellos?",
+              "¿Cómo gestionáis los efectos secundarios y los cambios de dosis?",
+              "¿Qué pasa si una dosis está en desabastecimiento?",
+            ],
+          },
+          {
+            type: "links",
+            title: "Sigue informándote",
+            items: [
+              { label: "Comprar Wegovy en Barcelona: precio y receta", href: "/blog/comprar-wegovy-barcelona" },
+              { label: "Cómo conseguir la receta de Wegovy online", href: "/blog/receta-wegovy-online" },
+              { label: "Plan para perder peso con GLP‑1 paso a paso", href: "/blog/plan-perder-peso-glp1" },
+            ],
+          },
+        ],
+      },
     ],
     faqs: [
       {
@@ -679,7 +988,7 @@ export const posts: Post[] = [
       },
       {
         q: "¿Qué precio es razonable?",
-        a: "Busca transparencia: consulta inicial asequible, plan de seguimiento claro y medicación aparte en farmacia.",
+        a: "Busca transparencia: consulta inicial asequible, plan de seguimiento claro y medicaci��n aparte en farmacia.",
       },
     ],
   },
@@ -732,7 +1041,44 @@ export const posts: Post[] = [
         blocks: [
           {
             type: "p",
-            text: "El seguimiento continuo es lo que marca la diferencia entre perder peso y mantenerlo. Desde la app de Maren registras tu evolución, recibes ajustes de dosis y tienes contacto con tu equipo clínico cuando lo necesitas.",
+            text: "El seguimiento continuo es lo que marca la diferencia entre perder peso y mantenerlo. Desde la app de DoctorLife registras tu evolución, recibes ajustes de dosis y tienes contacto con tu equipo clínico cuando lo necesitas.",
+          },
+        ],
+      },
+      {
+        h2: "Qué comer mientras tomas un GLP‑1",
+        blocks: [
+          {
+            type: "p",
+            text: "El fármaco reduce el apetito, así que lo importante es que lo poco que comas alimente bien. Prioriza proteína para conservar masa muscular, fibra y verduras para la saciedad y la digestión, e hidratación abundante. Evita comidas muy grasas o copiosas que empeoran las náuseas al subir de dosis.",
+          },
+          {
+            type: "list",
+            items: [
+              "Proteína en cada comida (huevo, pescado, legumbres, carne magra).",
+              "Verdura y fibra para saciedad y tránsito intestinal.",
+              "Comidas más pequeñas y frecuentes para reducir náuseas.",
+              "Fuerza 2–3 veces por semana para no perder músculo.",
+            ],
+          },
+        ],
+      },
+      {
+        h2: "Efecto rebote: cómo no recuperar el peso",
+        blocks: [
+          {
+            type: "p",
+            text: "El temido 'efecto rebote' al dejar Ozempic, Wegovy o Mounjaro ocurre cuando se retira el fármaco sin una estrategia de mantenimiento. Para evitarlo, la retirada (si llega) debe ser gradual y apoyada en hábitos consolidados: alimentación, actividad física y seguimiento. El objetivo del plan es que los resultados se sostengan con o sin medicación.",
+          },
+          {
+            type: "links",
+            title: "Explora toda la guía GLP‑1",
+            items: [
+              { label: "Comprar Wegovy en Barcelona", href: "/blog/comprar-wegovy-barcelona" },
+              { label: "Comprar Mounjaro en Barcelona", href: "/blog/comprar-mounjaro-barcelona" },
+              { label: "Ozempic vs Wegovy vs Mounjaro", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+              { label: "Tirzepatida para adelgazar: resultados y dosis", href: "/blog/tirzepatida-para-adelgazar" },
+            ],
           },
         ],
       },

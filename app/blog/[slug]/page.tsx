@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
-import { posts, getPost, getRelated, SITE_URL, type Block } from "@/lib/blog";
+import { posts, getPost, getRelated, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
@@ -18,12 +18,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
-  if (!post) return { title: "Artículo no encontrado — Maren" };
+  if (!post) return { title: `Artículo no encontrado — ${BRAND}` };
   const url = `${SITE_URL}/blog/${post.slug}`;
   return {
     title: post.metaTitle,
     description: post.metaDescription,
-    keywords: [post.keyword, "GLP-1", "pérdida de peso", "Maren"],
+    keywords: [post.keyword, "GLP-1", "pérdida de peso", "semaglutida", "tirzepatida", BRAND],
+    authors: [{ name: MEDICAL_REVIEWER.name }],
     alternates: { canonical: url },
     openGraph: {
       title: post.metaTitle,
@@ -57,6 +58,56 @@ function renderBlock(block: Block, i: number) {
       </ul>
     );
   }
+  if (block.type === "table") {
+    return (
+      <figure key={i} className="mt-7 overflow-x-auto rounded-[18px] border border-ink/10">
+        <table className="w-full border-collapse text-left text-[15px]">
+          {block.caption && (
+            <caption className="sr-only">{block.caption}</caption>
+          )}
+          <thead>
+            <tr className="bg-cream/70">
+              {block.head.map((h) => (
+                <th key={h} className="border-b border-ink/10 px-4 py-3 font-medium text-ink">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {block.rows.map((row, r) => (
+              <tr key={r} className="odd:bg-warm/40">
+                {row.map((cell, c) => (
+                  <td key={c} className="border-b border-ink/[.06] px-4 py-3 text-ink-soft">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </figure>
+    );
+  }
+  if (block.type === "links") {
+    return (
+      <nav key={i} className="mt-7 rounded-[18px] border border-ink/10 bg-warm px-6 py-5">
+        {block.title && (
+          <p className="text-[13px] font-semibold uppercase tracking-[.14em] text-clay">{block.title}</p>
+        )}
+        <ul className="mt-3 flex flex-col gap-2">
+          {block.items.map((l) => (
+            <li key={l.href} className="flex items-start gap-2 text-[16px] leading-relaxed">
+              <span aria-hidden className="mt-[2px] text-clay">→</span>
+              <a href={l.href} className="text-ink underline decoration-clay/40 underline-offset-4 hover:decoration-clay">
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    );
+  }
   return (
     <blockquote
       key={i}
@@ -80,17 +131,47 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   // Inserta el funnel tras la segunda sección
   const insertAt = Math.min(2, post.sections.length);
 
+  const reviewer = {
+    "@type": "Person",
+    name: MEDICAL_REVIEWER.name,
+    jobTitle: MEDICAL_REVIEWER.role,
+    description: MEDICAL_REVIEWER.bio,
+  };
+
+  const publisher = {
+    "@type": "Organization",
+    name: BRAND,
+    url: SITE_URL,
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
+  };
+
   const articleLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "MedicalWebPage",
     headline: post.h1,
+    name: post.h1,
     description: post.metaDescription,
     image: `${SITE_URL}${post.cover}`,
+    inLanguage: "es-ES",
     datePublished: post.date,
     dateModified: post.updated,
-    author: { "@type": "Organization", name: "Maren Health" },
-    publisher: { "@type": "Organization", name: "Maren Health" },
+    keywords: post.keyword,
+    author: reviewer,
+    reviewedBy: reviewer,
+    lastReviewed: post.updated,
+    publisher,
+    about: { "@type": "MedicalEntity", name: post.category },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
   };
 
   const faqLd = {
@@ -128,8 +209,18 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               <span>Actualizado el {fmt(post.updated)}</span>
               <span aria-hidden>·</span>
               <span>{post.readMins} min de lectura</span>
-              <span aria-hidden>·</span>
-              <span>Revisado por el equipo médico de Maren</span>
+            </div>
+            <div className="mt-6 flex items-start gap-3 rounded-[16px] border border-ink/10 bg-warm px-5 py-4">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-ink font-serif text-[15px] font-bold text-paper">
+                {MEDICAL_REVIEWER.name.split(" ")[1]?.[0] ?? "D"}
+              </span>
+              <div className="text-[13.5px] leading-snug">
+                <p className="font-medium text-ink">
+                  Revisado médicamente por {MEDICAL_REVIEWER.name}
+                </p>
+                <p className="text-ink-mute">{MEDICAL_REVIEWER.role}</p>
+                <p className="text-ink-mute">{MEDICAL_REVIEWER.credentials}</p>
+              </div>
             </div>
           </article>
 
@@ -177,7 +268,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             <p className="mt-8 rounded-[16px] bg-cream/50 px-5 py-4 text-[13px] leading-relaxed text-ink-mute">
               Este contenido es informativo y no sustituye el consejo médico. Los tratamientos GLP‑1 requieren
-              valoración y receta de un profesional colegiado. Maren es una marca ficticia creada con fines de diseño.
+              valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}). {BRAND} es una marca ficticia creada con fines de diseño.
             </p>
           </article>
 
@@ -199,6 +290,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       </div>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
     </QuizProvider>
   );
