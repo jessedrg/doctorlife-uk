@@ -326,9 +326,20 @@ export function QuizModal() {
               <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
                 Elige tu plan
               </h3>
-              <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
+              <p className="mb-4 text-[15.5px] leading-relaxed text-ink-soft">
                 Selecciona el plan que mejor se adapta a ti. Podrás cambiarlo más adelante con tu médico.
               </p>
+
+              {/* Aviso del precio de la primera visita */}
+              <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
+                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[13px] font-bold text-ink">
+                  25€
+                </span>
+                <p className="text-[13.5px] leading-snug text-ink-soft">
+                  <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita médica.
+                  Si continúas con el plan, abonas el resto de la mensualidad.
+                </p>
+              </div>
 
               <div className="flex flex-col gap-[11px]">
                 {products.map((p) => {

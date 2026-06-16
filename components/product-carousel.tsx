@@ -107,9 +107,10 @@ export function ProductCarousel() {
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
-        *El precio refleja únicamente el plan de seguimiento. La medicación solo
-        está disponible si es prescrita tras una consulta médica. Requiere una
-        membresía DoctorLife activa.
+        *La primera visita médica cuesta solo <span className="font-semibold text-paper/80">25&nbsp;€</span>. Si decides
+        continuar con tu plan, se abona el importe restante de la mensualidad indicada. El precio refleja
+        únicamente el plan de seguimiento: la medicación solo está disponible si es prescrita tras una consulta
+        médica y requiere una membresía DoctorLife activa.
       </p>
     </div>
   );
