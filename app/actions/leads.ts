@@ -10,6 +10,9 @@ export type LeadInput = {
   glp1Experience?: string
   formatPreference?: string
   timeline?: string
+  heightCm?: number | null
+  weightKg?: number | null
+  age?: number | null
 }
 
 export type SaveLeadResult = { ok: true } | { ok: false; error: string }
@@ -23,6 +26,12 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
     return { ok: false, error: "Introduce un correo electrónico válido." }
   }
 
+  const heightCm = input.heightCm && input.heightCm > 0 ? Math.round(input.heightCm) : null
+  const weightKg = input.weightKg && input.weightKg > 0 ? Math.round(input.weightKg) : null
+  const age = input.age && input.age > 0 ? Math.round(input.age) : null
+  const bmi =
+    heightCm && weightKg ? (weightKg / Math.pow(heightCm / 100, 2)).toFixed(1) : null
+
   try {
     await db.insert(leads).values({
       name: input.name?.trim() || null,
@@ -31,6 +40,10 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
       glp1Experience: input.glp1Experience || null,
       formatPreference: input.formatPreference || null,
       timeline: input.timeline || null,
+      heightCm,
+      weightKg,
+      age,
+      bmi,
       source: "quiz",
     })
     return { ok: true }

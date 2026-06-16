@@ -41,10 +41,10 @@ export function ProductCarousel() {
           Descubre todos nuestros <span className="font-serif italic">planes</span>
         </div>
         <div className="flex gap-[10px]">
-          <button type="button" onClick={prev} aria-label="Anterior" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={prev} aria-label="Anterior" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
             ‹
           </button>
-          <button type="button" onClick={next} aria-label="Siguiente" className="h-[46px] w-[46px] rounded-full border border-paper/[.28] text-lg text-paper" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={next} aria-label="Siguiente" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
             ›
           </button>
         </div>
@@ -58,7 +58,7 @@ export function ProductCarousel() {
           {products.map((p) => (
             <div
               key={p.name}
-              className="flex w-[85%] flex-shrink-0 snap-start flex-col rounded-[28px] border p-7 sm:w-[360px] md:w-[340px]"
+              className="group flex w-[85%] flex-shrink-0 snap-start flex-col rounded-[28px] border p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,.35)] sm:w-[360px] md:w-[340px]"
               style={{
                 background: p.featured ? "rgba(86,96,58,.55)" : "rgba(40,44,30,.45)",
                 borderColor: p.featured ? "rgba(205,217,160,.5)" : "rgba(246,240,230,.12)",

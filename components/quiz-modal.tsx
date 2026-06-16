@@ -9,7 +9,7 @@ import { BrandLogo } from "./brand-logo";
 const FIELDS = ["goal", "glp1Experience", "formatPreference", "timeline"] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Phase = "questions" | "details" | "submitting" | "done";
+type Phase = "questions" | "bmi" | "details" | "submitting" | "done";
 
 export function QuizModal() {
   const { open, closeQuiz } = useQuiz();
@@ -18,6 +18,9 @@ export function QuizModal() {
   const [phase, setPhase] = useState<Phase>("questions");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const total = quizSteps.length;
@@ -29,6 +32,9 @@ export function QuizModal() {
     setPhase("questions");
     setName("");
     setEmail("");
+    setHeight("");
+    setWeight("");
+    setAge("");
     setError(null);
   };
 
@@ -53,8 +59,23 @@ export function QuizModal() {
 
   if (!open) return null;
 
-  const answeredCount = phase === "questions" ? step : total;
-  const progress = Math.round(((answeredCount + (phase === "done" ? 1 : 0)) / (total + 1)) * 100);
+  // Etapas: preguntas (total) + IMC (1) + datos (1) + done
+  const totalStages = total + 2;
+  const completed =
+    phase === "questions" ? step : phase === "bmi" ? total : phase === "done" ? totalStages : total + 1;
+  const progress = Math.round((completed / totalStages) * 100);
+
+  const h = parseFloat(height);
+  const w = parseFloat(weight);
+  const bmi = h > 0 && w > 0 ? w / Math.pow(h / 100, 2) : null;
+  const bmiCategory = (b: number) =>
+    b < 18.5
+      ? { label: "Bajo peso", color: "text-amber" }
+      : b < 25
+        ? { label: "Peso saludable", color: "text-olive" }
+        : b < 30
+          ? { label: "Sobrepeso", color: "text-amber" }
+          : { label: "Obesidad", color: "text-clay" };
 
   const choose = (opt: string) => {
     const next = [...answers];
@@ -62,13 +83,15 @@ export function QuizModal() {
     setAnswers(next);
     setTimeout(() => {
       if (step < total - 1) setStep(step + 1);
-      else setPhase("details");
+      else setPhase("bmi");
     }, 180);
   };
 
   const back = () => {
     setError(null);
     if (phase === "details") {
+      setPhase("bmi");
+    } else if (phase === "bmi") {
       setPhase("questions");
       setStep(total - 1);
     } else if (step > 0) {
@@ -91,6 +114,9 @@ export function QuizModal() {
       glp1Experience: answers[1],
       formatPreference: answers[2],
       timeline: answers[3],
+      heightCm: h > 0 ? h : null,
+      weightKg: w > 0 ? w : null,
+      age: parseInt(age) || null,
     });
     if (res.ok) {
       setPhase("done");
@@ -180,6 +206,93 @@ export function QuizModal() {
             </div>
           )}
 
+          {/* BMI CALCULATOR */}
+          {phase === "bmi" && (
+            <div className="quiz-fade">
+              <div className="text-[13px] uppercase tracking-[.14em] text-clay">
+                Paso {total + 1} de {total + 1}
+              </div>
+              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+                Calcula tu IMC
+              </h3>
+              <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
+                Tu índice de masa corporal ayuda al médico a personalizar tu plan. Solo tomará un momento.
+              </p>
+
+              <div className="grid grid-cols-2 gap-3">
+                <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
+                  Altura (cm)
+                  <input
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value.replace(/[^0-9]/g, ""))}
+                    inputMode="numeric"
+                    placeholder="170"
+                    className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber"
+                  />
+                </label>
+                <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
+                  Peso (kg)
+                  <input
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value.replace(/[^0-9]/g, ""))}
+                    inputMode="numeric"
+                    placeholder="75"
+                    className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber"
+                  />
+                </label>
+                <label className="col-span-2 flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
+                  Edad (años)
+                  <input
+                    value={age}
+                    onChange={(e) => setAge(e.target.value.replace(/[^0-9]/g, ""))}
+                    inputMode="numeric"
+                    placeholder="35"
+                    className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber"
+                  />
+                </label>
+              </div>
+
+              {/* Live BMI result */}
+              <div
+                className={`mt-5 flex items-center justify-between rounded-[16px] border px-5 py-4 transition-all duration-300 ${
+                  bmi ? "border-sage/40 bg-sage/10 opacity-100" : "border-ink/10 bg-warm opacity-70"
+                }`}
+              >
+                <span className="text-[14px] text-ink-soft">Tu IMC</span>
+                {bmi ? (
+                  <span className="flex items-baseline gap-2">
+                    <span className="text-[24px] font-semibold text-ink">{bmi.toFixed(1)}</span>
+                    <span className={`text-[13.5px] font-medium ${bmiCategory(bmi).color}`}>
+                      {bmiCategory(bmi).label}
+                    </span>
+                  </span>
+                ) : (
+                  <span className="text-[14px] text-ink-mute">Introduce altura y peso</span>
+                )}
+              </div>
+
+              {error && <p className="mt-3 text-[13.5px] text-clay">{error}</p>}
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (!(h > 0 && w > 0)) {
+                    setError("Introduce tu altura y peso para continuar.");
+                    return;
+                  }
+                  setError(null);
+                  setPhase("details");
+                }}
+                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                Continuar
+              </button>
+              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
+                ← Atrás
+              </button>
+            </div>
+          )}
+
           {/* DETAILS (name + email + plan summary) */}
           {(phase === "details" || phase === "submitting") && (
             <div className="quiz-fade">
@@ -202,6 +315,11 @@ export function QuizModal() {
                     {a}
                   </span>
                 ))}
+                {bmi && (
+                  <span className="rounded-full border border-sage/50 bg-sage/15 px-3 py-1.5 text-[13px] font-medium text-ink">
+                    IMC {bmi.toFixed(1)}
+                  </span>
+                )}
               </div>
 
               <div className="flex flex-col gap-3">
