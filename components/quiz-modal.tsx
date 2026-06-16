@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuiz } from "./quiz-context";
 import { quizSteps, products } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
+import { getPublicSlots, startPublicCheckout } from "@/app/actions/public-booking";
+import type { PooledSlot } from "@/lib/scheduling/types";
 import { BrandLogo } from "./brand-logo";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type Phase = "questions" | "bmi" | "plan" | "details" | "submitting" | "done";
+type Phase = "questions" | "bmi" | "plan" | "details" | "submitting" | "slot" | "done";
 
 export function QuizModal() {
   const { open, initialPlan, closeQuiz } = useQuiz();
@@ -23,6 +25,9 @@ export function QuizModal() {
   const [plan, setPlan] = useState<string | null>(null);
   const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [slots, setSlots] = useState<PooledSlot[] | null>(null);
+  const [activeDate, setActiveDate] = useState<string | null>(null);
+  const [paying, setPaying] = useState(false);
 
   const total = quizSteps.length;
   const emailRef = useRef<HTMLInputElement>(null);
@@ -39,12 +44,16 @@ export function QuizModal() {
     setPlan(null);
     setExpandedPlan(null);
     setError(null);
+    setSlots(null);
+    setActiveDate(null);
+    setPaying(false);
   };
 
-  // Preselecciona el plan si el usuario abrió el quiz desde una tarjeta de plan
+  // Solo hay un plan contratable: el destacado. Lo preseleccionamos siempre.
+  const mainPlan = useMemo(() => products.find((p) => !p.comingSoon) ?? products[0], []);
   useEffect(() => {
-    if (open) setPlan(initialPlan);
-  }, [open, initialPlan]);
+    if (open) setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
+  }, [open, initialPlan, mainPlan]);
 
   const close = () => {
     closeQuiz();
@@ -120,7 +129,9 @@ export function QuizModal() {
 
   const back = () => {
     setError(null);
-    if (phase === "details") {
+    if (phase === "slot") {
+      setPhase("details");
+    } else if (phase === "details") {
       setPhase("plan");
     } else if (phase === "plan") {
       setPhase("bmi");
@@ -140,6 +151,7 @@ export function QuizModal() {
       return;
     }
     setPhase("submitting");
+    // Guardamos el lead (para el panel de admin) y pasamos a elegir la hora.
     const res = await saveLead({
       name,
       email,
@@ -152,13 +164,48 @@ export function QuizModal() {
       weightKg: w > 0 ? w : null,
       age: parseInt(age) || null,
     });
-    if (res.ok) {
-      setPhase("done");
-    } else {
+    if (!res.ok) {
       setError(res.error);
       setPhase("details");
+      return;
+    }
+    setPhase("slot");
+    try {
+      const available = await getPublicSlots(14);
+      setSlots(available);
+      setActiveDate(available[0]?.date ?? null);
+    } catch {
+      setSlots([]);
     }
   };
+
+  const payForSlot = async (startUtc: string) => {
+    setError(null);
+    setPaying(true);
+    try {
+      const result = await startPublicCheckout({ name, email, startUtcISO: startUtc });
+      if ("url" in result) {
+        window.location.href = result.url;
+        return;
+      }
+      setError(result.error);
+    } catch {
+      setError("No se pudo iniciar el pago. Inténtalo de nuevo.");
+    }
+    setPaying(false);
+  };
+
+  // Agrupa los huecos por día para el selector de la fase "slot".
+  const slotsByDate = useMemo(() => {
+    const map = new Map<string, PooledSlot[]>();
+    for (const s of slots ?? []) {
+      const list = map.get(s.date) ?? [];
+      list.push(s);
+      map.set(s.date, list);
+    }
+    return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [slots]);
+  const activeSlots = slotsByDate.find(([d]) => d === activeDate)?.[1] ?? [];
 
   return (
     <div

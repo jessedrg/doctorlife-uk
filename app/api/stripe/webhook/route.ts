@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
 import { finalizeAppointment } from "@/app/actions/booking"
+import { provisionFromSession } from "@/app/actions/public-booking"
 import {
   applySubscriptionState,
   findSubscriptionRowByStripeId,
@@ -39,7 +40,10 @@ export async function POST(req: Request) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
-        if (session.mode === "subscription") {
+        if (session.metadata?.kind === "public_signup") {
+          // Flujo público: crea cuenta + cita + suscripción y envía credenciales.
+          await provisionFromSession(session.id)
+        } else if (session.mode === "subscription") {
           await syncSubscriptionBySession(session.id)
         } else {
           const appointmentId = Number(session.metadata?.appointmentId)

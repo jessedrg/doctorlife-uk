@@ -1,33 +1,61 @@
-import { products } from "@/lib/data"
+/**
+ * Plan único de DoctorLife.
+ *
+ * Hay un solo plan comprable: "Seguimiento con endocrino" (endocrino asignado,
+ * videollamada mensual de seguimiento y chat en vivo con el médico durante toda
+ * la suscripción). Precio: 65 € + IVA al mes. El resto de planes de marketing
+ * están marcados como "Próximamente" (ver lib/data.ts).
+ */
+
+/** IVA general (España). */
+export const IVA_RATE = 0.21
+
+/** Precio base mensual, sin IVA, en céntimos. */
+export const BASE_PRICE_CENTS = 6500
 
 export interface PlanInfo {
   name: string
+  /** Precio base sin IVA (céntimos). */
+  basePriceCents: number
+  /** IVA en céntimos. */
+  ivaCents: number
+  /** Total cobrado al mes (base + IVA) en céntimos. */
   priceCents: number
-  /** Texto original, p. ej. "149€/mes". */
+  /** Etiqueta corta del precio base, p. ej. "65 € + IVA". */
   priceLabel: string
+  /** Total con IVA formateado, p. ej. "78,65 €/mes". */
+  totalLabel: string
 }
 
-/** Extrae los euros de una etiqueta tipo "149€/mes" → 14900 céntimos. */
-function parseCents(label: string): number {
-  const match = label.replace(/\./g, "").match(/(\d+)/)
-  return match ? Number(match[1]) * 100 : 0
+function eur(cents: number): string {
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
 }
 
-/** Catálogo de planes mensuales derivado de los productos de marketing. */
-export const PLANS: PlanInfo[] = products.map((p) => ({
-  name: p.name,
-  priceLabel: p.price,
-  priceCents: parseCents(p.price),
-}))
-
-/** Devuelve la info de un plan por nombre (o null si no existe / no tiene precio). */
-export function getPlan(name: string | null | undefined): PlanInfo | null {
-  if (!name) return null
-  const plan = PLANS.find((p) => p.name.toLowerCase() === name.toLowerCase())
-  return plan && plan.priceCents > 0 ? plan : null
+function buildMainPlan(): PlanInfo {
+  const ivaCents = Math.round(BASE_PRICE_CENTS * IVA_RATE)
+  const priceCents = BASE_PRICE_CENTS + ivaCents
+  return {
+    name: "Seguimiento con endocrino",
+    basePriceCents: BASE_PRICE_CENTS,
+    ivaCents,
+    priceCents,
+    priceLabel: `${eur(BASE_PRICE_CENTS)} + IVA`,
+    totalLabel: `${eur(priceCents)}/mes`,
+  }
 }
 
-/** Plan por defecto cuando el lead no eligió uno (el recomendado). */
+/** Único plan disponible para contratar. */
+export const MAIN_PLAN: PlanInfo = buildMainPlan()
+
+/**
+ * Devuelve la info del plan. Como solo hay un plan activo, siempre devuelve
+ * MAIN_PLAN (el parámetro se mantiene por compatibilidad con llamadas previas).
+ */
+export function getPlan(_name?: string | null): PlanInfo {
+  return MAIN_PLAN
+}
+
+/** Plan por defecto (idéntico al único plan disponible). */
 export function defaultPlan(): PlanInfo {
-  return getPlan("Weight Loss Plus") ?? PLANS[0]
+  return MAIN_PLAN
 }

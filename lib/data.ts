@@ -12,6 +12,8 @@ export type Product = {
   img: string;
   features: string[];
   featured?: boolean;
+  /** Si es true, el plan se muestra como "Próximamente" y no es contratable. */
+  comingSoon?: boolean;
 };
 
 /* Catálogo enfocado en cuidado del peso (los 4 productos clave
@@ -19,81 +21,45 @@ export type Product = {
    seguimiento continuo desde la app interna de Maren. */
 export const products: Product[] = [
   {
-    name: "Weight Loss Basic",
-    subtitle: "Empieza tu tratamiento con acompañamiento médico real.",
-    price: "149€/mes",
-    tag: "Entrada",
-    img: "/products/maren-oral.png",
-    features: [
-      "Evaluación médica completa con un endocrino",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
-      "Seguimiento mensual desde la app",
-      "Mensajería con tu equipo clínico",
-      "Ajustes de dosis según tu evolución",
-    ],
-  },
-  {
-    name: "Weight Loss Plus",
-    subtitle: "El plan más completo para resultados sostenibles.",
-    price: "199€/mes",
-    tag: "Recomendado",
+    name: "Seguimiento con endocrino",
+    subtitle:
+      "Tu endocrino asignado, videollamada mensual de seguimiento y chat en vivo con tu médico durante toda la suscripción.",
+    price: "65€/mes + IVA",
+    tag: "Disponible",
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Todo lo del plan Basic",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
-      "Nutricionista asignado y plan personalizado",
-      "Plan de entrenamiento adaptado",
-      "Seguimiento quincenal desde la app",
-      "Recordatorios y registro de progreso",
-      "Soporte por chat en horario ampliado",
+      "Endocrino asignado a tu caso",
+      "Videollamada mensual de seguimiento",
+      "Chat en vivo con tu médico mientras dure la suscripción",
+      "Receta y ajustes de tratamiento según tu evolución",
+      "Panel privado con tu historial y tus recetas",
     ],
   },
   {
-    name: "Weight Loss Premium",
-    subtitle: "Atención prioritaria y máximo acompañamiento.",
-    price: "249€/mes",
-    tag: "Premium",
-    img: "/products/maren-hd.png",
-    features: [
-      "Todo lo del plan Plus",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
-      "Revisiones médicas quincenales",
-      "Acceso prioritario a tu equipo",
-      "Informes de progreso detallados",
-      "Analíticas de control incluidas",
-      "Coordinación con tu médico de cabecera",
-    ],
-  },
-  {
-    name: "Weight Maintenance",
-    subtitle: "Mantén tu peso tras finalizar el tratamiento.",
-    price: "99€/mes",
-    tag: "Mantenimiento",
+    name: "Plan Nutrición",
+    subtitle: "Nutricionista dedicado y plan de alimentación personalizado.",
+    price: "Próximamente",
+    tag: "Próximamente",
     img: "/products/maren-daily.png",
+    comingSoon: true,
     features: [
-      "Estrategia anti‑rebote personalizada",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
-      "Plan de mantenimiento tras el GLP‑1",
-      "Seguimiento mensual desde la app",
-      "Pautas de nutrición y hábitos",
-      "Revisión médica trimestral",
+      "Nutricionista asignado",
+      "Plan de alimentación a medida",
+      "Seguimiento de hábitos desde la app",
     ],
   },
   {
-    name: "Longevity Premium",
+    name: "Plan Longevidad",
     subtitle: "Salud metabólica y hormonal al máximo nivel.",
-    price: "499€/mes",
-    tag: "Longevidad",
+    price: "Próximamente",
+    tag: "Próximamente",
     img: "/products/maren-balance.png",
+    comingSoon: true,
     features: [
-      "Médico dedicado en exclusiva",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) asignada para tu caso",
-      "Analíticas avanzadas (130+ biomarcadores)",
+      "Analíticas avanzadas de biomarcadores",
       "Optimización hormonal personalizada",
       "Plan de longevidad y prevención",
-      "Seguimiento continuo desde la app",
-      "Acceso a especialistas de la red Maren",
     ],
   },
 ];
