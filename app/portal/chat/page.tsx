@@ -4,6 +4,7 @@ import { getOrCreatePatientConversation } from "@/app/actions/chat"
 import { hasActiveSubscription } from "@/app/actions/subscription"
 import { ChatThread } from "@/components/chat-thread"
 import { UnlockPrescriptionsButton } from "@/components/unlock-prescriptions-button"
+import { MAIN_PLAN } from "@/lib/plans"
 
 export const metadata = { title: "Chat — DoctorLife" }
 
@@ -45,10 +46,11 @@ export default async function PatientChatPage() {
             </p>
             <p className="mt-1.5 text-[14px] leading-relaxed text-ink-soft">
               Activa tu tratamiento para escribir a tu endocrino siempre que lo necesites, entre citas
-              y sin esperas. El primer mes solo pagas 40&nbsp;€ (ya descontamos tu primera visita).
+              y sin esperas. El primer mes pagas {MAIN_PLAN.firstMonthLabel} (te descontamos los 25&nbsp;€
+              de tu primera visita); después, {MAIN_PLAN.totalLabel}.
             </p>
             <div className="mt-4">
-              <UnlockPrescriptionsButton label="Activar tratamiento · primer mes 40 €" />
+              <UnlockPrescriptionsButton priceLabel={MAIN_PLAN.firstMonthLabel} />
             </div>
           </div>
         )}

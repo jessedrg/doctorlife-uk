@@ -437,8 +437,8 @@ export function QuizModal() {
                 </span>
                 <p className="text-[13.5px] leading-snug text-ink-soft">
                   <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
-                  Si tu médico te receta tratamiento, lo desbloqueas con la suscripción de 65&nbsp;€/mes + IVA
-                  (endocrino, videollamada mensual y chat). Cancela cuando quieras.
+                  Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te
+                  descontamos esos 25&nbsp;€ del primer mes (después, 65&nbsp;€/mes + IVA). Cancela cuando quieras.
                 </p>
               </div>
 

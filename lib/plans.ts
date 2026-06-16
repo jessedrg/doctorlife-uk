@@ -31,6 +31,8 @@ export interface PlanInfo {
   priceLabel: string
   /** Total con IVA formateado, p. ej. "78,65 €/mes". */
   totalLabel: string
+  /** Total del primer mes con el descuento de la primera visita ya aplicado. */
+  firstMonthLabel: string
 }
 
 function eur(cents: number): string {
@@ -47,6 +49,7 @@ function buildMainPlan(): PlanInfo {
     priceCents,
     priceLabel: `${eur(BASE_PRICE_CENTS)} + IVA`,
     totalLabel: `${eur(priceCents)}/mes`,
+    firstMonthLabel: `${eur(Math.max(0, priceCents - FIRST_VISIT_CENTS))} el primer mes`,
   }
 }
 
