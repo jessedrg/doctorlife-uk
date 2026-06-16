@@ -216,6 +216,15 @@
 .anim-floatC { animation: floatC 7.5s ease-in-out infinite; }
 .anim-glow { animation: glowPulse 7s ease-in-out infinite; }
 
+/* Hide scrollbar while keeping native touch scroll (swipeable carousels) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Filmic grain overlay reused on dark sections */
 .grain::after {
   content: "";

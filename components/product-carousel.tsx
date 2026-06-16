@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import { products } from "@/lib/data";
 import { QuizTrigger } from "./quiz-trigger";
 
-const CARD_STEP = 360; // 340px card + 20px gap
-
 export function ProductCarousel() {
-  const [index, setIndex] = useState(0);
-  const prev = () => setIndex((i) => Math.max(0, i - 1));
-  const next = () => setIndex((i) => Math.min(products.length - 1, i + 1));
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.firstElementChild as HTMLElement | null;
+    const step = card ? card.offsetWidth + 20 : track.clientWidth * 0.85;
+    track.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+  const prev = () => scrollByCard(-1);
+  const next = () => scrollByCard(1);
 
   return (
     <div id="planes" className="mt-[84px] scroll-mt-[110px] text-left">
@@ -44,19 +50,15 @@ export function ProductCarousel() {
         </div>
       </div>
 
-      <div className="overflow-hidden">
-        <div
-          className="flex gap-5"
-          style={{
-            transform: `translate3d(${-index * CARD_STEP}px,0,0)`,
-            transition: "transform 800ms cubic-bezier(.22,1,.36,1)",
-            willChange: "transform",
-          }}
-        >
+      <div
+        ref={trackRef}
+        className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 [scroll-padding-left:20px] md:mx-0 md:px-0"
+        style={{ WebkitOverflowScrolling: "touch", overscrollBehaviorX: "contain" }}
+      >
           {products.map((p) => (
             <div
               key={p.name}
-              className="flex flex-[0_0_340px] flex-col rounded-[28px] border p-7"
+              className="flex w-[85%] flex-shrink-0 snap-start flex-col rounded-[28px] border p-7 sm:w-[360px] md:w-[340px]"
               style={{
                 background: p.featured ? "rgba(86,96,58,.55)" : "rgba(40,44,30,.45)",
                 borderColor: p.featured ? "rgba(205,217,160,.5)" : "rgba(246,240,230,.12)",
@@ -101,7 +103,6 @@ export function ProductCarousel() {
               </QuizTrigger>
             </div>
           ))}
-        </div>
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
