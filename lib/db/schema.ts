@@ -113,6 +113,33 @@ export const availabilityExceptions = pgTable("availability_exceptions", {
 export type AvailabilityException = typeof availabilityExceptions.$inferSelect
 
 /**
+ * Citas reservadas por pacientes.
+ * status: 'pending_payment' | 'confirmed' | 'cancelled'
+ * Se escala por patientId (paciente) o doctorId (médico) en cada query.
+ */
+export const appointments = pgTable("appointments", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  startsAt: timestamp("startsAt", { withTimezone: true }).notNull(),
+  endsAt: timestamp("endsAt", { withTimezone: true }).notNull(),
+  status: text("status").notNull().default("pending_payment"),
+  leadId: integer("leadId"),
+  amountCents: integer("amountCents").notNull().default(2500),
+  currency: text("currency").notNull().default("eur"),
+  stripeSessionId: text("stripeSessionId"),
+  stripePaymentIntentId: text("stripePaymentIntentId"),
+  applicationFeeCents: integer("applicationFeeCents").notNull().default(0),
+  meetingUrl: text("meetingUrl"),
+  googleEventId: text("googleEventId"),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type Appointment = typeof appointments.$inferSelect
+export type NewAppointment = typeof appointments.$inferInsert
+
+/**
  * Leads capturados desde el quiz "Comenzar".
  * Son envíos públicos (sin cuenta de usuario), por eso no hay userId.
  */

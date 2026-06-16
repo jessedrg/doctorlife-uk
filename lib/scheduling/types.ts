@@ -32,6 +32,12 @@ export interface SlotRange {
   to: Date
 }
 
+/** Hueco combinado del conjunto de médicos: incluye qué médico lo ofrece. */
+export interface PooledSlot extends Slot {
+  doctorId: string
+  doctorName: string
+}
+
 export interface SchedulingProvider {
   getWeeklyRules(doctorUserId: string): Promise<WeeklyRule[]>
   setWeeklyRules(doctorUserId: string, rules: WeeklyRule[]): Promise<void>

@@ -9,7 +9,8 @@ export default async function PortalLayout({ children }: { children: React.React
       badge="Paciente"
       nav={[
         { href: "/portal", label: "Inicio" },
-        { href: "/portal/cita", label: "Mi cita" },
+        { href: "/portal/reservar", label: "Reservar cita" },
+        { href: "/portal/citas", label: "Mis citas" },
         { href: "/portal/chat", label: "Chat" },
         { href: "/portal/recetas", label: "Recetas" },
       ]}

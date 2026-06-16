@@ -1,0 +1,214 @@
+"use server"
+
+import { db } from "@/lib/db"
+import { appointments, doctorProfiles, user } from "@/lib/db/schema"
+import { getSessionUser, requireRole } from "@/lib/session"
+import { stripe } from "@/lib/stripe"
+import { getBaseUrl } from "@/lib/base-url"
+import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
+import { maybeCreateMeeting } from "@/lib/google/calendar"
+import { and, eq } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import type { PooledSlot } from "@/lib/scheduling/types"
+
+const CONSULT_PRICE_CENTS = 2500
+/** Comisión de la plataforma sobre el importe de la consulta (20%). */
+const PLATFORM_FEE_RATE = 0.2
+
+/** Huecos combinados de todos los médicos para los próximos `days` días. */
+export async function getPooledAvailability(days = 14): Promise<PooledSlot[]> {
+  const from = new Date()
+  const to = new Date(from.getTime() + days * 24 * 60 * 60_000)
+  return getPooledSlots({ from, to })
+}
+
+/**
+ * Reserva un hueco y crea la sesión de pago de Stripe (cargo a la plataforma).
+ * El médico se asigna automáticamente entre los disponibles para esa hora.
+ */
+export async function createBookingCheckout(
+  startUtcISO: string,
+): Promise<{ url: string } | { error: string }> {
+  const patient = await requireRole("patient")
+
+  const start = new Date(startUtcISO)
+  if (Number.isNaN(start.getTime()) || start.getTime() < Date.now()) {
+    return { error: "Ese horario ya no es válido." }
+  }
+
+  // Recalculamos la agenda combinada y localizamos el hueco elegido.
+  const slots = await getPooledSlots({
+    from: new Date(),
+    to: new Date(Date.now() + 30 * 24 * 60 * 60_000),
+  })
+  const slot = slots.find((s) => s.startUtc === start.toISOString())
+  if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
+
+  // Doble comprobación de que sigue libre para el médico asignado.
+  if (!(await isSlotFree(slot.doctorId, start))) {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  // Creamos la cita en estado pending_payment (reserva el hueco).
+  let appointmentId: number
+  try {
+    const [row] = await db
+      .insert(appointments)
+      .values({
+        patientId: patient.id,
+        doctorId: slot.doctorId,
+        startsAt: start,
+        endsAt: new Date(slot.endUtc),
+        status: "pending_payment",
+        amountCents: CONSULT_PRICE_CENTS,
+        applicationFeeCents: Math.round(CONSULT_PRICE_CENTS * PLATFORM_FEE_RATE),
+      })
+      .returning({ id: appointments.id })
+    appointmentId = row.id
+  } catch {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  // Cargo a la plataforma. El reparto al médico se hace por transferencia
+  // separada al confirmar el pago (separate charges and transfers).
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer_email: patient.email,
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: "eur",
+            unit_amount: CONSULT_PRICE_CENTS,
+            product_data: {
+              name: "Primera consulta médica · DoctorLife",
+              description: `Cita con ${slot.doctorName} el ${slot.date} a las ${slot.label}`,
+            },
+          },
+        },
+      ],
+      metadata: { appointmentId: String(appointmentId) },
+      payment_intent_data: { metadata: { appointmentId: String(appointmentId) } },
+      success_url: `${getBaseUrl()}/portal/citas?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getBaseUrl()}/portal/reservar?cancelled=1`,
+    })
+
+    await db
+      .update(appointments)
+      .set({ stripeSessionId: session.id, updatedAt: new Date() })
+      .where(eq(appointments.id, appointmentId))
+
+    if (!session.url) return { error: "No se pudo iniciar el pago." }
+    return { url: session.url }
+  } catch (e) {
+    // Liberamos la reserva si falla la creación del pago.
+    await db.delete(appointments).where(eq(appointments.id, appointmentId))
+    return { error: e instanceof Error ? e.message : "No se pudo iniciar el pago." }
+  }
+}
+
+/**
+ * Confirma una cita a partir de la sesión de Stripe (idempotente).
+ * Se llama desde la página de éxito y desde el webhook.
+ */
+export async function confirmAppointmentBySession(sessionId: string): Promise<void> {
+  const session = await stripe.checkout.sessions.retrieve(sessionId)
+  if (session.payment_status !== "paid") return
+  const appointmentId = Number(session.metadata?.appointmentId)
+  if (!appointmentId) return
+  await finalizeAppointment(appointmentId, session.payment_intent as string | null)
+}
+
+/** Marca la cita como confirmada, transfiere al médico y crea el Meet. */
+export async function finalizeAppointment(
+  appointmentId: number,
+  paymentIntentId: string | null,
+): Promise<void> {
+  const [appt] = await db
+    .select()
+    .from(appointments)
+    .where(eq(appointments.id, appointmentId))
+  if (!appt || appt.status === "confirmed") return
+
+  await db
+    .update(appointments)
+    .set({
+      status: "confirmed",
+      stripePaymentIntentId: paymentIntentId ?? appt.stripePaymentIntentId,
+      updatedAt: new Date(),
+    })
+    .where(eq(appointments.id, appointmentId))
+
+  // Datos del médico y paciente para transferencia y reunión.
+  const [doc] = await db
+    .select({
+      stripeAccountId: doctorProfiles.stripeAccountId,
+      chargesEnabled: doctorProfiles.chargesEnabled,
+      email: user.email,
+    })
+    .from(doctorProfiles)
+    .innerJoin(user, eq(user.id, doctorProfiles.userId))
+    .where(eq(doctorProfiles.userId, appt.doctorId))
+
+  // Transferencia al médico (payout) — solo si su cuenta Connect está lista.
+  if (doc?.stripeAccountId && doc.chargesEnabled && paymentIntentId) {
+    try {
+      const pi = await stripe.paymentIntents.retrieve(paymentIntentId)
+      const amount = appt.amountCents - appt.applicationFeeCents
+      await stripe.transfers.create({
+        amount,
+        currency: appt.currency,
+        destination: doc.stripeAccountId,
+        source_transaction: pi.latest_charge as string,
+        metadata: { appointmentId: String(appointmentId) },
+      })
+    } catch (e) {
+      console.log("[v0] transfer to doctor failed:", e instanceof Error ? e.message : e)
+    }
+  }
+
+  // Enlace de Google Meet (si Google está configurado y el médico conectado).
+  const [pat] = await db.select({ email: user.email }).from(user).where(eq(user.id, appt.patientId))
+  const meeting = await maybeCreateMeeting({
+    doctorId: appt.doctorId,
+    doctorEmail: doc?.email ?? "",
+    patientEmail: pat?.email ?? "",
+    summary: "Primera consulta · DoctorLife",
+    startUtc: new Date(appt.startsAt),
+    endUtc: new Date(appt.endsAt),
+  })
+  if (meeting.meetingUrl || meeting.googleEventId) {
+    await db
+      .update(appointments)
+      .set({
+        meetingUrl: meeting.meetingUrl,
+        googleEventId: meeting.googleEventId,
+        updatedAt: new Date(),
+      })
+      .where(eq(appointments.id, appointmentId))
+  }
+
+  revalidatePath("/portal/citas")
+  revalidatePath("/medico/citas")
+}
+
+/** Citas del paciente autenticado, con el nombre del médico asignado. */
+export async function getMyAppointments() {
+  const me = await getSessionUser()
+  if (!me) return []
+  return db
+    .select({
+      id: appointments.id,
+      startsAt: appointments.startsAt,
+      endsAt: appointments.endsAt,
+      status: appointments.status,
+      amountCents: appointments.amountCents,
+      meetingUrl: appointments.meetingUrl,
+      doctorName: doctorProfiles.fullName,
+    })
+    .from(appointments)
+    .leftJoin(doctorProfiles, eq(doctorProfiles.userId, appointments.doctorId))
+    .where(and(eq(appointments.patientId, me.id)))
+    .orderBy(appointments.startsAt)
+}
