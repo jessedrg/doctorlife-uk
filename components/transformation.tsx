@@ -35,14 +35,16 @@ export function Transformation() {
               <QuizTrigger className="absolute bottom-6 right-6 rounded-full border border-paper/30 px-[18px] py-[9px] text-[13.5px]" style={{ background: "rgba(246,240,230,.16)" }}>
                 Empezar
               </QuizTrigger>
-              <div
-                className="absolute bottom-6 left-6 flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-2xl border border-paper/15"
-                style={{ background: "radial-gradient(70% 70% at 35% 28%,rgba(205,217,160,.32),rgba(47,52,57,.5))", boxShadow: "0 14px 26px rgba(0,0,0,.35)" }}
-              >
+              <div className="absolute bottom-5 left-5 flex h-[80px] w-[80px] items-center justify-center">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: "radial-gradient(50% 50% at 50% 50%,rgba(205,217,160,.30),transparent 70%)" }}
+                />
                 <img
                   src="/glp1-pen.png"
                   alt="Pluma inyectora GLP-1"
-                  className="h-[52px] w-[52px] -rotate-[18deg] object-contain drop-shadow-[0_3px_6px_rgba(0,0,0,.35)]"
+                  className="relative h-[66px] w-[66px] -rotate-[18deg] object-contain drop-shadow-[0_5px_10px_rgba(0,0,0,.45)]"
                 />
               </div>
             </div>
