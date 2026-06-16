@@ -11,9 +11,12 @@ export function Footer() {
             <a
               href="/#top"
               aria-label="DoctorLife — inicio"
-              className="flex h-[44px] w-[44px] items-center justify-center rounded-[14px] bg-sage font-serif text-[26px] font-bold leading-none text-ink no-underline"
+              className="flex items-center gap-3 no-underline"
             >
-              D
+              <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[14px] bg-sage font-serif text-[26px] font-bold leading-none text-ink">
+                D
+              </span>
+              <span className="text-[22px] font-semibold tracking-[-.01em] text-paper">DoctorLife</span>
             </a>
             <p className="mt-5 max-w-[280px] text-[15px] leading-relaxed text-paper/65">
               Cuidado del peso dirigido por médicos colegiados, con seguimiento
@@ -40,7 +43,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-paper/10 px-8 py-6 text-[12.5px] text-paper/45 md:px-14">
-          <span>© 2026 DoctorLife · doctorlife.io · Marca ficticia creada con fines de diseño.</span>
+          <span>© 2026 DoctorLife · doctorlife.io</span>
           <span>Tratamiento sujeto a evaluación médica.</span>
         </div>
       </div>

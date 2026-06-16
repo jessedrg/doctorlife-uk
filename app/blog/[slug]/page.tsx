@@ -268,7 +268,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             <p className="mt-8 rounded-[16px] bg-cream/50 px-5 py-4 text-[13px] leading-relaxed text-ink-mute">
               Este contenido es informativo y no sustituye el consejo médico. Los tratamientos GLP‑1 requieren
-              valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}). {BRAND} es una marca ficticia creada con fines de diseño.
+              valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}).
             </p>
           </article>
 

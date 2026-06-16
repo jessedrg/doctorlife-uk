@@ -36,12 +36,13 @@ export function Navbar() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }
           }}
-          className="flex items-center text-ink no-underline"
+          className="flex items-center gap-2.5 text-ink no-underline"
           aria-label="DoctorLife — inicio"
         >
           <span className="flex h-[32px] w-[32px] items-center justify-center rounded-[10px] bg-ink font-serif text-[18px] font-bold leading-none text-paper">
             D
           </span>
+          <span className="text-[19px] font-semibold tracking-[-.01em] text-ink">DoctorLife</span>
         </a>
 
         {/* enlaces desktop */}
