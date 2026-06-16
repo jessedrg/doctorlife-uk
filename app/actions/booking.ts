@@ -14,8 +14,6 @@ import type { PooledSlot } from "@/lib/scheduling/types"
 const SUB_ACTIVE_STATES = ["active", "trialing", "past_due"]
 
 const CONSULT_PRICE_CENTS = 2500
-/** Comisión de la plataforma sobre el importe de la consulta (20%). */
-const PLATFORM_FEE_RATE = 0.2
 
 /** Huecos combinados de todos los médicos para los próximos `days` días. */
 export async function getPooledAvailability(days = 14): Promise<PooledSlot[]> {
@@ -63,7 +61,8 @@ export async function createBookingCheckout(
         endsAt: new Date(slot.endUtc),
         status: "pending_payment",
         amountCents: CONSULT_PRICE_CENTS,
-        applicationFeeCents: Math.round(CONSULT_PRICE_CENTS * PLATFORM_FEE_RATE),
+        // La primera consulta va íntegra al médico (sin comisión de plataforma).
+        applicationFeeCents: 0,
       })
       .returning({ id: appointments.id })
     appointmentId = row.id

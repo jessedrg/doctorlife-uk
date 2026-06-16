@@ -1,6 +1,6 @@
 import { db } from "@/lib/db"
-import { appointments, doctorProfiles, user } from "@/lib/db/schema"
-import { and, eq, gte, lt, ne, or } from "drizzle-orm"
+import { account, appointments, doctorProfiles, user } from "@/lib/db/schema"
+import { and, eq, exists, gte, lt, ne, or } from "drizzle-orm"
 import { scheduling } from "./index"
 import type { PooledSlot, SlotRange } from "./types"
 
@@ -13,7 +13,10 @@ const PENDING_TTL_MIN = 30
  * asigna un médico disponible para ese hueco. Las citas activas se descartan.
  */
 export async function getPooledSlots(range: SlotRange): Promise<PooledSlot[]> {
-  // Médicos elegibles + su nombre.
+  // Médicos elegibles: solo aparecen quienes cumplen TODOS los requisitos para
+  // poder atender — aceptan pacientes, tienen Stripe Connect operativo (cobros
+  // y transferencias) y han enlazado Google (Calendar/Meet) para las
+  // videollamadas. La disponibilidad se filtra después al generar los huecos.
   const doctors = await db
     .select({
       userId: doctorProfiles.userId,
@@ -21,7 +24,20 @@ export async function getPooledSlots(range: SlotRange): Promise<PooledSlot[]> {
     })
     .from(doctorProfiles)
     .innerJoin(user, eq(user.id, doctorProfiles.userId))
-    .where(eq(doctorProfiles.acceptingPatients, true))
+    .where(
+      and(
+        eq(doctorProfiles.acceptingPatients, true),
+        eq(doctorProfiles.chargesEnabled, true),
+        eq(doctorProfiles.payoutsEnabled, true),
+        // Cuenta de Google enlazada (proveedor "google" en la tabla account).
+        exists(
+          db
+            .select({ id: account.id })
+            .from(account)
+            .where(and(eq(account.userId, doctorProfiles.userId), eq(account.providerId, "google"))),
+        ),
+      ),
+    )
 
   if (doctors.length === 0) return []
 
