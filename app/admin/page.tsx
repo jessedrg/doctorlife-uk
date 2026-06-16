@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/session"
-import { listUsers } from "@/app/actions/admin"
+import { getAdminMetrics, listUsers } from "@/app/actions/admin"
 import { AdminPromoteDoctor } from "@/components/admin-promote-doctor"
+import { MetricCard } from "@/components/metric-card"
 
 export const metadata = { title: "Administración — DoctorLife" }
 
@@ -10,9 +11,13 @@ const roleLabels: Record<string, string> = {
   admin: "Admin",
 }
 
+function eur(cents: number) {
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
+}
+
 export default async function AdminHome() {
   await requireRole("admin")
-  const users = await listUsers()
+  const [users, metrics] = await Promise.all([listUsers(), getAdminMetrics()])
 
   return (
     <div>
@@ -22,6 +27,23 @@ export default async function AdminHome() {
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
         Supervisa médicos, pacientes, citas y pagos de la plataforma.
       </p>
+
+      <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-3">
+        <MetricCard label="Médicos" value={String(metrics.doctors)} />
+        <MetricCard label="Pacientes" value={String(metrics.patients)} />
+        <MetricCard label="Leads (quiz)" value={String(metrics.leads)} />
+        <MetricCard label="Citas confirmadas" value={String(metrics.confirmedAppointments)} />
+        <MetricCard
+          label="Ingresos brutos"
+          value={eur(metrics.grossRevenueCents)}
+          hint="Primeras visitas pagadas"
+        />
+        <MetricCard
+          label="Comisión plataforma"
+          value={eur(metrics.platformFeesCents)}
+          hint="Application fees acumuladas"
+        />
+      </div>
 
       <div className="mt-7 max-w-[640px]">
         <AdminPromoteDoctor />

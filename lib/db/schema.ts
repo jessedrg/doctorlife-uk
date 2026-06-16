@@ -163,6 +163,22 @@ export const messages = pgTable("messages", {
 export type Message = typeof messages.$inferSelect
 export type NewMessage = typeof messages.$inferInsert
 
+/** Recetas emitidas por un médico. El PDF se guarda en un blob privado. */
+export const prescriptions = pgTable("prescriptions", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  appointmentId: integer("appointmentId"),
+  medication: text("medication").notNull(),
+  dosage: text("dosage").notNull(),
+  instructions: text("instructions"),
+  blobPathname: text("blobPathname").notNull(),
+  issuedAt: timestamp("issuedAt", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type Prescription = typeof prescriptions.$inferSelect
+export type NewPrescription = typeof prescriptions.$inferInsert
+
 /**
  * Leads capturados desde el quiz "Comenzar".
  * Son envíos públicos (sin cuenta de usuario), por eso no hay userId.

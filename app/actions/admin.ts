@@ -1,9 +1,9 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { user as userTable, doctorProfiles } from "@/lib/db/schema"
+import { user as userTable, doctorProfiles, appointments, leads } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
-import { eq } from "drizzle-orm"
+import { count, desc, eq, sum } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
 async function requireAdmin() {
@@ -54,4 +54,97 @@ export async function listUsers() {
     })
     .from(userTable)
     .orderBy(userTable.createdAt)
+}
+
+/** Métricas de cabecera para el panel de admin. */
+export async function getAdminMetrics() {
+  await requireAdmin()
+
+  const [[doctors], [patients], [leadCount], [confirmed], [revenue], [fees]] = await Promise.all([
+    db.select({ n: count() }).from(userTable).where(eq(userTable.role, "doctor")),
+    db.select({ n: count() }).from(userTable).where(eq(userTable.role, "patient")),
+    db.select({ n: count() }).from(leads),
+    db.select({ n: count() }).from(appointments).where(eq(appointments.status, "confirmed")),
+    db
+      .select({ s: sum(appointments.amountCents) })
+      .from(appointments)
+      .where(eq(appointments.status, "confirmed")),
+    db
+      .select({ s: sum(appointments.applicationFeeCents) })
+      .from(appointments)
+      .where(eq(appointments.status, "confirmed")),
+  ])
+
+  return {
+    doctors: doctors?.n ?? 0,
+    patients: patients?.n ?? 0,
+    leads: leadCount?.n ?? 0,
+    confirmedAppointments: confirmed?.n ?? 0,
+    grossRevenueCents: Number(revenue?.s ?? 0),
+    platformFeesCents: Number(fees?.s ?? 0),
+  }
+}
+
+/** Médicos con su perfil y estado de Stripe. */
+export async function listDoctors() {
+  await requireAdmin()
+  return db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      email: userTable.email,
+      specialty: doctorProfiles.specialty,
+      acceptingPatients: doctorProfiles.acceptingPatients,
+      chargesEnabled: doctorProfiles.chargesEnabled,
+      stripeOnboarded: doctorProfiles.stripeOnboarded,
+      createdAt: userTable.createdAt,
+    })
+    .from(userTable)
+    .leftJoin(doctorProfiles, eq(doctorProfiles.userId, userTable.id))
+    .where(eq(userTable.role, "doctor"))
+    .orderBy(userTable.createdAt)
+}
+
+/** Pacientes con su número de citas. */
+export async function listPatients() {
+  await requireAdmin()
+  return db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      email: userTable.email,
+      createdAt: userTable.createdAt,
+    })
+    .from(userTable)
+    .where(eq(userTable.role, "patient"))
+    .orderBy(desc(userTable.createdAt))
+}
+
+/** Leads capturados desde el quiz. */
+export async function listLeads() {
+  await requireAdmin()
+  return db
+    .select({
+      id: leads.id,
+      name: leads.name,
+      email: leads.email,
+      goal: leads.goal,
+      plan: leads.plan,
+      bmi: leads.bmi,
+      createdAt: leads.createdAt,
+    })
+    .from(leads)
+    .orderBy(desc(leads.createdAt))
+    .limit(200)
+}
+
+/** Activa/pausa que un médico acepte nuevos pacientes. */
+export async function setDoctorAccepting(doctorId: string, accepting: boolean) {
+  await requireAdmin()
+  await db
+    .update(doctorProfiles)
+    .set({ acceptingPatients: accepting, updatedAt: new Date() })
+    .where(eq(doctorProfiles.userId, doctorId))
+  revalidatePath("/admin/medicos")
+  return { ok: true }
 }

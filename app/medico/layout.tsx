@@ -11,6 +11,7 @@ export default async function MedicoLayout({ children }: { children: React.React
         { href: "/medico", label: "Inicio" },
         { href: "/medico/disponibilidad", label: "Disponibilidad" },
         { href: "/medico/chat", label: "Mensajes" },
+        { href: "/medico/recetas", label: "Recetas" },
         { href: "/medico/pagos", label: "Pagos" },
       ]}
     >
