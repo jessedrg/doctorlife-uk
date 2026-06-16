@@ -56,52 +56,62 @@ export async function updateDoctorProfile(input: {
 }
 
 /**
- * Creates (if needed) a Stripe Connect account using the Accounts v2 API,
- * configured as an express-equivalent merchant for a destination-charge
- * marketplace, then returns a hosted onboarding link.
+ * Creates (if needed) a Stripe Connect Express account for a destination-charge
+ * marketplace (the platform stays liable and collects an application fee), then
+ * returns a hosted onboarding link.
  */
-export async function startStripeOnboarding() {
+export async function startStripeOnboarding(): Promise<
+  { url: string; error?: never } | { url?: never; error: string }
+> {
   const user = await requireDoctor()
   const profile = await getMyDoctorProfile()
 
-  let accountId = profile.stripeAccountId
+  try {
+    let accountId = profile.stripeAccountId
 
-  if (!accountId) {
-    const account = await stripe.v2.core.accounts.create({
-      contact_email: user.email,
-      display_name: profile.fullName,
-      dashboard: "express",
-      identity: { country: "ES", entity_type: "individual" },
-      defaults: {
-        currency: "eur",
-        responsibilities: { fees_collector: "stripe", losses_collector: "stripe" },
-      },
-      configuration: {
-        merchant: { capabilities: { card_payments: { requested: true } } },
-      },
-      include: ["configuration.merchant", "identity", "requirements"],
-      metadata: { userId: user.id },
-    })
-    accountId = account.id
-    await db
-      .update(doctorProfiles)
-      .set({ stripeAccountId: accountId, updatedAt: new Date() })
-      .where(eq(doctorProfiles.userId, user.id))
-  }
+    if (!accountId) {
+      const account = await stripe.accounts.create({
+        type: "express",
+        country: "ES",
+        email: user.email,
+        business_type: "individual",
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+        },
+        business_profile: {
+          mcc: "8011", // doctors / physicians
+          name: profile.fullName,
+        },
+        metadata: { userId: user.id },
+      })
+      accountId = account.id
+      await db
+        .update(doctorProfiles)
+        .set({ stripeAccountId: accountId, updatedAt: new Date() })
+        .where(eq(doctorProfiles.userId, user.id))
+    }
 
-  const link = await stripe.v2.core.accountLinks.create({
-    account: accountId,
-    use_case: {
+    const link = await stripe.accountLinks.create({
+      account: accountId,
+      refresh_url: `${getBaseUrl()}/medico/pagos?refresh=1`,
+      return_url: `${getBaseUrl()}/medico/pagos?done=1`,
       type: "account_onboarding",
-      account_onboarding: {
-        configurations: ["merchant"],
-        refresh_url: `${getBaseUrl()}/medico/pagos?refresh=1`,
-        return_url: `${getBaseUrl()}/medico/pagos?done=1`,
-      },
-    },
-  })
+    })
 
-  return { url: link.url }
+    return { url: link.url }
+  } catch (e) {
+    const raw = e instanceof Error ? e.message : String(e)
+    // Connect must be enabled on the platform Stripe account before any
+    // connected account can be created.
+    if (raw.includes("signed up for Connect") || raw.includes("Connect")) {
+      return {
+        error:
+          "Stripe Connect aún no está activado en la cuenta de la plataforma. Actívalo en el panel de Stripe (Connect → Empezar) y vuelve a intentarlo.",
+      }
+    }
+    return { error: raw }
+  }
 }
 
 /** Re-reads the Stripe account and syncs the onboarding flags into our DB. */
@@ -110,19 +120,18 @@ export async function refreshStripeStatus() {
   const profile = await getMyDoctorProfile()
   if (!profile.stripeAccountId) return profile
 
-  const account = await stripe.v2.core.accounts.retrieve(profile.stripeAccountId, {
-    include: ["configuration.merchant", "requirements"],
-  })
+  const account = await stripe.accounts.retrieve(profile.stripeAccountId)
 
-  const cardStatus = account.configuration?.merchant?.capabilities?.card_payments?.status
-  const chargesEnabled = cardStatus === "active"
+  const chargesEnabled = account.charges_enabled ?? false
+  const payoutsEnabled = account.payouts_enabled ?? false
+  const onboarded = account.details_submitted ?? false
 
   const [updated] = await db
     .update(doctorProfiles)
     .set({
       chargesEnabled,
-      payoutsEnabled: chargesEnabled,
-      stripeOnboarded: chargesEnabled,
+      payoutsEnabled,
+      stripeOnboarded: onboarded,
       updatedAt: new Date(),
     })
     .where(eq(doctorProfiles.userId, user.id))

@@ -21,8 +21,13 @@ export function DoctorStripeOnboarding({ hasAccount, chargesEnabled, payoutsEnab
     setError(null)
     setLoading(true)
     try {
-      const { url } = await startStripeOnboarding()
-      window.location.href = url
+      const result = await startStripeOnboarding()
+      if (result.url) {
+        window.location.href = result.url
+        return
+      }
+      setError(result.error ?? "No se pudo iniciar el proceso.")
+      setLoading(false)
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo iniciar el proceso.")
       setLoading(false)
