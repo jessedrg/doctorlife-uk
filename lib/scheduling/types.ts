@@ -46,9 +46,7 @@ export interface SchedulingProvider {
   removeException(doctorUserId: string, date: string): Promise<void>
   /**
    * Devuelve los huecos libres del médico en el rango dado.
-   * `takenStartUtc` son instantes ISO ya ocupados por otras citas de la plataforma.
-   * El proveedor también descarta los huecos que solapen con eventos existentes
-   * en el Google Calendar del médico (si lo tiene conectado).
+   * `takenStartUtc` son instantes ISO ya ocupados por otras citas.
    */
   getAvailableSlots(
     doctorUserId: string,
