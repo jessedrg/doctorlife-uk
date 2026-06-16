@@ -229,10 +229,16 @@ export async function payoutDoctorForInvoice(invoice: {
   subscription?: string | null
   charge?: string | null
   amount_paid?: number | null
+  billing_reason?: string | null
 }): Promise<void> {
   const subId = invoice.subscription
   const chargeId = invoice.charge
   if (!subId || !chargeId || !invoice.id) return
+
+  // El PRIMER pago de la suscripción (billing_reason "subscription_create") va
+  // ÍNTEGRO a la plataforma: el médico ya cobró sus 25 € en la primera consulta.
+  // Solo se reparten 25 € al médico en las renovaciones ("subscription_cycle").
+  if (invoice.billing_reason === "subscription_create") return
 
   // Localizamos la suscripción y su médico asignado.
   const [row] = await db

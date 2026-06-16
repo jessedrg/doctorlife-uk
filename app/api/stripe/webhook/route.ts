@@ -81,6 +81,7 @@ export async function POST(req: Request) {
           subscription?: string
           charge?: string
           amount_paid?: number
+          billing_reason?: string
         }
         const subId = raw.subscription
         if (subId) {
@@ -98,12 +99,14 @@ export async function POST(req: Request) {
               sub.customer as string,
             )
           }
-          // Reparto: 25 € fijos al médico asignado; el resto se queda en la empresa.
+          // Reparto: 25 € fijos al médico asignado solo en renovaciones; el
+          // primer pago y "el resto" se quedan en la empresa.
           await payoutDoctorForInvoice({
             id: raw.id,
             subscription: subId,
             charge: raw.charge ?? null,
             amount_paid: raw.amount_paid ?? null,
+            billing_reason: raw.billing_reason ?? null,
           })
         }
         break
