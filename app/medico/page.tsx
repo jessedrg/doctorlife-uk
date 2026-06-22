@@ -1,7 +1,8 @@
 import { requireRole } from "@/lib/session"
-import { getMyDoctorProfile } from "@/app/actions/doctor"
+import { getMyDoctorProfile, getDoctorMetrics } from "@/app/actions/doctor"
 import { getDoctorReadiness } from "@/lib/doctor/readiness"
 import { DoctorOnboardingChecklist } from "@/components/doctor-onboarding-checklist"
+import { DoctorMetricsGrid } from "@/components/doctor-metrics"
 
 export const metadata = { title: "Panel del médico — DoctorLife" }
 
@@ -9,7 +10,10 @@ export default async function MedicoHome() {
   const user = await requireRole("doctor")
   // Asegura que exista el perfil antes de calcular el estado de preparación.
   await getMyDoctorProfile()
-  const readiness = await getDoctorReadiness(user.id)
+  const [readiness, metrics] = await Promise.all([
+    getDoctorReadiness(user.id),
+    getDoctorMetrics(),
+  ])
   const firstName = user.name.split(" ")[0]
 
   return (
@@ -22,6 +26,10 @@ export default async function MedicoHome() {
       </p>
 
       <div className="mt-7">
+        <DoctorMetricsGrid metrics={metrics} />
+      </div>
+
+      <div className="mt-8">
         <DoctorOnboardingChecklist readiness={readiness} />
       </div>
     </div>
