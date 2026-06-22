@@ -17,6 +17,8 @@ import { and, eq } from "drizzle-orm"
 const TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 const EVENTS_ENDPOINT =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1&sendUpdates=all"
+const EVENT_ENDPOINT = (id: string) =>
+  `https://www.googleapis.com/calendar/v3/calendars/primary/events/${encodeURIComponent(id)}?sendUpdates=all`
 
 export function isGoogleConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
@@ -164,5 +166,30 @@ export async function maybeCreateMeeting(input: MeetingInput): Promise<MeetingRe
   } catch (e) {
     console.log("[v0] maybeCreateMeeting error:", e instanceof Error ? e.message : e)
     return { meetingUrl: null, googleEventId: null }
+  }
+}
+
+/**
+ * Elimina un evento de Google Calendar del médico (cancelación de cita).
+ * Degrada en silencio si Google no está configurado o el médico no está enlazado.
+ */
+export async function maybeCancelMeeting(doctorId: string, googleEventId: string | null): Promise<void> {
+  if (!googleEventId || !isGoogleConfigured()) return
+  try {
+    const row = await getGoogleAccount(doctorId)
+    if (!row) return
+    const accessToken = await getValidAccessToken(row)
+    if (!accessToken) return
+
+    const res = await fetch(EVENT_ENDPOINT(googleEventId), {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    // 410 = ya eliminado; lo tratamos como éxito.
+    if (!res.ok && res.status !== 410 && res.status !== 404) {
+      console.log("[v0] google event delete failed:", res.status, await res.text())
+    }
+  } catch (e) {
+    console.log("[v0] maybeCancelMeeting error:", e instanceof Error ? e.message : e)
   }
 }

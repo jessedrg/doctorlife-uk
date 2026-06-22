@@ -129,9 +129,17 @@ export const appointments = pgTable("appointments", {
   currency: text("currency").notNull().default("eur"),
   stripeSessionId: text("stripeSessionId"),
   stripePaymentIntentId: text("stripePaymentIntentId"),
+  // Id de la transferencia al médico (separate transfers). Se guarda para poder
+  // revertirla y re-transferir si la cita se reasigna a otro médico.
+  stripeTransferId: text("stripeTransferId"),
   applicationFeeCents: integer("applicationFeeCents").notNull().default(0),
   meetingUrl: text("meetingUrl"),
   googleEventId: text("googleEventId"),
+  // Quién canceló la cita: 'doctor' | 'patient' | null. Si la canceló el médico,
+  // el paciente verá la opción de reprogramar.
+  cancelledBy: text("cancelledBy"),
+  // Apunta a la nueva cita cuando esta se reprogramó (evita reprogramar dos veces).
+  rescheduledToId: integer("rescheduledToId"),
   createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
 })

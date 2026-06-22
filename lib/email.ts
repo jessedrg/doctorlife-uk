@@ -129,6 +129,74 @@ export async function sendBookingConfirmationEmail(opts: {
   )
 }
 
+/** Aviso al paciente de que su médico canceló la cita y debe reprogramar. */
+export async function sendAppointmentCancelledEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  startsAt: Date
+  rescheduleId: number
+  isFollowup: boolean
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const when = new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(opts.startsAt)
+  const url = `${getCanonicalBaseUrl()}/portal/reprogramar/${opts.rescheduleId}`
+  const note = opts.isFollowup
+    ? "Podrás elegir una nueva hora con tu mismo médico."
+    : "Podrás elegir una nueva hora; te asignaremos un médico disponible para ese horario."
+  const body = `
+    ${p(`Hola ${firstName}, ${doc} ha tenido que cancelar tu cita del <strong>${when}</strong>. Lamentamos las molestias.`)}
+    ${p(note)}
+    <div style="margin:22px 0 4px;">${button(url, "Elegir nueva hora")}</div>
+  `
+  return send(
+    opts.to,
+    "Tu cita se ha cancelado — reprograma fácilmente",
+    shell({ title: "Tu cita se canceló", body, preheader: "Elige una nueva hora para tu consulta." }),
+  )
+}
+
+/** Confirmación al paciente de que su cita reprogramada está lista. */
+export async function sendRescheduleConfirmedEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  startsAt: Date
+  reassigned: boolean
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const when = new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(opts.startsAt)
+  const rows = [{ label: "Nueva cita", value: when }]
+  if (opts.doctorName) rows.push({ label: "Médico", value: opts.doctorName })
+  const body = `
+    ${p(`Hola ${firstName}, tu cita ha quedado reprogramada correctamente.`)}
+    ${opts.reassigned ? p("Para ese horario te hemos asignado un médico disponible.") : ""}
+    ${dataBox(rows)}
+    ${p("Encontrarás el enlace de la videollamada en tu panel.")}
+    <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/citas`, "Ver mis citas")}</div>
+  `
+  return send(
+    opts.to,
+    "Tu cita reprogramada está confirmada — DoctorLife",
+    shell({ title: "Cita reprogramada", body, preheader: "Tu nueva cita está confirmada." }),
+  )
+}
+
 /** Aviso al paciente de que su médico ha emitido una receta. */
 export async function sendPrescriptionReadyEmail(opts: {
   to: string
