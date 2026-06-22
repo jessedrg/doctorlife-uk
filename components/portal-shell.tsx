@@ -172,7 +172,10 @@ export function PortalShell({
       </header>
 
       {/* Drawer — móvil (siempre montado para animar la entrada/salida) */}
-      <div className="fixed inset-0 z-40 md:hidden" aria-hidden={!open}>
+      <div
+        className={`fixed inset-0 z-40 md:hidden ${open ? "" : "pointer-events-none"}`}
+        aria-hidden={!open}
+      >
         {/* Fondo */}
         <button
           type="button"
