@@ -4,6 +4,8 @@ import { db } from "@/lib/db"
 import { appointments, conversations, messages, user } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
 import { hasActiveSubscription } from "@/app/actions/subscription"
+import { maybeCreateMeeting, isGoogleConfigured } from "@/lib/google/calendar"
+import { CALL_PREFIX } from "@/lib/chat-constants"
 import { and, asc, desc, eq, gt, ne, or } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -58,6 +60,8 @@ export async function getOrCreatePatientConversation() {
   return created.id
 }
 
+export type DoctorConversationStatus = "active" | "pending" | "archived"
+
 export type ConversationSummary = {
   id: number
   counterpartId: string | null
@@ -65,6 +69,7 @@ export type ConversationSummary = {
   counterpartImage: string | null
   lastMessageAt: Date | null
   lastMessagePreview: string | null
+  doctorStatus: DoctorConversationStatus
 }
 
 /** Lista las conversaciones del usuario (médico o paciente) con datos del otro. */
@@ -82,6 +87,7 @@ export async function getMyConversations(): Promise<ConversationSummary[]> {
       counterpartId: counterpartId,
       counterpartName: user.name,
       counterpartImage: user.image,
+      doctorStatus: conversations.doctorStatus,
     })
     .from(conversations)
     .leftJoin(user, eq(user.id, counterpartId))
@@ -104,6 +110,7 @@ export async function getMyConversations(): Promise<ConversationSummary[]> {
         counterpartImage: r.counterpartImage ?? null,
         lastMessageAt: r.lastMessageAt,
         lastMessagePreview: last?.body ? stripPreview(last.body) : null,
+        doctorStatus: (r.doctorStatus ?? "active") as DoctorConversationStatus,
       }
     }),
   )
@@ -111,9 +118,30 @@ export async function getMyConversations(): Promise<ConversationSummary[]> {
   return summaries
 }
 
+/** El médico fija el estado de una conversación para organizar su bandeja. */
+export async function setConversationStatus(
+  conversationId: number,
+  status: DoctorConversationStatus,
+) {
+  const me = await requireUser()
+  if (me.role !== "doctor") return { ok: false as const, error: "No autorizado" }
+  const conv = await requireParticipant(conversationId, me.id)
+  if (conv.doctorId !== me.id) return { ok: false as const, error: "No autorizado" }
+
+  await db
+    .update(conversations)
+    .set({ doctorStatus: status })
+    .where(eq(conversations.id, conversationId))
+
+  revalidatePath("/medico/chat")
+  return { ok: true as const, status }
+}
+
 /** Quita el prefijo de análisis y recorta para una vista previa de una línea. */
 function stripPreview(body: string): string {
-  let text = body.startsWith("[ANÁLISIS]") ? "Análisis solicitados" : body
+  let text = body
+  if (body.startsWith("[ANÁLISIS]")) text = "Análisis solicitados"
+  else if (body.startsWith(CALL_PREFIX)) text = "Videollamada"
   text = text.replace(/\s+/g, " ").trim()
   return text.length > 60 ? text.slice(0, 60) + "…" : text
 }
@@ -171,6 +199,71 @@ export async function sendMessage(conversationId: number, body: string) {
   const [created] = await db
     .insert(messages)
     .values({ conversationId, senderId: me.id, body: text })
+    .returning()
+
+  await db
+    .update(conversations)
+    .set({ lastMessageAt: created.createdAt })
+    .where(eq(conversations.id, conversationId))
+
+  revalidatePath("/portal/chat")
+  revalidatePath("/medico/chat")
+
+  return {
+    ok: true as const,
+    message: { id: created.id, body: created.body, mine: true, createdAt: created.createdAt },
+  }
+}
+
+/**
+ * El médico genera una videollamada de Google Meet instantánea y la publica en
+ * el chat como un mensaje con botón "Unirse" para ambos.
+ */
+export async function createInstantCall(conversationId: number) {
+  const me = await requireUser()
+  if (me.role !== "doctor") return { ok: false as const, error: "No autorizado" }
+  const conv = await requireParticipant(conversationId, me.id)
+  if (conv.doctorId !== me.id) return { ok: false as const, error: "No autorizado" }
+
+  if (!isGoogleConfigured()) {
+    return { ok: false as const, error: "Las videollamadas no están configuradas." }
+  }
+
+  // Email del médico y del paciente para invitar a ambos al evento.
+  const [doc] = await db
+    .select({ email: user.email })
+    .from(user)
+    .where(eq(user.id, me.id))
+    .limit(1)
+  const [pat] = await db
+    .select({ email: user.email })
+    .from(user)
+    .where(eq(user.id, conv.patientId))
+    .limit(1)
+
+  const now = new Date()
+  const end = new Date(now.getTime() + 60 * 60 * 1000)
+
+  const { meetingUrl } = await maybeCreateMeeting({
+    doctorId: me.id,
+    doctorEmail: doc?.email ?? "",
+    patientEmail: pat?.email ?? "",
+    summary: "Videollamada DoctorLife",
+    startUtc: now,
+    endUtc: end,
+  })
+
+  if (!meetingUrl) {
+    return {
+      ok: false as const,
+      error: "No se pudo crear la llamada. Conecta tu Google Calendar en Mi cuenta e inténtalo de nuevo.",
+    }
+  }
+
+  const body = `${CALL_PREFIX} ${meetingUrl}`
+  const [created] = await db
+    .insert(messages)
+    .values({ conversationId, senderId: me.id, body })
     .returning()
 
   await db

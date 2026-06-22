@@ -1,12 +1,28 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { Search, MessageCircle } from "lucide-react"
+import { useMemo, useState, useTransition } from "react"
+import { Search, MessageCircle, Inbox, Clock3, Archive } from "lucide-react"
 import { ChatThread } from "@/components/chat-thread"
 import { UserAvatar } from "@/components/user-avatar"
-import type { ConversationSummary } from "@/app/actions/chat"
+import {
+  setConversationStatus,
+  type ConversationSummary,
+  type DoctorConversationStatus,
+} from "@/app/actions/chat"
 
 const dateFmt = new Intl.DateTimeFormat("es-ES", { day: "2-digit", month: "short" })
+
+const STATUS_TABS: { key: DoctorConversationStatus; label: string; icon: typeof Inbox }[] = [
+  { key: "active", label: "Activos", icon: Inbox },
+  { key: "pending", label: "Pendientes", icon: Clock3 },
+  { key: "archived", label: "Archivados", icon: Archive },
+]
+
+const STATUS_LABEL: Record<DoctorConversationStatus, string> = {
+  active: "Activo",
+  pending: "Pendiente",
+  archived: "Archivado",
+}
 
 export function ChatWorkspace({
   conversations,
@@ -18,16 +34,43 @@ export function ChatWorkspace({
   /** Lado médico: habilita "Ver ficha" del paciente en el hilo. */
   isDoctor?: boolean
 }) {
-  const [selectedId, setSelectedId] = useState<number | null>(conversations[0]?.id ?? null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
   const [query, setQuery] = useState("")
+  const [tab, setTab] = useState<DoctorConversationStatus>("active")
+  // Estado local de cada conversación para reflejar los cambios al instante.
+  const [statuses, setStatuses] = useState<Record<number, DoctorConversationStatus>>(() =>
+    Object.fromEntries(conversations.map((c) => [c.id, c.doctorStatus])),
+  )
+  const [, startTransition] = useTransition()
+
+  const statusOf = (c: ConversationSummary) => statuses[c.id] ?? c.doctorStatus
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    if (!q) return conversations
-    return conversations.filter((c) => c.counterpartName.toLowerCase().includes(q))
-  }, [conversations, query])
+    return conversations.filter((c) => {
+      if (isDoctor && statusOf(c) !== tab) return false
+      if (q && !c.counterpartName.toLowerCase().includes(q)) return false
+      return true
+    })
+  }, [conversations, query, tab, statuses, isDoctor])
 
-  const selected = conversations.find((c) => c.id === selectedId) ?? null
+  // Selección inicial / al cambiar de pestaña: primer resultado visible.
+  const selectedVisible = filtered.some((c) => c.id === selectedId)
+  const effectiveSelectedId = selectedVisible ? selectedId : filtered[0]?.id ?? null
+  const selected = conversations.find((c) => c.id === effectiveSelectedId) ?? null
+
+  const changeStatus = (id: number, status: DoctorConversationStatus) => {
+    setStatuses((prev) => ({ ...prev, [id]: status }))
+    startTransition(() => {
+      setConversationStatus(id, status).catch(() => {})
+    })
+  }
+
+  const counts = useMemo(() => {
+    const c: Record<DoctorConversationStatus, number> = { active: 0, pending: 0, archived: 0 }
+    for (const conv of conversations) c[statusOf(conv)]++
+    return c
+  }, [conversations, statuses])
 
   return (
     <div className="mt-6 flex h-[min(74vh,720px)] overflow-hidden rounded-[22px] border border-ink/10 bg-paper">
@@ -47,6 +90,31 @@ export function ChatWorkspace({
               className="w-full bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-soft"
             />
           </div>
+
+          {isDoctor && (
+            <div className="mt-3 flex items-center gap-1 rounded-full bg-warm p-1">
+              {STATUS_TABS.map((t) => {
+                const Icon = t.icon
+                const active = tab === t.key
+                return (
+                  <button
+                    key={t.key}
+                    type="button"
+                    onClick={() => setTab(t.key)}
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-full px-2 py-1.5 text-[12px] font-medium transition-colors ${
+                      active ? "bg-paper text-ink shadow-sm" : "text-ink-soft hover:text-ink"
+                    }`}
+                  >
+                    <Icon className="size-3.5" aria-hidden />
+                    {t.label}
+                    <span className={`text-[11px] ${active ? "text-ink-mute" : "text-ink-mute"}`}>
+                      {counts[t.key]}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         <ul className="flex-1 overflow-y-auto p-2">
@@ -54,13 +122,15 @@ export function ChatWorkspace({
             <li className="px-3 py-6 text-center text-[13.5px] text-ink-soft">
               {conversations.length === 0
                 ? "Aún no tienes conversaciones."
-                : "Sin resultados para tu búsqueda."}
+                : isDoctor
+                  ? `No hay conversaciones en "${STATUS_TABS.find((t) => t.key === tab)?.label}".`
+                  : "Sin resultados para tu búsqueda."}
             </li>
           ) : (
             filtered.map((c) => {
-              const active = c.id === selectedId
+              const active = c.id === effectiveSelectedId
               return (
-                <li key={c.id}>
+                <li key={c.id} className="group/item relative">
                   <button
                     type="button"
                     onClick={() => setSelectedId(c.id)}
@@ -85,6 +155,20 @@ export function ChatWorkspace({
                       </span>
                     </span>
                   </button>
+                  {isDoctor && (
+                    <select
+                      aria-label={`Estado de ${c.counterpartName}`}
+                      value={statusOf(c)}
+                      onChange={(e) => changeStatus(c.id, e.target.value as DoctorConversationStatus)}
+                      className="absolute bottom-2 right-3 cursor-pointer rounded-full border border-ink/15 bg-paper px-2 py-0.5 text-[10.5px] font-medium text-ink-soft opacity-0 transition-opacity focus:opacity-100 group-hover/item:opacity-100"
+                    >
+                      {STATUS_TABS.map((t) => (
+                        <option key={t.key} value={t.key}>
+                          {STATUS_LABEL[t.key]}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </li>
               )
             })
