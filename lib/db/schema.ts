@@ -195,6 +195,10 @@ export const subscriptions = pgTable("subscriptions", {
   status: text("status").notNull().default("incomplete"),
   currentPeriodEnd: timestamp("currentPeriodEnd", { withTimezone: true }),
   cancelAtPeriodEnd: boolean("cancelAtPeriodEnd").notNull().default(false),
+  // Se rellena al renovarse la suscripción (subscription_cycle): indica que el
+  // paciente tiene una videollamada de seguimiento pendiente de agendar. Se
+  // limpia al reservar la cita incluida (createIncludedBooking).
+  followupDueAt: timestamp("followupDueAt", { withTimezone: true }),
   createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
 })

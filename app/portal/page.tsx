@@ -5,6 +5,7 @@ import { getMyPlan } from "@/app/actions/patient"
 import { getMySubscription, syncSubscriptionBySession } from "@/app/actions/subscription"
 import { AppointmentSummary } from "@/components/appointment-summary"
 import { SubscriptionCard } from "@/components/subscription-card"
+import { FollowupReminder } from "@/components/followup-reminder"
 
 export const metadata = { title: "Mi portal — DoctorLife" }
 
@@ -28,6 +29,10 @@ export default async function PortalHome({
     getMySubscription(),
   ])
 
+  const subActive =
+    subscription && ["active", "trialing", "past_due"].includes(subscription.status)
+  const followupPending = Boolean(subActive && subscription?.followupDueAt)
+
   return (
     <div>
       <h1 className="text-[30px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
@@ -37,6 +42,12 @@ export default async function PortalHome({
         Este es tu portal de paciente. Aquí verás tu próxima cita, tu plan de tratamiento y podrás
         hablar con tu equipo médico.
       </p>
+
+      {followupPending ? (
+        <div className="mt-7">
+          <FollowupReminder />
+        </div>
+      ) : null}
 
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {next ? (

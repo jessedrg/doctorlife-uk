@@ -23,6 +23,7 @@ export async function getMySubscription() {
       status: subscriptions.status,
       currentPeriodEnd: subscriptions.currentPeriodEnd,
       cancelAtPeriodEnd: subscriptions.cancelAtPeriodEnd,
+      followupDueAt: subscriptions.followupDueAt,
       doctorName: doctorProfiles.fullName,
     })
     .from(subscriptions)
@@ -239,6 +240,14 @@ export async function payoutDoctorForInvoice(invoice: {
   // ÍNTEGRO a la plataforma: el médico ya cobró sus 25 € en la primera consulta.
   // Solo se reparten 25 € al médico en las renovaciones ("subscription_cycle").
   if (invoice.billing_reason === "subscription_create") return
+
+  // Renovación: el paciente tiene derecho a una nueva videollamada de seguimiento.
+  // Marcamos la suscripción para invitarle a elegir hora desde el portal.
+  await db
+    .update(subscriptions)
+    .set({ followupDueAt: new Date(), updatedAt: new Date() })
+    .where(eq(subscriptions.stripeSubscriptionId, subId))
+  revalidatePath("/portal")
 
   // Localizamos la suscripción y su médico asignado.
   const [row] = await db

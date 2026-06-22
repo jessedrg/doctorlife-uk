@@ -1,5 +1,7 @@
 import Link from "next/link"
+import { CalendarCheck } from "lucide-react"
 import { confirmAppointmentBySession, getMyAppointments } from "@/app/actions/booking"
+import { EmptyState } from "@/components/empty-state"
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
   confirmed: { label: "Confirmada", cls: "bg-sage/15 text-sage" },
@@ -49,11 +51,12 @@ export default async function CitasPage({
       </header>
 
       {appointments.length === 0 ? (
-        <div className="rounded-2xl border border-ink/10 bg-paper p-8 text-center">
-          <p className="text-pretty text-ink/70">
-            Todavía no tienes citas. Reserva tu primera consulta para empezar.
-          </p>
-        </div>
+        <EmptyState
+          icon={CalendarCheck}
+          title="Todavía no tienes citas"
+          description="Reserva tu primera consulta y aquí verás tus videollamadas, su estado y el enlace para unirte."
+          action={{ href: "/portal/reservar", label: "Reservar mi primera cita" }}
+        />
       ) : (
         <ul className="flex flex-col gap-3">
           {appointments.map((a) => {
