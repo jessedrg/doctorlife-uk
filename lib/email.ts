@@ -1,5 +1,5 @@
 import { Resend } from "resend"
-import { getBaseUrl } from "@/lib/base-url"
+import { getCanonicalBaseUrl } from "@/lib/base-url"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -78,7 +78,7 @@ async function send(to: string, subject: string, html: string) {
 
 /** Credenciales de acceso tras el pago de la primera visita (25 €). */
 export async function sendCredentialsEmail(opts: { to: string; name: string; tempPassword: string }) {
-  const loginUrl = `${getBaseUrl()}/sign-in`
+  const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
     ${p(`Hola ${firstName}, gracias por reservar tu primera visita. Hemos creado tu cuenta para acceder a tu panel privado, donde tendrás tu cita, el chat con tu médico y tus recetas.`)}
@@ -120,7 +120,7 @@ export async function sendBookingConfirmationEmail(opts: {
     ${p(`Hola ${firstName}, hemos recibido tu pago correctamente y tu primera visita está reservada.`)}
     ${dataBox(rows)}
     ${p("Encontrarás el enlace de la videollamada y tu chat con el médico en tu panel. Tras la consulta, si tu médico te receta tratamiento, podrás activarlo desde ahí.")}
-    <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal`, "Ir a mi panel")}</div>
+    <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal`, "Ir a mi panel")}</div>
   `
   return send(
     opts.to,
@@ -142,11 +142,11 @@ export async function sendPrescriptionReadyEmail(opts: {
     ? `
       ${p(`Hola ${firstName}, ${doc} ha preparado tu tratamiento. Para ver los detalles y descargar tu receta en PDF, activa tu suscripción mensual.`)}
       ${p("Incluye endocrino asignado, videollamada mensual y chat en vivo con tu médico. Puedes cancelar cuando quieras.")}
-      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Desbloquear mi receta")}</div>
+      <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/recetas`, "Desbloquear mi receta")}</div>
     `
     : `
       ${p(`Hola ${firstName}, ${doc} ha emitido una nueva receta. Ya está disponible en tu panel para descargar en PDF.`)}
-      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Ver mi receta")}</div>
+      <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/recetas`, "Ver mi receta")}</div>
     `
   return send(
     opts.to,
@@ -161,7 +161,7 @@ export async function sendPrescriptionReadyEmail(opts: {
 
 /** Credenciales de acceso para un médico creado por el admin. */
 export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; tempPassword: string }) {
-  const loginUrl = `${getBaseUrl()}/sign-in`
+  const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
     ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes, el chat y las recetas.`)}
