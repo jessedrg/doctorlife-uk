@@ -22,7 +22,7 @@ export const products: Product[] = [
   {
     name: "Tratamiento GLP‑1",
     subtitle: "Todo lo que necesitas para adelgazar con seguimiento médico real, en una sola cuota.",
-    price: "100€/mes",
+    price: "100€/mes + IVA",
     tag: "Suscripción",
     img: "/products/maren-pen.png",
     featured: true,
