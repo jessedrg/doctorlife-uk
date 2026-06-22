@@ -5,7 +5,8 @@ import useSWR from "swr"
 import { getMessages, sendMessage } from "@/app/actions/chat"
 import { AnalysisRequestDialog, ANALYSIS_PREFIX } from "@/components/analysis-request-dialog"
 import { UserAvatar } from "@/components/user-avatar"
-import { FlaskConical, ChevronLeft } from "lucide-react"
+import { PatientDetailPanel } from "@/components/patient-detail-panel"
+import { FlaskConical, ChevronLeft, IdCard, X } from "lucide-react"
 
 type Msg = { id: number; body: string; mine: boolean; createdAt: Date }
 
@@ -20,6 +21,7 @@ export function ChatThread({
   counterpartName,
   counterpartImage,
   canRequestAnalysis = false,
+  patientId,
   subtitle = "Mensajería segura · respuesta no inmediata",
   onBack,
   className,
@@ -28,6 +30,8 @@ export function ChatThread({
   counterpartName: string
   counterpartImage?: string | null
   canRequestAnalysis?: boolean
+  /** Si se pasa (lado médico), permite abrir la ficha completa del paciente. */
+  patientId?: string | null
   subtitle?: string
   onBack?: () => void
   className?: string
@@ -41,6 +45,7 @@ export function ChatThread({
   const [text, setText] = useState("")
   const [sending, setSending] = useState(false)
   const [analysisOpen, setAnalysisOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   // Envía un cuerpo arbitrario (usado por el diálogo de análisis) de forma optimista.
@@ -96,10 +101,20 @@ export function ChatThread({
           </button>
         )}
         <UserAvatar name={counterpartName} image={counterpartImage} size={40} />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-medium text-ink">{counterpartName}</p>
           <p className="truncate text-[12.5px] text-ink-soft">{subtitle}</p>
         </div>
+        {patientId && (
+          <button
+            type="button"
+            onClick={() => setDetailOpen(true)}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-ink/15 px-3 py-1.5 text-[12.5px] font-medium text-ink transition-colors hover:bg-ink/5"
+          >
+            <IdCard className="size-4" aria-hidden />
+            <span className="hidden sm:inline">Ver ficha</span>
+          </button>
+        )}
       </div>
 
       <div className="flex-1 space-y-2.5 overflow-y-auto px-5 py-4">
@@ -170,6 +185,37 @@ export function ChatThread({
           onClose={() => setAnalysisOpen(false)}
           onSubmit={sendBody}
         />
+      )}
+
+      {/* Ficha completa del paciente (panel deslizante) */}
+      {patientId && detailOpen && (
+        <div className="fixed inset-0 z-50">
+          <button
+            type="button"
+            aria-label="Cerrar ficha"
+            onClick={() => setDetailOpen(false)}
+            className="absolute inset-0 bg-ink/40"
+          />
+          <div className="absolute right-0 top-0 flex h-full w-[min(560px,94%)] flex-col bg-paper shadow-xl">
+            <div className="flex items-center justify-between border-b border-ink/10 px-5 py-4">
+              <div>
+                <p className="text-[16px] font-medium text-ink">Ficha del paciente</p>
+                <p className="text-[12.5px] text-ink-soft">{counterpartName}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDetailOpen(false)}
+                aria-label="Cerrar"
+                className="flex size-9 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-warm"
+              >
+                <X className="size-5" aria-hidden />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-5 py-4">
+              <PatientDetailPanel patientId={patientId} />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

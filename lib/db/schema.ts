@@ -153,6 +153,8 @@ export const conversations = pgTable("conversations", {
   patientId: text("patientId").notNull(),
   doctorId: text("doctorId").notNull(),
   lastMessageAt: timestamp("lastMessageAt", { withTimezone: true }),
+  // Estado fijado por el médico para organizar su bandeja: 'active' | 'pending' | 'archived'.
+  doctorStatus: text("doctorStatus").notNull().default("active"),
   createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 })
 
@@ -213,6 +215,45 @@ export const subscriptions = pgTable("subscriptions", {
 
 export type Subscription = typeof subscriptions.$inferSelect
 export type NewSubscription = typeof subscriptions.$inferInsert
+
+/**
+ * Comisiones que la plataforma abona al médico por los pagos de suscripción.
+ * - kind "activation": primer pago, va ÍNTEGRO al médico.
+ * - kind "renewal": renovación mensual, 25 € fijos al médico.
+ * Una fila por factura de Stripe (invoiceId único) para evitar duplicados.
+ */
+export const commissions = pgTable("commissions", {
+  id: serial("id").primaryKey(),
+  doctorId: text("doctorId").notNull(),
+  patientId: text("patientId").notNull(),
+  subscriptionId: integer("subscriptionId"),
+  kind: text("kind").notNull(), // 'activation' | 'renewal'
+  amountCents: integer("amountCents").notNull(),
+  currency: text("currency").notNull().default("eur"),
+  stripeInvoiceId: text("stripeInvoiceId").notNull().unique(),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type Commission = typeof commissions.$inferSelect
+export type NewCommission = typeof commissions.$inferInsert
+
+/**
+ * Notificaciones para el panel del médico (campana).
+ * type: 'subscription_activated' | 'subscription_renewed' | 'verification_submitted' | etc.
+ */
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").notNull(),
+  type: text("type").notNull(),
+  title: text("title").notNull(),
+  body: text("body"),
+  href: text("href"),
+  readAt: timestamp("readAt", { withTimezone: true }),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type Notification = typeof notifications.$inferSelect
+export type NewNotification = typeof notifications.$inferInsert
 
 /**
  * Leads capturados desde el quiz "Comenzar".

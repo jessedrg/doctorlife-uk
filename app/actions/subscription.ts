@@ -1,12 +1,20 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { subscriptions, appointments, doctorProfiles, leads } from "@/lib/db/schema"
+import {
+  subscriptions,
+  appointments,
+  doctorProfiles,
+  leads,
+  commissions,
+  user as userTable,
+} from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe, DOCTOR_SHARE_CENTS } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
 import { hasPendingVerification } from "@/app/actions/verification"
+import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -247,27 +255,80 @@ export async function payoutDoctorForInvoice(invoice: {
   const chargeId = invoice.charge
   if (!subId || !chargeId || !invoice.id) return
 
-  // El PRIMER pago de la suscripción (billing_reason "subscription_create") va
-  // ÍNTEGRO a la plataforma: el médico ya cobró sus 25 € en la primera consulta.
-  // Solo se reparten 25 € al médico en las renovaciones ("subscription_cycle").
-  if (invoice.billing_reason === "subscription_create") return
-
-  // Renovación: el paciente tiene derecho a una nueva videollamada de seguimiento.
-  // Marcamos la suscripción para invitarle a elegir hora desde el portal.
-  await db
-    .update(subscriptions)
-    .set({ followupDueAt: new Date(), updatedAt: new Date() })
-    .where(eq(subscriptions.stripeSubscriptionId, subId))
-  revalidatePath("/portal")
+  const isActivation = invoice.billing_reason === "subscription_create"
 
   // Localizamos la suscripción y su médico asignado.
   const [row] = await db
-    .select({ doctorId: subscriptions.doctorId })
+    .select({
+      id: subscriptions.id,
+      doctorId: subscriptions.doctorId,
+      patientId: subscriptions.patientId,
+    })
     .from(subscriptions)
     .where(eq(subscriptions.stripeSubscriptionId, subId))
     .limit(1)
   if (!row?.doctorId) return
 
+  // En renovaciones el paciente tiene derecho a una nueva videollamada de
+  // seguimiento; marcamos la suscripción para invitarle a elegir hora.
+  if (!isActivation) {
+    await db
+      .update(subscriptions)
+      .set({ followupDueAt: new Date(), updatedAt: new Date() })
+      .where(eq(subscriptions.id, row.id))
+    revalidatePath("/portal")
+  }
+
+  // Importe que recibe el médico:
+  // - Activación: el PRIMER pago va ÍNTEGRO al médico (lo cobrado en la factura).
+  // - Renovación: 25 € fijos; el resto se queda en la empresa.
+  const amountPaid = invoice.amount_paid ?? 0
+  const targetAmount = isActivation ? amountPaid : DOCTOR_SHARE_CENTS
+  const amount = Math.min(targetAmount, amountPaid)
+
+  // Datos del paciente para los avisos.
+  const [patient] = await db
+    .select({ name: userTable.name })
+    .from(userTable)
+    .where(eq(userTable.id, row.patientId))
+    .limit(1)
+  const patientName = patient?.name || "Un paciente"
+
+  // Registro de comisión (idempotente por factura) + aviso al médico.
+  try {
+    const inserted = await db
+      .insert(commissions)
+      .values({
+        doctorId: row.doctorId,
+        patientId: row.patientId,
+        subscriptionId: row.id,
+        kind: isActivation ? "activation" : "renewal",
+        amountCents: amount,
+        currency: "eur",
+        stripeInvoiceId: invoice.id,
+      })
+      .onConflictDoNothing({ target: commissions.stripeInvoiceId })
+      .returning({ id: commissions.id })
+
+    // Solo notificamos si la comisión es nueva (evita duplicar avisos en reintentos).
+    if (inserted.length > 0) {
+      await createNotification({
+        userId: row.doctorId,
+        type: isActivation ? "subscription_activated" : "subscription_renewed",
+        title: isActivation
+          ? `${patientName} activó su suscripción`
+          : `${patientName} renovó su suscripción`,
+        body: isActivation
+          ? `Has recibido ${formatEur(amount)} por la activación del tratamiento.`
+          : `Has recibido tu comisión de ${formatEur(amount)} por la renovación.`,
+        href: "/medico/pacientes",
+      })
+    }
+  } catch (e) {
+    console.log("[v0] commission record/notify failed:", e instanceof Error ? e.message : e)
+  }
+
+  // Transferencia en Stripe Connect al médico (si tiene cuenta operativa).
   const [doc] = await db
     .select({
       stripeAccountId: doctorProfiles.stripeAccountId,
@@ -277,9 +338,6 @@ export async function payoutDoctorForInvoice(invoice: {
     .where(eq(doctorProfiles.userId, row.doctorId))
     .limit(1)
   if (!doc?.stripeAccountId || !doc.chargesEnabled) return
-
-  // Nunca transferimos más de lo cobrado en la factura.
-  const amount = Math.min(DOCTOR_SHARE_CENTS, invoice.amount_paid ?? DOCTOR_SHARE_CENTS)
   if (amount <= 0) return
 
   try {
@@ -289,13 +347,21 @@ export async function payoutDoctorForInvoice(invoice: {
         currency: "eur",
         destination: doc.stripeAccountId,
         source_transaction: chargeId,
-        metadata: { kind: "subscription_doctor_share", invoiceId: invoice.id, doctorId: row.doctorId },
+        metadata: {
+          kind: isActivation ? "subscription_activation_share" : "subscription_doctor_share",
+          invoiceId: invoice.id,
+          doctorId: row.doctorId,
+        },
       },
       { idempotencyKey: `sub-payout-${invoice.id}` },
     )
   } catch (e) {
     console.log("[v0] subscription payout to doctor failed:", e instanceof Error ? e.message : e)
   }
+}
+
+function formatEur(cents: number) {
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
 }
 
 /** Localiza la fila por id de suscripción de Stripe (para webhooks). */

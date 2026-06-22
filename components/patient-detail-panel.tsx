@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Lock, Eye, Trash2, Plus, ShieldCheck, FileCheck2, Clock3, X, Check } from "lucide-react"
+import { Lock, Eye, Trash2, Plus, ShieldCheck, FileCheck2, Clock3, X, Check, Pill } from "lucide-react"
 import {
   getPatientDetail,
   addDoctorNote,
@@ -232,6 +232,38 @@ export function PatientDetailPanel({ patientId }: { patientId: string }) {
               ))}
             </ul>
           </>
+        )}
+      </section>
+
+      {/* Recetas anteriores */}
+      <section className="rounded-[16px] border border-ink/10 bg-warm p-4 lg:col-span-2">
+        <div className="flex items-center gap-2">
+          <Pill className="size-4 text-ink-mute" aria-hidden />
+          <h3 className="text-[13px] font-semibold uppercase tracking-[.05em] text-ink-mute">
+            Recetas anteriores
+          </h3>
+        </div>
+        {(detail?.prescriptions ?? []).length === 0 ? (
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
+            Aún no has emitido recetas a este paciente.
+          </p>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-2">
+            {(detail?.prescriptions ?? []).map((rx) => (
+              <li key={rx.id} className="rounded-[12px] border border-ink/10 bg-cream px-3.5 py-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-[14px] font-medium text-ink">{rx.medication}</p>
+                  <span className="text-[11.5px] text-ink-mute">
+                    {dateFmt.format(new Date(rx.issuedAt))}
+                  </span>
+                </div>
+                <p className="mt-0.5 text-[13px] text-ink-soft">Posología: {rx.dosage}</p>
+                {rx.instructions && (
+                  <p className="mt-0.5 text-[12.5px] leading-snug text-ink-soft">{rx.instructions}</p>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 

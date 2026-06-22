@@ -1,7 +1,13 @@
 import { requireRole } from "@/lib/session"
-import { getMyDoctorProfile, refreshStripeStatus, getDoctorTransactions } from "@/app/actions/doctor"
+import {
+  getMyDoctorProfile,
+  refreshStripeStatus,
+  getDoctorTransactions,
+  getDoctorBilling,
+} from "@/app/actions/doctor"
 import { DoctorStripeOnboarding } from "@/components/doctor-stripe-onboarding"
 import { DoctorTransactions } from "@/components/doctor-transactions"
+import { DoctorBillingOverview } from "@/components/doctor-billing-overview"
 
 export const metadata = { title: "Pagos — DoctorLife" }
 
@@ -22,6 +28,9 @@ export default async function MedicoPagosPage({
   // Solo cargamos transacciones si la cuenta ya puede cobrar.
   const earnings = profile.chargesEnabled ? await getDoctorTransactions() : null
 
+  // Registro propio de suscripciones y comisiones (independiente de Stripe).
+  const billing = await getDoctorBilling()
+
   return (
     <div>
       <h1 className="text-[28px] font-light leading-tight tracking-[-.02em] text-ink">Pagos</h1>
@@ -37,6 +46,16 @@ export default async function MedicoPagosPage({
           onboarded={profile.stripeOnboarded}
         />
       </div>
+
+      <section className="mt-10">
+        <h2 className="text-[20px] font-medium text-ink">Suscripciones y comisiones</h2>
+        <p className="mt-1 text-[14px] text-ink-soft">
+          Estado de las suscripciones de tus pacientes, próximo cobro y tus comisiones.
+        </p>
+        <div className="mt-5">
+          <DoctorBillingOverview billing={billing} />
+        </div>
+      </section>
 
       {earnings ? (
         <section className="mt-10">

@@ -60,6 +60,7 @@ export async function getOrCreatePatientConversation() {
 
 export type ConversationSummary = {
   id: number
+  counterpartId: string | null
   counterpartName: string
   counterpartImage: string | null
   lastMessageAt: Date | null
@@ -78,6 +79,7 @@ export async function getMyConversations(): Promise<ConversationSummary[]> {
     .select({
       id: conversations.id,
       lastMessageAt: conversations.lastMessageAt,
+      counterpartId: counterpartId,
       counterpartName: user.name,
       counterpartImage: user.image,
     })
@@ -97,6 +99,7 @@ export async function getMyConversations(): Promise<ConversationSummary[]> {
         .limit(1)
       return {
         id: r.id,
+        counterpartId: r.counterpartId ?? null,
         counterpartName: r.counterpartName ?? (isDoctor ? "Paciente" : "Médico"),
         counterpartImage: r.counterpartImage ?? null,
         lastMessageAt: r.lastMessageAt,

@@ -23,7 +23,7 @@ export default async function DoctorChatPage() {
           </p>
         </div>
       ) : (
-        <ChatWorkspace conversations={conversations} canRequestAnalysis />
+        <ChatWorkspace conversations={conversations} canRequestAnalysis isDoctor />
       )}
     </div>
   )

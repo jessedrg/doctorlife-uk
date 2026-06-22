@@ -8,6 +8,7 @@ export default async function MedicoLayout({ children }: { children: React.React
       user={user}
       badge="Médico"
       homeHref="/medico"
+      showNotifications
       nav={[
         { href: "/medico", label: "Inicio", icon: "home" },
         { href: "/medico/agenda", label: "Agenda", icon: "agenda" },

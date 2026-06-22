@@ -11,9 +11,12 @@ const dateFmt = new Intl.DateTimeFormat("es-ES", { day: "2-digit", month: "short
 export function ChatWorkspace({
   conversations,
   canRequestAnalysis = false,
+  isDoctor = false,
 }: {
   conversations: ConversationSummary[]
   canRequestAnalysis?: boolean
+  /** Lado médico: habilita "Ver ficha" del paciente en el hilo. */
+  isDoctor?: boolean
 }) {
   const [selectedId, setSelectedId] = useState<number | null>(conversations[0]?.id ?? null)
   const [query, setQuery] = useState("")
@@ -98,6 +101,7 @@ export function ChatWorkspace({
             counterpartName={selected.counterpartName}
             counterpartImage={selected.counterpartImage}
             canRequestAnalysis={canRequestAnalysis}
+            patientId={isDoctor ? selected.counterpartId : null}
             onBack={() => setSelectedId(null)}
             className="h-full w-full"
           />

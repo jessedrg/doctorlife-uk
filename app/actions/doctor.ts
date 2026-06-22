@@ -9,6 +9,8 @@ import {
   leads,
   progressEntries,
   doctorNotes,
+  commissions,
+  prescriptions,
 } from "@/lib/db/schema"
 import { stripe } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
@@ -365,6 +367,95 @@ export async function refreshStripeStatus() {
 }
 
 /* ───────────────────────────────────────────────────────────
+   Suscripciones activas y comisiones del médico (registro en BD).
+   ─────────────────────────────────────────────────────────── */
+
+export type DoctorSubscriptionRow = {
+  patientName: string
+  plan: string
+  status: string
+  priceCents: number
+  currency: string
+  currentPeriodEnd: Date | null
+  cancelAtPeriodEnd: boolean
+}
+
+export type DoctorCommissionRow = {
+  id: number
+  patientName: string
+  kind: "activation" | "renewal"
+  amountCents: number
+  currency: string
+  createdAt: Date
+}
+
+export type DoctorBilling = {
+  subscriptions: DoctorSubscriptionRow[]
+  commissions: DoctorCommissionRow[]
+  totalCommissionCents: number
+  activeCount: number
+}
+
+/** Suscripciones de los pacientes del médico y sus comisiones registradas. */
+export async function getDoctorBilling(): Promise<DoctorBilling> {
+  const me = await requireDoctor()
+
+  const subs = await db
+    .select({
+      patientName: userTable.name,
+      plan: subscriptions.plan,
+      status: subscriptions.status,
+      priceCents: subscriptions.priceCents,
+      currency: subscriptions.currency,
+      currentPeriodEnd: subscriptions.currentPeriodEnd,
+      cancelAtPeriodEnd: subscriptions.cancelAtPeriodEnd,
+      createdAt: subscriptions.createdAt,
+    })
+    .from(subscriptions)
+    .leftJoin(userTable, eq(userTable.id, subscriptions.patientId))
+    .where(eq(subscriptions.doctorId, me.id))
+    .orderBy(desc(subscriptions.createdAt))
+
+  const comms = await db
+    .select({
+      id: commissions.id,
+      patientName: userTable.name,
+      kind: commissions.kind,
+      amountCents: commissions.amountCents,
+      currency: commissions.currency,
+      createdAt: commissions.createdAt,
+    })
+    .from(commissions)
+    .leftJoin(userTable, eq(userTable.id, commissions.patientId))
+    .where(eq(commissions.doctorId, me.id))
+    .orderBy(desc(commissions.createdAt))
+    .limit(100)
+
+  const activeStates = ["active", "trialing", "past_due"]
+  return {
+    subscriptions: subs.map((s) => ({
+      patientName: s.patientName || "Paciente",
+      plan: s.plan,
+      status: s.status,
+      priceCents: s.priceCents,
+      currency: s.currency,
+      currentPeriodEnd: s.currentPeriodEnd ? new Date(s.currentPeriodEnd) : null,
+      cancelAtPeriodEnd: s.cancelAtPeriodEnd,
+    })),
+    commissions: comms.map((c) => ({
+      id: c.id,
+      patientName: c.patientName || "Paciente",
+      kind: (c.kind === "activation" ? "activation" : "renewal") as "activation" | "renewal",
+      amountCents: c.amountCents,
+      currency: c.currency,
+      createdAt: new Date(c.createdAt),
+    })),
+    totalCommissionCents: comms.reduce((sum, c) => sum + c.amountCents, 0),
+    activeCount: subs.filter((s) => activeStates.includes(s.status)).length,
+  }
+}
+
+/* ───────────────────────────────────────────────────────────
    Ficha de paciente: info clínica (lead), progreso y notas.
    ─────────────────────────────────────────────────────────── */
 
@@ -432,10 +523,19 @@ export type PatientNote = {
   createdAt: Date
 }
 
+export type PatientPrescriptionRow = {
+  id: number
+  medication: string
+  dosage: string
+  instructions: string | null
+  issuedAt: Date
+}
+
 export type PatientDetail = {
   clinical: PatientClinical | null
   progress: PatientProgressRow[]
   notes: PatientNote[]
+  prescriptions: PatientPrescriptionRow[]
 }
 
 /** Detalle completo de un paciente para la tarjeta expandible del médico. */
@@ -490,8 +590,28 @@ export async function getPatientDetail(patientId: string): Promise<PatientDetail
     .orderBy(desc(doctorNotes.createdAt))
     .limit(50)
 
+  const rx = await db
+    .select({
+      id: prescriptions.id,
+      medication: prescriptions.medication,
+      dosage: prescriptions.dosage,
+      instructions: prescriptions.instructions,
+      issuedAt: prescriptions.issuedAt,
+    })
+    .from(prescriptions)
+    .where(and(eq(prescriptions.doctorId, me.id), eq(prescriptions.patientId, patientId)))
+    .orderBy(desc(prescriptions.issuedAt))
+    .limit(50)
+
   return {
     clinical,
+    prescriptions: rx.map((r) => ({
+      id: r.id,
+      medication: r.medication,
+      dosage: r.dosage,
+      instructions: r.instructions,
+      issuedAt: new Date(r.issuedAt),
+    })),
     progress: progress
       .map((p) => ({
         id: p.id,
