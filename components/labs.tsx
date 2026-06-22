@@ -8,7 +8,7 @@ export function Labs() {
         <div className="absolute -right-[5%] -top-[20%] h-[90%] w-1/2" style={{ background: "radial-gradient(closest-side,rgba(95,179,163,.22),transparent)", filter: "blur(10px)" }} />
 
         <div className="relative z-[2] mb-2 text-center">
-          <div className="text-[13px] uppercase tracking-[.16em] text-teal">analíticas maren</div>
+          <div className="text-[13px] uppercase tracking-[.16em] text-teal">analíticas doctorlife</div>
           <h2 className="mt-[10px] text-[clamp(34px,4.8vw,62px)] font-light leading-none tracking-[-.02em]">
             Mide lo que tu cuerpo
             <br />
@@ -51,7 +51,7 @@ export function Labs() {
               </div>
               <p className="mt-3 max-w-[32ch] text-[15px] leading-relaxed text-[#9aa6b6]">
                 Convierte tus resultados en un plan de acción desarrollado por
-                médicos — con seguimiento en la app de Maren.
+                médicos — con seguimiento en la app de DoctorLife.
               </p>
             </div>
             <button type="button" className="mt-6 self-start rounded-full bg-teal px-7 py-[13px] text-[15px] font-semibold text-slate-deep">

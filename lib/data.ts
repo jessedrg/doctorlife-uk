@@ -12,46 +12,56 @@ export type Product = {
   img: string;
   features: string[];
   featured?: boolean;
-  /** Si es true, el plan se muestra como "Próximamente" y no es contratable. */
+  /** Plan aún no disponible: se muestra como teaser «Próximamente», no es seleccionable. */
   comingSoon?: boolean;
 };
 
-/* Catálogo enfocado en cuidado del peso (los 4 productos clave
-   + dos planes de entrada y mantenimiento). Cada plan incluye
-   seguimiento continuo desde la app interna de Maren. */
+/* Una única suscripción real (100 €/mes) con todo lo necesario para el
+   tratamiento con GLP‑1. El resto de servicios llegarán «Próximamente». */
 export const products: Product[] = [
   {
-    name: "Seguimiento con endocrino",
-    subtitle:
-      "Tu endocrino asignado, videollamada mensual de seguimiento y chat en vivo con tu médico durante toda la suscripción.",
-    price: "65€/mes + IVA",
-    tag: "Disponible",
+    name: "Tratamiento GLP‑1",
+    subtitle: "Todo lo que necesitas para adelgazar con seguimiento médico real, en una sola cuota.",
+    price: "100€/mes",
+    tag: "Suscripción",
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Endocrino asignado a tu caso",
-      "Videollamada mensual de seguimiento",
-      "Chat en vivo con tu médico mientras dure la suscripción",
-      "Receta y ajustes de tratamiento según tu evolución",
-      "Panel privado con tu historial y tus recetas",
+      "Chat directo con tu endocrino colegiado",
+      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) si es necesaria",
+      "Seguimiento continuo y ajustes de dosis desde la app",
+      "Sin permanencia: cancela cuando quieras",
     ],
   },
   {
-    name: "Plan Nutrición",
-    subtitle: "Nutricionista dedicado y plan de alimentación personalizado.",
+    name: "Nutrición personalizada",
+    subtitle: "Plan de alimentación diseñado por tu nutricionista para potenciar el GLP‑1.",
     price: "Próximamente",
     tag: "Próximamente",
     img: "/products/maren-daily.png",
     comingSoon: true,
     features: [
-      "Nutricionista asignado",
-      "Plan de alimentación a medida",
+      "Nutricionista asignado a tu caso",
+      "Plan de comidas adaptado a tu tratamiento",
       "Seguimiento de hábitos desde la app",
     ],
   },
   {
-    name: "Plan Longevidad",
-    subtitle: "Salud metabólica y hormonal al máximo nivel.",
+    name: "Entrenamiento guiado",
+    subtitle: "Rutinas adaptadas para preservar músculo y mantener tus resultados.",
+    price: "Próximamente",
+    tag: "Próximamente",
+    img: "/products/maren-hd.png",
+    comingSoon: true,
+    features: [
+      "Plan de entrenamiento personalizado",
+      "Enfoque en preservar masa muscular",
+      "Progresión y registro desde la app",
+    ],
+  },
+  {
+    name: "Longevidad y hormonas",
+    subtitle: "Salud metabólica y hormonal al máximo nivel para el largo plazo.",
     price: "Próximamente",
     tag: "Próximamente",
     img: "/products/maren-balance.png",
@@ -111,9 +121,19 @@ export const footerColumns: FooterColumn[] = [
     title: "Recursos",
     links: [
       { label: "Blog", href: "/blog" },
+      { label: "Adelgazar con supervisión médica", href: "/adelgazar-con-supervision-medica" },
       { label: "Comprar Wegovy Barcelona", href: "/blog/comprar-wegovy-barcelona" },
       { label: "Comprar Mounjaro Barcelona", href: "/blog/comprar-mounjaro-barcelona" },
       { label: "Wegovy precio España", href: "/blog/wegovy-precio-espana" },
+    ],
+  },
+  {
+    title: "Herramientas",
+    links: [
+      { label: "Calculadora de IMC", href: "/herramientas/calculadora-imc" },
+      { label: "Calculadora TDEE", href: "/herramientas/calculadora-tdee" },
+      { label: "Déficit calórico", href: "/herramientas/calculadora-deficit-calorico" },
+      { label: "Proteína diaria", href: "/herramientas/calculadora-proteina-diaria" },
     ],
   },
   {

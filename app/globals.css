@@ -233,3 +233,14 @@
   pointer-events: none;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
 }
+
+/* ── Intercom ──────────────────────────────────────────────
+   Mientras el quiz/formulario está abierto, ocultamos el launcher
+   (y el messenger) de Intercom para que no se superponga al
+   formulario. Crítico en móvil, donde el modal es un bottom-sheet
+   a pantalla casi completa y la burbuja quedaría encima. */
+body.quiz-open .intercom-lightweight-app,
+body.quiz-open #intercom-container,
+body.quiz-open .intercom-namespace {
+  display: none !important;
+}

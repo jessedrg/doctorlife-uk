@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist_Mono, Hanken_Grotesk, Instrument_Serif, Sora } from 'next/font/google'
+import { IntercomProvider } from '@/components/intercom-provider'
 import './globals.css'
 
 const hanken = Hanken_Grotesk({
@@ -62,6 +63,7 @@ export default function RootLayout({
     >
       <body className="bg-paper text-ink font-sans antialiased">
         {children}
+        <IntercomProvider />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -12,7 +12,7 @@ export function Hero() {
         <div className="absolute inset-y-0 right-0 w-full md:w-[64%]">
           <img
             src="/hero/woman.png"
-            alt="Paciente de Maren sonriendo"
+            alt="Paciente de DoctorLife sonriendo"
             className="h-full w-full object-cover object-top"
           />
           {/* color overlay para fundir la foto con el bloque */}

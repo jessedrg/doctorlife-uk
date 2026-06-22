@@ -3,6 +3,7 @@
 import { db } from "@/lib/db"
 import { leads } from "@/lib/db/schema"
 import { evaluateEligibility, type EligibilityStatus } from "@/lib/eligibility"
+import { sendLeadNotification } from "@/lib/email"
 
 export type LeadInput = {
   name?: string
@@ -72,6 +73,26 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
       eligibilityReason: verdict.reasons.length ? JSON.stringify(verdict.reasons) : null,
       source: "quiz",
     })
+
+    // Aviso interno por email (no bloquea ni invalida el guardado si falla).
+    const emailResult = await sendLeadNotification({
+      name: input.name?.trim() || null,
+      email,
+      goal: input.goal || null,
+      glp1Experience: input.glp1Experience || null,
+      formatPreference: input.formatPreference || null,
+      timeline: input.timeline || null,
+      plan: input.plan || null,
+      heightCm,
+      weightKg,
+      age,
+      bmi,
+      source: "quiz",
+    })
+    if (!emailResult.ok) {
+      console.log("[v0] aviso: lead guardado pero email no enviado:", emailResult.error)
+    }
+
     return { ok: true, eligibility: verdict.status, reasons: verdict.reasons, bmi: verdict.bmi }
   } catch (err) {
     console.log("[v0] saveLead error:", err instanceof Error ? err.message : err)

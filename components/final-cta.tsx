@@ -38,7 +38,7 @@ export function FinalCta() {
           <div className="absolute inset-0" style={{ background: "linear-gradient(200deg,#c98a4f 0%,#7a4a2b 50%,#2a2114 100%)" }} />
           <img
             src="/testimonials/maria.png"
-            alt="Paciente de Maren sonriendo"
+            alt="Paciente de DoctorLife sonriendo"
             className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
           />
           <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#171009 0%,transparent 28%)" }} />
