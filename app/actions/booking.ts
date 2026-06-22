@@ -195,6 +195,17 @@ export async function createIncludedBooking(
       .where(eq(appointments.id, appointmentId))
   }
 
+  // El seguimiento de este ciclo queda agendado: limpiamos el aviso pendiente.
+  await db
+    .update(subscriptions)
+    .set({ followupDueAt: null, updatedAt: new Date() })
+    .where(
+      and(
+        eq(subscriptions.patientId, patient.id),
+        inArray(subscriptions.status, SUB_ACTIVE_STATES),
+      ),
+    )
+
   revalidatePath("/portal/citas")
   revalidatePath("/portal")
   revalidatePath("/medico/citas")
