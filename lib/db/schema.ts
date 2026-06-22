@@ -231,9 +231,50 @@ export const leads = pgTable("leads", {
   weightKg: integer("weight_kg"),
   age: integer("age"),
   bmi: numeric("bmi", { precision: 4, scale: 1 }),
+  // Cribado clínico GLP-1.
+  sex: text("sex"),
+  pregnancy: text("pregnancy"),
+  comorbidities: text("comorbidities"), // JSON array de ids
+  contraindications: text("contraindications"), // JSON array de ids
+  eligibility: text("eligibility"), // 'eligible' | 'review' | 'blocked'
+  eligibilityReason: text("eligibility_reason"), // JSON array de motivos
   source: text("source").default("quiz"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 })
 
 export type Lead = typeof leads.$inferSelect
 export type NewLead = typeof leads.$inferInsert
+
+/**
+ * Registros de progreso que introduce el propio paciente durante el tratamiento.
+ * Solo el paciente escribe; su médico asignado puede leerlos.
+ */
+export const progressEntries = pgTable("progress_entries", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  weightKg: numeric("weight_kg", { precision: 5, scale: 1 }),
+  waistCm: numeric("waist_cm", { precision: 5, scale: 1 }),
+  dose: text("dose"),
+  sideEffects: text("side_effects"),
+  note: text("note"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type ProgressEntry = typeof progressEntries.$inferSelect
+export type NewProgressEntry = typeof progressEntries.$inferInsert
+
+/**
+ * Notas que el médico escribe sobre un paciente.
+ * visibility: 'internal' (solo equipo médico) | 'shared' (visible para el paciente).
+ */
+export const doctorNotes = pgTable("doctor_notes", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  body: text("body").notNull(),
+  visibility: text("visibility").notNull().default("internal"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type DoctorNote = typeof doctorNotes.$inferSelect
+export type NewDoctorNote = typeof doctorNotes.$inferInsert

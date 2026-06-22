@@ -77,7 +77,12 @@ export default async function PortalHome({
         <SubscriptionCard subscription={subscription} />
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+        <QuickLink
+          href="/portal/progreso"
+          title="Mi progreso"
+          body="Registra tu peso y dosis, y sigue tu evolución."
+        />
         <QuickLink
           href="/portal/chat"
           title="Chat médico"
