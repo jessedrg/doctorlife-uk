@@ -46,6 +46,11 @@ export const auth = betterAuth({
           accountLinking: {
             enabled: true,
             trustedProviders: ["google"],
+            // El email con el que el médico inicia sesión (p. ej. su correo
+            // profesional) no tiene por qué coincidir con la cuenta de Google
+            // que conecta para Calendar/Meet. Sin esto, Better Auth rechaza el
+            // enlace con "email_doesn't_match" y nunca guarda los tokens.
+            allowDifferentEmails: true,
           },
         },
       }
