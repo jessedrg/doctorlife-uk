@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { appointments, user, doctorProfiles } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
-import { getBaseUrl } from "@/lib/base-url"
+import { getRequestBaseUrl } from "@/lib/base-url"
 import { FIRST_VISIT_CENTS, FIRST_VISIT_LABEL } from "@/lib/plans"
 import { getPooledSlots } from "@/lib/scheduling/pool"
 import { generateTempPassword } from "@/lib/credentials"
@@ -69,6 +69,7 @@ export async function startPublicCheckout(input: {
     paymentIntentData.transfer_data = { destination: doc.stripeAccountId }
   }
 
+  const baseUrl = await getRequestBaseUrl()
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -95,8 +96,8 @@ export async function startPublicCheckout(input: {
         startUtcISO: slot.startUtc,
         endUtcISO: slot.endUtc,
       },
-      success_url: `${getBaseUrl()}/bienvenido?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl()}/?checkout=cancelled`,
+      success_url: `${baseUrl}/bienvenido?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/?checkout=cancelled`,
     })
     if (!session.url) return { error: "No se pudo iniciar el pago." }
     return { url: session.url }

@@ -8,7 +8,7 @@ import {
   subscriptions,
 } from "@/lib/db/schema"
 import { stripe } from "@/lib/stripe"
-import { getBaseUrl } from "@/lib/base-url"
+import { getRequestBaseUrl } from "@/lib/base-url"
 import { getSessionUser } from "@/lib/session"
 import { and, desc, eq, sql } from "drizzle-orm"
 import { put } from "@vercel/blob"
@@ -216,10 +216,11 @@ export async function startStripeOnboarding(): Promise<
         .where(eq(doctorProfiles.userId, user.id))
     }
 
+    const baseUrl = await getRequestBaseUrl()
     const link = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `${getBaseUrl()}/medico/pagos?refresh=1`,
-      return_url: `${getBaseUrl()}/medico/pagos?done=1`,
+      refresh_url: `${baseUrl}/medico/pagos?refresh=1`,
+      return_url: `${baseUrl}/medico/pagos?done=1`,
       type: "account_onboarding",
     })
 

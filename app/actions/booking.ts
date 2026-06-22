@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { appointments, doctorProfiles, subscriptions, user } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe } from "@/lib/stripe"
-import { getBaseUrl } from "@/lib/base-url"
+import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { maybeCreateMeeting } from "@/lib/google/calendar"
 import { and, asc, desc, eq, gte, inArray, lte, ne } from "drizzle-orm"
@@ -72,6 +72,7 @@ export async function createBookingCheckout(
 
   // Cargo a la plataforma. El reparto al médico se hace por transferencia
   // separada al confirmar el pago (separate charges and transfers).
+  const baseUrl = await getRequestBaseUrl()
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -91,8 +92,8 @@ export async function createBookingCheckout(
       ],
       metadata: { appointmentId: String(appointmentId) },
       payment_intent_data: { metadata: { appointmentId: String(appointmentId) } },
-      success_url: `${getBaseUrl()}/portal/citas?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl()}/portal/reservar?cancelled=1`,
+      success_url: `${baseUrl}/portal/citas?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/portal/reservar?cancelled=1`,
     })
 
     await db
