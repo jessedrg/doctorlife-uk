@@ -59,6 +59,7 @@ export default async function DoctorChatPage({
               key={selected.id}
               conversationId={selected.id}
               counterpartName={selected.counterpartName}
+              canRequestAnalysis
             />
           ) : null}
         </div>
