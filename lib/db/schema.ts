@@ -278,3 +278,30 @@ export const doctorNotes = pgTable("doctor_notes", {
 
 export type DoctorNote = typeof doctorNotes.$inferSelect
 export type NewDoctorNote = typeof doctorNotes.$inferInsert
+
+/**
+ * Verificación adicional que un médico solicita a un paciente cuando sospecha
+ * que los datos pueden no ser veraces (p. ej. un vídeo, una analítica, etc.).
+ * Mientras exista una solicitud sin aprobar, el paciente no puede activar la
+ * suscripción del tratamiento.
+ * status: 'pending' (esperando que el paciente suba) | 'submitted' (subido,
+ * pendiente de revisión) | 'approved' | 'rejected'.
+ */
+export const verificationRequests = pgTable("verification_requests", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  message: text("message").notNull(), // qué pide el médico
+  status: text("status").notNull().default("pending"),
+  blobPathname: text("blob_pathname"), // archivo subido por el paciente (privado)
+  fileName: text("file_name"),
+  fileType: text("file_type"),
+  reviewNote: text("review_note"), // motivo del rechazo / nota de revisión
+  submittedAt: timestamp("submitted_at", { withTimezone: true }),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type VerificationRequest = typeof verificationRequests.$inferSelect
+export type NewVerificationRequest = typeof verificationRequests.$inferInsert

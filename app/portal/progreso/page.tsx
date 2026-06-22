@@ -14,8 +14,9 @@ export default async function ProgresoPage() {
         Mi progreso
       </h1>
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Registra tu peso, tu dosis y cómo te sientes a lo largo del tratamiento. Tu equipo médico
-        verá esta información para ajustar tu plan, y aquí leerás las notas que compartan contigo.
+        Registra tu peso, tu dosis y cómo te sientes a lo largo del tratamiento. Solo tu médico
+        asignado verá esta información, de forma confidencial, para ajustar tu plan. Aquí leerás las
+        notas que comparta contigo.
       </p>
 
       <div className="mt-7">

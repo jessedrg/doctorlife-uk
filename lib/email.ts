@@ -63,6 +63,30 @@ function dataBox(rows: { label: string; value: string; mono?: boolean }[]) {
   return `<div style="background:${PAPER};border:1px solid ${LINE};border-radius:14px;padding:18px;margin:0 0 18px;">${inner}</div>`
 }
 
+/** El médico solicita una verificación adicional antes de activar el tratamiento. */
+export async function sendVerificationRequestedEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  message: string
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const url = `${getCanonicalBaseUrl()}/portal/verificacion`
+  const body = `
+    ${p(`Hola ${firstName}, ${doc} necesita una verificación adicional antes de activar tu tratamiento.`)}
+    ${dataBox([{ label: "Lo que te pide tu médico", value: opts.message }])}
+    ${p("Sube lo solicitado desde tu panel. Tu médico lo revisará y, una vez aprobado, podrás activar el tratamiento.")}
+    ${p("<strong>Confidencial:</strong> lo que envíes solo lo verá tu médico asignado. Nadie más tiene acceso.")}
+    <div style="margin:22px 0 4px;">${button(url, "Completar verificación")}</div>
+  `
+  return send(
+    opts.to,
+    "Verificación necesaria para activar tu tratamiento",
+    shell({ title: "Verificación necesaria", body, preheader: "Tu médico necesita un dato adicional." }),
+  )
+}
+
 async function send(to: string, subject: string, html: string) {
   if (!resend) {
     console.log("[v0] RESEND_API_KEY ausente; email no enviado:", subject, "->", to)

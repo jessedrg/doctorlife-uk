@@ -6,6 +6,7 @@ import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe, DOCTOR_SHARE_CENTS } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
+import { hasPendingVerification } from "@/app/actions/verification"
 import { and, desc, eq, inArray } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
@@ -95,6 +96,15 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
   const doctorId = await getAssignedDoctorId(patient.id)
   if (!doctorId) {
     return { error: "Primero reserva tu primera visita para activar el tratamiento." }
+  }
+
+  // Si el médico solicitó verificación adicional, no se puede activar hasta que
+  // la apruebe.
+  if (await hasPendingVerification(patient.id)) {
+    return {
+      error:
+        "Tu médico ha solicitado una verificación adicional. Complétala para poder activar el tratamiento.",
+    }
   }
 
   const plan = await getPatientPlan(patient.email)

@@ -17,6 +17,7 @@ import {
   Stethoscope,
   Inbox,
   LineChart,
+  ShieldCheck,
   Menu,
   X,
 } from "lucide-react"
@@ -38,6 +39,7 @@ export type NavIcon =
   | "suscripciones"
   | "leads"
   | "progreso"
+  | "verificacion"
 
 type NavItem = { href: string; label: string; icon: NavIcon }
 
@@ -56,6 +58,7 @@ const ICONS: Record<NavIcon, typeof Home> = {
   suscripciones: CreditCard,
   leads: Inbox,
   progreso: LineChart,
+  verificacion: ShieldCheck,
 }
 
 export function PortalShell({

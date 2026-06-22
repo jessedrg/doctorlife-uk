@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/session"
 import { getNextAppointment } from "@/app/actions/booking"
 import { getMyPlan } from "@/app/actions/patient"
 import { getMySubscription, syncSubscriptionBySession } from "@/app/actions/subscription"
+import { hasPendingVerification } from "@/app/actions/verification"
 import { AppointmentSummary } from "@/components/appointment-summary"
 import { SubscriptionCard } from "@/components/subscription-card"
 import { FollowupReminder } from "@/components/followup-reminder"
@@ -23,10 +24,11 @@ export default async function PortalHome({
     await syncSubscriptionBySession(sp.session_id)
   }
 
-  const [next, plan, subscription] = await Promise.all([
+  const [next, plan, subscription, verificationPending] = await Promise.all([
     getNextAppointment(),
     getMyPlan(),
     getMySubscription(),
+    hasPendingVerification(user.id),
   ])
 
   const subActive =
@@ -74,7 +76,7 @@ export default async function PortalHome({
       </div>
 
       <div className="mt-4">
-        <SubscriptionCard subscription={subscription} />
+        <SubscriptionCard subscription={subscription} verificationPending={verificationPending} />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
