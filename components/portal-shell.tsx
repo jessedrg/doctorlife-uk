@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
+import { useEffect, useState } from "react"
+import Link, { useLinkStatus } from "next/link"
 import { usePathname } from "next/navigation"
 import { NotificationsBell } from "@/components/notifications-bell"
 import {
@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Menu,
   X,
+  Loader2,
 } from "lucide-react"
 import { BrandLogo, BrandMark } from "./brand-logo"
 import { SignOutButton } from "./sign-out-button"
@@ -82,6 +83,19 @@ export function PortalShell({
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
+  // Bloquea el scroll del fondo mientras el menú móvil está abierto.
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : ""
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [open])
+
+  // Cierra el menú automáticamente al cambiar de ruta.
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
+
   const isActive = (href: string) =>
     pathname === href || (href !== homeHref && pathname.startsWith(href + "/"))
 
@@ -96,7 +110,7 @@ export function PortalShell({
             href={item.href}
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
-            className={`flex items-center gap-3 rounded-[12px] px-3.5 py-2.5 text-[14px] font-medium transition-colors ${
+            className={`flex items-center gap-3 rounded-[12px] px-3.5 py-2.5 text-[14px] font-medium transition-colors active:scale-[.99] ${
               active
                 ? "bg-sage/35 text-ink"
                 : "text-ink-soft hover:bg-warm hover:text-ink"
@@ -104,6 +118,7 @@ export function PortalShell({
           >
             <Icon className="size-[18px] shrink-0" aria-hidden />
             <span className="truncate">{item.label}</span>
+            <NavPending active={active} />
           </Link>
         )
       })}
@@ -156,17 +171,25 @@ export function PortalShell({
         </div>
       </header>
 
-      {/* Drawer — móvil */}
-      {open && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          <button
-            type="button"
-            aria-label="Cerrar menú"
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-ink/40"
-          />
-          <div className="absolute left-0 top-0 flex h-full w-[280px] max-w-[82%] flex-col bg-paper px-4 py-5 shadow-xl">
-            <div className="flex items-center justify-between">
+      {/* Drawer — móvil (siempre montado para animar la entrada/salida) */}
+      <div className="fixed inset-0 z-40 md:hidden" aria-hidden={!open}>
+        {/* Fondo */}
+        <button
+          type="button"
+          aria-label="Cerrar menú"
+          tabIndex={open ? 0 : -1}
+          onClick={() => setOpen(false)}
+          className={`absolute inset-0 bg-ink/40 transition-opacity duration-300 ${
+            open ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+        />
+        {/* Panel */}
+        <div
+          className={`absolute left-0 top-0 flex h-full w-[280px] max-w-[82%] flex-col bg-paper px-4 py-5 shadow-xl will-change-transform transition-transform duration-300 ease-out ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between">
               <Link href={homeHref} onClick={() => setOpen(false)} className="flex items-center gap-2">
                 <BrandMark size={24} />
                 <span className="rounded-full bg-sage/30 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.08em] text-ink">
@@ -197,11 +220,20 @@ export function PortalShell({
             </div>
           </div>
         </div>
-      )}
 
       <main className="min-w-0 flex-1">
         <div className="mx-auto max-w-[1100px] px-5 py-7 sm:px-8 sm:py-10">{children}</div>
       </main>
     </div>
   )
+}
+
+/**
+ * Indicador de carga que aparece en el enlace pulsado mientras Next.js
+ * carga la ruta destino. Debe renderizarse dentro de un <Link>.
+ */
+function NavPending({ active }: { active: boolean }) {
+  const { pending } = useLinkStatus()
+  if (!pending || active) return null
+  return <Loader2 className="ml-auto size-4 shrink-0 animate-spin text-ink-mute" aria-hidden />
 }
