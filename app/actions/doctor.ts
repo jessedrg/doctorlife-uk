@@ -456,6 +456,97 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
 }
 
 /* ───────────────────────────────────────────────────────────
+   Métricas de inicio del panel del médico.
+   ─────────────────────────────────────────────────────────── */
+
+export type DoctorMetrics = {
+  totalPatients: number
+  activeSubscriptions: number
+  appointmentsToday: number
+  upcomingAppointments: number
+  prescriptionsIssued: number
+  totalCommissionCents: number
+}
+
+/** Métricas agregadas para la vista de inicio del médico. */
+export async function getDoctorMetrics(): Promise<DoctorMetrics> {
+  const me = await requireDoctor()
+  const now = new Date()
+  const startOfDay = new Date(now)
+  startOfDay.setHours(0, 0, 0, 0)
+  const endOfDay = new Date(startOfDay)
+  endOfDay.setDate(endOfDay.getDate() + 1)
+
+  const notPending = sql`${appointments.status} <> 'pending_payment'`
+  const notCancelled = sql`${appointments.status} <> 'cancelled'`
+
+  // Pacientes distintos con cita confirmada.
+  const [patientsRow] = await db
+    .select({ count: sql<number>`count(distinct ${appointments.patientId})` })
+    .from(appointments)
+    .where(and(eq(appointments.doctorId, me.id), notPending))
+
+  // Citas de hoy (no canceladas).
+  const [todayRow] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(appointments)
+    .where(
+      and(
+        eq(appointments.doctorId, me.id),
+        notPending,
+        notCancelled,
+        sql`${appointments.startsAt} >= ${startOfDay}`,
+        sql`${appointments.startsAt} < ${endOfDay}`,
+      ),
+    )
+
+  // Próximas citas (a partir de ahora, no canceladas).
+  const [upcomingRow] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(appointments)
+    .where(
+      and(
+        eq(appointments.doctorId, me.id),
+        notPending,
+        notCancelled,
+        sql`${appointments.startsAt} >= ${now}`,
+      ),
+    )
+
+  // Suscripciones activas con este médico.
+  const [activeSubsRow] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.doctorId, me.id),
+        sql`${subscriptions.status} in ('active', 'trialing', 'past_due')`,
+      ),
+    )
+
+  // Recetas emitidas en total.
+  const [rxRow] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(prescriptions)
+    .where(eq(prescriptions.doctorId, me.id))
+
+  // Total de comisiones registradas.
+  const [commRow] = await db
+    .select({ total: sql<number>`coalesce(sum(${commissions.amountCents}), 0)` })
+    .from(commissions)
+    .where(eq(commissions.doctorId, me.id))
+
+  return {
+    totalPatients: Number(patientsRow?.count ?? 0),
+    activeSubscriptions: Number(activeSubsRow?.count ?? 0),
+    appointmentsToday: Number(todayRow?.count ?? 0),
+    upcomingAppointments: Number(upcomingRow?.count ?? 0),
+    prescriptionsIssued: Number(rxRow?.count ?? 0),
+    totalCommissionCents: Number(commRow?.total ?? 0),
+  }
+}
+
+/* ───────────────────────────────────────────────────────────
    Ficha de paciente: info clínica (lead), progreso y notas.
    ─────────────────────────────────────────────────────────── */
 
