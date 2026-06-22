@@ -137,7 +137,7 @@ export function Navbar() {
 
       {/* panel móvil */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-out md:hidden ${
+        className={`absolute inset-x-3 top-full overflow-hidden transition-all duration-300 ease-out sm:inset-x-4 lg:inset-x-5 md:hidden ${
           open ? "mt-3 max-h-[460px] opacity-100" : "pointer-events-none mt-0 max-h-0 opacity-0"
         }`}
       >
