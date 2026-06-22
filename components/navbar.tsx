@@ -97,7 +97,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="/sign-in"
-            className="hidden whitespace-nowrap rounded-full px-[18px] py-[12px] text-[15px] font-medium text-ink no-underline opacity-75 transition-opacity duration-300 hover:opacity-100 sm:inline-flex"
+            className="hidden items-center whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-medium text-ink no-underline opacity-75 transition-opacity duration-300 hover:opacity-100 md:inline-flex"
           >
             Iniciar sesión
           </a>
