@@ -58,29 +58,77 @@ export async function getOrCreatePatientConversation() {
   return created.id
 }
 
+export type ConversationSummary = {
+  id: number
+  counterpartName: string
+  counterpartImage: string | null
+  lastMessageAt: Date | null
+  lastMessagePreview: string | null
+}
+
 /** Lista las conversaciones del usuario (médico o paciente) con datos del otro. */
-export async function getMyConversations() {
+export async function getMyConversations(): Promise<ConversationSummary[]> {
   const me = await requireUser()
+  const isDoctor = me.role === "doctor"
+
+  // El "otro" participante: para el médico es el paciente; para el paciente, el médico.
+  const counterpartId = isDoctor ? conversations.patientId : conversations.doctorId
 
   const rows = await db
     .select({
       id: conversations.id,
-      patientId: conversations.patientId,
-      doctorId: conversations.doctorId,
       lastMessageAt: conversations.lastMessageAt,
-      patientName: user.name,
+      counterpartName: user.name,
+      counterpartImage: user.image,
     })
     .from(conversations)
-    .leftJoin(user, eq(user.id, conversations.patientId))
+    .leftJoin(user, eq(user.id, counterpartId))
     .where(or(eq(conversations.patientId, me.id), eq(conversations.doctorId, me.id)))
     .orderBy(desc(conversations.lastMessageAt))
 
-  // El "otro" participante: para el médico es el paciente; necesitamos su nombre.
-  return rows.map((r) => ({
-    id: r.id,
-    counterpartName: r.patientName ?? "Paciente",
-    lastMessageAt: r.lastMessageAt,
-  }))
+  // Adjunta el último mensaje de cada conversación como vista previa.
+  const summaries = await Promise.all(
+    rows.map(async (r) => {
+      const [last] = await db
+        .select({ body: messages.body })
+        .from(messages)
+        .where(eq(messages.conversationId, r.id))
+        .orderBy(desc(messages.id))
+        .limit(1)
+      return {
+        id: r.id,
+        counterpartName: r.counterpartName ?? (isDoctor ? "Paciente" : "Médico"),
+        counterpartImage: r.counterpartImage ?? null,
+        lastMessageAt: r.lastMessageAt,
+        lastMessagePreview: last?.body ? stripPreview(last.body) : null,
+      }
+    }),
+  )
+
+  return summaries
+}
+
+/** Quita el prefijo de análisis y recorta para una vista previa de una línea. */
+function stripPreview(body: string): string {
+  let text = body.startsWith("[ANÁLISIS]") ? "Análisis solicitados" : body
+  text = text.replace(/\s+/g, " ").trim()
+  return text.length > 60 ? text.slice(0, 60) + "…" : text
+}
+
+/** Datos (nombre + foto) del otro participante de una conversación. */
+export async function getConversationCounterpart(conversationId: number) {
+  const me = await requireUser()
+  const conv = await requireParticipant(conversationId, me.id)
+  const otherId = conv.patientId === me.id ? conv.doctorId : conv.patientId
+  const [u] = await db
+    .select({ name: user.name, image: user.image })
+    .from(user)
+    .where(eq(user.id, otherId))
+    .limit(1)
+  return {
+    name: u?.name ?? (conv.patientId === me.id ? "Tu equipo médico" : "Paciente"),
+    image: u?.image ?? null,
+  }
 }
 
 /** Mensajes de una conversación (solo participantes). `after` para polling incremental. */

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import useSWR from "swr"
 import { getMessages, sendMessage } from "@/app/actions/chat"
 import { AnalysisRequestDialog, ANALYSIS_PREFIX } from "@/components/analysis-request-dialog"
-import { FlaskConical } from "lucide-react"
+import { UserAvatar } from "@/components/user-avatar"
+import { FlaskConical, ChevronLeft } from "lucide-react"
 
 type Msg = { id: number; body: string; mine: boolean; createdAt: Date }
 
@@ -17,11 +18,19 @@ const timeFmt = new Intl.DateTimeFormat("es-ES", {
 export function ChatThread({
   conversationId,
   counterpartName,
+  counterpartImage,
   canRequestAnalysis = false,
+  subtitle = "Mensajería segura · respuesta no inmediata",
+  onBack,
+  className,
 }: {
   conversationId: number
   counterpartName: string
+  counterpartImage?: string | null
   canRequestAnalysis?: boolean
+  subtitle?: string
+  onBack?: () => void
+  className?: string
 }) {
   const { data: messages = [], mutate } = useSWR<Msg[]>(
     ["messages", conversationId],
@@ -74,10 +83,23 @@ export function ChatThread({
   }
 
   return (
-    <div className="flex h-[min(70vh,600px)] flex-col rounded-[20px] border border-ink/10 bg-cream">
-      <div className="border-b border-ink/10 px-5 py-3.5">
-        <p className="text-[15px] font-medium text-ink">{counterpartName}</p>
-        <p className="text-[12.5px] text-ink-soft">Mensajería segura · respuesta no inmediata</p>
+    <div className={`flex flex-col bg-cream ${className ?? "h-[min(70vh,600px)] rounded-[20px] border border-ink/10"}`}>
+      <div className="flex items-center gap-3 border-b border-ink/10 px-4 py-3 sm:px-5">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Volver a la lista"
+            className="-ml-1 flex size-9 shrink-0 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-ink/5 md:hidden"
+          >
+            <ChevronLeft className="size-5" aria-hidden />
+          </button>
+        )}
+        <UserAvatar name={counterpartName} image={counterpartImage} size={40} />
+        <div className="min-w-0">
+          <p className="truncate text-[15px] font-medium text-ink">{counterpartName}</p>
+          <p className="truncate text-[12.5px] text-ink-soft">{subtitle}</p>
+        </div>
       </div>
 
       <div className="flex-1 space-y-2.5 overflow-y-auto px-5 py-4">

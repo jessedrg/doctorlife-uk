@@ -1,11 +1,17 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { doctorProfiles } from "@/lib/db/schema"
+import {
+  doctorProfiles,
+  user as userTable,
+  appointments,
+  subscriptions,
+} from "@/lib/db/schema"
 import { stripe } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { getSessionUser } from "@/lib/session"
-import { eq } from "drizzle-orm"
+import { and, desc, eq, sql } from "drizzle-orm"
+import { put } from "@vercel/blob"
 import { revalidatePath } from "next/cache"
 
 async function requireDoctor() {
@@ -32,6 +38,18 @@ export async function getMyDoctorProfile() {
   return created
 }
 
+/** Perfil del médico + su foto (user.image), para la página "Mi cuenta". */
+export async function getMyDoctorProfileWithImage() {
+  const me = await requireDoctor()
+  const profile = await getMyDoctorProfile()
+  const [u] = await db
+    .select({ image: userTable.image, email: userTable.email })
+    .from(userTable)
+    .where(eq(userTable.id, me.id))
+    .limit(1)
+  return { ...profile, image: u?.image ?? null, email: u?.email ?? me.email }
+}
+
 export async function updateDoctorProfile(input: {
   fullName: string
   specialty?: string
@@ -40,19 +58,125 @@ export async function updateDoctorProfile(input: {
   acceptingPatients?: boolean
 }) {
   const user = await requireDoctor()
+  const fullName = input.fullName.trim()
+  if (!fullName) return { ok: false as const, error: "El nombre es obligatorio." }
+
   await db
     .update(doctorProfiles)
     .set({
-      fullName: input.fullName,
-      specialty: input.specialty || null,
-      licenseNumber: input.licenseNumber || null,
-      bio: input.bio || null,
+      fullName,
+      specialty: input.specialty?.trim() || null,
+      licenseNumber: input.licenseNumber?.trim() || null,
+      bio: input.bio?.trim() || null,
       acceptingPatients: input.acceptingPatients ?? true,
       updatedAt: new Date(),
     })
     .where(eq(doctorProfiles.userId, user.id))
+
+  // Sincroniza el nombre visible en la cuenta para que coincida en el chat.
+  await db
+    .update(userTable)
+    .set({ name: fullName, updatedAt: new Date() })
+    .where(eq(userTable.id, user.id))
+
   revalidatePath("/medico")
-  return { ok: true }
+  revalidatePath("/medico/cuenta")
+  return { ok: true as const }
+}
+
+/** Sube la foto de perfil del médico a Blob (público) y la guarda en user.image. */
+export async function uploadDoctorAvatar(formData: FormData) {
+  const me = await requireDoctor()
+  const file = formData.get("file")
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false as const, error: "Selecciona una imagen." }
+  }
+  if (!file.type.startsWith("image/")) {
+    return { ok: false as const, error: "El archivo debe ser una imagen." }
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return { ok: false as const, error: "La imagen no puede superar 5 MB." }
+  }
+
+  const ext = file.type.split("/")[1]?.replace("jpeg", "jpg") || "png"
+  const blob = await put(`avatars/${me.id}.${ext}`, file, {
+    access: "public",
+    contentType: file.type,
+    addRandomSuffix: true,
+  })
+
+  await db
+    .update(userTable)
+    .set({ image: blob.url, updatedAt: new Date() })
+    .where(eq(userTable.id, me.id))
+
+  revalidatePath("/medico/cuenta")
+  revalidatePath("/medico/chat")
+  return { ok: true as const, url: blob.url }
+}
+
+export type DoctorPatient = {
+  id: string
+  name: string
+  email: string
+  image: string | null
+  subscriptionStatus: string | null
+  totalAppointments: number
+  lastVisit: Date | null
+  nextVisit: Date | null
+}
+
+/** Todos los pacientes del médico (con cita previa) + su estado. */
+export async function getMyPatients(): Promise<DoctorPatient[]> {
+  const me = await requireDoctor()
+  const now = new Date()
+
+  // Pacientes distintos con los que el médico ha tenido alguna cita (no pendiente de pago).
+  const base = await db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      email: userTable.email,
+      image: userTable.image,
+      total: sql<number>`count(${appointments.id})`,
+      lastVisit: sql<Date | null>`max(case when ${appointments.startsAt} <= ${now} then ${appointments.startsAt} end)`,
+      nextVisit: sql<Date | null>`min(case when ${appointments.startsAt} > ${now} and ${appointments.status} <> 'cancelled' then ${appointments.startsAt} end)`,
+    })
+    .from(appointments)
+    .innerJoin(userTable, eq(userTable.id, appointments.patientId))
+    .where(and(eq(appointments.doctorId, me.id), sql`${appointments.status} <> 'pending_payment'`))
+    .groupBy(userTable.id, userTable.name, userTable.email, userTable.image)
+
+  // Estado de suscripción por paciente con este médico.
+  const subs = await db
+    .select({ patientId: subscriptions.patientId, status: subscriptions.status })
+    .from(subscriptions)
+    .where(eq(subscriptions.doctorId, me.id))
+    .orderBy(desc(subscriptions.id))
+
+  const subByPatient = new Map<string, string>()
+  for (const s of subs) {
+    if (!subByPatient.has(s.patientId)) subByPatient.set(s.patientId, s.status)
+  }
+
+  return base
+    .map((p) => ({
+      id: p.id,
+      name: p.name,
+      email: p.email,
+      image: p.image ?? null,
+      subscriptionStatus: subByPatient.get(p.id) ?? null,
+      totalAppointments: Number(p.total),
+      lastVisit: p.lastVisit ? new Date(p.lastVisit) : null,
+      nextVisit: p.nextVisit ? new Date(p.nextVisit) : null,
+    }))
+    .sort((a, b) => {
+      // Próxima visita primero; si no, por última visita reciente.
+      const an = a.nextVisit?.getTime() ?? Infinity
+      const bn = b.nextVisit?.getTime() ?? Infinity
+      if (an !== bn) return an - bn
+      return (b.lastVisit?.getTime() ?? 0) - (a.lastVisit?.getTime() ?? 0)
+    })
 }
 
 /**
