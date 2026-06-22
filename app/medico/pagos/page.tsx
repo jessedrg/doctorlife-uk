@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/session"
-import { getMyDoctorProfile, refreshStripeStatus } from "@/app/actions/doctor"
+import { getMyDoctorProfile, refreshStripeStatus, getDoctorTransactions } from "@/app/actions/doctor"
 import { DoctorStripeOnboarding } from "@/components/doctor-stripe-onboarding"
+import { DoctorTransactions } from "@/components/doctor-transactions"
 
 export const metadata = { title: "Pagos — DoctorLife" }
 
@@ -18,11 +19,14 @@ export default async function MedicoPagosPage({
     profile = await refreshStripeStatus()
   }
 
+  // Solo cargamos transacciones si la cuenta ya puede cobrar.
+  const earnings = profile.chargesEnabled ? await getDoctorTransactions() : null
+
   return (
     <div>
       <h1 className="text-[28px] font-light leading-tight tracking-[-.02em] text-ink">Pagos</h1>
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Configura cómo recibes los ingresos de tus consultas.
+        Configura cómo recibes los ingresos de tus consultas y revisa tus transacciones.
       </p>
 
       <div className="mt-7 max-w-[640px]">
@@ -33,6 +37,18 @@ export default async function MedicoPagosPage({
           onboarded={profile.stripeOnboarded}
         />
       </div>
+
+      {earnings ? (
+        <section className="mt-10">
+          <h2 className="text-[20px] font-medium text-ink">Transacciones</h2>
+          <p className="mt-1 text-[14px] text-ink-soft">
+            Repartos de suscripción, primeras consultas y retiradas a tu banco.
+          </p>
+          <div className="mt-5">
+            <DoctorTransactions earnings={earnings} />
+          </div>
+        </section>
+      ) : null}
     </div>
   )
 }

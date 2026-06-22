@@ -238,6 +238,99 @@ export async function startStripeOnboarding(): Promise<
   }
 }
 
+export type DoctorTxnCategory = "subscription" | "consultation" | "payout" | "other"
+
+export type DoctorTransaction = {
+  id: string
+  category: DoctorTxnCategory
+  description: string
+  amountCents: number
+  netCents: number
+  feeCents: number
+  currency: string
+  status: string
+  created: number
+}
+
+export type DoctorEarnings = {
+  available: boolean
+  transactions: DoctorTransaction[]
+  totalNetCents: number
+  subscriptionCount: number
+  consultationCount: number
+}
+
+/** Clasifica un balance transaction de Stripe en una categoría de DoctorLife. */
+function categorizeTxn(type: string): DoctorTxnCategory {
+  // Las suscripciones llegan al médico como "transfer" (reparto de 25 € mensuales).
+  if (type === "transfer" || type === "payment_transfer") return "subscription"
+  // La primera consulta es un destination charge → "payment"/"charge".
+  if (type === "payment" || type === "charge") return "consultation"
+  // Retiradas al banco del médico.
+  if (type === "payout" || type === "payout_cancel") return "payout"
+  return "other"
+}
+
+const TXN_LABELS: Record<DoctorTxnCategory, string> = {
+  subscription: "Reparto de suscripción",
+  consultation: "Primera consulta",
+  payout: "Retirada a tu banco",
+  other: "Movimiento",
+}
+
+/**
+ * Lee los últimos movimientos del saldo de la cuenta Connect del médico.
+ * Incluye los repartos de suscripción (transfers), las primeras consultas
+ * (destination charges) y las retiradas a su banco (payouts).
+ */
+export async function getDoctorTransactions(limit = 50): Promise<DoctorEarnings> {
+  const profile = await getMyDoctorProfile()
+  const empty: DoctorEarnings = {
+    available: false,
+    transactions: [],
+    totalNetCents: 0,
+    subscriptionCount: 0,
+    consultationCount: 0,
+  }
+  if (!profile.stripeAccountId) return empty
+
+  try {
+    const list = await stripe.balanceTransactions.list(
+      { limit },
+      { stripeAccount: profile.stripeAccountId },
+    )
+
+    const transactions: DoctorTransaction[] = list.data.map((t) => {
+      const category = categorizeTxn(t.type)
+      return {
+        id: t.id,
+        category,
+        description: t.description || TXN_LABELS[category],
+        amountCents: t.amount,
+        netCents: t.net,
+        feeCents: t.fee,
+        currency: t.currency,
+        status: t.status,
+        created: t.created,
+      }
+    })
+
+    return {
+      available: true,
+      transactions,
+      // Suma neta de entradas (excluye retiradas, que son salidas a banco).
+      totalNetCents: transactions
+        .filter((t) => t.category !== "payout")
+        .reduce((sum, t) => sum + t.netCents, 0),
+      subscriptionCount: transactions.filter((t) => t.category === "subscription").length,
+      consultationCount: transactions.filter((t) => t.category === "consultation").length,
+    }
+  } catch {
+    // Cuenta aún sin actividad o sin permisos de lectura: tratamos como vacío.
+    return { ...empty, available: true }
+  }
+}
+
 /** Re-reads the Stripe account and syncs the onboarding flags into our DB. */
 export async function refreshStripeStatus() {
   const user = await requireDoctor()

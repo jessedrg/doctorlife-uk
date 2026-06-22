@@ -7,15 +7,16 @@ export default async function MedicoLayout({ children }: { children: React.React
     <PortalShell
       user={user}
       badge="Médico"
+      homeHref="/medico"
       nav={[
-        { href: "/medico", label: "Inicio" },
-        { href: "/medico/agenda", label: "Agenda" },
-        { href: "/medico/pacientes", label: "Pacientes" },
-        { href: "/medico/disponibilidad", label: "Disponibilidad" },
-        { href: "/medico/chat", label: "Mensajes" },
-        { href: "/medico/recetas", label: "Recetas" },
-        { href: "/medico/pagos", label: "Pagos" },
-        { href: "/medico/cuenta", label: "Mi cuenta" },
+        { href: "/medico", label: "Inicio", icon: "home" },
+        { href: "/medico/agenda", label: "Agenda", icon: "agenda" },
+        { href: "/medico/pacientes", label: "Pacientes", icon: "pacientes" },
+        { href: "/medico/disponibilidad", label: "Disponibilidad", icon: "disponibilidad" },
+        { href: "/medico/chat", label: "Mensajes", icon: "mensajes" },
+        { href: "/medico/recetas", label: "Recetas", icon: "recetas" },
+        { href: "/medico/pagos", label: "Pagos", icon: "pagos" },
+        { href: "/medico/cuenta", label: "Mi cuenta", icon: "cuenta" },
       ]}
     >
       {children}

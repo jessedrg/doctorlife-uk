@@ -7,13 +7,14 @@ export default async function PortalLayout({ children }: { children: React.React
     <PortalShell
       user={user}
       badge="Paciente"
+      homeHref="/portal"
       nav={[
-        { href: "/portal", label: "Inicio" },
-        { href: "/portal/reservar", label: "Reservar cita" },
-        { href: "/portal/citas", label: "Mis citas" },
-        { href: "/portal/chat", label: "Chat" },
-        { href: "/portal/recetas", label: "Recetas" },
-        { href: "/portal/cuenta", label: "Mi cuenta" },
+        { href: "/portal", label: "Inicio", icon: "home" },
+        { href: "/portal/reservar", label: "Reservar cita", icon: "reservar" },
+        { href: "/portal/citas", label: "Mis citas", icon: "citas" },
+        { href: "/portal/chat", label: "Chat", icon: "mensajes" },
+        { href: "/portal/recetas", label: "Recetas", icon: "recetas" },
+        { href: "/portal/cuenta", label: "Mi cuenta", icon: "cuenta" },
       ]}
     >
       {children}

@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { Search, MessageCircle, FileText } from "lucide-react"
+import { Search, MessageCircle, FileText, Users } from "lucide-react"
 import { UserAvatar } from "@/components/user-avatar"
+import { EmptyState } from "@/components/empty-state"
 import type { DoctorPatient } from "@/app/actions/doctor"
 
 const dateFmt = new Intl.DateTimeFormat("es-ES", { dateStyle: "medium" })
@@ -43,6 +44,19 @@ export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) 
     { key: "active", label: "En tratamiento" },
     { key: "inactive", label: "Sin tratamiento" },
   ]
+
+  if (patients.length === 0) {
+    return (
+      <div className="mt-6">
+        <EmptyState
+          icon={Users}
+          title="Aún no tienes pacientes"
+          description="Cuando un paciente reserve una consulta contigo, aparecerá aquí con su estado de tratamiento, su historial de citas y accesos rápidos al chat y a las recetas."
+          action={{ href: "/medico/disponibilidad", label: "Revisar mi disponibilidad" }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="mt-6">

@@ -7,12 +7,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <PortalShell
       user={user}
       badge="Admin"
+      homeHref="/admin"
       nav={[
-        { href: "/admin", label: "Inicio" },
-        { href: "/admin/medicos", label: "Médicos" },
-        { href: "/admin/pacientes", label: "Pacientes" },
-        { href: "/admin/suscripciones", label: "Suscripciones" },
-        { href: "/admin/leads", label: "Leads" },
+        { href: "/admin", label: "Inicio", icon: "home" },
+        { href: "/admin/medicos", label: "Médicos", icon: "medicos" },
+        { href: "/admin/pacientes", label: "Pacientes", icon: "pacientes" },
+        { href: "/admin/suscripciones", label: "Suscripciones", icon: "suscripciones" },
+        { href: "/admin/leads", label: "Leads", icon: "leads" },
       ]}
     >
       {children}

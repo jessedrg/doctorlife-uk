@@ -1,5 +1,7 @@
+import { FileText } from "lucide-react"
 import { MAIN_PLAN } from "@/lib/plans"
 import { UnlockPrescriptionsButton } from "@/components/unlock-prescriptions-button"
+import { EmptyState } from "@/components/empty-state"
 
 interface PrescriptionRow {
   id: number
@@ -23,9 +25,15 @@ export function PrescriptionList({
 }) {
   if (prescriptions.length === 0) {
     return (
-      <p className="text-sm text-muted">
-        {showPatient ? "Aún no has emitido recetas." : "Todavía no tienes recetas."}
-      </p>
+      <EmptyState
+        icon={FileText}
+        title={showPatient ? "Aún no has emitido recetas" : "Todavía no tienes recetas"}
+        description={
+          showPatient
+            ? "Cuando emitas una receta, aparecerá aquí y quedará disponible en el portal de tu paciente."
+            : "Tu médico publicará aquí tus tratamientos. Podrás descargarlos en PDF cuando estén listos."
+        }
+      />
     )
   }
 
