@@ -27,7 +27,7 @@ export function ImmersiveProduct() {
         <Parallax speed={46} className="relative mx-auto mt-[14px] h-[420px] w-[680px] max-w-[92vw]">
           <img
             src="/products/maren-lineup.png"
-            alt="Gama de productos Maren: plumas inyectoras y pastillas GLP‑1"
+            alt="Gama de productos DoctorLife: plumas inyectoras y pastillas GLP‑1"
             className="anim-floatA absolute inset-0 h-full w-full object-contain"
           />
         </Parallax>

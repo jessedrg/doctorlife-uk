@@ -64,13 +64,13 @@ export function Transformation() {
             <div className="mb-7 overflow-hidden rounded-[20px]" style={{ background: "linear-gradient(160deg,#5f6a3e,#2c3439)" }}>
               <img
                 src="/testimonials/daniel.png"
-                alt="Daniel, paciente de Maren"
+                alt="Daniel, paciente de DoctorLife"
                 className="h-[260px] w-full object-cover object-[center_20%] lg:h-[340px] 2xl:h-[400px]"
               />
             </div>
             <div className="font-serif text-[clamp(22px,2.4vw,30px)] font-normal italic leading-[1.3]">
               &ldquo;Por primera vez el peso se fue y{" "}
-              <span className="text-sage">no volvió</span>. Maren se sintió como
+              <span className="text-sage">no volvió</span>. DoctorLife se sintió como
               cuidado de verdad, no como una transacción.&rdquo;
             </div>
             <div className="mt-[26px] flex items-center gap-4">

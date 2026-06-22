@@ -137,6 +137,32 @@ export async function getMyPrescriptions() {
     .orderBy(desc(prescriptions.issuedAt))
 }
 
+/** Recetas que el médico autenticado ha emitido a un paciente concreto. */
+export async function getPatientPrescriptions(patientId: string) {
+  const me = await getSessionUser()
+  if (!me || me.role !== "doctor") return []
+
+  // Solo si existe relación de cita médico-paciente.
+  const [link] = await db
+    .select({ id: appointments.id })
+    .from(appointments)
+    .where(and(eq(appointments.doctorId, me.id), eq(appointments.patientId, patientId)))
+    .limit(1)
+  if (!link) return []
+
+  return db
+    .select({
+      id: prescriptions.id,
+      medication: prescriptions.medication,
+      dosage: prescriptions.dosage,
+      instructions: prescriptions.instructions,
+      issuedAt: prescriptions.issuedAt,
+    })
+    .from(prescriptions)
+    .where(and(eq(prescriptions.doctorId, me.id), eq(prescriptions.patientId, patientId)))
+    .orderBy(desc(prescriptions.issuedAt))
+}
+
 function slug(s: string) {
   return s
     .toLowerCase()

@@ -63,6 +63,30 @@ function dataBox(rows: { label: string; value: string; mono?: boolean }[]) {
   return `<div style="background:${PAPER};border:1px solid ${LINE};border-radius:14px;padding:18px;margin:0 0 18px;">${inner}</div>`
 }
 
+/** El médico solicita una verificación adicional antes de activar el tratamiento. */
+export async function sendVerificationRequestedEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  message: string
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const url = `${getCanonicalBaseUrl()}/portal/verificacion`
+  const body = `
+    ${p(`Hola ${firstName}, ${doc} necesita una verificación adicional antes de activar tu tratamiento.`)}
+    ${dataBox([{ label: "Lo que te pide tu médico", value: opts.message }])}
+    ${p("Sube lo solicitado desde tu panel. Tu médico lo revisará y, una vez aprobado, podrás activar el tratamiento.")}
+    ${p("<strong>Confidencial:</strong> lo que envíes solo lo verá tu médico asignado. Nadie más tiene acceso.")}
+    <div style="margin:22px 0 4px;">${button(url, "Completar verificación")}</div>
+  `
+  return send(
+    opts.to,
+    "Verificación necesaria para activar tu tratamiento",
+    shell({ title: "Verificación necesaria", body, preheader: "Tu médico necesita un dato adicional." }),
+  )
+}
+
 async function send(to: string, subject: string, html: string) {
   if (!resend) {
     console.log("[v0] RESEND_API_KEY ausente; email no enviado:", subject, "->", to)
@@ -261,4 +285,98 @@ export async function sendResetPasswordEmail(opts: { to: string; name?: string; 
     "Restablece tu contraseña — DoctorLife",
     shell({ title: "Restablecer contraseña", body, preheader: "Crea una contraseña nueva." }),
   )
+}
+
+/* ───────────────────────────────────────────────────────────
+   Notificación interna de nuevos leads (captados desde landing/blog).
+   ─────────────────────────────────────────────────────────── */
+
+// Destinatarios de las notificaciones de nuevos leads.
+export const LEAD_NOTIFICATION_RECIPIENTS = ["hello@doctorlife.io"]
+
+// Remitente para los avisos de leads (dominio verificado en Resend).
+const LEAD_FROM = "DoctorLife <leads@doctorlife.io>"
+
+type LeadEmailData = {
+  name?: string | null
+  email: string
+  goal?: string | null
+  glp1Experience?: string | null
+  formatPreference?: string | null
+  timeline?: string | null
+  plan?: string | null
+  heightCm?: number | null
+  weightKg?: number | null
+  age?: number | null
+  bmi?: string | null
+  source?: string | null
+}
+
+function leadRow(label: string, value: unknown): string {
+  if (value === null || value === undefined || value === "") return ""
+  return `<tr>
+    <td style="padding:6px 12px;color:#6b7280;font-size:13px;border-bottom:1px solid #f0f0f0;">${label}</td>
+    <td style="padding:6px 12px;color:#111827;font-size:13px;font-weight:600;border-bottom:1px solid #f0f0f0;">${String(value)}</td>
+  </tr>`
+}
+
+export type SendResult = { ok: true; id?: string } | { ok: false; error: string }
+
+export async function sendLeadNotification(lead: LeadEmailData): Promise<SendResult> {
+  if (!resend) return { ok: false, error: "RESEND_API_KEY no configurada" }
+
+  const title = lead.name ? `Nuevo lead: ${lead.name}` : "Nuevo lead en DoctorLife"
+  const rows = [
+    leadRow("Nombre", lead.name),
+    leadRow("Email", lead.email),
+    leadRow("Objetivo", lead.goal),
+    leadRow("Experiencia GLP-1", lead.glp1Experience),
+    leadRow("Formato preferido", lead.formatPreference),
+    leadRow("Plazo", lead.timeline),
+    leadRow("Plan", lead.plan),
+    leadRow("Altura (cm)", lead.heightCm),
+    leadRow("Peso (kg)", lead.weightKg),
+    leadRow("Edad", lead.age),
+    leadRow("IMC", lead.bmi),
+    leadRow("Origen", lead.source),
+  ].join("")
+
+  const html = `<!doctype html>
+<html lang="es">
+<body style="margin:0;background:#f6f6f4;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;padding:24px;">
+    <div style="background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #ececec;">
+      <div style="background:#111827;padding:20px 24px;">
+        <h1 style="margin:0;color:#ffffff;font-size:18px;">${title}</h1>
+        <p style="margin:4px 0 0;color:#9ca3af;font-size:13px;">DoctorLife · notificación de lead</p>
+      </div>
+      <table style="width:100%;border-collapse:collapse;">
+        ${rows}
+      </table>
+      <div style="padding:16px 24px;background:#fafafa;">
+        <a href="mailto:${lead.email}" style="display:inline-block;background:#111827;color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:10px 18px;border-radius:8px;">Responder al lead</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: LEAD_FROM,
+      to: LEAD_NOTIFICATION_RECIPIENTS,
+      replyTo: lead.email,
+      subject: title,
+      html,
+    })
+    if (error) {
+      console.log("[v0] sendLeadNotification error:", error.message ?? error)
+      return { ok: false, error: error.message ?? "Error al enviar el email" }
+    }
+    return { ok: true, id: data?.id }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Error desconocido al enviar el email"
+    console.log("[v0] sendLeadNotification exception:", message)
+    return { ok: false, error: message }
+  }
 }

@@ -1,14 +1,22 @@
-import { footerColumns } from "@/lib/data";
 import { QuizTrigger } from "./quiz-trigger";
 import { BrandLogo } from "./brand-logo";
+import { FooterColumns } from "./footer-columns";
+
+const paymentMethods = [
+  { label: "Visa", src: "/payments/visa.svg" },
+  { label: "Mastercard", src: "/payments/mastercard.svg" },
+  { label: "PayPal", src: "/payments/paypal.svg" },
+  { label: "Apple Pay", src: "/payments/apple-pay.svg" },
+  { label: "Google Pay", src: "/payments/google-pay.svg" },
+];
 
 export function Footer() {
   return (
     <footer className="px-3 pb-6 pt-[60px] sm:px-4 lg:px-5">
       <div className="mx-auto max-w-none overflow-hidden rounded-[32px] bg-ink text-paper">
-        <div className="grid grid-cols-2 gap-10 px-8 pb-12 pt-12 md:grid-cols-[1.5fr_1fr_1fr_1fr] md:px-14">
+        <div className="grid grid-cols-1 gap-x-10 px-8 pb-10 pt-12 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] md:gap-10 md:pb-12 md:px-14">
           {/* marca + CTA */}
-          <div className="col-span-2 md:col-span-1">
+          <div className="mb-2 md:col-span-1 md:mb-0">
             <a
               href="/#top"
               aria-label="DoctorLife — inicio"
@@ -21,28 +29,39 @@ export function Footer() {
               real desde la app y tratamiento GLP‑1 supervisado.
             </p>
             <QuizTrigger className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink">
-              Empieza por 65 €/mes
+              Empieza por 25 €
               <span className="text-[13px]">↗</span>
             </QuizTrigger>
           </div>
 
-          {footerColumns.map((col) => (
-            <div key={col.title}>
-              <div className="mb-5 text-xs uppercase tracking-[.14em] text-sage">{col.title}</div>
-              <div className="flex flex-col gap-[13px] text-[15px] text-paper/70">
-                {col.links.map((l) => (
-                  <a key={l.label} href={l.href} className="text-inherit no-underline transition-colors hover:text-paper">
-                    {l.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
+          <FooterColumns />
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-paper/10 px-8 py-6 text-[12.5px] text-paper/45 md:px-14">
-          <span>© 2026 DoctorLife · doctorlife.io</span>
-          <span>Tratamiento sujeto a evaluación médica.</span>
+        <div className="flex flex-col gap-5 border-t border-paper/10 px-8 py-7 md:flex-row md:items-center md:justify-between md:px-14">
+          <div className="flex flex-col gap-3">
+            <span className="text-xs uppercase tracking-[.14em] text-sage">Pago seguro</span>
+            <ul className="flex flex-wrap items-center gap-2.5" aria-label="Métodos de pago aceptados">
+              {paymentMethods.map((p) => (
+                <li
+                  key={p.label}
+                  className="flex h-9 w-[58px] items-center justify-center rounded-lg bg-paper px-2.5 shadow-sm"
+                >
+                  <img
+                    src={p.src || "/placeholder.svg"}
+                    alt={p.label}
+                    className="max-h-[18px] w-auto"
+                    width={40}
+                    height={18}
+                    loading="lazy"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex flex-col gap-1 text-[12.5px] text-paper/45 md:items-end">
+            <span>© 2026 DoctorLife · doctorlife.io</span>
+            <span>Tratamiento sujeto a evaluación médica.</span>
+          </div>
         </div>
       </div>
     </footer>

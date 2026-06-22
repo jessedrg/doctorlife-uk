@@ -21,12 +21,20 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
   const [initialPlan, setInitialPlan] = useState<string | null>(null);
 
   const openQuiz = (plan?: string) => {
-    if (typeof document !== "undefined") document.body.style.overflow = "hidden";
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "hidden";
+      // Marca el body para que globals.css oculte el launcher de Intercom
+      // y no se superponga al formulario (especialmente en móvil).
+      document.body.classList.add("quiz-open");
+    }
     setInitialPlan(plan ?? null);
     setOpen(true);
   };
   const closeQuiz = () => {
-    if (typeof document !== "undefined") document.body.style.overflow = "";
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "";
+      document.body.classList.remove("quiz-open");
+    }
     setOpen(false);
   };
 

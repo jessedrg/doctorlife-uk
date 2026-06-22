@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { ShieldAlert } from "lucide-react"
 import { startSubscriptionCheckout, cancelMySubscription } from "@/app/actions/subscription"
 
 interface SubscriptionView {
@@ -25,7 +27,13 @@ function eur(cents: number) {
   return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
 }
 
-export function SubscriptionCard({ subscription }: { subscription: SubscriptionView | null }) {
+export function SubscriptionCard({
+  subscription,
+  verificationPending = false,
+}: {
+  subscription: SubscriptionView | null
+  verificationPending?: boolean
+}) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -102,13 +110,34 @@ export function SubscriptionCard({ subscription }: { subscription: SubscriptionV
             Activa tu tratamiento mensual con seguimiento médico, ajustes de dosis y mensajería con
             tu equipo. Puedes cancelar cuando quieras.
           </p>
-          <button
-            onClick={onSubscribe}
-            disabled={loading}
-            className="mt-4 inline-flex rounded-full bg-ink px-4 py-2 text-[13.5px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
-          >
-            {loading ? "Redirigiendo…" : "Activar suscripción"}
-          </button>
+
+          {verificationPending ? (
+            <div className="mt-4 flex items-start gap-2.5 rounded-[14px] border border-amber/30 bg-amber/[.08] p-3.5">
+              <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber" aria-hidden />
+              <div>
+                <p className="text-[13.5px] font-medium text-ink">
+                  Tu médico necesita una verificación antes de activar el tratamiento
+                </p>
+                <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
+                  Complétala para poder continuar. Es confidencial: solo la verá tu médico.
+                </p>
+                <Link
+                  href="/portal/verificacion"
+                  className="mt-2.5 inline-flex rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition-opacity hover:opacity-90"
+                >
+                  Completar verificación
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={onSubscribe}
+              disabled={loading}
+              className="mt-4 inline-flex rounded-full bg-ink px-4 py-2 text-[13.5px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+            >
+              {loading ? "Redirigiendo…" : "Activar suscripción"}
+            </button>
+          )}
         </div>
       )}
 

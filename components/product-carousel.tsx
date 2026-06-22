@@ -23,22 +23,22 @@ export function ProductCarousel() {
       <div className="mb-10 flex flex-col items-start gap-5 rounded-[28px] border border-sage/30 p-7 md:flex-row md:items-center md:justify-between" style={{ background: "rgba(205,217,160,.07)" }}>
         <div>
           <div className="text-[clamp(20px,2.2vw,26px)] font-light leading-[1.2]">
-            Tu seguimiento con endocrino por{" "}
-            <span className="font-serif italic text-sage">65 €/mes + IVA</span>
+            Tu primera visita son solo{" "}
+            <span className="font-serif italic text-sage">25 €</span>
           </div>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
-            Endocrino asignado, videollamada mensual de seguimiento y chat en vivo
-            con tu médico. Eliges tu hora y empiezas hoy mismo desde tu panel privado.
+            Y se descuentan íntegramente de tu suscripción de 100 €/mes si decides
+            empezar. Todo tu seguimiento se gestiona desde la app interna de DoctorLife.
           </p>
         </div>
         <QuizTrigger className="shrink-0 whitespace-nowrap rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
-          Empezar ahora
+          Reservar primera visita
         </QuizTrigger>
       </div>
 
       <div className="mb-6 flex items-end justify-between">
         <div className="text-[clamp(22px,2.4vw,30px)] font-light">
-          Descubre todos nuestros <span className="font-serif italic">planes</span>
+          Una suscripción, <span className="font-serif italic">todo incluido</span>
         </div>
         <div className="flex gap-[10px]">
           <button type="button" onClick={prev} aria-label="Anterior" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
@@ -52,7 +52,7 @@ export function ProductCarousel() {
 
       <div
         ref={trackRef}
-        className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 [scroll-padding-left:20px] md:mx-0 md:px-0"
+        className="no-scrollbar -mx-5 -my-6 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-5 py-6 [scroll-padding-left:20px] md:-mx-6 md:px-6"
         style={{ WebkitOverflowScrolling: "touch", overscrollBehaviorX: "contain" }}
       >
           {products.map((p) => (
@@ -76,11 +76,13 @@ export function ProductCarousel() {
               <div className="mb-5 mt-[3px] text-sm leading-[1.4] text-paper/70">{p.subtitle}</div>
 
               {p.comingSoon ? (
-                <div className="text-[22px] font-light text-paper/65">Próximamente</div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[22px] font-light text-paper/60">Próximamente</span>
+                </div>
               ) : (
                 <div className="flex items-baseline gap-1">
-                  <span className="text-[28px] font-light text-sage">65&nbsp;€</span>
-                  <span className="text-sm text-paper/55">/mes + IVA</span>
+                  <span className="text-[28px] font-light text-sage">{p.price.split("/")[0]}</span>
+                  <span className="text-sm text-paper/55">/mes</span>
                 </div>
               )}
 
@@ -97,19 +99,23 @@ export function ProductCarousel() {
 
               {p.comingSoon ? (
                 <div
-                  className="mt-auto w-full cursor-not-allowed rounded-full py-[13px] text-center text-[14.5px] font-semibold text-paper/55"
-                  style={{ background: "rgba(246,240,230,.05)", border: "1px solid rgba(246,240,230,.15)" }}
+                  className="mt-auto w-full cursor-default rounded-full py-[13px] text-center text-[14.5px] font-semibold text-paper/55"
+                  style={{ background: "rgba(246,240,230,.05)", border: "1px dashed rgba(246,240,230,.22)" }}
                   aria-disabled="true"
                 >
-                  Disponible pronto
+                  Próximamente
                 </div>
               ) : (
                 <QuizTrigger
                   plan={p.name}
                   className="mt-auto w-full rounded-full py-[13px] text-center text-[14.5px] font-semibold"
-                  style={{ background: "#cdd9a0", color: "#221d17" }}
+                  style={
+                    p.featured
+                      ? { background: "#cdd9a0", color: "#221d17" }
+                      : { background: "rgba(246,240,230,.08)", color: "#f6f0e6", border: "1px solid rgba(246,240,230,.25)" }
+                  }
                 >
-                  Empezar con este plan
+                  Empezar ahora
                 </QuizTrigger>
               )}
             </div>
@@ -117,10 +123,10 @@ export function ProductCarousel() {
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
-        *El plan de seguimiento cuesta <span className="font-semibold text-paper/80">65&nbsp;€/mes + IVA</span> e incluye
-        endocrino asignado, videollamada mensual y chat en vivo con tu médico. El precio refleja únicamente el plan de
-        seguimiento: la medicación solo está disponible si es prescrita tras una consulta médica y requiere una
-        suscripción DoctorLife activa.
+        *La primera visita médica cuesta solo <span className="font-semibold text-paper/80">25&nbsp;€</span>. Si decides
+        continuar, la suscripción es de <span className="font-semibold text-paper/80">100&nbsp;€/mes</span> sin permanencia
+        e incluye chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. La medicación solo
+        está disponible si es prescrita tras una consulta médica y requiere una membresía DoctorLife activa.
       </p>
     </div>
   );

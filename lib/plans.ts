@@ -11,7 +11,7 @@
 export const IVA_RATE = 0.21
 
 /** Precio base mensual, sin IVA, en céntimos. */
-export const BASE_PRICE_CENTS = 6500
+export const BASE_PRICE_CENTS = 10000
 
 /** Pago único de la primera visita (céntimos). Se abona en la landing. */
 export const FIRST_VISIT_CENTS = 2500

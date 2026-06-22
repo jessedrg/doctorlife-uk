@@ -11,6 +11,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.5.0
         version: 1.5.0(@date-fns/tz@1.4.1)(@types/react@19.2.14)(date-fns@4.1.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@intercom/messenger-js-sdk':
+        specifier: ^0.0.19
+        version: 0.0.19
       '@vercel/analytics':
         specifier: 1.6.1
         version: 1.6.1(next@16.2.6(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
@@ -563,6 +566,9 @@ packages:
     peerDependenciesMeta:
       '@types/node':
         optional: true
+
+  '@intercom/messenger-js-sdk@0.0.19':
+    resolution: {integrity: sha512-ZpzJXLyo4VReQoOW/OOCYZqylhg2uwj0RGU6pcYazFDuk/S1Xsqi0GChLQMDviBQ/SuKB1Mv50uFsY7KzHljGw==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2923,6 +2929,8 @@ snapshots:
   '@inquirer/type@4.0.7(@types/node@24.10.4)':
     optionalDependencies:
       '@types/node': 24.10.4
+
+  '@intercom/messenger-js-sdk@0.0.19': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

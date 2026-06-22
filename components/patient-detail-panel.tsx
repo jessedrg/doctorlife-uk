@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Lock, Eye, Trash2, Plus } from "lucide-react"
+import { Lock, Eye, Trash2, Plus, ShieldCheck, FileCheck2, Clock3, X, Check, Pill } from "lucide-react"
 import {
   getPatientDetail,
   addDoctorNote,
@@ -9,6 +9,12 @@ import {
   type PatientDetail,
   type PatientNote,
 } from "@/app/actions/doctor"
+import {
+  getPatientVerifications,
+  requestVerification,
+  reviewVerification,
+  type VerificationRow,
+} from "@/app/actions/verification"
 
 const dateFmt = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short", year: "numeric" })
 
@@ -27,6 +33,11 @@ export function PatientDetailPanel({ patientId }: { patientId: string }) {
   const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
+  // Verificación adicional.
+  const [verifications, setVerifications] = useState<VerificationRow[]>([])
+  const [verifyMsg, setVerifyMsg] = useState("")
+  const [verifyError, setVerifyError] = useState<string | null>(null)
+
   // Carga perezosa al montar (el panel solo se monta al expandir).
   useState(() => {
     getPatientDetail(patientId)
@@ -36,7 +47,47 @@ export function PatientDetailPanel({ patientId }: { patientId: string }) {
       })
       .catch(() => setError("No se pudo cargar la información del paciente."))
       .finally(() => setLoading(false))
+    getPatientVerifications(patientId)
+      .then(setVerifications)
+      .catch(() => {})
   })
+
+  const reloadVerifications = () => {
+    getPatientVerifications(patientId).then(setVerifications).catch(() => {})
+  }
+
+  const submitVerifyRequest = () => {
+    setVerifyError(null)
+    const message = verifyMsg.trim()
+    if (!message) {
+      setVerifyError("Describe qué necesitas que envíe el paciente.")
+      return
+    }
+    startTransition(async () => {
+      const res = await requestVerification({ patientId, message })
+      if (!res.ok) {
+        setVerifyError(res.error)
+        return
+      }
+      setVerifyMsg("")
+      reloadVerifications()
+    })
+  }
+
+  const decide = (id: number, decision: "approved" | "rejected") => {
+    startTransition(async () => {
+      const note =
+        decision === "rejected"
+          ? window.prompt("Motivo del rechazo (opcional, lo verá el paciente):") ?? undefined
+          : undefined
+      const res = await reviewVerification({ id, decision, note })
+      if (res.ok) reloadVerifications()
+    })
+  }
+
+  const hasOpenVerification = verifications.some(
+    (v) => v.status === "pending" || v.status === "submitted",
+  )
 
   const submitNote = () => {
     setError(null)
@@ -184,6 +235,129 @@ export function PatientDetailPanel({ patientId }: { patientId: string }) {
         )}
       </section>
 
+      {/* Recetas anteriores */}
+      <section className="rounded-[16px] border border-ink/10 bg-warm p-4 lg:col-span-2">
+        <div className="flex items-center gap-2">
+          <Pill className="size-4 text-ink-mute" aria-hidden />
+          <h3 className="text-[13px] font-semibold uppercase tracking-[.05em] text-ink-mute">
+            Recetas anteriores
+          </h3>
+        </div>
+        {(detail?.prescriptions ?? []).length === 0 ? (
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
+            Aún no has emitido recetas a este paciente.
+          </p>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-2">
+            {(detail?.prescriptions ?? []).map((rx) => (
+              <li key={rx.id} className="rounded-[12px] border border-ink/10 bg-cream px-3.5 py-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-[14px] font-medium text-ink">{rx.medication}</p>
+                  <span className="text-[11.5px] text-ink-mute">
+                    {dateFmt.format(new Date(rx.issuedAt))}
+                  </span>
+                </div>
+                <p className="mt-0.5 text-[13px] text-ink-soft">Posología: {rx.dosage}</p>
+                {rx.instructions && (
+                  <p className="mt-0.5 text-[12.5px] leading-snug text-ink-soft">{rx.instructions}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* Verificación adicional */}
+      <section className="rounded-[16px] border border-ink/10 bg-warm p-4 lg:col-span-2">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-4 text-ink-mute" aria-hidden />
+          <h3 className="text-[13px] font-semibold uppercase tracking-[.05em] text-ink-mute">
+            Verificación adicional
+          </h3>
+        </div>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">
+          Si sospechas que los datos del paciente no son veraces, pídele una prueba (un vídeo, una
+          analítica, una foto…). Mientras esté pendiente, el paciente{" "}
+          <span className="font-medium">no podrá activar su suscripción</span> hasta que tú la apruebes.
+        </p>
+
+        {!hasOpenVerification && (
+          <div className="mt-3 flex flex-col gap-2">
+            <textarea
+              value={verifyMsg}
+              onChange={(e) => setVerifyMsg(e.target.value)}
+              rows={2}
+              placeholder="Ej.: Necesito un vídeo corto sosteniendo tu DNI junto a tu rostro, o una analítica reciente."
+              className="resize-none rounded-[12px] border border-ink/15 bg-cream px-3.5 py-2.5 text-[14px] text-ink outline-none transition-colors focus:border-amber"
+            />
+            <button
+              type="button"
+              onClick={submitVerifyRequest}
+              disabled={pending}
+              className="ml-auto flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+            >
+              <ShieldCheck className="size-4" aria-hidden />
+              Solicitar verificación
+            </button>
+            {verifyError && <p className="text-[13px] text-clay">{verifyError}</p>}
+          </div>
+        )}
+
+        {verifications.length > 0 && (
+          <ul className="mt-4 flex flex-col gap-2">
+            {verifications.map((v) => (
+              <li key={v.id} className="rounded-[12px] border border-ink/10 bg-cream px-3.5 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <VerificationBadge status={v.status} />
+                    <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink">{v.message}</p>
+                    {v.reviewNote && (
+                      <p className="mt-1 text-[12px] text-ink-soft">Nota: {v.reviewNote}</p>
+                    )}
+                    <p className="mt-1 text-[11px] text-ink-mute">
+                      {dateFmt.format(new Date(v.createdAt))}
+                    </p>
+                  </div>
+                  {v.blobPathname && (
+                    <a
+                      href={`/api/verification/${v.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex shrink-0 items-center gap-1.5 rounded-full border border-ink/15 px-3 py-1.5 text-[12.5px] font-medium text-ink transition-colors hover:bg-ink/5"
+                    >
+                      <FileCheck2 className="size-3.5" aria-hidden />
+                      Ver archivo
+                    </a>
+                  )}
+                </div>
+                {v.status === "submitted" && (
+                  <div className="mt-2.5 flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => decide(v.id, "approved")}
+                      disabled={pending}
+                      className="flex items-center gap-1.5 rounded-full bg-olive px-3.5 py-1.5 text-[12.5px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+                    >
+                      <Check className="size-3.5" aria-hidden />
+                      Aprobar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => decide(v.id, "rejected")}
+                      disabled={pending}
+                      className="flex items-center gap-1.5 rounded-full border border-clay/30 px-3.5 py-1.5 text-[12.5px] font-medium text-clay transition-colors hover:bg-clay/10 disabled:opacity-60"
+                    >
+                      <X className="size-3.5" aria-hidden />
+                      Rechazar
+                    </button>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       {/* Notas del médico */}
       <section className="rounded-[16px] border border-ink/10 bg-warm p-4 lg:col-span-2">
         <h3 className="text-[13px] font-semibold uppercase tracking-[.05em] text-ink-mute">
@@ -312,4 +486,21 @@ function sexLabel(sex: string | null) {
   if (sex === "male") return "Hombre"
   if (sex === "other") return "No especificado"
   return "—"
+}
+
+function VerificationBadge({ status }: { status: string }) {
+  const meta: Record<string, { label: string; cls: string; icon: typeof Clock3 }> = {
+    pending: { label: "Esperando al paciente", cls: "bg-amber/15 text-amber", icon: Clock3 },
+    submitted: { label: "Pendiente de revisar", cls: "bg-ink/[.08] text-ink-soft", icon: FileCheck2 },
+    approved: { label: "Aprobada", cls: "bg-olive/15 text-olive", icon: Check },
+    rejected: { label: "Rechazada", cls: "bg-clay/15 text-clay", icon: X },
+  }
+  const m = meta[status] ?? meta.pending
+  const Icon = m.icon
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-medium ${m.cls}`}>
+      <Icon className="size-3" aria-hidden />
+      {m.label}
+    </span>
+  )
 }

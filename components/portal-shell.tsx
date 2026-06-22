@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { NotificationsBell } from "@/components/notifications-bell"
 import {
   Home,
   CalendarDays,
@@ -17,6 +18,7 @@ import {
   Stethoscope,
   Inbox,
   LineChart,
+  ShieldCheck,
   Menu,
   X,
 } from "lucide-react"
@@ -38,6 +40,7 @@ export type NavIcon =
   | "suscripciones"
   | "leads"
   | "progreso"
+  | "verificacion"
 
 type NavItem = { href: string; label: string; icon: NavIcon }
 
@@ -56,6 +59,7 @@ const ICONS: Record<NavIcon, typeof Home> = {
   suscripciones: CreditCard,
   leads: Inbox,
   progreso: LineChart,
+  verificacion: ShieldCheck,
 }
 
 export function PortalShell({
@@ -63,6 +67,7 @@ export function PortalShell({
   nav,
   badge,
   homeHref,
+  showNotifications = false,
   children,
 }: {
   user: { name: string; email: string }
@@ -70,6 +75,8 @@ export function PortalShell({
   badge: string
   /** Destino del logo: el panel del usuario, NO la landing. */
   homeHref: string
+  /** Muestra la campana de notificaciones (panel del médico). */
+  showNotifications?: boolean
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(false)
@@ -110,9 +117,12 @@ export function PortalShell({
         <Link href={homeHref} className="flex items-center gap-2.5 px-2">
           <BrandLogo markSize={24} textSize={17} />
         </Link>
-        <span className="mt-3 ml-2 w-fit rounded-full bg-sage/30 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.08em] text-ink">
-          {badge}
-        </span>
+        <div className="mt-3 ml-2 flex items-center justify-between gap-2 pr-1">
+          <span className="w-fit rounded-full bg-sage/30 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.08em] text-ink">
+            {badge}
+          </span>
+          {showNotifications && <NotificationsBell />}
+        </div>
 
         <div className="mt-6 flex-1 overflow-y-auto">{navLinks()}</div>
 
@@ -133,14 +143,17 @@ export function PortalShell({
         <Link href={homeHref} className="flex items-center gap-2">
           <BrandLogo markSize={22} textSize={16} />
         </Link>
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Abrir menú"
-          className="flex size-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-warm"
-        >
-          <Menu className="size-5" aria-hidden />
-        </button>
+        <div className="flex items-center gap-1">
+          {showNotifications && <NotificationsBell />}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Abrir menú"
+            className="flex size-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-warm"
+          >
+            <Menu className="size-5" aria-hidden />
+          </button>
+        </div>
       </header>
 
       {/* Drawer — móvil */}
