@@ -14,6 +14,23 @@ export function getBaseUrl(): string {
 }
 
 /**
+ * Base URL CANÓNICA y estable, pensada para enlaces que viven fuera de la
+ * sesión: correos, PDFs, metadatos, etc. Un email puede abrirse días después en
+ * otro dispositivo, así que NUNCA debe apuntar a un host efímero (V0_RUNTIME_URL
+ * o una URL de preview de Vercel), que dejaría de existir. Por eso esta cascada
+ * prioriza un dominio fijo y explícito y omite los hosts temporales.
+ *
+ * Define NEXT_PUBLIC_APP_URL (p.ej. https://doctorlife.io) para forzar el dominio.
+ */
+export function getCanonicalBaseUrl(): string {
+  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  // Último recurso (desarrollo local): reutiliza la cascada general.
+  return getBaseUrl()
+}
+
+/**
  * Base URL del dominio donde está navegando el usuario AHORA (dev, preview o
  * prod), leído de las cabeceras de la petición. Es lo que se debe usar para los
  * `success_url`/`return_url` de Stripe: así el usuario vuelve al mismo dominio

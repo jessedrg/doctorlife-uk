@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { Search, MessageCircle, FileText, Users } from "lucide-react"
+import { Search, MessageCircle, FileText, Users, ChevronDown } from "lucide-react"
 import { UserAvatar } from "@/components/user-avatar"
 import { EmptyState } from "@/components/empty-state"
+import { PatientDetailPanel } from "@/components/patient-detail-panel"
 import type { DoctorPatient } from "@/app/actions/doctor"
 
 const dateFmt = new Intl.DateTimeFormat("es-ES", { dateStyle: "medium" })
@@ -26,6 +27,7 @@ type Filter = "all" | "active" | "inactive"
 export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) {
   const [query, setQuery] = useState("")
   const [filter, setFilter] = useState<Filter>("all")
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -94,10 +96,15 @@ export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) 
         <ul className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((p) => {
             const badge = statusBadge(p.subscriptionStatus)
+            const isExpanded = expandedId === p.id
             return (
               <li
                 key={p.id}
-                className="flex flex-col gap-4 rounded-[20px] border border-ink/10 bg-cream p-5"
+                className={`flex flex-col gap-4 rounded-[20px] border bg-cream p-5 ${
+                  isExpanded
+                    ? "border-ink/20 sm:col-span-2 xl:col-span-3"
+                    : "border-ink/10"
+                }`}
               >
                 <div className="flex items-start gap-3">
                   <UserAvatar name={p.name} image={p.image} size={48} />
@@ -149,6 +156,21 @@ export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) 
                     Recetar
                   </Link>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => setExpandedId(isExpanded ? null : p.id)}
+                  aria-expanded={isExpanded}
+                  className="flex items-center justify-center gap-1.5 rounded-full border border-ink/15 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-ink/5"
+                >
+                  <ChevronDown
+                    className={`size-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                    aria-hidden
+                  />
+                  {isExpanded ? "Ocultar ficha" : "Ver ficha del paciente"}
+                </button>
+
+                {isExpanded ? <PatientDetailPanel patientId={p.id} /> : null}
               </li>
             )
           })}

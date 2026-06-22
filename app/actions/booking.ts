@@ -6,10 +6,15 @@ import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
-import { maybeCreateMeeting } from "@/lib/google/calendar"
-import { and, asc, desc, eq, gte, inArray, lte, ne } from "drizzle-orm"
+import { scheduling } from "@/lib/scheduling"
+import { maybeCreateMeeting, maybeCancelMeeting } from "@/lib/google/calendar"
+import {
+  sendAppointmentCancelledEmail,
+  sendRescheduleConfirmedEmail,
+} from "@/lib/email"
+import { and, asc, desc, eq, gte, inArray, lt, lte, ne } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
-import type { PooledSlot } from "@/lib/scheduling/types"
+import type { PooledSlot, Slot } from "@/lib/scheduling/types"
 
 const SUB_ACTIVE_STATES = ["active", "trialing", "past_due"]
 
@@ -261,13 +266,17 @@ export async function finalizeAppointment(
     try {
       const pi = await stripe.paymentIntents.retrieve(paymentIntentId)
       const amount = appt.amountCents - appt.applicationFeeCents
-      await stripe.transfers.create({
+      const transfer = await stripe.transfers.create({
         amount,
         currency: appt.currency,
         destination: doc.stripeAccountId,
         source_transaction: pi.latest_charge as string,
         metadata: { appointmentId: String(appointmentId) },
       })
+      await db
+        .update(appointments)
+        .set({ stripeTransferId: transfer.id, updatedAt: new Date() })
+        .where(eq(appointments.id, appointmentId))
     } catch (e) {
       console.log("[v0] transfer to doctor failed:", e instanceof Error ? e.message : e)
     }
@@ -310,6 +319,8 @@ export async function getMyAppointments() {
       status: appointments.status,
       amountCents: appointments.amountCents,
       meetingUrl: appointments.meetingUrl,
+      cancelledBy: appointments.cancelledBy,
+      rescheduledToId: appointments.rescheduledToId,
       doctorName: doctorProfiles.fullName,
     })
     .from(appointments)
@@ -385,4 +396,306 @@ export async function getNextAppointment() {
     .orderBy(asc(appointments.startsAt))
     .limit(1)
   return next ?? null
+}
+
+/* ------------------------------------------------------------------ */
+/* Cancelación (médico) y reprogramación (paciente)                    */
+/* ------------------------------------------------------------------ */
+
+/** Una cita es "primera consulta" (de pago) si tuvo importe; si no, es seguimiento. */
+function isFirstConsult(amountCents: number): boolean {
+  return amountCents > 0
+}
+
+/**
+ * El médico cancela una de sus citas. La cita queda 'cancelled' y el paciente
+ * podrá reprogramar. No se mueve dinero todavía: si reprograma con el mismo
+ * médico, la transferencia sigue siendo válida; solo se ajusta si cambia de
+ * médico al reprogramar una primera consulta.
+ */
+export async function cancelAppointmentAsDoctor(
+  appointmentId: number,
+): Promise<{ ok: true } | { error: string }> {
+  const me = await requireRole("doctor")
+
+  const [appt] = await db.select().from(appointments).where(eq(appointments.id, appointmentId))
+  if (!appt || appt.doctorId !== me.id) return { error: "Cita no encontrada." }
+  if (appt.status === "cancelled") return { error: "La cita ya estaba cancelada." }
+
+  await db
+    .update(appointments)
+    .set({ status: "cancelled", cancelledBy: "doctor", updatedAt: new Date() })
+    .where(eq(appointments.id, appointmentId))
+
+  // Cancela el evento de Google Meet (best-effort).
+  await maybeCancelMeeting(appt.doctorId, appt.googleEventId)
+
+  // Avisa al paciente para que reprograme.
+  const [pat] = await db
+    .select({ email: user.email, name: user.name })
+    .from(user)
+    .where(eq(user.id, appt.patientId))
+  const [doc] = await db
+    .select({ fullName: doctorProfiles.fullName })
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, appt.doctorId))
+  if (pat?.email) {
+    try {
+      await sendAppointmentCancelledEmail({
+        to: pat.email,
+        name: pat.name ?? "",
+        doctorName: doc?.fullName ?? null,
+        startsAt: new Date(appt.startsAt),
+        rescheduleId: appt.id,
+        isFollowup: !isFirstConsult(appt.amountCents),
+      })
+    } catch (e) {
+      console.log("[v0] cancel email failed:", e instanceof Error ? e.message : e)
+    }
+  }
+
+  revalidatePath("/medico/agenda")
+  revalidatePath("/portal/citas")
+  revalidatePath("/portal")
+  return { ok: true }
+}
+
+/** Huecos libres de UN médico concreto (para reprogramar seguimientos). */
+async function getSingleDoctorSlots(doctorId: string, days = 21): Promise<PooledSlot[]> {
+  const from = new Date()
+  const to = new Date(from.getTime() + days * 24 * 60 * 60_000)
+
+  const [doc] = await db
+    .select({ name: doctorProfiles.fullName })
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, doctorId))
+  const doctorName = doc?.name ?? "tu médico"
+
+  // Instantes ya ocupados por ese médico (citas activas).
+  const booked = await db
+    .select({ startsAt: appointments.startsAt })
+    .from(appointments)
+    .where(
+      and(
+        eq(appointments.doctorId, doctorId),
+        ne(appointments.status, "cancelled"),
+        gte(appointments.startsAt, from),
+        lt(appointments.startsAt, to),
+      ),
+    )
+  const taken = new Set(booked.map((b) => new Date(b.startsAt).toISOString()))
+
+  const slots: Slot[] = await scheduling.getAvailableSlots(doctorId, { from, to }, taken)
+  return slots.map((s) => ({ ...s, doctorId, doctorName }))
+}
+
+export type RescheduleOptions = {
+  appointmentId: number
+  kind: "first" | "followup"
+  doctorName: string | null
+  slots: PooledSlot[]
+}
+
+/**
+ * Opciones de reprogramación para el paciente:
+ * - Primera consulta → huecos COMBINADOS de todos los médicos (puede reasignarse).
+ * - Seguimiento → solo huecos del médico ya asignado.
+ */
+export async function getRescheduleOptions(
+  appointmentId: number,
+): Promise<RescheduleOptions | { error: string }> {
+  const me = await requireRole("patient")
+
+  const [appt] = await db.select().from(appointments).where(eq(appointments.id, appointmentId))
+  if (!appt || appt.patientId !== me.id) return { error: "Cita no encontrada." }
+  if (appt.status !== "cancelled") return { error: "Esta cita no necesita reprogramarse." }
+  if (appt.rescheduledToId) return { error: "Esta cita ya se reprogramó." }
+
+  const [doc] = await db
+    .select({ name: doctorProfiles.fullName })
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, appt.doctorId))
+
+  if (isFirstConsult(appt.amountCents)) {
+    return {
+      appointmentId,
+      kind: "first",
+      doctorName: doc?.name ?? null,
+      slots: await getPooledAvailability(21),
+    }
+  }
+  return {
+    appointmentId,
+    kind: "followup",
+    doctorName: doc?.name ?? null,
+    slots: await getSingleDoctorSlots(appt.doctorId, 21),
+  }
+}
+
+/**
+ * El paciente reprograma una cita cancelada por el médico.
+ * - Seguimiento: se mantiene el mismo médico.
+ * - Primera consulta: se reasigna por el pool; si cambia de médico se revierte
+ *   la transferencia original y se transfiere al nuevo (sin cobrar de nuevo).
+ */
+export async function rescheduleAppointment(
+  appointmentId: number,
+  startUtcISO: string,
+): Promise<{ ok: true; newId: number } | { error: string }> {
+  const me = await requireRole("patient")
+
+  const [old] = await db.select().from(appointments).where(eq(appointments.id, appointmentId))
+  if (!old || old.patientId !== me.id) return { error: "Cita no encontrada." }
+  if (old.status !== "cancelled") return { error: "Esta cita no necesita reprogramarse." }
+  if (old.rescheduledToId) return { error: "Esta cita ya se reprogramó." }
+
+  const start = new Date(startUtcISO)
+  if (Number.isNaN(start.getTime()) || start.getTime() < Date.now()) {
+    return { error: "Ese horario ya no es válido." }
+  }
+
+  const followup = !isFirstConsult(old.amountCents)
+
+  // Determina el médico y valida que el hueco siga libre.
+  let doctorId: string
+  let endUtc: Date
+  if (followup) {
+    // Mismo médico asignado.
+    const slots = await getSingleDoctorSlots(old.doctorId, 30)
+    const slot = slots.find((s) => s.startUtc === start.toISOString())
+    if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
+    doctorId = old.doctorId
+    endUtc = new Date(slot.endUtc)
+  } else {
+    // Pool: el sistema asigna un médico disponible para ese hueco.
+    const slots = await getPooledSlots({
+      from: new Date(),
+      to: new Date(Date.now() + 30 * 24 * 60 * 60_000),
+    })
+    const slot = slots.find((s) => s.startUtc === start.toISOString())
+    if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
+    doctorId = slot.doctorId
+    endUtc = new Date(slot.endUtc)
+  }
+
+  if (!(await isSlotFree(doctorId, start))) {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  // Crea la nueva cita confirmada (sin cobrar de nuevo; hereda el importe).
+  let newId: number
+  try {
+    const [row] = await db
+      .insert(appointments)
+      .values({
+        patientId: old.patientId,
+        doctorId,
+        startsAt: start,
+        endsAt: endUtc,
+        status: "confirmed",
+        amountCents: old.amountCents,
+        applicationFeeCents: old.applicationFeeCents,
+        currency: old.currency,
+        stripeSessionId: old.stripeSessionId,
+        stripePaymentIntentId: old.stripePaymentIntentId,
+      })
+      .returning({ id: appointments.id })
+    newId = row.id
+  } catch {
+    return { error: "Ese horario acaba de ocuparse. Elige otro." }
+  }
+
+  // Enlaza la cita antigua con la nueva (no reprogramable dos veces).
+  await db
+    .update(appointments)
+    .set({ rescheduledToId: newId, updatedAt: new Date() })
+    .where(eq(appointments.id, appointmentId))
+
+  // Movimiento de dinero solo si es primera consulta y cambia de médico.
+  let newTransferId: string | null = old.stripeTransferId
+  if (!followup && doctorId !== old.doctorId) {
+    // Revierte la transferencia al médico original (si existía).
+    if (old.stripeTransferId) {
+      try {
+        await stripe.transfers.createReversal(old.stripeTransferId)
+      } catch (e) {
+        console.log("[v0] reversal failed:", e instanceof Error ? e.message : e)
+      }
+    }
+    // Transfiere al nuevo médico usando el cargo original.
+    const [newDoc] = await db
+      .select({
+        stripeAccountId: doctorProfiles.stripeAccountId,
+        chargesEnabled: doctorProfiles.chargesEnabled,
+      })
+      .from(doctorProfiles)
+      .where(eq(doctorProfiles.userId, doctorId))
+    if (newDoc?.stripeAccountId && newDoc.chargesEnabled && old.stripePaymentIntentId) {
+      try {
+        const pi = await stripe.paymentIntents.retrieve(old.stripePaymentIntentId)
+        const transfer = await stripe.transfers.create({
+          amount: old.amountCents - old.applicationFeeCents,
+          currency: old.currency,
+          destination: newDoc.stripeAccountId,
+          source_transaction: pi.latest_charge as string,
+          metadata: { appointmentId: String(newId), rescheduledFrom: String(appointmentId) },
+        })
+        newTransferId = transfer.id
+      } catch (e) {
+        console.log("[v0] re-transfer failed:", e instanceof Error ? e.message : e)
+        newTransferId = null
+      }
+    } else {
+      newTransferId = null
+    }
+    await db
+      .update(appointments)
+      .set({ stripeTransferId: newTransferId, updatedAt: new Date() })
+      .where(eq(appointments.id, newId))
+  }
+
+  // Crea el enlace de la nueva videollamada.
+  const [doc] = await db
+    .select({ email: user.email, fullName: doctorProfiles.fullName })
+    .from(doctorProfiles)
+    .innerJoin(user, eq(user.id, doctorProfiles.userId))
+    .where(eq(doctorProfiles.userId, doctorId))
+  const [pat] = await db
+    .select({ email: user.email, name: user.name })
+    .from(user)
+    .where(eq(user.id, old.patientId))
+  const meeting = await maybeCreateMeeting({
+    doctorId,
+    doctorEmail: doc?.email ?? "",
+    patientEmail: pat?.email ?? "",
+    summary: followup ? "Seguimiento mensual · DoctorLife" : "Primera consulta · DoctorLife",
+    startUtc: start,
+    endUtc,
+  })
+  if (meeting.meetingUrl || meeting.googleEventId) {
+    await db
+      .update(appointments)
+      .set({ meetingUrl: meeting.meetingUrl, googleEventId: meeting.googleEventId, updatedAt: new Date() })
+      .where(eq(appointments.id, newId))
+  }
+
+  // Confirmación al paciente.
+  if (pat?.email) {
+    try {
+      await sendRescheduleConfirmedEmail({
+        to: pat.email,
+        name: pat.name ?? "",
+        doctorName: doc?.fullName ?? null,
+        startsAt: start,
+        reassigned: !followup && doctorId !== old.doctorId,
+      })
+    } catch (e) {
+      console.log("[v0] reschedule email failed:", e instanceof Error ? e.message : e)
+    }
+  }
+
+  revalidatePath("/portal/citas")
+  revalidatePath("/portal")
+  revalidatePath("/medico/agenda")
+  return { ok: true, newId }
 }

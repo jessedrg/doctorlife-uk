@@ -6,11 +6,15 @@ import {
   user as userTable,
   appointments,
   subscriptions,
+  leads,
+  progressEntries,
+  doctorNotes,
 } from "@/lib/db/schema"
 import { stripe } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getSessionUser } from "@/lib/session"
 import { and, desc, eq, sql } from "drizzle-orm"
+import { CONTRAINDICATIONS, COMORBIDITIES } from "@/lib/eligibility"
 import { put } from "@vercel/blob"
 import { revalidatePath } from "next/cache"
 
@@ -358,4 +362,193 @@ export async function refreshStripeStatus() {
   revalidatePath("/medico")
   revalidatePath("/medico/pagos")
   return updated
+}
+
+/* ───────────────────────────────────────────────────────────
+   Ficha de paciente: info clínica (lead), progreso y notas.
+   ─────────────────────────────────────────────────────────── */
+
+/** Verifica que el médico tiene (o tuvo) una cita con este paciente. */
+async function assertDoctorOwnsPatient(doctorId: string, patientId: string) {
+  const [row] = await db
+    .select({ id: appointments.id })
+    .from(appointments)
+    .where(
+      and(
+        eq(appointments.doctorId, doctorId),
+        eq(appointments.patientId, patientId),
+        sql`${appointments.status} <> 'pending_payment'`,
+      ),
+    )
+    .limit(1)
+  if (!row) throw new Error("Unauthorized")
+}
+
+function labelsFor(ids: string[], source: { id: string; label: string }[]) {
+  return ids
+    .map((id) => source.find((s) => s.id === id)?.label)
+    .filter((x): x is string => Boolean(x))
+}
+
+function parseIds(json: string | null): string[] {
+  if (!json) return []
+  try {
+    const v = JSON.parse(json)
+    return Array.isArray(v) ? v.map(String) : []
+  } catch {
+    return []
+  }
+}
+
+export type PatientClinical = {
+  age: number | null
+  sex: string | null
+  heightCm: number | null
+  weightKg: number | null
+  bmi: string | null
+  goal: string | null
+  glp1Experience: string | null
+  timeline: string | null
+  eligibility: string | null
+  eligibilityReasons: string[]
+  comorbidities: string[]
+  contraindications: string[]
+}
+
+export type PatientProgressRow = {
+  id: number
+  weightKg: number | null
+  waistCm: number | null
+  dose: string | null
+  sideEffects: string | null
+  note: string | null
+  createdAt: Date
+}
+
+export type PatientNote = {
+  id: number
+  body: string
+  visibility: string
+  createdAt: Date
+}
+
+export type PatientDetail = {
+  clinical: PatientClinical | null
+  progress: PatientProgressRow[]
+  notes: PatientNote[]
+}
+
+/** Detalle completo de un paciente para la tarjeta expandible del médico. */
+export async function getPatientDetail(patientId: string): Promise<PatientDetail> {
+  const me = await requireDoctor()
+  await assertDoctorOwnsPatient(me.id, patientId)
+
+  // Info clínica: lead más reciente emparejado por email del paciente.
+  const [u] = await db
+    .select({ email: userTable.email })
+    .from(userTable)
+    .where(eq(userTable.id, patientId))
+    .limit(1)
+
+  let clinical: PatientClinical | null = null
+  if (u?.email) {
+    const [lead] = await db
+      .select()
+      .from(leads)
+      .where(eq(leads.email, u.email))
+      .orderBy(desc(leads.createdAt))
+      .limit(1)
+    if (lead) {
+      clinical = {
+        age: lead.age ?? null,
+        sex: lead.sex ?? null,
+        heightCm: lead.heightCm ?? null,
+        weightKg: lead.weightKg ?? null,
+        bmi: lead.bmi != null ? String(lead.bmi) : null,
+        goal: lead.goal ?? null,
+        glp1Experience: lead.glp1Experience ?? null,
+        timeline: lead.timeline ?? null,
+        eligibility: lead.eligibility ?? null,
+        eligibilityReasons: parseIds(lead.eligibilityReason ?? null),
+        comorbidities: labelsFor(parseIds(lead.comorbidities ?? null), COMORBIDITIES),
+        contraindications: labelsFor(parseIds(lead.contraindications ?? null), CONTRAINDICATIONS),
+      }
+    }
+  }
+
+  const progress = await db
+    .select()
+    .from(progressEntries)
+    .where(eq(progressEntries.patientId, patientId))
+    .orderBy(desc(progressEntries.createdAt))
+    .limit(40)
+
+  const notes = await db
+    .select()
+    .from(doctorNotes)
+    .where(eq(doctorNotes.patientId, patientId))
+    .orderBy(desc(doctorNotes.createdAt))
+    .limit(50)
+
+  return {
+    clinical,
+    progress: progress
+      .map((p) => ({
+        id: p.id,
+        weightKg: p.weightKg != null ? Number(p.weightKg) : null,
+        waistCm: p.waistCm != null ? Number(p.waistCm) : null,
+        dose: p.dose,
+        sideEffects: p.sideEffects,
+        note: p.note,
+        createdAt: new Date(p.createdAt),
+      }))
+      .reverse(),
+    notes: notes.map((n) => ({
+      id: n.id,
+      body: n.body,
+      visibility: n.visibility,
+      createdAt: new Date(n.createdAt),
+    })),
+  }
+}
+
+export async function addDoctorNote(input: {
+  patientId: string
+  body: string
+  visibility: "internal" | "shared"
+}): Promise<{ ok: true } | { ok: false; error: string }> {
+  const me = await requireDoctor()
+  const body = input.body.trim()
+  if (!body) return { ok: false, error: "La nota no puede estar vacía." }
+  try {
+    await assertDoctorOwnsPatient(me.id, input.patientId)
+    await db.insert(doctorNotes).values({
+      patientId: input.patientId,
+      doctorId: me.id,
+      body,
+      visibility: input.visibility === "shared" ? "shared" : "internal",
+    })
+    revalidatePath("/medico/pacientes")
+    return { ok: true }
+  } catch (err) {
+    console.log("[v0] addDoctorNote error:", err instanceof Error ? err.message : err)
+    return { ok: false, error: "No hemos podido guardar la nota." }
+  }
+}
+
+export async function deleteDoctorNote(
+  noteId: number,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const me = await requireDoctor()
+  try {
+    // Solo el médico autor puede borrar su nota.
+    await db
+      .delete(doctorNotes)
+      .where(and(eq(doctorNotes.id, noteId), eq(doctorNotes.doctorId, me.id)))
+    revalidatePath("/medico/pacientes")
+    return { ok: true }
+  } catch (err) {
+    console.log("[v0] deleteDoctorNote error:", err instanceof Error ? err.message : err)
+    return { ok: false, error: "No hemos podido eliminar la nota." }
+  }
 }

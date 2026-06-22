@@ -24,9 +24,9 @@ function formatWhen(startsAt: Date | string) {
 export default async function CitasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ session_id?: string; reprogramada?: string }>
 }) {
-  const { session_id } = await searchParams
+  const { session_id, reprogramada } = await searchParams
   if (session_id) {
     // Confirma la cita si el pago se completó (respaldo del webhook).
     try {
@@ -49,6 +49,12 @@ export default async function CitasPage({
           Reservar
         </Link>
       </header>
+
+      {reprogramada ? (
+        <div className="mb-5 rounded-2xl border border-sage/30 bg-sage/10 p-4 text-sm text-ink">
+          Tu cita se ha reprogramado correctamente. Encontrarás el enlace de la videollamada aquí abajo.
+        </div>
+      ) : null}
 
       {appointments.length === 0 ? (
         <EmptyState
@@ -77,6 +83,14 @@ export default async function CitasPage({
                   <span className={`rounded-full px-3 py-1 text-xs font-medium ${status.cls}`}>
                     {status.label}
                   </span>
+                  {a.status === "cancelled" && a.cancelledBy === "doctor" && !a.rescheduledToId ? (
+                    <Link
+                      href={`/portal/reprogramar/${a.id}`}
+                      className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper transition-opacity hover:opacity-90"
+                    >
+                      Reprogramar
+                    </Link>
+                  ) : null}
                   {a.status === "confirmed" && a.meetingUrl ? (
                     <a
                       href={a.meetingUrl}

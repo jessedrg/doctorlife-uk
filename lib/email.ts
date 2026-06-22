@@ -1,5 +1,5 @@
 import { Resend } from "resend"
-import { getBaseUrl } from "@/lib/base-url"
+import { getCanonicalBaseUrl } from "@/lib/base-url"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -78,7 +78,7 @@ async function send(to: string, subject: string, html: string) {
 
 /** Credenciales de acceso tras el pago de la primera visita (25 €). */
 export async function sendCredentialsEmail(opts: { to: string; name: string; tempPassword: string }) {
-  const loginUrl = `${getBaseUrl()}/sign-in`
+  const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
     ${p(`Hola ${firstName}, gracias por reservar tu primera visita. Hemos creado tu cuenta para acceder a tu panel privado, donde tendrás tu cita, el chat con tu médico y tus recetas.`)}
@@ -120,12 +120,80 @@ export async function sendBookingConfirmationEmail(opts: {
     ${p(`Hola ${firstName}, hemos recibido tu pago correctamente y tu primera visita está reservada.`)}
     ${dataBox(rows)}
     ${p("Encontrarás el enlace de la videollamada y tu chat con el médico en tu panel. Tras la consulta, si tu médico te receta tratamiento, podrás activarlo desde ahí.")}
-    <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal`, "Ir a mi panel")}</div>
+    <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal`, "Ir a mi panel")}</div>
   `
   return send(
     opts.to,
     "Confirmación de tu primera visita — DoctorLife",
     shell({ title: "Pago confirmado", body, preheader: "Tu primera visita está reservada." }),
+  )
+}
+
+/** Aviso al paciente de que su médico canceló la cita y debe reprogramar. */
+export async function sendAppointmentCancelledEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  startsAt: Date
+  rescheduleId: number
+  isFollowup: boolean
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const when = new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(opts.startsAt)
+  const url = `${getCanonicalBaseUrl()}/portal/reprogramar/${opts.rescheduleId}`
+  const note = opts.isFollowup
+    ? "Podrás elegir una nueva hora con tu mismo médico."
+    : "Podrás elegir una nueva hora; te asignaremos un médico disponible para ese horario."
+  const body = `
+    ${p(`Hola ${firstName}, ${doc} ha tenido que cancelar tu cita del <strong>${when}</strong>. Lamentamos las molestias.`)}
+    ${p(note)}
+    <div style="margin:22px 0 4px;">${button(url, "Elegir nueva hora")}</div>
+  `
+  return send(
+    opts.to,
+    "Tu cita se ha cancelado — reprograma fácilmente",
+    shell({ title: "Tu cita se canceló", body, preheader: "Elige una nueva hora para tu consulta." }),
+  )
+}
+
+/** Confirmación al paciente de que su cita reprogramada está lista. */
+export async function sendRescheduleConfirmedEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  startsAt: Date
+  reassigned: boolean
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const when = new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(opts.startsAt)
+  const rows = [{ label: "Nueva cita", value: when }]
+  if (opts.doctorName) rows.push({ label: "Médico", value: opts.doctorName })
+  const body = `
+    ${p(`Hola ${firstName}, tu cita ha quedado reprogramada correctamente.`)}
+    ${opts.reassigned ? p("Para ese horario te hemos asignado un médico disponible.") : ""}
+    ${dataBox(rows)}
+    ${p("Encontrarás el enlace de la videollamada en tu panel.")}
+    <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/citas`, "Ver mis citas")}</div>
+  `
+  return send(
+    opts.to,
+    "Tu cita reprogramada está confirmada — DoctorLife",
+    shell({ title: "Cita reprogramada", body, preheader: "Tu nueva cita está confirmada." }),
   )
 }
 
@@ -142,11 +210,11 @@ export async function sendPrescriptionReadyEmail(opts: {
     ? `
       ${p(`Hola ${firstName}, ${doc} ha preparado tu tratamiento. Para ver los detalles y descargar tu receta en PDF, activa tu suscripción mensual.`)}
       ${p("Incluye endocrino asignado, videollamada mensual y chat en vivo con tu médico. Puedes cancelar cuando quieras.")}
-      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Desbloquear mi receta")}</div>
+      <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/recetas`, "Desbloquear mi receta")}</div>
     `
     : `
       ${p(`Hola ${firstName}, ${doc} ha emitido una nueva receta. Ya está disponible en tu panel para descargar en PDF.`)}
-      <div style="margin:22px 0 4px;">${button(`${getBaseUrl()}/portal/recetas`, "Ver mi receta")}</div>
+      <div style="margin:22px 0 4px;">${button(`${getCanonicalBaseUrl()}/portal/recetas`, "Ver mi receta")}</div>
     `
   return send(
     opts.to,
@@ -161,7 +229,7 @@ export async function sendPrescriptionReadyEmail(opts: {
 
 /** Credenciales de acceso para un médico creado por el admin. */
 export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; tempPassword: string }) {
-  const loginUrl = `${getBaseUrl()}/sign-in`
+  const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
     ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes, el chat y las recetas.`)}

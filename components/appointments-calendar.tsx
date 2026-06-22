@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   ChevronLeft,
   ChevronRight,
@@ -10,7 +11,10 @@ import {
   CheckCircle2,
   XCircle,
   CircleDot,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react"
+import { cancelAppointmentAsDoctor } from "@/app/actions/booking"
 
 export type DoctorAppointment = {
   id: number
@@ -382,6 +386,11 @@ function MiniEvent({ it, onSelect }: { it: Item; onSelect: (a: Item) => void }) 
 
 /* ─────────────────────── Detail sheet ─────────────────────── */
 function AppointmentSheet({ appt, onClose }: { appt: Item | DoctorAppointment; onClose: () => void }) {
+  const router = useRouter()
+  const [confirming, setConfirming] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   const start = new Date(appt.startsAt)
   const end = new Date(appt.endsAt)
   const m = statusMeta(appt.status)
@@ -393,6 +402,27 @@ function AppointmentSheet({ appt, onClose }: { appt: Item | DoctorAppointment; o
     timeZone: TZ,
   }).format(start)
   const isUpcoming = start.getTime() > Date.now() - 30 * 60_000
+  const canCancel = isUpcoming && appt.status !== "cancelled"
+  // Primera consulta (de pago) → al reprogramar puede reasignarse a otro médico.
+  const isFirstConsult = appt.amountCents > 0
+
+  async function doCancel() {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await cancelAppointmentAsDoctor(appt.id)
+      if ("error" in res) {
+        setError(res.error)
+        setLoading(false)
+        return
+      }
+      onClose()
+      router.refresh()
+    } catch {
+      setError("No se pudo cancelar. Inténtalo de nuevo.")
+      setLoading(false)
+    }
+  }
 
   return (
     <div
@@ -406,49 +436,118 @@ function AppointmentSheet({ appt, onClose }: { appt: Item | DoctorAppointment; o
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink/15 sm:hidden" />
-        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[12.5px] font-medium ${m.chip}`}>
-          <Icon className="size-3.5" aria-hidden />
-          {m.label}
-        </span>
-        <h3 className="mt-3 text-[22px] font-light tracking-[-.01em] text-ink">{appt.patientName}</h3>
 
-        <div className="mt-4 flex flex-col gap-2.5">
-          <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
-            <CalendarDays className="size-4.5 text-ink-mute" aria-hidden />
-            <span className="capitalize">{dateLabel}</span>
-          </div>
-          <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
-            <Clock className="size-4.5 text-ink-mute" aria-hidden />
-            <span>
-              {timeFmt.format(start)} – {timeFmt.format(end)}
+        {confirming ? (
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-clay/25 bg-clay/12 px-2.5 py-1 text-[12.5px] font-medium text-clay">
+              <AlertTriangle className="size-3.5" aria-hidden />
+              Cancelar cita
             </span>
-          </div>
-          <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
-            <CircleDot className="size-4.5 text-ink-mute" aria-hidden />
-            <span>{appt.amountCents > 0 ? `${(appt.amountCents / 100).toFixed(2)} €` : "Incluida en suscripción"}</span>
-          </div>
-        </div>
+            <h3 className="mt-3 text-[20px] font-light tracking-[-.01em] text-ink">
+              ¿Seguro que quieres cancelar?
+            </h3>
 
-        <div className="mt-6 flex gap-2.5">
-          {appt.meetingUrl && isUpcoming && appt.status !== "cancelled" ? (
-            <a
-              href={appt.meetingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-            >
-              <Video className="size-4.5" aria-hidden />
-              Unirse a Google Meet
-            </a>
-          ) : null}
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 rounded-xl border border-ink/15 px-4 py-3 text-[14.5px] font-medium text-ink transition-colors hover:bg-warm"
-          >
-            Cerrar
-          </button>
-        </div>
+            <div className="mt-4 rounded-xl border border-amber/30 bg-amber/10 p-4">
+              {isFirstConsult ? (
+                <p className="text-[13.5px] leading-relaxed text-ink-soft">
+                  El paciente podrá elegir una nueva hora. Como es una <strong>primera consulta</strong>,
+                  si escoge un hueco que no es tuyo, la cita se <strong>reasignará a otro médico</strong>{" "}
+                  disponible para ese horario — incluido el pago. Podrías perder a este paciente.
+                </p>
+              ) : (
+                <p className="text-[13.5px] leading-relaxed text-ink-soft">
+                  El paciente podrá elegir una nueva hora <strong>contigo</strong>. Al ser una
+                  videollamada de seguimiento, la cita seguirá asignada a ti.
+                </p>
+              )}
+            </div>
+
+            {error ? (
+              <p role="alert" className="mt-3 text-[13px] text-clay">
+                {error}
+              </p>
+            ) : null}
+
+            <div className="mt-6 flex gap-2.5">
+              <button
+                type="button"
+                disabled={loading}
+                onClick={doCancel}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-clay px-4 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
+              >
+                {loading ? <Loader2 className="size-4.5 animate-spin" aria-hidden /> : null}
+                Sí, cancelar cita
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => {
+                  setConfirming(false)
+                  setError(null)
+                }}
+                className="flex-1 rounded-xl border border-ink/15 px-4 py-3 text-[14.5px] font-medium text-ink transition-colors hover:bg-warm disabled:opacity-60"
+              >
+                Volver
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[12.5px] font-medium ${m.chip}`}>
+              <Icon className="size-3.5" aria-hidden />
+              {m.label}
+            </span>
+            <h3 className="mt-3 text-[22px] font-light tracking-[-.01em] text-ink">{appt.patientName}</h3>
+
+            <div className="mt-4 flex flex-col gap-2.5">
+              <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
+                <CalendarDays className="size-4.5 text-ink-mute" aria-hidden />
+                <span className="capitalize">{dateLabel}</span>
+              </div>
+              <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
+                <Clock className="size-4.5 text-ink-mute" aria-hidden />
+                <span>
+                  {timeFmt.format(start)} – {timeFmt.format(end)}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-[14.5px] text-ink-soft">
+                <CircleDot className="size-4.5 text-ink-mute" aria-hidden />
+                <span>{appt.amountCents > 0 ? `${(appt.amountCents / 100).toFixed(2)} €` : "Incluida en suscripción"}</span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-2.5">
+              {appt.meetingUrl && isUpcoming && appt.status !== "cancelled" ? (
+                <a
+                  href={appt.meetingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+                >
+                  <Video className="size-4.5" aria-hidden />
+                  Unirse a Google Meet
+                </a>
+              ) : null}
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 rounded-xl border border-ink/15 px-4 py-3 text-[14.5px] font-medium text-ink transition-colors hover:bg-warm"
+              >
+                Cerrar
+              </button>
+            </div>
+
+            {canCancel ? (
+              <button
+                type="button"
+                onClick={() => setConfirming(true)}
+                className="mt-2.5 w-full rounded-xl px-4 py-2.5 text-[13.5px] font-medium text-clay transition-colors hover:bg-clay/10"
+              >
+                Cancelar esta cita
+              </button>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   )
