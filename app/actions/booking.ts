@@ -7,7 +7,7 @@ import { stripe } from "@/lib/stripe"
 import { getBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { maybeCreateMeeting } from "@/lib/google/calendar"
-import { and, asc, desc, eq, gte, inArray, ne } from "drizzle-orm"
+import { and, asc, desc, eq, gte, inArray, lte, ne } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import type { PooledSlot } from "@/lib/scheduling/types"
 
@@ -304,6 +304,48 @@ export async function getMyAppointments() {
     .leftJoin(doctorProfiles, eq(doctorProfiles.userId, appointments.doctorId))
     .where(and(eq(appointments.patientId, me.id)))
     .orderBy(appointments.startsAt)
+}
+
+/** Citas del médico autenticado dentro de un rango (para la agenda/calendario). */
+export async function getDoctorAppointments(fromISO?: string, toISO?: string) {
+  const me = await getSessionUser()
+  if (!me) return []
+
+  const from = fromISO ? new Date(fromISO) : new Date(Date.now() - 60 * 24 * 60 * 60_000)
+  const to = toISO ? new Date(toISO) : new Date(Date.now() + 120 * 24 * 60 * 60_000)
+
+  const rows = await db
+    .select({
+      id: appointments.id,
+      startsAt: appointments.startsAt,
+      endsAt: appointments.endsAt,
+      status: appointments.status,
+      amountCents: appointments.amountCents,
+      meetingUrl: appointments.meetingUrl,
+      patientName: user.name,
+      patientEmail: user.email,
+    })
+    .from(appointments)
+    .leftJoin(user, eq(user.id, appointments.patientId))
+    .where(
+      and(
+        eq(appointments.doctorId, me.id),
+        ne(appointments.status, "pending_payment"),
+        gte(appointments.startsAt, from),
+        lte(appointments.startsAt, to),
+      ),
+    )
+    .orderBy(asc(appointments.startsAt))
+
+  return rows.map((r) => ({
+    id: r.id,
+    startsAt: r.startsAt,
+    endsAt: r.endsAt,
+    status: r.status,
+    amountCents: r.amountCents,
+    meetingUrl: r.meetingUrl,
+    patientName: r.patientName ?? r.patientEmail ?? "Paciente",
+  }))
 }
 
 /** Próxima cita futura no cancelada del paciente (o null). */

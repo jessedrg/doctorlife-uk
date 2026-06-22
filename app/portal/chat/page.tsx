@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { requireRole } from "@/lib/session"
-import { getOrCreatePatientConversation } from "@/app/actions/chat"
+import { getOrCreatePatientConversation, getConversationCounterpart } from "@/app/actions/chat"
 import { hasActiveSubscription } from "@/app/actions/subscription"
 import { ChatThread } from "@/components/chat-thread"
 import { UnlockPrescriptionsButton } from "@/components/unlock-prescriptions-button"
@@ -12,6 +12,7 @@ export default async function PatientChatPage() {
   const me = await requireRole("patient")
   const conversationId = await getOrCreatePatientConversation()
   const subscribed = await hasActiveSubscription(me.id)
+  const doctor = conversationId ? await getConversationCounterpart(conversationId) : null
 
   return (
     <div>
@@ -35,7 +36,11 @@ export default async function PatientChatPage() {
             </Link>
           </div>
         ) : subscribed ? (
-          <ChatThread conversationId={conversationId} counterpartName="Tu equipo médico" />
+          <ChatThread
+            conversationId={conversationId}
+            counterpartName={doctor?.name ?? "Tu equipo médico"}
+            counterpartImage={doctor?.image}
+          />
         ) : (
           <div className="rounded-[20px] border border-amber/40 bg-amber/10 p-6">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-amber/25 px-3 py-1 text-[12px] font-medium text-ink">

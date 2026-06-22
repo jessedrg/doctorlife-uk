@@ -9,6 +9,7 @@ import {
   previewMySlots,
 } from "@/app/actions/availability"
 import type { Slot, WeeklyRule } from "@/lib/scheduling"
+import { Clock, Globe, Plus, X, CalendarOff, Check, Eye, CalendarRange } from "lucide-react"
 
 const DAYS = [
   { dow: 1, label: "Lunes" },
@@ -172,21 +173,27 @@ export function AvailabilityEditor({
     return acc
   }, {})
 
+  const activeDays = DAYS.filter(({ dow }) => days[dow].enabled).length
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       {/* Ajustes generales */}
-      <section className="rounded-2xl border border-ink/10 bg-paper p-6">
-        <h2 className="mb-4 text-lg font-medium text-ink">Ajustes</h2>
-        <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-          <label className="flex flex-col gap-1.5 text-sm text-ink-soft">
-            Duración de cita
+      <section className="overflow-hidden rounded-2xl border border-ink/10 bg-warm">
+        <div className="border-b border-ink/10 px-5 py-3.5">
+          <h2 className="text-[15.5px] font-medium text-ink">Ajustes</h2>
+        </div>
+        <div className="grid gap-4 p-5 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
+            <span className="flex items-center gap-1.5">
+              <Clock className="size-4 text-ink-mute" aria-hidden /> Duración de cita
+            </span>
             <select
               value={slotMinutes}
               onChange={(e) => {
                 setSlotMinutes(Number(e.target.value))
                 setSaved(false)
               }}
-              className="rounded-lg border border-ink/15 bg-warm px-3 py-2 text-ink"
+              className="rounded-xl border border-ink/15 bg-paper px-3 py-2.5 text-[14px] text-ink outline-none focus:border-ink/30"
             >
               {[15, 20, 30, 45, 60].map((m) => (
                 <option key={m} value={m}>
@@ -195,15 +202,17 @@ export function AvailabilityEditor({
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-1.5 text-sm text-ink-soft">
-            Zona horaria
+          <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
+            <span className="flex items-center gap-1.5">
+              <Globe className="size-4 text-ink-mute" aria-hidden /> Zona horaria
+            </span>
             <select
               value={timezone}
               onChange={(e) => {
                 setTimezone(e.target.value)
                 setSaved(false)
               }}
-              className="rounded-lg border border-ink/15 bg-warm px-3 py-2 text-ink"
+              className="rounded-xl border border-ink/15 bg-paper px-3 py-2.5 text-[14px] text-ink outline-none focus:border-ink/30"
             >
               {TIMEZONES.map((tz) => (
                 <option key={tz} value={tz}>
@@ -216,62 +225,88 @@ export function AvailabilityEditor({
       </section>
 
       {/* Horario semanal */}
-      <section className="rounded-2xl border border-ink/10 bg-paper p-6">
-        <h2 className="mb-4 text-lg font-medium text-ink">Horario semanal</h2>
-        <div className="flex flex-col gap-3">
+      <section className="overflow-hidden rounded-2xl border border-ink/10 bg-warm">
+        <div className="flex items-center justify-between border-b border-ink/10 px-5 py-3.5">
+          <h2 className="flex items-center gap-2 text-[15.5px] font-medium text-ink">
+            <CalendarRange className="size-4.5 text-amber" aria-hidden /> Horario semanal
+          </h2>
+          <span className="rounded-full bg-sage/30 px-2.5 py-1 text-[12px] font-medium text-ink">
+            {activeDays} {activeDays === 1 ? "día activo" : "días activos"}
+          </span>
+        </div>
+        <div className="flex flex-col divide-y divide-ink/8">
           {DAYS.map(({ dow, label }) => {
             const d = days[dow]
             return (
               <div
                 key={dow}
-                className="flex flex-col gap-3 rounded-xl border border-ink/10 bg-warm px-4 py-3 sm:flex-row sm:items-start sm:justify-between"
+                className={`flex flex-col gap-3 px-5 py-4 transition-colors sm:flex-row sm:items-start sm:gap-5 ${
+                  d.enabled ? "bg-paper/40" : ""
+                }`}
               >
-                <label className="flex w-32 shrink-0 items-center gap-2 pt-1.5 text-sm font-medium text-ink">
-                  <input
-                    type="checkbox"
-                    checked={d.enabled}
-                    onChange={(e) => toggleDay(dow, e.target.checked)}
-                    className="h-4 w-4 accent-olive"
-                  />
-                  {label}
-                </label>
+                {/* Toggle día */}
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={d.enabled}
+                  onClick={() => toggleDay(dow, !d.enabled)}
+                  className="flex w-36 shrink-0 items-center gap-2.5 text-left"
+                >
+                  <span
+                    className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
+                      d.enabled ? "bg-olive" : "bg-ink/15"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block size-4 transform rounded-full bg-paper shadow transition-transform ${
+                        d.enabled ? "translate-x-4" : "translate-x-0.5"
+                      }`}
+                    />
+                  </span>
+                  <span className={`text-[14.5px] font-medium ${d.enabled ? "text-ink" : "text-ink-mute"}`}>
+                    {label}
+                  </span>
+                </button>
+
                 {d.enabled ? (
                   <div className="flex flex-1 flex-col gap-2">
                     {d.windows.map((w, i) => (
-                      <div key={i} className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
-                        <input
-                          type="time"
-                          value={w.start}
-                          onChange={(e) => setWindow(dow, i, { start: e.target.value })}
-                          className="rounded-lg border border-ink/15 bg-paper px-2 py-1.5 text-ink"
-                        />
-                        <span>a</span>
-                        <input
-                          type="time"
-                          value={w.end}
-                          onChange={(e) => setWindow(dow, i, { end: e.target.value })}
-                          className="rounded-lg border border-ink/15 bg-paper px-2 py-1.5 text-ink"
-                        />
+                      <div key={i} className="flex flex-wrap items-center gap-2">
+                        <div className="flex items-center gap-2 rounded-xl border border-ink/12 bg-paper px-2.5 py-1.5">
+                          <input
+                            type="time"
+                            value={w.start}
+                            onChange={(e) => setWindow(dow, i, { start: e.target.value })}
+                            className="bg-transparent text-[14px] text-ink outline-none"
+                          />
+                          <span className="text-ink-mute">–</span>
+                          <input
+                            type="time"
+                            value={w.end}
+                            onChange={(e) => setWindow(dow, i, { end: e.target.value })}
+                            className="bg-transparent text-[14px] text-ink outline-none"
+                          />
+                        </div>
                         <button
                           type="button"
                           onClick={() => removeWindow(dow, i)}
                           aria-label={`Quitar franja ${i + 1} de ${label}`}
-                          className="rounded-lg border border-ink/15 px-2 py-1.5 text-ink-soft hover:bg-ink/[.04] hover:text-clay"
+                          className="flex size-9 items-center justify-center rounded-xl border border-ink/12 text-ink-soft transition-colors hover:bg-clay/10 hover:text-clay"
                         >
-                          ×
+                          <X className="size-4" aria-hidden />
                         </button>
                       </div>
                     ))}
                     <button
                       type="button"
                       onClick={() => addWindow(dow)}
-                      className="self-start text-sm font-medium text-olive hover:underline"
+                      className="flex w-fit items-center gap-1.5 rounded-lg px-1 py-1 text-[13.5px] font-medium text-olive transition-colors hover:text-ink"
                     >
-                      + Añadir franja
+                      <Plus className="size-4" aria-hidden /> Añadir franja
                     </button>
                   </div>
                 ) : (
-                  <span className="flex-1 pt-1.5 text-sm text-ink-mute">No disponible</span>
+                  <span className="flex-1 pt-0.5 text-[13.5px] text-ink-mute">No disponible</span>
                 )}
               </div>
             )
@@ -280,54 +315,60 @@ export function AvailabilityEditor({
       </section>
 
       {/* Días bloqueados */}
-      <section className="rounded-2xl border border-ink/10 bg-paper p-6">
-        <h2 className="mb-1 text-lg font-medium text-ink">Días bloqueados</h2>
-        <p className="mb-4 text-sm text-ink-soft">Vacaciones o festivos en los que no atiendes.</p>
-        <div className="flex items-center gap-2">
-          <input
-            type="date"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
-            className="rounded-lg border border-ink/15 bg-warm px-3 py-2 text-sm text-ink"
-          />
-          <button
-            type="button"
-            onClick={handleAddDate}
-            disabled={pending || !newDate}
-            className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-paper disabled:opacity-50"
-          >
-            Bloquear
-          </button>
+      <section className="overflow-hidden rounded-2xl border border-ink/10 bg-warm">
+        <div className="border-b border-ink/10 px-5 py-3.5">
+          <h2 className="flex items-center gap-2 text-[15.5px] font-medium text-ink">
+            <CalendarOff className="size-4.5 text-clay" aria-hidden /> Días bloqueados
+          </h2>
+          <p className="mt-0.5 text-[13px] text-ink-soft">Vacaciones o festivos en los que no atiendes.</p>
         </div>
-        {exceptions.length > 0 && (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {exceptions.map((date) => (
-              <li
-                key={date}
-                className="flex items-center gap-2 rounded-full border border-clay/30 bg-clay/10 px-3 py-1 text-sm text-ink"
-              >
-                {date}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveDate(date)}
-                  aria-label={`Quitar ${date}`}
-                  className="text-clay hover:text-ink"
+        <div className="p-5">
+          <div className="flex items-center gap-2">
+            <input
+              type="date"
+              value={newDate}
+              onChange={(e) => setNewDate(e.target.value)}
+              className="rounded-xl border border-ink/15 bg-paper px-3 py-2.5 text-[14px] text-ink outline-none focus:border-ink/30"
+            />
+            <button
+              type="button"
+              onClick={handleAddDate}
+              disabled={pending || !newDate}
+              className="rounded-xl bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
+            >
+              Bloquear
+            </button>
+          </div>
+          {exceptions.length > 0 && (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {exceptions.map((date) => (
+                <li
+                  key={date}
+                  className="flex items-center gap-2 rounded-full border border-clay/30 bg-clay/10 px-3 py-1.5 text-[13.5px] text-ink"
                 >
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                  {date}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveDate(date)}
+                    aria-label={`Quitar ${date}`}
+                    className="text-clay transition-colors hover:text-ink"
+                  >
+                    <X className="size-3.5" aria-hidden />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
 
       {/* Acciones */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="sticky bottom-3 z-10 flex flex-wrap items-center gap-3 rounded-2xl border border-ink/10 bg-paper/90 p-3 backdrop-blur">
         <button
           type="button"
           onClick={handleSave}
           disabled={pending}
-          className="rounded-xl bg-olive px-6 py-3 text-sm font-semibold text-paper disabled:opacity-50"
+          className="rounded-xl bg-olive px-6 py-3 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {pending ? "Guardando…" : "Guardar disponibilidad"}
         </button>
@@ -335,42 +376,48 @@ export function AvailabilityEditor({
           type="button"
           onClick={handlePreview}
           disabled={pending}
-          className="rounded-xl border border-ink/15 px-6 py-3 text-sm font-medium text-ink disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-ink/15 px-6 py-3 text-[14px] font-medium text-ink transition-colors hover:bg-warm disabled:opacity-50"
         >
-          Previsualizar huecos
+          <Eye className="size-4" aria-hidden /> Previsualizar huecos
         </button>
-        {saved && <span className="text-sm text-olive">Guardado ✓</span>}
+        {saved && (
+          <span className="inline-flex items-center gap-1.5 text-[14px] font-medium text-olive">
+            <Check className="size-4" aria-hidden /> Guardado
+          </span>
+        )}
       </div>
 
       {/* Vista previa */}
       {slots && (
-        <section className="rounded-2xl border border-ink/10 bg-paper p-6">
-          <h2 className="mb-4 text-lg font-medium text-ink">
-            Próximos huecos ({slots.length})
-          </h2>
-          {slots.length === 0 ? (
-            <p className="text-sm text-ink-soft">
-              No hay huecos en los próximos 14 días. Revisa tu horario y guárdalo.
-            </p>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {Object.entries(slotsByDate).map(([date, daySlots]) => (
-                <div key={date}>
-                  <p className="mb-2 text-sm font-medium text-ink">{date}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {daySlots.map((s) => (
-                      <span
-                        key={s.startUtc}
-                        className="rounded-lg border border-sage/40 bg-sage/15 px-2.5 py-1 text-sm text-ink"
-                      >
-                        {s.label}
-                      </span>
-                    ))}
+        <section className="overflow-hidden rounded-2xl border border-ink/10 bg-warm">
+          <div className="border-b border-ink/10 px-5 py-3.5">
+            <h2 className="text-[15.5px] font-medium text-ink">Próximos huecos ({slots.length})</h2>
+          </div>
+          <div className="p-5">
+            {slots.length === 0 ? (
+              <p className="text-[14px] text-ink-soft">
+                No hay huecos en los próximos 14 días. Revisa tu horario y guárdalo.
+              </p>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {Object.entries(slotsByDate).map(([date, daySlots]) => (
+                  <div key={date}>
+                    <p className="mb-2 text-[13.5px] font-medium text-ink">{date}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {daySlots.map((s) => (
+                        <span
+                          key={s.startUtc}
+                          className="rounded-lg border border-sage/40 bg-sage/15 px-2.5 py-1 text-[13.5px] text-ink"
+                        >
+                          {s.label}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </section>
       )}
     </div>

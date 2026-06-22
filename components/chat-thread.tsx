@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 import useSWR from "swr"
 import { getMessages, sendMessage } from "@/app/actions/chat"
+import { AnalysisRequestDialog, ANALYSIS_PREFIX } from "@/components/analysis-request-dialog"
+import { UserAvatar } from "@/components/user-avatar"
+import { FlaskConical, ChevronLeft } from "lucide-react"
 
 type Msg = { id: number; body: string; mine: boolean; createdAt: Date }
 
@@ -15,9 +18,19 @@ const timeFmt = new Intl.DateTimeFormat("es-ES", {
 export function ChatThread({
   conversationId,
   counterpartName,
+  counterpartImage,
+  canRequestAnalysis = false,
+  subtitle = "Mensajería segura · respuesta no inmediata",
+  onBack,
+  className,
 }: {
   conversationId: number
   counterpartName: string
+  counterpartImage?: string | null
+  canRequestAnalysis?: boolean
+  subtitle?: string
+  onBack?: () => void
+  className?: string
 }) {
   const { data: messages = [], mutate } = useSWR<Msg[]>(
     ["messages", conversationId],
@@ -27,7 +40,21 @@ export function ChatThread({
 
   const [text, setText] = useState("")
   const [sending, setSending] = useState(false)
+  const [analysisOpen, setAnalysisOpen] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+
+  // Envía un cuerpo arbitrario (usado por el diálogo de análisis) de forma optimista.
+  async function sendBody(body: string) {
+    const optimistic: Msg = { id: Date.now(), body, mine: true, createdAt: new Date() }
+    await mutate(
+      async () => {
+        const res = await sendMessage(conversationId, body)
+        if (!res.ok) throw new Error(res.error)
+        return getMessages(conversationId)
+      },
+      { optimisticData: [...messages, optimistic], rollbackOnError: true, revalidate: false },
+    )
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -56,10 +83,23 @@ export function ChatThread({
   }
 
   return (
-    <div className="flex h-[min(70vh,600px)] flex-col rounded-[20px] border border-ink/10 bg-cream">
-      <div className="border-b border-ink/10 px-5 py-3.5">
-        <p className="text-[15px] font-medium text-ink">{counterpartName}</p>
-        <p className="text-[12.5px] text-ink-soft">Mensajería segura · respuesta no inmediata</p>
+    <div className={`flex flex-col bg-cream ${className ?? "h-[min(70vh,600px)] rounded-[20px] border border-ink/10"}`}>
+      <div className="flex items-center gap-3 border-b border-ink/10 px-4 py-3 sm:px-5">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            aria-label="Volver a la lista"
+            className="-ml-1 flex size-9 shrink-0 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-ink/5 md:hidden"
+          >
+            <ChevronLeft className="size-5" aria-hidden />
+          </button>
+        )}
+        <UserAvatar name={counterpartName} image={counterpartImage} size={40} />
+        <div className="min-w-0">
+          <p className="truncate text-[15px] font-medium text-ink">{counterpartName}</p>
+          <p className="truncate text-[12.5px] text-ink-soft">{subtitle}</p>
+        </div>
       </div>
 
       <div className="flex-1 space-y-2.5 overflow-y-auto px-5 py-4">
@@ -68,25 +108,43 @@ export function ChatThread({
             Aún no hay mensajes. Escribe el primero.
           </p>
         ) : (
-          messages.map((m) => (
-            <div key={m.id} className={`flex ${m.mine ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-[14px] leading-relaxed ${
-                  m.mine ? "bg-ink text-paper" : "bg-paper text-ink border border-ink/10"
-                }`}
-              >
-                <p className="whitespace-pre-wrap break-words">{m.body}</p>
-                <p className={`mt-1 text-[11px] ${m.mine ? "text-paper/60" : "text-ink-soft"}`}>
-                  {timeFmt.format(new Date(m.createdAt))}
-                </p>
+          messages.map((m) => {
+            if (m.body.startsWith(ANALYSIS_PREFIX)) {
+              return (
+                <AnalysisMessage key={m.id} body={m.body} mine={m.mine} createdAt={m.createdAt} />
+              )
+            }
+            return (
+              <div key={m.id} className={`flex ${m.mine ? "justify-end" : "justify-start"}`}>
+                <div
+                  className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-[14px] leading-relaxed ${
+                    m.mine ? "bg-ink text-paper" : "bg-paper text-ink border border-ink/10"
+                  }`}
+                >
+                  <p className="whitespace-pre-wrap break-words">{m.body}</p>
+                  <p className={`mt-1 text-[11px] ${m.mine ? "text-paper/60" : "text-ink-soft"}`}>
+                    {timeFmt.format(new Date(m.createdAt))}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))
+            )
+          })
         )}
         <div ref={bottomRef} />
       </div>
 
       <form onSubmit={handleSend} className="flex items-end gap-2 border-t border-ink/10 p-3">
+        {canRequestAnalysis && (
+          <button
+            type="button"
+            onClick={() => setAnalysisOpen(true)}
+            aria-label="Pedir análisis al paciente"
+            title="Pedir análisis"
+            className="flex size-[42px] shrink-0 items-center justify-center rounded-xl border border-teal/30 bg-teal/10 text-teal transition-colors hover:bg-teal/15"
+          >
+            <FlaskConical className="size-5" aria-hidden />
+          </button>
+        )}
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -105,6 +163,34 @@ export function ChatThread({
           Enviar
         </button>
       </form>
+
+      {canRequestAnalysis && (
+        <AnalysisRequestDialog
+          open={analysisOpen}
+          onClose={() => setAnalysisOpen(false)}
+          onSubmit={sendBody}
+        />
+      )}
+    </div>
+  )
+}
+
+/** Tarjeta especial para mensajes de solicitud de análisis. */
+function AnalysisMessage({ body, mine, createdAt }: { body: string; mine: boolean; createdAt: Date }) {
+  // Quita el prefijo marcador y separa título/cuerpo.
+  const clean = body.slice(ANALYSIS_PREFIX.length).trim()
+  return (
+    <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+      <div className="max-w-[80%] overflow-hidden rounded-2xl border border-teal/30 bg-teal/[.07]">
+        <div className="flex items-center gap-2 border-b border-teal/20 bg-teal/12 px-3.5 py-2 text-teal">
+          <FlaskConical className="size-4" aria-hidden />
+          <span className="text-[12.5px] font-semibold uppercase tracking-[.04em]">Análisis solicitados</span>
+        </div>
+        <p className="whitespace-pre-wrap break-words px-3.5 py-2.5 text-[14px] leading-relaxed text-ink">
+          {clean}
+        </p>
+        <p className="px-3.5 pb-2 text-[11px] text-ink-soft">{timeFmt.format(new Date(createdAt))}</p>
+      </div>
     </div>
   )
 }

@@ -9,6 +9,8 @@ export default async function MedicoLayout({ children }: { children: React.React
       badge="Médico"
       nav={[
         { href: "/medico", label: "Inicio" },
+        { href: "/medico/agenda", label: "Agenda" },
+        { href: "/medico/pacientes", label: "Pacientes" },
         { href: "/medico/disponibilidad", label: "Disponibilidad" },
         { href: "/medico/chat", label: "Mensajes" },
         { href: "/medico/recetas", label: "Recetas" },
