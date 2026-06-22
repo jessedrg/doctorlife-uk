@@ -95,6 +95,13 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a
+            href="/sign-in"
+            className="hidden items-center whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-medium text-ink no-underline opacity-75 transition-opacity duration-300 hover:opacity-100 md:inline-flex"
+          >
+            Iniciar sesión
+          </a>
+
           <QuizTrigger className="group hidden items-center gap-2 whitespace-nowrap rounded-full bg-ink px-[22px] py-[13px] text-[15px] font-medium text-paper transition-transform duration-300 hover:scale-[1.04] active:scale-95 sm:inline-flex">
             Comenzar
             <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
@@ -130,7 +137,7 @@ export function Navbar() {
 
       {/* panel móvil */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-out md:hidden ${
+        className={`absolute inset-x-3 top-full overflow-hidden transition-all duration-300 ease-out sm:inset-x-4 lg:inset-x-5 md:hidden ${
           open ? "mt-3 max-h-[460px] opacity-100" : "pointer-events-none mt-0 max-h-0 opacity-0"
         }`}
       >
@@ -163,6 +170,13 @@ export function Navbar() {
               );
             })}
           </div>
+          <a
+            href="/sign-in"
+            onClick={() => setOpen(false)}
+            className="mt-2 flex w-full items-center justify-center rounded-full border border-ink/15 px-6 py-4 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-ink/5"
+          >
+            Iniciar sesión
+          </a>
           <QuizTrigger className="group mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-4 text-[16px] font-medium text-paper transition-transform duration-300 active:scale-95">
             Comenzar
             <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
