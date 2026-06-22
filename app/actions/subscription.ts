@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { subscriptions, appointments, doctorProfiles, leads } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe, DOCTOR_SHARE_CENTS } from "@/lib/stripe"
-import { getBaseUrl } from "@/lib/base-url"
+import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
 import { and, desc, eq, inArray } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -129,6 +129,7 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
       name: "Primera visita ya abonada",
     })
 
+    const baseUrl = await getRequestBaseUrl()
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: patient.email,
@@ -149,8 +150,8 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
       ],
       subscription_data: subscriptionData,
       metadata: { subscriptionRowId: String(pending.id) },
-      success_url: `${getBaseUrl()}/portal/recetas?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${getBaseUrl()}/portal/recetas?subscription=cancelled`,
+      success_url: `${baseUrl}/portal/recetas?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/portal/recetas?subscription=cancelled`,
     })
 
     if (!session.url) {
