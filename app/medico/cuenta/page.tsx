@@ -56,6 +56,7 @@ export default async function MedicoAccountPage() {
               licenseNumber: profile.licenseNumber,
               bio: profile.bio,
               acceptingPatients: profile.acceptingPatients,
+              maxPatients: profile.maxPatients,
               image: profile.image,
             }}
           />

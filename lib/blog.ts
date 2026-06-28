@@ -995,7 +995,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 10 ──────────────────────────────────────────── */
+  /* 10 ─────────────────────────────────────────��── */
   {
     slug: "plan-perder-peso-glp1",
     title: "Plan para perder peso con GLP‑1",
@@ -3586,7 +3586,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Sevilla: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Sevilla (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qu�� alternativa elegir si tu objetivo es perder peso. Primera visita 25 €.",
     excerpt:
       "Comprar Ozempic en Sevilla con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -4632,7 +4632,7 @@ const manualPosts: Post[] = [
             head: ["Dosis", "Fase", "Precio orientativo/mes"],
             rows: [
               ["2,5 mg", "Inicio", "200–250 €"],
-              ["5 mg", "Adaptación", "230–280 €"],
+              ["5 mg", "Adaptación", "230–280 ��"],
               ["7,5–10 mg", "Escalado", "280–330 €"],
               ["12,5–15 mg", "Mantenimiento", "300–350 €"],
             ],
@@ -5605,6 +5605,36 @@ export const posts: Post[] = [
 
 export function getPost(slug: string): Post | undefined {
   return posts.find((p) => p.slug === slug);
+}
+
+/* ───────────────────────────────────────────────────────────
+   Optimización del título para Google (SERP).
+   Antepone la keyword y comunica la propuesta de valor real
+   (cita médica online + receta) ANTES del corte de Google
+   (~60 caracteres), para maximizar el CTR desde la búsqueda.
+   ─────────────────────────────────────────────────────────── */
+const VALUE_SUFFIX = "Cita Médica y Receta Online";
+const MAX_TITLE = 62;
+
+export function seoTitle(post: Post): string {
+  const core = post.metaTitle
+    .split(/[:|]/)[0]
+    .replace(/\s*\(\s*\d{4}\s*\)\s*/g, " ")
+    .trim();
+
+  const isComparison =
+    /(?:-vs-|\bvs\b)/i.test(post.slug) || post.category === "Comparativas";
+  if (isComparison) {
+    return post.metaTitle.length <= MAX_TITLE ? post.metaTitle : core;
+  }
+
+  if (/receta/i.test(core)) {
+    const withDoctor = `${core} con Médico en 24h`;
+    return withDoctor.length <= MAX_TITLE ? withDoctor : core;
+  }
+
+  const withValue = `${core}: ${VALUE_SUFFIX}`;
+  return withValue.length <= MAX_TITLE ? withValue : core;
 }
 
 export function getRelated(slug: string, limit = 3): Post[] {

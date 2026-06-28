@@ -1,4 +1,7 @@
+"use client";
+
 import { QuizTrigger } from "./quiz-trigger";
+import { analytics } from "@/lib/analytics";
 
 /**
  * Bloque de conversión reutilizable dentro de los posts del blog.
@@ -32,6 +35,7 @@ export function BlogFunnel({
             </QuizTrigger>
             <a
               href="/#planes"
+              onClick={() => analytics.blogToHome("planes")}
               className="rounded-full border border-paper/25 px-7 py-[14px] text-[15px] font-medium text-paper no-underline transition-colors hover:bg-paper/10"
             >
               Ver qué incluye

@@ -2,7 +2,6 @@
 
 import { db } from "@/lib/db"
 import { leads } from "@/lib/db/schema"
-import { evaluateEligibility, type EligibilityStatus } from "@/lib/eligibility"
 import { sendLeadNotification } from "@/lib/email"
 
 export type LeadInput = {
@@ -16,15 +15,9 @@ export type LeadInput = {
   heightCm?: number | null
   weightKg?: number | null
   age?: number | null
-  sex?: string | null
-  pregnancy?: string | null
-  comorbidities?: string[]
-  contraindications?: string[]
 }
 
-export type SaveLeadResult =
-  | { ok: true; eligibility: EligibilityStatus; reasons: string[]; bmi: number | null }
-  | { ok: false; error: string }
+export type SaveLeadResult = { ok: true } | { ok: false; error: string }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -38,62 +31,34 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
   const heightCm = input.heightCm && input.heightCm > 0 ? Math.round(input.heightCm) : null
   const weightKg = input.weightKg && input.weightKg > 0 ? Math.round(input.weightKg) : null
   const age = input.age && input.age > 0 ? Math.round(input.age) : null
-  const comorbidities = Array.isArray(input.comorbidities) ? input.comorbidities : []
-  const contraindications = Array.isArray(input.contraindications) ? input.contraindications : []
+  const bmi =
+    heightCm && weightKg ? (weightKg / Math.pow(heightCm / 100, 2)).toFixed(1) : null
 
-  // Re-evaluamos en el servidor: nunca confiamos solo en el cliente.
-  const verdict = evaluateEligibility({
-    age,
+  const leadData = {
+    name: input.name?.trim() || null,
+    email,
+    goal: input.goal || null,
+    glp1Experience: input.glp1Experience || null,
+    formatPreference: input.formatPreference || null,
+    timeline: input.timeline || null,
+    plan: input.plan || null,
     heightCm,
     weightKg,
-    pregnancy: input.pregnancy ?? null,
-    comorbidities,
-    contraindications,
-  })
-  const bmi = verdict.bmi != null ? verdict.bmi.toFixed(1) : null
+    age,
+    bmi,
+    source: "quiz",
+  }
 
   try {
-    await db.insert(leads).values({
-      name: input.name?.trim() || null,
-      email,
-      goal: input.goal || null,
-      glp1Experience: input.glp1Experience || null,
-      formatPreference: input.formatPreference || null,
-      timeline: input.timeline || null,
-      plan: input.plan || null,
-      heightCm,
-      weightKg,
-      age,
-      bmi,
-      sex: input.sex || null,
-      pregnancy: input.pregnancy || null,
-      comorbidities: comorbidities.length ? JSON.stringify(comorbidities) : null,
-      contraindications: contraindications.length ? JSON.stringify(contraindications) : null,
-      eligibility: verdict.status,
-      eligibilityReason: verdict.reasons.length ? JSON.stringify(verdict.reasons) : null,
-      source: "quiz",
-    })
+    await db.insert(leads).values(leadData)
 
-    // Aviso interno por email (no bloquea ni invalida el guardado si falla).
-    const emailResult = await sendLeadNotification({
-      name: input.name?.trim() || null,
-      email,
-      goal: input.goal || null,
-      glp1Experience: input.glp1Experience || null,
-      formatPreference: input.formatPreference || null,
-      timeline: input.timeline || null,
-      plan: input.plan || null,
-      heightCm,
-      weightKg,
-      age,
-      bmi,
-      source: "quiz",
-    })
+    // Notificación por email (no bloquea ni invalida el guardado si falla).
+    const emailResult = await sendLeadNotification(leadData)
     if (!emailResult.ok) {
       console.log("[v0] aviso: lead guardado pero email no enviado:", emailResult.error)
     }
 
-    return { ok: true, eligibility: verdict.status, reasons: verdict.reasons, bmi: verdict.bmi }
+    return { ok: true }
   } catch (err) {
     console.log("[v0] saveLead error:", err instanceof Error ? err.message : err)
     return { ok: false, error: "No hemos podido guardar tus datos. Inténtalo de nuevo." }

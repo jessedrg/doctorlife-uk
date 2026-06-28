@@ -62,10 +62,17 @@ export async function updateDoctorProfile(input: {
   licenseNumber?: string
   bio?: string
   acceptingPatients?: boolean
+  maxPatients?: number | null
 }) {
   const user = await requireDoctor()
   const fullName = input.fullName.trim()
   if (!fullName) return { ok: false as const, error: "El nombre es obligatorio." }
+
+  // Validate maxPatients: must be a positive integer or null (no limit).
+  const maxPatients =
+    input.maxPatients != null && input.maxPatients > 0
+      ? Math.round(input.maxPatients)
+      : null
 
   await db
     .update(doctorProfiles)
@@ -75,6 +82,7 @@ export async function updateDoctorProfile(input: {
       licenseNumber: input.licenseNumber?.trim() || null,
       bio: input.bio?.trim() || null,
       acceptingPatients: input.acceptingPatients ?? true,
+      maxPatients,
       updatedAt: new Date(),
     })
     .where(eq(doctorProfiles.userId, user.id))
@@ -543,6 +551,51 @@ export async function getDoctorMetrics(): Promise<DoctorMetrics> {
     upcomingAppointments: Number(upcomingRow?.count ?? 0),
     prescriptionsIssued: Number(rxRow?.count ?? 0),
     totalCommissionCents: Number(commRow?.total ?? 0),
+  }
+}
+
+/* ───────────────────────────────────────────────────────────
+   Capacidad del médico: pacientes activos vs. límite.
+   ─────────────────────────────────────────────────────────── */
+
+export type DoctorCapacity = {
+  activeCount: number
+  maxPatients: number | null
+  /** true cuando activeCount >= maxPatients (y maxPatients no es null). */
+  atCapacity: boolean
+  /** true cuando activeCount >= maxPatients * 0.9 pero no atCapacity. */
+  nearCapacity: boolean
+}
+
+/**
+ * Devuelve cuántos pacientes activos tiene el médico y si ha alcanzado
+ * (o se acerca a) el límite que él mismo ha configurado.
+ */
+export async function getDoctorCapacity(): Promise<DoctorCapacity> {
+  const me = await requireDoctor()
+  const profile = await getMyDoctorProfile()
+
+  const [row] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.doctorId, me.id),
+        sql`${subscriptions.status} in ('active', 'trialing', 'past_due')`,
+      ),
+    )
+
+  const activeCount = Number(row?.count ?? 0)
+  const maxPatients = profile.maxPatients ?? null
+
+  return {
+    activeCount,
+    maxPatients,
+    atCapacity: maxPatients !== null && activeCount >= maxPatients,
+    nearCapacity:
+      maxPatients !== null &&
+      activeCount < maxPatients &&
+      activeCount >= Math.floor(maxPatients * 0.9),
   }
 }
 

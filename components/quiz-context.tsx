@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 import { QuizModal } from "./quiz-modal";
+import { analytics } from "@/lib/analytics";
 
 type QuizContextValue = {
   open: boolean;
@@ -23,17 +24,14 @@ export function QuizProvider({ children }: { children: React.ReactNode }) {
   const openQuiz = (plan?: string) => {
     if (typeof document !== "undefined") {
       document.body.style.overflow = "hidden";
-      // Marca el body para que globals.css oculte el launcher de Intercom
-      // y no se superponga al formulario (especialmente en móvil).
-      document.body.classList.add("quiz-open");
     }
     setInitialPlan(plan ?? null);
     setOpen(true);
+    analytics.formOpened(plan);
   };
   const closeQuiz = () => {
     if (typeof document !== "undefined") {
       document.body.style.overflow = "";
-      document.body.classList.remove("quiz-open");
     }
     setOpen(false);
   };
