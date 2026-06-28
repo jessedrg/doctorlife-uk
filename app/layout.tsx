@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
 import { Geist_Mono, Hanken_Grotesk, Instrument_Serif, Sora } from 'next/font/google'
-import { WhatsAppBubble } from '@/components/whatsapp-bubble'
+import { PublicWhatsAppBubble } from '@/components/public-whatsapp-bubble'
 import { JsonLd } from '@/components/seo/json-ld'
 import { organizationSchema, websiteSchema } from '@/lib/seo'
 import './globals.css'
@@ -83,7 +83,7 @@ export default function RootLayout({
           `}
         </Script>
         {children}
-        <WhatsAppBubble />
+        <PublicWhatsAppBubble />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
