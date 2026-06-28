@@ -22,14 +22,27 @@ export default async function MedicoPagosPage({
   // Al volver de Stripe (return_url), sincronizamos el estado real.
   let profile = await getMyDoctorProfile()
   if (params.done && profile.stripeAccountId) {
-    profile = await refreshStripeStatus()
+    try {
+      profile = await refreshStripeStatus()
+    } catch {
+      // Si Stripe falla al sincronizar, seguimos mostrando la página con el estado que tenemos.
+    }
   }
 
   // Solo cargamos transacciones si la cuenta ya puede cobrar.
-  const earnings = profile.chargesEnabled ? await getDoctorTransactions() : null
+  const earnings = profile.chargesEnabled
+    ? await getDoctorTransactions().catch(() => null)
+    : null
 
   // Registro propio de suscripciones y comisiones (independiente de Stripe).
-  const billing = await getDoctorBilling()
+  const billing = await getDoctorBilling().catch(() => ({
+    subscriptions: [],
+    commissions: [],
+    totalCommissionCents: 0,
+    activeCount: 0,
+    upcomingPayouts: [],
+    upcomingTotalCents: 0,
+  }))
 
   return (
     <div>

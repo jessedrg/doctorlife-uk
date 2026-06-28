@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
 import { generateTempPassword } from "@/lib/credentials"
 import { sendDoctorWelcomeEmail } from "@/lib/email"
+import { isProductionRequest } from "@/lib/base-url"
 
 const ACTIVE_SUB_STATES = ["active", "trialing", "past_due"]
 
@@ -45,6 +46,11 @@ export async function createDoctor(input: {
 
   const tempPassword = generateTempPassword()
 
+  // Si la petición viene desde producción (doctorlife.io) el médico es de prod.
+  // Desde dev.doctorlife.io o cualquier otro entorno se marca como isDevOnly.
+  const isProd = await isProductionRequest()
+  const isDevOnly = !isProd
+
   // Better Auth crea el usuario y hashea la contraseña.
   const created = await auth.api.signUpEmail({ body: { name, email, password: tempPassword } })
   const userId = created?.user?.id
@@ -57,7 +63,7 @@ export async function createDoctor(input: {
 
   await db
     .insert(doctorProfiles)
-    .values({ userId, fullName: name, specialty })
+    .values({ userId, fullName: name, specialty, isDevOnly })
     .onConflictDoNothing({ target: doctorProfiles.userId })
 
   await sendDoctorWelcomeEmail({ to: email, name, tempPassword })
@@ -154,6 +160,7 @@ export async function listDoctors() {
       acceptingPatients: doctorProfiles.acceptingPatients,
       chargesEnabled: doctorProfiles.chargesEnabled,
       stripeOnboarded: doctorProfiles.stripeOnboarded,
+      isDevOnly: doctorProfiles.isDevOnly,
       createdAt: userTable.createdAt,
     })
     .from(userTable)
@@ -266,6 +273,17 @@ export async function purgeOrphanedPatients() {
   revalidatePath("/admin/pacientes")
   revalidatePath("/admin")
   return { ok: true, deleted: ids.length }
+}
+
+/** Cambia el flag de entorno (dev vs prod) de un médico. */
+export async function setDoctorDevOnly(doctorId: string, isDevOnly: boolean) {
+  await requireAdmin()
+  await db
+    .update(doctorProfiles)
+    .set({ isDevOnly, updatedAt: new Date() })
+    .where(eq(doctorProfiles.userId, doctorId))
+  revalidatePath("/admin/medicos")
+  return { ok: true }
 }
 
 /** Activa/pausa que un médico acepte nuevos pacientes. */

@@ -85,6 +85,12 @@ export const doctorProfiles = pgTable("doctor_profiles", {
   maxPatients: integer("maxPatients"),
   slotMinutes: integer("slotMinutes").notNull().default(30),
   timezone: text("timezone").notNull().default("Europe/Madrid"),
+  /**
+   * true  → médico de desarrollo (solo visible en dev.doctorlife.io y entornos no-prod).
+   * false → médico de producción (visible en doctorlife.io y todos los entornos).
+   * Se rellena automáticamente al crear el médico según el dominio de la petición.
+   */
+  isDevOnly: boolean("isDevOnly").notNull().default(false),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })
