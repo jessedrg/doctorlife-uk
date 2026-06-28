@@ -1,5 +1,6 @@
 import { requireRole } from "@/lib/session"
 import { listPatients } from "@/app/actions/admin"
+import { AdminPatientActions } from "@/components/admin-patient-actions"
 
 export const metadata = { title: "Pacientes — DoctorLife" }
 
@@ -13,12 +14,17 @@ export default async function AdminPatientsPage() {
 
   return (
     <div>
-      <h1 className="text-[30px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-        Pacientes ({patients.length})
-      </h1>
-      <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Usuarios registrados como pacientes en la plataforma.
-      </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-[30px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
+            Pacientes ({patients.length})
+          </h1>
+          <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
+            Usuarios registrados como pacientes en la plataforma.
+          </p>
+        </div>
+        <AdminPatientActions />
+      </div>
 
       <div className="mt-6 overflow-x-auto rounded-[18px] border border-ink/10">
         <table className="w-full text-left text-[14px]">

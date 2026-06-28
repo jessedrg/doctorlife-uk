@@ -1,9 +1,9 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { user as userTable, doctorProfiles, appointments, leads, subscriptions } from "@/lib/db/schema"
+import { user as userTable, doctorProfiles, appointments, leads, subscriptions, conversations, messages, session, account, notifications, prescriptions } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
-import { count, desc, eq, inArray, sum } from "drizzle-orm"
+import { count, desc, eq, inArray, notInArray, sql, sum } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
 import { generateTempPassword } from "@/lib/credentials"
@@ -193,6 +193,79 @@ export async function listLeads() {
     .from(leads)
     .orderBy(desc(leads.createdAt))
     .limit(200)
+}
+
+/**
+ * Borra TODOS los pacientes y todos sus datos asociados.
+ * Solo para el admin, útil para limpiar entornos de prueba.
+ */
+export async function purgeAllPatients() {
+  await requireAdmin()
+
+  const patientIds = await db
+    .select({ id: userTable.id })
+    .from(userTable)
+    .where(eq(userTable.role, "patient"))
+  const ids = patientIds.map((p) => p.id)
+  if (!ids.length) return { ok: true, deleted: 0 }
+
+  await db.delete(messages).where(inArray(messages.senderId, ids))
+  await db.delete(prescriptions).where(inArray(prescriptions.patientId, ids))
+  await db.delete(appointments).where(inArray(appointments.patientId, ids))
+  await db.delete(subscriptions).where(inArray(subscriptions.patientId, ids))
+  await db.delete(conversations).where(inArray(conversations.patientId, ids))
+  await db.delete(notifications).where(inArray(notifications.userId, ids))
+  await db.delete(session).where(inArray(session.userId, ids))
+  await db.delete(account).where(inArray(account.userId, ids))
+  await db.delete(userTable).where(inArray(userTable.id, ids))
+
+  revalidatePath("/admin/pacientes")
+  revalidatePath("/admin")
+  return { ok: true, deleted: ids.length }
+}
+
+/**
+ * Borra pacientes "colgados": creados hace más de 24 h pero sin ninguna cita
+ * confirmada. Sirve como limpieza de seguridad por si algún flujo antiguo dejó
+ * cuentas a medias (el flujo actual no crea la cuenta antes del pago).
+ */
+export async function purgeOrphanedPatients() {
+  await requireAdmin()
+
+  // Pacientes que SÍ tienen al menos una cita.
+  const withAppointment = await db
+    .selectDistinct({ patientId: appointments.patientId })
+    .from(appointments)
+
+  const withApptIds = withAppointment.map((r) => r.patientId)
+
+  // Cutoff: creados hace más de 24 h para no borrar recién llegados.
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000)
+
+  const orphans = await db
+    .select({ id: userTable.id })
+    .from(userTable)
+    .where(
+      sql`${userTable.role} = 'patient'
+        AND ${userTable.createdAt} < ${cutoff}
+        ${withApptIds.length ? sql`AND ${userTable.id} NOT IN (${sql.join(withApptIds.map((id) => sql`${id}`), sql`, `)})` : sql``}`,
+    )
+
+  const ids = orphans.map((o) => o.id)
+  if (!ids.length) return { ok: true, deleted: 0 }
+
+  await db.delete(messages).where(inArray(messages.senderId, ids))
+  await db.delete(prescriptions).where(inArray(prescriptions.patientId, ids))
+  await db.delete(subscriptions).where(inArray(subscriptions.patientId, ids))
+  await db.delete(conversations).where(inArray(conversations.patientId, ids))
+  await db.delete(notifications).where(inArray(notifications.userId, ids))
+  await db.delete(session).where(inArray(session.userId, ids))
+  await db.delete(account).where(inArray(account.userId, ids))
+  await db.delete(userTable).where(inArray(userTable.id, ids))
+
+  revalidatePath("/admin/pacientes")
+  revalidatePath("/admin")
+  return { ok: true, deleted: ids.length }
 }
 
 /** Activa/pausa que un médico acepte nuevos pacientes. */
