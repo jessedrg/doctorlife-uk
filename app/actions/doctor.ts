@@ -402,11 +402,22 @@ export type DoctorBilling = {
   commissions: DoctorCommissionRow[]
   totalCommissionCents: number
   activeCount: number
+  /** Próximos pagos estimados: suscripciones activas ordenadas por fecha de próxima renovación. */
+  upcomingPayouts: {
+    patientName: string
+    renewalDate: Date
+    /** Comisión que recibirá el médico en esa renovación (35 €). */
+    doctorPayoutCents: number
+    currency: string
+  }[]
+  /** Total estimado del próximo mes de renovaciones. */
+  upcomingTotalCents: number
 }
 
 /** Suscripciones de los pacientes del médico y sus comisiones registradas. */
 export async function getDoctorBilling(): Promise<DoctorBilling> {
   const me = await requireDoctor()
+  const { DOCTOR_SHARE_CENTS } = await import("@/lib/stripe")
 
   const subs = await db
     .select({
@@ -440,6 +451,24 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
     .limit(100)
 
   const activeStates = ["active", "trialing", "past_due"]
+
+  // Próximos pagos: solo suscripciones activas que no se van a cancelar,
+  // ordenadas por fecha de próxima renovación (más próxima primero).
+  const upcomingPayouts = subs
+    .filter(
+      (s) =>
+        activeStates.includes(s.status) &&
+        !s.cancelAtPeriodEnd &&
+        s.currentPeriodEnd,
+    )
+    .map((s) => ({
+      patientName: s.patientName || "Paciente",
+      renewalDate: new Date(s.currentPeriodEnd!),
+      doctorPayoutCents: DOCTOR_SHARE_CENTS,
+      currency: s.currency,
+    }))
+    .sort((a, b) => a.renewalDate.getTime() - b.renewalDate.getTime())
+
   return {
     subscriptions: subs.map((s) => ({
       patientName: s.patientName || "Paciente",
@@ -460,6 +489,8 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
     })),
     totalCommissionCents: comms.reduce((sum, c) => sum + c.amountCents, 0),
     activeCount: subs.filter((s) => activeStates.includes(s.status)).length,
+    upcomingPayouts,
+    upcomingTotalCents: upcomingPayouts.reduce((sum, p) => sum + p.doctorPayoutCents, 0),
   }
 }
 
