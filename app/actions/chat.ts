@@ -6,8 +6,12 @@ import { getSessionUser } from "@/lib/session"
 import { hasActiveSubscription } from "@/app/actions/subscription"
 import { maybeCreateMeeting, isGoogleConfigured } from "@/lib/google/calendar"
 import { CALL_PREFIX } from "@/lib/chat-constants"
+import { sendNewMessageEmail } from "@/lib/email"
 import { and, asc, desc, eq, gt, ne, or } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
+
+/** Minutos de silencio entre dos correos de notificación para la misma conversación. */
+const NOTIFY_COOLDOWN_MINUTES = 5
 
 async function requireUser() {
   const me = await getSessionUser()
@@ -209,10 +213,78 @@ export async function sendMessage(conversationId: number, body: string) {
   revalidatePath("/portal/chat")
   revalidatePath("/medico/chat")
 
+  // ── Notificación por email al destinatario ──────────────────────────────
+  // Se lanza de forma fire-and-forget (sin await) para no bloquear la
+  // respuesta al remitente. Cualquier error aquí es no-fatal.
+  notifyRecipient(me, conv, text).catch((err) =>
+    console.log("[v0] notifyRecipient error:", err),
+  )
+
   return {
     ok: true as const,
     message: { id: created.id, body: created.body, mine: true, createdAt: created.createdAt },
   }
+}
+
+/**
+ * Decide si debe enviarse el email de notificación al otro participante.
+ * Respeta un cooldown de NOTIFY_COOLDOWN_MINUTES para no saturar el correo
+ * cuando hay una conversación activa con muchos mensajes seguidos.
+ */
+async function notifyRecipient(
+  sender: { id: string; name: string; role: string },
+  conv: { id: number; patientId: string; doctorId: string; lastPatientNotifiedAt: Date | null; lastDoctorNotifiedAt: Date | null },
+  preview: string,
+) {
+  const senderIsPatient = conv.patientId === sender.id
+  const recipientId = senderIsPatient ? conv.doctorId : conv.patientId
+  const recipientRole: "patient" | "doctor" = senderIsPatient ? "doctor" : "patient"
+
+  // Comprueba si el cooldown está activo para este destinatario.
+  const lastNotified = senderIsPatient
+    ? conv.lastDoctorNotifiedAt
+    : conv.lastPatientNotifiedAt
+
+  const now = new Date()
+  if (lastNotified) {
+    const minutesSince = (now.getTime() - lastNotified.getTime()) / 60_000
+    if (minutesSince < NOTIFY_COOLDOWN_MINUTES) return // dentro del cooldown, silencio
+  }
+
+  // Obtiene nombre + email del destinatario.
+  const [recipient] = await db
+    .select({ name: user.name, email: user.email })
+    .from(user)
+    .where(eq(user.id, recipientId))
+    .limit(1)
+
+  if (!recipient?.email) return
+
+  // Actualiza el cooldown ANTES de enviar para evitar race conditions si
+  // se envía otro mensaje antes de que el await del email termine.
+  const cooldownField = senderIsPatient
+    ? { lastDoctorNotifiedAt: now }
+    : { lastPatientNotifiedAt: now }
+
+  await db
+    .update(conversations)
+    .set(cooldownField)
+    .where(eq(conversations.id, conv.id))
+
+  // Recorta el preview a 120 chars y elimina el prefijo de llamada.
+  const previewText = preview.startsWith(CALL_PREFIX)
+    ? "Videollamada iniciada"
+    : preview.length > 120
+      ? preview.slice(0, 120) + "…"
+      : preview
+
+  await sendNewMessageEmail({
+    to: recipient.email,
+    recipientName: recipient.name,
+    senderName: sender.name,
+    preview: previewText,
+    recipientRole,
+  })
 }
 
 /**
