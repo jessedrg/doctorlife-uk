@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/session"
 import { listDoctors } from "@/app/actions/admin"
 import { AdminDoctorToggle } from "@/components/admin-doctor-toggle"
+import { AdminDoctorDevToggle } from "@/components/admin-doctor-dev-toggle"
 import { AdminCreateDoctor } from "@/components/admin-create-doctor"
 
 export const metadata = { title: "Médicos — DoctorLife" }
@@ -30,6 +31,7 @@ export default async function AdminDoctorsPage() {
               <th className="px-4 py-3 font-semibold">Especialidad</th>
               <th className="px-4 py-3 font-semibold">Stripe</th>
               <th className="px-4 py-3 font-semibold">Estado</th>
+              <th className="px-4 py-3 font-semibold">Entorno</th>
             </tr>
           </thead>
           <tbody>
@@ -52,11 +54,14 @@ export default async function AdminDoctorsPage() {
                 <td className="px-4 py-3">
                   <AdminDoctorToggle doctorId={d.id} initial={d.acceptingPatients ?? false} />
                 </td>
+                <td className="px-4 py-3">
+                  <AdminDoctorDevToggle doctorId={d.id} initial={d.isDevOnly ?? false} />
+                </td>
               </tr>
             ))}
             {doctors.length === 0 && (
               <tr className="bg-warm">
-                <td colSpan={4} className="px-4 py-6 text-center text-ink-mute">
+                <td colSpan={5} className="px-4 py-6 text-center text-ink-mute">
                   Aún no hay médicos. Crea el primero con el formulario de arriba.
                 </td>
               </tr>

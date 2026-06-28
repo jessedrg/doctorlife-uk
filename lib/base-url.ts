@@ -1,5 +1,40 @@
 import { headers } from "next/headers"
 
+/** Host canónico de producción. */
+const PROD_HOST = "doctorlife.io"
+/** Host de desarrollo/staging. */
+const DEV_HOST = "dev.doctorlife.io"
+
+/**
+ * Devuelve true si la petición actual viene del dominio de producción
+ * (doctorlife.io). Los médicos marcados como isDevOnly NO aparecen en prod.
+ */
+export async function isProductionRequest(): Promise<boolean> {
+  try {
+    const h = await headers()
+    const host = (h.get("x-forwarded-host") ?? h.get("host") ?? "").toLowerCase()
+    return host === PROD_HOST || host.endsWith(`.${PROD_HOST}`)
+  } catch {
+    // Fuera de contexto de petición (p.ej. cron/webhook): decidir por env var.
+  }
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ""
+  return appUrl.includes(PROD_HOST)
+}
+
+/**
+ * Devuelve true si la petición viene del dominio de desarrollo.
+ * Los médicos isDevOnly SÍ aparecen aquí (y en cualquier entorno no-prod).
+ */
+export async function isDevRequest(): Promise<boolean> {
+  try {
+    const h = await headers()
+    const host = (h.get("x-forwarded-host") ?? h.get("host") ?? "").toLowerCase()
+    return host === DEV_HOST || host.endsWith(`.${DEV_HOST}`)
+  } catch {}
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ""
+  return appUrl.includes(DEV_HOST)
+}
+
 /**
  * Resolves the app's public base URL across v0 preview, Vercel previews and prod.
  * Mirrors the cascade used by Better Auth in lib/auth.ts.

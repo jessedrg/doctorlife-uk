@@ -1,6 +1,7 @@
 import { db } from "@/lib/db"
 import { account, appointments, doctorProfiles, user } from "@/lib/db/schema"
 import { and, eq, exists, gte, lt, ne, or } from "drizzle-orm"
+import { isProductionRequest } from "@/lib/base-url"
 import { scheduling } from "./index"
 import type { PooledSlot, SlotRange } from "./types"
 
@@ -13,6 +14,10 @@ const PENDING_TTL_MIN = 30
  * asigna un médico disponible para ese hueco. Las citas activas se descartan.
  */
 export async function getPooledSlots(range: SlotRange): Promise<PooledSlot[]> {
+  // En producción (doctorlife.io) excluimos los médicos de desarrollo.
+  // En dev/preview/local los médicos de dev SÍ aparecen.
+  const isProd = await isProductionRequest()
+
   // Médicos elegibles: solo aparecen quienes cumplen TODOS los requisitos para
   // poder atender — aceptan pacientes, tienen Stripe Connect operativo (cobros
   // y transferencias) y han enlazado Google (Calendar/Meet) para las
@@ -29,6 +34,8 @@ export async function getPooledSlots(range: SlotRange): Promise<PooledSlot[]> {
         eq(doctorProfiles.acceptingPatients, true),
         eq(doctorProfiles.chargesEnabled, true),
         eq(doctorProfiles.payoutsEnabled, true),
+        // En producción, excluir médicos marcados como isDevOnly.
+        isProd ? eq(doctorProfiles.isDevOnly, false) : undefined,
         // Cuenta de Google enlazada (proveedor "google" en la tabla account).
         exists(
           db
