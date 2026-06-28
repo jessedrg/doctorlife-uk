@@ -6,6 +6,7 @@ import { getSessionUser } from "@/lib/session"
 import { buildPrescriptionPdf } from "@/lib/prescriptions/pdf"
 import { sendPrescriptionReadyEmail } from "@/lib/email"
 import { hasActiveSubscription } from "@/app/actions/subscription"
+import { createNotification } from "@/app/actions/notifications"
 import { put } from "@vercel/blob"
 import { and, desc, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -90,18 +91,31 @@ export async function issuePrescription(input: {
     issuedAt,
   })
 
-  // Avisamos al paciente. Si aún no tiene tratamiento activo, el email le invita
-  // a desbloquear la receta activando la suscripción.
+  // Notificación in-app al paciente + email con CTA contextual.
   try {
     const unlocked = await hasActiveSubscription(input.patientId)
+    const doctorName = profile?.fullName ?? me.name
+
+    // Notificación en el panel del paciente
+    await createNotification({
+      userId: input.patientId,
+      type: "prescription_ready",
+      title: unlocked ? "Tu receta ya está disponible" : "Tu plan de tratamiento está listo",
+      body: unlocked
+        ? `${doctorName} ha emitido una nueva receta. Descárgala en PDF desde Mis recetas.`
+        : `${doctorName} ha preparado tu tratamiento. Actívalo para ver tu receta y empezar.`,
+      href: "/portal/recetas",
+    })
+
+    // Email al paciente
     await sendPrescriptionReadyEmail({
       to: patient.email,
       name: patient.name,
-      doctorName: profile?.fullName ?? me.name,
+      doctorName,
       locked: !unlocked,
     })
   } catch (e) {
-    console.log("[v0] prescription email error:", e instanceof Error ? e.message : e)
+    console.log("[v0] prescription email/notification error:", e instanceof Error ? e.message : e)
   }
 
   revalidatePath("/medico/recetas")

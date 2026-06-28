@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { CalendarCheck } from "lucide-react"
 import { confirmAppointmentBySession, getMyAppointments } from "@/app/actions/booking"
+import { getPatientStatus } from "@/app/actions/subscription"
+import { requireRole } from "@/lib/session"
 import { EmptyState } from "@/components/empty-state"
 
 const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
@@ -26,9 +28,9 @@ export default async function CitasPage({
 }: {
   searchParams: Promise<{ session_id?: string; reprogramada?: string }>
 }) {
+  const me = await requireRole("patient")
   const { session_id, reprogramada } = await searchParams
   if (session_id) {
-    // Confirma la cita si el pago se completó (respaldo del webhook).
     try {
       await confirmAppointmentBySession(session_id)
     } catch {
@@ -36,18 +38,27 @@ export default async function CitasPage({
     }
   }
 
-  const appointments = await getMyAppointments()
+  const [appointments, status] = await Promise.all([
+    getMyAppointments(),
+    getPatientStatus(me.id),
+  ])
+
+  // El botón "Reservar" solo aparece si aún no tiene suscripción activa
+  // (primera cita post-quiz) o si la suscripción se ha renovado (followup).
+  const canBook = status === "pending_appointment" || status === "followup_available"
 
   return (
     <div className="mx-auto w-full max-w-3xl">
       <header className="mb-6 flex items-center justify-between gap-4">
         <h1 className="text-balance text-2xl font-semibold text-ink">Mis citas</h1>
-        <Link
-          href="/portal/reservar"
-          className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper transition-opacity hover:opacity-90"
-        >
-          Reservar
-        </Link>
+        {canBook && (
+          <Link
+            href="/portal/reservar"
+            className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper transition-opacity hover:opacity-90"
+          >
+            {status === "followup_available" ? "Reservar seguimiento" : "Reservar"}
+          </Link>
+        )}
       </header>
 
       {reprogramada ? (
