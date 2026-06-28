@@ -43,6 +43,72 @@ export async function getMySubscription() {
   return row ?? null
 }
 
+/**
+ * Estado completo del paciente en el flujo de tratamiento.
+ *
+ * Fases (en orden):
+ *  1. "pending_appointment"  → sin cita confirmada aún (el médico la enviará)
+ *  2. "pending_prescription" → tiene cita confirmada pero no hay receta
+ *  3. "can_activate"         → tiene receta, sin suscripción activa → puede activar
+ *  4. "active"               → suscripción activa
+ *  5. "followup_available"   → suscripción activa + followupDueAt establecido → puede reservar seguimiento
+ */
+export type PatientStatus =
+  | "pending_appointment"
+  | "pending_prescription"
+  | "can_activate"
+  | "active"
+  | "followup_available"
+
+export async function getPatientStatus(patientId: string): Promise<PatientStatus> {
+  const { prescriptions: prescriptionsTable } = await import("@/lib/db/schema")
+  const { count } = await import("drizzle-orm")
+
+  // 1. ¿Tiene suscripción activa?
+  const [sub] = await db
+    .select({
+      id: subscriptions.id,
+      status: subscriptions.status,
+      followupDueAt: subscriptions.followupDueAt,
+    })
+    .from(subscriptions)
+    .where(
+      and(
+        eq(subscriptions.patientId, patientId),
+        inArray(subscriptions.status, ["active", "trialing", "past_due"]),
+      ),
+    )
+    .orderBy(desc(subscriptions.id))
+    .limit(1)
+
+  if (sub) {
+    return sub.followupDueAt ? "followup_available" : "active"
+  }
+
+  // 2. ¿Tiene receta emitida?
+  const [rxRow] = await db
+    .select({ id: prescriptionsTable.id })
+    .from(prescriptionsTable)
+    .where(eq(prescriptionsTable.patientId, patientId))
+    .limit(1)
+
+  if (rxRow) return "can_activate"
+
+  // 3. ¿Tiene al menos una cita confirmada?
+  const [appt] = await db
+    .select({ id: appointments.id })
+    .from(appointments)
+    .where(
+      and(
+        eq(appointments.patientId, patientId),
+        inArray(appointments.status, ["confirmed"]),
+      ),
+    )
+    .limit(1)
+
+  return appt ? "pending_prescription" : "pending_appointment"
+}
+
 /** ¿El paciente tiene una suscripción que da acceso al tratamiento/recetas? */
 export async function hasActiveSubscription(patientId: string): Promise<boolean> {
   const [row] = await db

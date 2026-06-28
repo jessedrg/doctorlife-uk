@@ -1,7 +1,9 @@
 import { getMyPrescriptions } from "@/app/actions/prescriptions"
-import { hasActiveSubscription, syncSubscriptionBySession } from "@/app/actions/subscription"
-import { getSessionUser } from "@/lib/session"
+import { getMySubscription, getPatientStatus, syncSubscriptionBySession } from "@/app/actions/subscription"
+import { requireRole } from "@/lib/session"
 import { PrescriptionList } from "@/components/prescription-list"
+import { hasPendingVerification } from "@/app/actions/verification"
+import { SubscriptionCard } from "@/components/subscription-card"
 
 export default async function RecetasPage({
   searchParams,
@@ -10,7 +12,6 @@ export default async function RecetasPage({
 }) {
   const { session_id } = await searchParams
 
-  // Al volver del checkout, sincronizamos por si el webhook aún no llegó.
   if (session_id) {
     try {
       await syncSubscriptionBySession(session_id)
@@ -19,23 +20,44 @@ export default async function RecetasPage({
     }
   }
 
-  const me = await getSessionUser()
-  const [prescriptions, unlocked] = await Promise.all([
+  const me = await requireRole("patient")
+
+  const [prescriptions, subscription, status, verificationPending] = await Promise.all([
     getMyPrescriptions(),
-    me ? hasActiveSubscription(me.id) : Promise.resolve(false),
+    getMySubscription(),
+    getPatientStatus(me.id),
+    hasPendingVerification(me.id),
   ])
+
+  const isActive = status === "active" || status === "followup_available"
+  const hasPrescription = prescriptions.length > 0
 
   return (
     <div className="flex flex-col gap-6">
       <header>
         <h1 className="text-2xl font-semibold text-ink">Mis recetas</h1>
         <p className="mt-1 text-sm text-muted">
-          {unlocked
+          {isActive
             ? "Descarga las recetas emitidas por tu médico en formato PDF."
-            : "Tu médico te envía aquí las recetas. Desbloquéalas activando tu tratamiento."}
+            : status === "can_activate"
+            ? "Tu médico ha preparado tu receta. Activa el tratamiento para descargarla."
+            : status === "pending_prescription"
+            ? "Tu médico está preparando tu plan de tratamiento. Aparecerá aquí en cuanto esté listo."
+            : "Tu médico te enviará aquí las recetas cuando valore tu caso."}
         </p>
       </header>
-      <PrescriptionList prescriptions={prescriptions} locked={!unlocked} />
+
+      {/* Mostrar recetas si hay alguna */}
+      <PrescriptionList prescriptions={prescriptions} locked={!isActive} />
+
+      {/* Tarjeta de suscripción solo si no está activa todavía */}
+      {!isActive && (
+        <SubscriptionCard
+          subscription={subscription}
+          patientStatus={status}
+          verificationPending={verificationPending}
+        />
+      )}
     </div>
   )
 }
