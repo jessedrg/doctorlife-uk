@@ -87,18 +87,28 @@ export function BookingCalendar({ slots }: { slots: PooledSlot[] }) {
 
       {/* Huecos del día */}
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
-        {activeSlots.map((s) => (
-          <button
-            key={s.startUtc}
-            type="button"
-            disabled={pendingStart !== null}
-            onClick={() => book(s.startUtc)}
-            className="rounded-xl border border-ink/10 bg-paper px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:border-sage hover:bg-sage/10 disabled:opacity-50"
-            title={`Con ${s.doctorName}`}
-          >
-            {pendingStart === s.startUtc ? "..." : s.label}
-          </button>
-        ))}
+        {activeSlots.map((s) => {
+          const isThisLoading = pendingStart === s.startUtc
+          const isOtherLoading = pendingStart !== null && pendingStart !== s.startUtc
+          return (
+            <button
+              key={s.startUtc}
+              type="button"
+              disabled={pendingStart !== null}
+              onClick={() => book(s.startUtc)}
+              className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
+                isThisLoading
+                  ? "border-sage bg-sage/20 text-ink"
+                  : isOtherLoading
+                  ? "border-ink/8 bg-paper text-ink/40"
+                  : "border-ink/10 bg-paper text-ink hover:border-sage hover:bg-sage/10"
+              }`}
+              title={`Con ${s.doctorName}`}
+            >
+              {isThisLoading ? "Reservando…" : s.label}
+            </button>
+          )
+        })}
       </div>
 
       {error ? (
