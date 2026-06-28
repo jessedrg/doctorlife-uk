@@ -13,7 +13,8 @@ export default async function MedicoRecetasPage() {
       <header>
         <h1 className="text-2xl font-semibold text-ink">Recetas</h1>
         <p className="mt-1 text-sm text-muted">
-          Emite recetas para tus pacientes; se generan en PDF y quedan disponibles en su portal.
+          Rellena los datos de la receta y sube el PDF oficial. El paciente lo recibirá en su portal
+          en cuanto active el tratamiento.
         </p>
       </header>
 
