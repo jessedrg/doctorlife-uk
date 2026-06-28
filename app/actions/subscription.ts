@@ -10,9 +10,9 @@ import {
   user as userTable,
 } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
-import { stripe, DOCTOR_SHARE_CENTS } from "@/lib/stripe"
+import { stripe, DOCTOR_SHARE_CENTS, DOCTOR_ACTIVATION_CENTS } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
-import { getPlan, defaultPlan, FIRST_VISIT_CENTS, type PlanInfo } from "@/lib/plans"
+import { getPlan, defaultPlan, FIRST_VISIT_CENTS, SUBSCRIPTION_PRICE_CENTS, type PlanInfo } from "@/lib/plans"
 import { hasPendingVerification } from "@/app/actions/verification"
 import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray } from "drizzle-orm"
@@ -183,34 +183,31 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
 
   const plan = await getPatientPlan(patient.email)
 
-  // Guardamos (o reutilizamos) una fila de suscripción en estado incompleto.
+  // Guardamos una fila de suscripción en estado incompleto.
+  // Precio siempre almacenado como el mensual recurrente = 100 €.
   const [pending] = await db
     .insert(subscriptions)
     .values({
       patientId: patient.id,
       doctorId,
       plan: plan.name,
-      priceCents: plan.priceCents,
+      priceCents: SUBSCRIPTION_PRICE_CENTS,
       status: "incomplete",
     })
     .returning({ id: subscriptions.id })
 
-  // El cobro de la suscripción se hace ÍNTEGRO a la plataforma (la empresa).
-  // El reparto al médico (25 € fijos por pago) se realiza con una transferencia
-  // separada al confirmarse cada factura (ver payoutDoctorForInvoice en el
-  // webhook invoice.paid). Así "el resto" se queda en la cuenta de la empresa.
   const subscriptionData: Record<string, unknown> = {
     metadata: { subscriptionRowId: String(pending.id), patientId: patient.id, doctorId },
   }
 
   try {
-    // El primer mes se descuentan los 25 € ya abonados en la primera visita:
-    // 65 € − 25 € = 40 €. Los meses siguientes se cobran al precio normal.
+    // Primer mes: 100 € − 25 € (primera visita ya abonada) = 75 €.
+    // Meses siguientes: 100 € recurrentes.
     const firstMonthCoupon = await stripe.coupons.create({
-      amount_off: FIRST_VISIT_CENTS,
+      amount_off: FIRST_VISIT_CENTS,   // 2500 céntimos = 25 €
       currency: "eur",
       duration: "once",
-      name: "Primera visita ya abonada",
+      name: "Primera visita ya abonada (−25 €)",
     })
 
     const baseUrl = await getRequestBaseUrl()
@@ -223,11 +220,12 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
           quantity: 1,
           price_data: {
             currency: "eur",
-            unit_amount: plan.priceCents,
+            unit_amount: SUBSCRIPTION_PRICE_CENTS,   // 100 € IVA incl.
             recurring: { interval: "month" },
             product_data: {
               name: `${plan.name} · DoctorLife`,
-              description: "Tratamiento mensual con seguimiento médico (primer mes: 25 € de descuento)",
+              description:
+                "Suscripción mensual con seguimiento médico. Primer mes: 75 € (25 € de la primera visita ya abonados).",
             },
           },
         },
@@ -346,10 +344,10 @@ export async function payoutDoctorForInvoice(invoice: {
   }
 
   // Importe que recibe el médico:
-  // - Activación: el PRIMER pago va ÍNTEGRO al médico (lo cobrado en la factura).
-  // - Renovación: 25 € fijos; el resto se queda en la empresa.
+  // - Activación (primer pago 75 €): 10 € de comisión por captación.
+  // - Renovación (100 € mensuales): 35 € fijos; el resto (65 €) se queda en la empresa.
   const amountPaid = invoice.amount_paid ?? 0
-  const targetAmount = isActivation ? amountPaid : DOCTOR_SHARE_CENTS
+  const targetAmount = isActivation ? DOCTOR_ACTIVATION_CENTS : DOCTOR_SHARE_CENTS
   const amount = Math.min(targetAmount, amountPaid)
 
   // Datos del paciente para los avisos.
@@ -385,8 +383,8 @@ export async function payoutDoctorForInvoice(invoice: {
           ? `${patientName} activó su suscripción`
           : `${patientName} renovó su suscripción`,
         body: isActivation
-          ? `Has recibido ${formatEur(amount)} por la activación del tratamiento.`
-          : `Has recibido tu comisión de ${formatEur(amount)} por la renovación.`,
+          ? `Has recibido ${formatEur(amount)} de comisión por captación.`
+          : `Has recibido ${formatEur(amount)} por la renovación mensual.`,
         href: "/medico/pacientes",
       })
     }
