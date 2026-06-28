@@ -1,38 +1,41 @@
 /**
  * Plan único de DoctorLife.
  *
- * Hay un solo plan comprable: "Seguimiento con endocrino" (endocrino asignado,
- * videollamada mensual de seguimiento y chat en vivo con el médico durante toda
- * la suscripción). Precio: 65 € + IVA al mes. El resto de planes de marketing
- * están marcados como "Próximamente" (ver lib/data.ts).
+ * Precio mensual: 100 € IVA incluido.
+ * La primera visita (25 €) ya se cobró en el quiz, por lo que el primer pago
+ * de la suscripción es 100 - 25 = 75 €. Los meses siguientes son 100 € completos.
+ *
+ * Reparto al médico:
+ *  - Activación: 10 € (comisión por captación)
+ *  - Renovación mensual: 35 € fijos
  */
 
-/** IVA general (España). */
-export const IVA_RATE = 0.21
-
-/** Precio base mensual, sin IVA, en céntimos. */
-export const BASE_PRICE_CENTS = 10000
+/** Precio mensual total con IVA incluido (céntimos). */
+export const SUBSCRIPTION_PRICE_CENTS = 10000   // 100 €
 
 /** Pago único de la primera visita (céntimos). Se abona en la landing. */
-export const FIRST_VISIT_CENTS = 2500
+export const FIRST_VISIT_CENTS = 2500            // 25 €
+
+/** Primer pago real de la suscripción = precio - primera visita ya cobrada. */
+export const FIRST_MONTH_CENTS = SUBSCRIPTION_PRICE_CENTS - FIRST_VISIT_CENTS  // 75 €
 
 /** Etiqueta del pago único de la primera visita. */
 export const FIRST_VISIT_LABEL = "25 €"
 
 export interface PlanInfo {
   name: string
-  /** Precio base sin IVA (céntimos). */
+  /** Precio mensual total con IVA incluido (céntimos). */
+  priceCents: number
+  /** Primer mes con descuento de la primera visita (céntimos). */
+  firstMonthCents: number
+  /** Total formateado, p. ej. "100,00 €/mes". */
+  totalLabel: string
+  /** Primer mes formateado, p. ej. "75,00 € el primer mes". */
+  firstMonthLabel: string
+  /** Precio sin IVA para mostrar en facturación (céntimos). */
   basePriceCents: number
   /** IVA en céntimos. */
   ivaCents: number
-  /** Total cobrado al mes (base + IVA) en céntimos. */
-  priceCents: number
-  /** Etiqueta corta del precio base, p. ej. "65 € + IVA". */
-  priceLabel: string
-  /** Total con IVA formateado, p. ej. "78,65 €/mes". */
-  totalLabel: string
-  /** Total del primer mes con el descuento de la primera visita ya aplicado. */
-  firstMonthLabel: string
 }
 
 function eur(cents: number): string {
@@ -40,16 +43,17 @@ function eur(cents: number): string {
 }
 
 function buildMainPlan(): PlanInfo {
-  const ivaCents = Math.round(BASE_PRICE_CENTS * IVA_RATE)
-  const priceCents = BASE_PRICE_CENTS + ivaCents
+  // IVA invertido: precio con IVA = base × 1.21  →  base = precio / 1.21
+  const basePriceCents = Math.round(SUBSCRIPTION_PRICE_CENTS / 1.21)
+  const ivaCents = SUBSCRIPTION_PRICE_CENTS - basePriceCents
   return {
     name: "Seguimiento con endocrino",
-    basePriceCents: BASE_PRICE_CENTS,
+    priceCents: SUBSCRIPTION_PRICE_CENTS,
+    firstMonthCents: FIRST_MONTH_CENTS,
+    totalLabel: `${eur(SUBSCRIPTION_PRICE_CENTS)}/mes`,
+    firstMonthLabel: `${eur(FIRST_MONTH_CENTS)} el primer mes`,
+    basePriceCents,
     ivaCents,
-    priceCents,
-    priceLabel: `${eur(BASE_PRICE_CENTS)} + IVA`,
-    totalLabel: `${eur(priceCents)}/mes`,
-    firstMonthLabel: `${eur(Math.max(0, priceCents - FIRST_VISIT_CENTS))} el primer mes`,
   }
 }
 

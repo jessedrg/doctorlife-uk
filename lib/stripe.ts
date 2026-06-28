@@ -6,11 +6,18 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
 /**
  * Reparto de ingresos DoctorLife:
- * - Primera consulta (pago único de 25 €): el importe íntegro va al médico
- *   asignado a esa llamada.
- * - Suscripción mensual: el médico asignado recibe SIEMPRE 25 € fijos por cada
- *   pago; el resto se queda en la cuenta de la empresa (plataforma).
  *
- * Importe fijo (en céntimos) que percibe el médico por cada pago de suscripción.
+ * Suscripción mensual (100 € IVA incl.):
+ *  - Primer pago (activación): el paciente paga 75 € (100 - 25 ya abonados).
+ *    El médico recibe 10 € como comisión de captación.
+ *  - Renovaciones mensuales: el paciente paga 100 €.
+ *    El médico recibe 35 € fijos; el resto (65 €) se queda en la plataforma.
+ *
+ * Primera visita (pago único de 25 €): el importe íntegro va al médico.
  */
-export const DOCTOR_SHARE_CENTS = 2500
+
+/** Comisión al médico en la activación (primer pago de suscripción). */
+export const DOCTOR_ACTIVATION_CENTS = 1000   // 10 €
+
+/** Comisión al médico en cada renovación mensual. */
+export const DOCTOR_SHARE_CENTS = 3500         // 35 €
