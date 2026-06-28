@@ -144,7 +144,7 @@ export function LeadForm({ source = "articulo" }: { source?: string }) {
               política de privacidad
             </a>{" "}
             y consiento el tratamiento de mis datos, incluidos los de salud, para recibir una
-            valoración médica (art. 9.2.h RGPD). Responsable: HI DOCTOR AI SL.
+            valoración médica (art. 9.2.h RGPD). Responsable: DoctorLife.
           </span>
         </label>
         {errors.consent && <p className="text-[13px] text-clay">{errors.consent}</p>}

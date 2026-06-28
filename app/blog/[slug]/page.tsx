@@ -5,7 +5,9 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
-import { posts, getPost, getRelated, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
+import { BlogInternalLinks } from "@/components/blog-internal-links";
+import { posts, getPost, getRelated, seoTitle, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
+import { getInternalLinks } from "@/lib/blog-internal-links";
 
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
@@ -20,14 +22,15 @@ export async function generateMetadata({
   const post = getPost(slug);
   if (!post) return { title: `Artículo no encontrado — ${BRAND}` };
   const url = `${SITE_URL}/blog/${post.slug}`;
+  const optimizedTitle = seoTitle(post);
   return {
-    title: post.metaTitle,
+    title: optimizedTitle,
     description: post.metaDescription,
     keywords: [post.keyword, "GLP-1", "pérdida de peso", "semaglutida", "tirzepatida", BRAND],
     authors: [{ name: MEDICAL_REVIEWER.name }],
     alternates: { canonical: url },
     openGraph: {
-      title: post.metaTitle,
+      title: optimizedTitle,
       description: post.metaDescription,
       url,
       type: "article",
@@ -124,6 +127,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   if (!post) notFound();
 
   const related = getRelated(slug);
+  const internalLinks = getInternalLinks(slug);
   const url = `${SITE_URL}/blog/${post.slug}`;
   const fmt = (d: string) =>
     new Date(d).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
@@ -269,6 +273,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}).
             </p>
           </article>
+
+          {/* enlazado interno geográfico (silos por ciudad/fármaco) */}
+          <BlogInternalLinks groups={internalLinks} />
 
           {/* relacionados */}
           {related.length > 0 && (

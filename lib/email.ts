@@ -271,6 +271,53 @@ export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; t
   )
 }
 
+/**
+ * Notificación de mensaje nuevo en el chat.
+ *
+ * Se envía cuando el otro participante (doctor o paciente) escribe y el
+ * destinatario lleva más de 5 minutos sin recibir un aviso para esa misma
+ * conversación (cooldown gestionado en sendMessage).
+ */
+export async function sendNewMessageEmail(opts: {
+  to: string
+  /** Nombre del destinatario (quien recibe el correo). */
+  recipientName: string
+  /** Nombre de quien escribió el mensaje. */
+  senderName: string
+  /** Fragmento del último mensaje (hasta 120 chars). */
+  preview: string
+  /** Rol del destinatario: 'patient' → enlace al portal; 'doctor' → enlace al panel. */
+  recipientRole: "patient" | "doctor"
+}) {
+  const firstName = opts.recipientName.split(" ")[0] || "hola"
+  const chatUrl =
+    opts.recipientRole === "doctor"
+      ? `${getCanonicalBaseUrl()}/medico/chat`
+      : `${getCanonicalBaseUrl()}/portal/chat`
+
+  const previewText =
+    opts.preview.length > 120 ? opts.preview.slice(0, 120) + "…" : opts.preview
+
+  const body = `
+    ${p(`Hola ${firstName}, tienes un mensaje nuevo de <strong>${opts.senderName}</strong>.`)}
+    <div style="background:${PAPER};border-left:3px solid ${AMBER};border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 18px;">
+      <p style="margin:0;font-size:14px;line-height:1.6;color:${INK_SOFT};font-style:italic;">"${previewText}"</p>
+    </div>
+    ${p("Responde desde tu panel para mantener la conversación en un solo lugar seguro.")}
+    <div style="margin:22px 0 4px;">${button(chatUrl, "Ver el mensaje")}</div>
+  `
+
+  return send(
+    opts.to,
+    `${opts.senderName} te ha escrito — DoctorLife`,
+    shell({
+      title: "Tienes un mensaje nuevo",
+      body,
+      preheader: `${opts.senderName}: ${previewText}`,
+    }),
+  )
+}
+
 /** Restablecer contraseña (usado por Better Auth). */
 export async function sendResetPasswordEmail(opts: { to: string; name?: string; url: string }) {
   const firstName = opts.name?.split(" ")[0] || "hola"

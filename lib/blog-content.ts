@@ -11,6 +11,11 @@
 import type { Post, Section, Faq, Block } from "./blog";
 import { buildProvincePosts } from "./blog-provinces";
 import { buildKeywordPosts } from "./blog-keywords";
+import {
+  getCityFacts,
+  healthServiceFor,
+  formatCityPop,
+} from "./blog-city-facts";
 
 const BRAND = "DoctorLife";
 
@@ -36,8 +41,8 @@ function isoDate(offset: number): string {
 }
 
 /* ── ciudades de España ── */
-type City = { name: string; slug: string; prep?: string };
-const CITIES: City[] = [
+export type City = { name: string; slug: string; prep?: string };
+export const CITIES: City[] = [
   { name: "Madrid", slug: "madrid" },
   { name: "Barcelona", slug: "barcelona" },
   { name: "Valencia", slug: "valencia" },
@@ -95,6 +100,150 @@ const CITIES: City[] = [
   { name: "Toledo", slug: "toledo" },
   { name: "Guadalajara", slug: "guadalajara" },
   { name: "Pontevedra", slug: "pontevedra" },
+  // Batch 2 — ciudades medianas con búsquedas GLP-1 reales
+  { name: "Dos Hermanas", slug: "dos-hermanas" },
+  { name: "Parla", slug: "parla" },
+  { name: "Torrejón de Ardoz", slug: "torrejon-de-ardoz" },
+  { name: "Alcobendas", slug: "alcobendas" },
+  { name: "Pozuelo de Alarcón", slug: "pozuelo-de-alarcon" },
+  { name: "San Sebastián de los Reyes", slug: "san-sebastian-de-los-reyes" },
+  { name: "Torrent", slug: "torrent" },
+  { name: "Mataró", slug: "mataro" },
+  { name: "Cornellà de Llobregat", slug: "cornella" },
+  { name: "Sant Boi de Llobregat", slug: "sant-boi" },
+  { name: "Manresa", slug: "manresa" },
+  { name: "Reus", slug: "reus" },
+  { name: "Granollers", slug: "granollers" },
+  { name: "Rubí", slug: "rubi" },
+  { name: "Sant Cugat del Vallès", slug: "sant-cugat" },
+  { name: "Castelldefels", slug: "castelldefels" },
+  { name: "Barakaldo", slug: "barakaldo" },
+  { name: "Getxo", slug: "getxo" },
+  { name: "Irún", slug: "irun" },
+  { name: "Fuengirola", slug: "fuengirola" },
+  { name: "Torremolinos", slug: "torremolinos" },
+  { name: "Benalmádena", slug: "benalmadena" },
+  { name: "Vélez-Málaga", slug: "velez-malaga" },
+  { name: "Estepona", slug: "estepona" },
+  { name: "Torrevieja", slug: "torrevieja" },
+  { name: "Orihuela", slug: "orihuela" },
+  { name: "Benidorm", slug: "benidorm" },
+  { name: "Lorca", slug: "lorca" },
+  { name: "Roquetas de Mar", slug: "roquetas-de-mar" },
+  { name: "El Puerto de Santa María", slug: "el-puerto-de-santa-maria" },
+  { name: "Chiclana de la Frontera", slug: "chiclana" },
+  { name: "Algeciras", slug: "algeciras" },
+  { name: "Mérida", slug: "merida" },
+  { name: "Talavera de la Reina", slug: "talavera-de-la-reina" },
+  { name: "Cuenca", slug: "cuenca" },
+  { name: "Ciudad Real", slug: "ciudad-real" },
+  { name: "Palencia", slug: "palencia" },
+  { name: "Zamora", slug: "zamora" },
+  { name: "Ávila", slug: "avila" },
+  { name: "Segovia", slug: "segovia" },
+  { name: "Soria", slug: "soria" },
+  // Batch 3 — 100 ciudades adicionales
+  { name: "Pinto", slug: "pinto" },
+  { name: "Rivas-Vaciamadrid", slug: "rivas-vaciamadrid" },
+  { name: "Majadahonda", slug: "majadahonda" },
+  { name: "Las Rozas de Madrid", slug: "las-rozas" },
+  { name: "Collado Villalba", slug: "collado-villalba" },
+  { name: "Alcalá de Guadaíra", slug: "alcala-de-guadaira" },
+  { name: "Utrera", slug: "utrera" },
+  { name: "San Fernando", slug: "san-fernando" },
+  { name: "La Línea de la Concepción", slug: "la-linea" },
+  { name: "Motril", slug: "motril" },
+  { name: "Linares", slug: "linares" },
+  { name: "Andújar", slug: "andujar" },
+  { name: "Úbeda", slug: "ubeda" },
+  { name: "Baeza", slug: "baeza" },
+  { name: "Écija", slug: "ecija" },
+  { name: "Lucena", slug: "lucena" },
+  { name: "Puente Genil", slug: "puente-genil" },
+  { name: "Antequera", slug: "antequera" },
+  { name: "Ronda", slug: "ronda" },
+  { name: "Nerja", slug: "nerja" },
+  { name: "La Laguna", slug: "la-laguna" },
+  { name: "Arona", slug: "arona" },
+  { name: "Adeje", slug: "adeje" },
+  { name: "Arrecife", slug: "arrecife" },
+  { name: "Puerto del Rosario", slug: "puerto-del-rosario" },
+  { name: "Telde", slug: "telde" },
+  { name: "Santa Lucía de Tirajana", slug: "santa-lucia" },
+  { name: "Manacor", slug: "manacor" },
+  { name: "Ibiza", slug: "ibiza" },
+  { name: "Mahón", slug: "mahon" },
+  { name: "Ciutadella", slug: "ciutadella" },
+  { name: "Gandía", slug: "gandia" },
+  { name: "Sagunto", slug: "sagunto" },
+  { name: "Paterna", slug: "paterna" },
+  { name: "Burjassot", slug: "burjassot" },
+  { name: "Alzira", slug: "alzira" },
+  { name: "Ontinyent", slug: "ontinyent" },
+  { name: "Dénia", slug: "denia" },
+  { name: "Calpe", slug: "calpe" },
+  { name: "Villena", slug: "villena" },
+  { name: "Petrer", slug: "petrer" },
+  { name: "Novelda", slug: "novelda" },
+  { name: "Crevillent", slug: "crevillent" },
+  { name: "Alcoy", slug: "alcoy" },
+  { name: "Ibi", slug: "ibi" },
+  { name: "Mollet del Vallès", slug: "mollet" },
+  { name: "Vilafranca del Penedès", slug: "vilafranca" },
+  { name: "Vilanova i la Geltrú", slug: "vilanova" },
+  { name: "Sitges", slug: "sitges" },
+  { name: "Cerdanyola del Vallès", slug: "cerdanyola" },
+  { name: "El Prat de Llobregat", slug: "el-prat" },
+  { name: "Ripollet", slug: "ripollet" },
+  { name: "Vic", slug: "vic" },
+  { name: "Igualada", slug: "igualada" },
+  { name: "Figueres", slug: "figueres" },
+  { name: "Blanes", slug: "blanes" },
+  { name: "Lloret de Mar", slug: "lloret-de-mar" },
+  { name: "Calafell", slug: "calafell" },
+  { name: "Tortosa", slug: "tortosa" },
+  { name: "Cambrils", slug: "cambrils" },
+  { name: "Salou", slug: "salou" },
+  { name: "Bilbao La Vieja", slug: "bilbao-la-vieja" },
+  { name: "Basauri", slug: "basauri" },
+  { name: "Sestao", slug: "sestao" },
+  { name: "Eibar", slug: "eibar" },
+  { name: "Mondragón", slug: "mondragon" },
+  { name: "Zarautz", slug: "zarautz" },
+  { name: "Tolosa", slug: "tolosa" },
+  { name: "Rentería", slug: "renteria" },
+  { name: "Durango", slug: "durango" },
+  { name: "Portugalete", slug: "portugalete" },
+  { name: "Santurce", slug: "santurce" },
+  { name: "Tudela", slug: "tudela" },
+  { name: "Estella", slug: "estella" },
+  { name: "Calahorra", slug: "calahorra" },
+  { name: "Arnedo", slug: "arnedo" },
+  { name: "Huesca", slug: "huesca" },
+  { name: "Teruel", slug: "teruel" },
+  { name: "Calatayud", slug: "calatayud" },
+  { name: "Barbastro", slug: "barbastro" },
+  { name: "Monzón", slug: "monzon" },
+  { name: "Avilés", slug: "aviles" },
+  { name: "Langreo", slug: "langreo" },
+  { name: "Mieres", slug: "mieres" },
+  { name: "Siero", slug: "siero" },
+  { name: "Ferrol", slug: "ferrol" },
+  { name: "Santiago de Compostela", slug: "santiago-de-compostela" },
+  { name: "Vilagarcía de Arousa", slug: "vilagarcia" },
+  { name: "Narón", slug: "naron" },
+  { name: "Oleiros", slug: "oleiros" },
+  { name: "Torrelavega", slug: "torrelavega" },
+  { name: "Miranda de Ebro", slug: "miranda-de-ebro" },
+  { name: "Aranda de Duero", slug: "aranda-de-duero" },
+  { name: "Ponferrada", slug: "ponferrada" },
+  { name: "Medina del Campo", slug: "medina-del-campo" },
+  { name: "Ávila ciudad", slug: "avila-ciudad" },
+  { name: "Plasencia", slug: "plasencia" },
+  { name: "Don Benito", slug: "don-benito" },
+  { name: "Villanueva de la Serena", slug: "villanueva-de-la-serena" },
+  { name: "Ceuta", slug: "ceuta" },
+  { name: "Melilla", slug: "melilla" },
 ];
 
 /* ── fármacos ── */
@@ -309,7 +458,7 @@ const BENEFIT_DIAB_P = [
 const MECH_WEIGHT = [
   "{Drug} contiene {inn}, un análogo del GLP‑1 que imita a una hormona intestinal que tu cuerpo libera de forma natural al comer. Actúa sobre los centros del apetito del cerebro y ralentiza el vaciado del estómago, de modo que te sientes saciado antes y durante más tiempo. El resultado es que comes menos sin la sensación constante de hambre que hace fracasar la mayoría de las dietas.",
   "El principio activo de {Drug} ({inn}) pertenece a la familia de los agonistas del receptor GLP‑1. Reduce las señales de hambre, mejora el control de la glucosa tras las comidas y enlentece la digestión. Por eso, administrado mediante {frequency} y con la dosis bien ajustada, ayuda a reducir la ingesta calórica de forma natural y sostenible en {City}.",
-  "{Drug} funciona reproduciendo la acción del GLP‑1, una hormona que regula el apetito y la saciedad. Al activar sus receptores disminuye el «ruido alimentario» —esos pensamientos constantes sobre comida—, estabiliza el azúcar en sangre y prolonga la sensación de plenitud. No es un quemagrasas ni un producto milagro: es un tratamiento médico que cambia tu relación con el hambre.",
+  "{Drug} funciona reproduciendo la acción del GLP‑1, una hormona que regula el apetito y la saciedad. Al activar sus receptores disminuye el «ruido alimentario» —esos pensamientos constantes sobre comida—, estabiliza el azúcar en sangre y prolonga la sensaci��n de plenitud. No es un quemagrasas ni un producto milagro: es un tratamiento médico que cambia tu relación con el hambre.",
 ];
 const MECH_DIAB = [
   "{Drug} ({inn}) es un análogo del GLP‑1 indicado para la diabetes tipo 2. Estimula la liberación de insulina cuando el azúcar en sangre está alto, frena la producción hepática de glucosa y ralentiza el vaciado gástrico. Como efecto secundario frecuente reduce el apetito, motivo por el que mucha gente lo asocia a la pérdida de peso.",
@@ -446,6 +595,7 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
         { type: "p", text: tpl(pick(COMPARE_P, slug + "cmp"), vars) },
       ],
     },
+    localContextSection(city, slug),
     {
       h2: tpl("Precio de {Drug} en {City} por dosis", vars),
       blocks: [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }],
@@ -485,15 +635,18 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
     },
   ];
 
-  const faqs: Faq[] = drug.kind === "weight" ? weightFaqs(drug, city) : diabetesFaqs(drug, city);
+  const faqs: Faq[] = [
+    ...(drug.kind === "weight" ? weightFaqs(drug, city) : diabetesFaqs(drug, city)),
+    localFaqs(city)[hash(slug) % 3],
+  ];
 
   return {
     slug,
     title: tpl("Comprar {Drug} en {City}", vars),
     h1: tpl("Comprar {Drug} en {City}: precio, receta y cómo empezar", vars),
-    metaTitle: tpl("Comprar {Drug} en {City} (2026): Precio, Receta y Sin Esperas", vars),
+    metaTitle: tpl("Comprar {Drug} en {City}: Receta Online con Médico en 24h", vars),
     metaDescription: tpl(
-      "Cómo comprar {Drug} en {City} de forma legal: precio por dosis, cómo conseguir la receta online sin esperas y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Consigue {Drug} en {City} con una cita médica online: receta electrónica en 24h, sin listas de espera ni desplazamientos. Médicos colegiados y seguimiento real. 1ª visita 25 €.",
       vars,
     ),
     excerpt: tpl(
@@ -554,6 +707,7 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
         },
       ],
     },
+    localContextSection(city, slug),
     {
       h2: tpl("¿Qué es {Drug} y por qué necesita receta?", vars),
       blocks: [
@@ -607,15 +761,16 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
       q: "¿La primera visita se descuenta del tratamiento?",
       a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
     },
+    localFaqs(city)[hash(slug) % 3],
   ];
 
   return {
     slug,
     title: tpl("Precio de {Drug} en {City}", vars),
     h1: tpl("Precio de {Drug} en {City}: cuánto cuesta y cómo conseguirlo con receta", vars),
-    metaTitle: tpl("Precio de {Drug} en {City} (2026): Cuánto Cuesta con Receta", vars),
+    metaTitle: tpl("{Drug} Precio en {City} 2026 | Receta Online con Médico", vars),
     metaDescription: tpl(
-      "Precio de {Drug} en {City} por dosis, de qué depende el coste y cómo conseguirlo de forma legal con receta y seguimiento médico. Primera visita 25 €.",
+      "Precio de {Drug} en {City} por dosis y cómo conseguirlo legal: cita médica online y receta electrónica sin esperas. Médicos colegiados y seguimiento incluido. 1ª visita 25 €.",
       vars,
     ),
     excerpt: tpl(
@@ -629,6 +784,113 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
     updated: "2026-06-18",
     cover: drug.cover,
     coverAlt: tpl("Pluma de {Drug} con etiqueta de precio en una farmacia de {City}", vars),
+    sections,
+    faqs,
+  };
+}
+
+/* ── post "{drug} en {city}" (marca + geo, ángulo disponibilidad) ── */
+const DRUGCITY_INTRO = [
+  "Buscar «{drug} en {City}» suele responder a una de dos cosas: o quieres empezar el tratamiento y no sabes por dónde, o llevas tiempo intentando conseguirlo y te has topado con el desabastecimiento. En esta guía verás cómo acceder a {Drug} en {City} de forma legal, qué hacer si tu farmacia no tiene stock y cuándo conviene valorar una alternativa.",
+  "Si has llegado hasta aquí escribiendo «{drug} {City}», probablemente quieras saber dónde conseguir {Drug} cerca de ti, a qué precio y qué pasa con la disponibilidad. Vamos al grano: te explicamos la situación de {Drug} en {City} y la vía más rápida y segura para empezar con receta y seguimiento.",
+  "{Drug} es uno de los tratamientos más buscados en {City}, y también uno de los que más dudas genera: disponibilidad irregular en farmacias, precio, receta… En esta guía resolvemos cómo conseguir {Drug} en {City} sin caer en webs ilegales y con respaldo médico real.",
+];
+const DRUGCITY_STOCK = [
+  "{Drug} ha sufrido episodios de desabastecimiento en toda España, y {City} no es una excepción: es habitual que una farmacia no tenga la dosis concreta y sí otra. La buena noticia es que la receta electrónica es válida en cualquier farmacia, así que puedes consultar el stock en varias de {City} sin perder la prescripción.",
+  "La disponibilidad de {Drug} en las farmacias de {City} varía según la dosis y el momento. Ante la falta de stock puntual, lo eficaz es preguntar en distintas farmacias de la ciudad o esperar reposición; nunca recurrir a webs que lo venden «sin receta», porque suelen ser falsificaciones.",
+  "En {City}, como en el resto del país, {Drug} puede faltar puntualmente en algunas farmacias. Con la receta electrónica puedes recorrer varias farmacias de {City} hasta localizar tu dosis, y tu médico puede ajustar la pauta o proponer una alternativa equivalente si el desabastecimiento se alarga.",
+];
+
+function buildDrugCityPost(drug: Drug, city: City, index: number): Post {
+  const slug = `${drug.key}-${city.slug}`;
+  const vars = {
+    Drug: cap(drug.name),
+    drug: drug.name,
+    inn: drug.inn,
+    City: city.name,
+    BRAND,
+    frequency: drug.frequency,
+  };
+  const mech = drug.kind === "weight" ? MECH_WEIGHT : MECH_DIAB;
+  const steps = pick(STEPS, slug + "steps").map((s) => tpl(s, vars));
+
+  const sections: Section[] = [
+    {
+      h2: tpl("{Drug} en {City}: cómo conseguirlo", vars),
+      blocks: [
+        { type: "p", text: tpl(pick(DRUGCITY_INTRO, slug + "intro"), vars) },
+        { type: "p", text: tpl(pick(LOCAL_BUY, slug + "local"), vars) },
+      ],
+    },
+    localContextSection(city, slug),
+    {
+      h2: tpl("Disponibilidad de {Drug} en las farmacias de {City}", vars),
+      blocks: [
+        { type: "p", text: tpl(pick(DRUGCITY_STOCK, slug + "stock"), vars) },
+      ],
+    },
+    {
+      h2: tpl("¿Qué es {Drug} y cómo actúa?", vars),
+      blocks: [
+        { type: "p", text: tpl(pick(mech, slug + "mech"), vars) },
+        { type: "p", text: tpl(pick(COMPARE_P, slug + "cmp"), vars) },
+      ],
+    },
+    {
+      h2: tpl("Precio de {Drug} en {City}", vars),
+      blocks: [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }],
+    },
+    {
+      h2: tpl("Cómo empezar con {Drug} en {City} paso a paso", vars),
+      blocks: [{ type: "list", items: steps }, buyLinks(drug, city, true)],
+    },
+  ];
+
+  const faqs: Faq[] = [
+    {
+      q: tpl("¿Hay {Drug} disponible en {City}?", vars),
+      a: tpl(
+        "La disponibilidad varía por dosis y farmacia. Con la receta electrónica puedes consultar el stock en varias farmacias de {City}; si falta tu dosis, el médico puede ajustar la pauta o proponer una alternativa.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Puedo conseguir {Drug} en {City} sin desplazarme al médico?", vars),
+      a: tpl(
+        "Sí. En DoctorLife la valoración es online y, si {Drug} está indicado, recibes la receta electrónica para retirarlo en tu farmacia de {City}.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Es legal comprar {Drug} por internet en {City}?", vars),
+      a: tpl(
+        "Solo con receta y a través de farmacia. Las webs que venden {Drug} «sin receta» son ilegales y suelen vender producto falsificado.",
+        vars,
+      ),
+    },
+    localFaqs(city)[hash(slug) % 3],
+  ];
+
+  return {
+    slug,
+    title: tpl("{Drug} en {City}", vars),
+    h1: tpl("{Drug} en {City}: dónde conseguirlo, precio y disponibilidad", vars),
+    metaTitle: tpl("{Drug} en {City} | Cita y Receta Online sin Esperas", vars),
+    metaDescription: tpl(
+      "{Drug} en {City}: consíguelo con receta a través de una cita médica online, sin listas de espera. Precio por dosis, disponibilidad y seguimiento real. 1ª visita 25 €.",
+      vars,
+    ),
+    excerpt: tpl(
+      "Todo sobre {Drug} en {City}: dónde conseguirlo de forma legal, precio orientativo, disponibilidad en farmacias y cómo empezar con receta y seguimiento médico.",
+      vars,
+    ),
+    category: drug.category,
+    keyword: `${drug.name.toLowerCase()} ${city.name.toLowerCase()}`,
+    readMins: 5 + (hash(slug) % 4),
+    date: isoDate(index),
+    updated: "2026-06-18",
+    cover: drug.cover,
+    coverAlt: tpl("Pluma de {Drug} disponible en una farmacia de {City}", vars),
     sections,
     faqs,
   };
@@ -1256,7 +1518,7 @@ function researchFaqs(drug: Research, intent: Intent): Faq[] {
       ),
     },
     {
-      q: tpl("¿Qué alternativa a {Name} puedo usar ahora?", vars),
+      q: tpl("¿Qu���� alternativa a {Name} puedo usar ahora?", vars),
       a: tpl(
         "Hay GLP‑1 aprobados como {Alt}. Un endocrino puede valorar tu caso y, si procede, prescribírtelo con receta y seguimiento.",
         vars,
@@ -1276,7 +1538,7 @@ function researchFaqs(drug: Research, intent: Intent): Faq[] {
   ];
 }
 
-/* ── cluster "sin receta" ── */
+/* ���─ cluster "sin receta" ── */
 type NoRx = { key: string; Name: string; name: string; inn: string; altKey: string };
 const NORX: NoRx[] = [
   { key: "wegovy", Name: "Wegovy", name: "Wegovy", inn: "semaglutida 2,4 mg", altKey: "wegovy" },
@@ -1937,7 +2199,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
       faqs = [
         {
           q: tpl("¿Cuánto peso se pierde con {Drug}?", vars),
-          a: "Depende del fármaco, la dosis y los hábitos. En los estudios, los análogos del GLP‑1 logran pérdidas medias relevantes a lo largo de varios meses con seguimiento.",
+          a: "Depende del fármaco, la dosis y los hábitos. En los estudios, los análogos del GLP��1 logran pérdidas medias relevantes a lo largo de varios meses con seguimiento.",
         },
         {
           q: tpl("¿En cuánto tiempo se ven resultados con {Drug}?", vars),
@@ -2742,9 +3004,9 @@ function buildRxOnlinePost(drug: Drug, index: number): Post {
       slug,
       title: tpl("Receta de {Drug} online", vars),
       h1: tpl("Receta de {Drug} online: cómo conseguirla legalmente", vars),
-      metaTitle: tpl("Receta de {Drug} online: cómo conseguirla legal y sin esperas | {BRAND}", vars),
+      metaTitle: tpl("Receta de {Drug} Online en 24h con Médico Colegiado", vars),
       metaDescription: tpl(
-        "Cómo conseguir la receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica y seguimiento. Primera visita 25 €.",
+        "Consigue tu receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica en 24h y seguimiento. Sin esperas. 1ª visita 25 €.",
         vars,
       ),
       excerpt: tpl(
@@ -3697,7 +3959,676 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
     ],
   },
+  {
+    id: "medico-para-adelgazar",
+    slug: (c) => `medico-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `médico para adelgazar ${c.name}`,
+    title: (c) => `Médico para adelgazar en ${c.name}`,
+    h1: (c) => `Médico para adelgazar en ${c.name}: consulta online y tratamiento`,
+    metaTitle: (c) =>
+      `Médico para adelgazar en ${c.name}: consulta online | DoctorLife`,
+    metaDescription: (c) =>
+      `Habla con un médico para adelgazar en ${c.name} sin esperas: valoración online, tratamiento GLP‑1 si está indicado y seguimiento. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Cómo encontrar un médico para adelgazar en ${c.name}: qué hace, cuándo receta GLP‑1 y cómo empezar con consulta y seguimiento online.`,
+    cover: getAlt("wegovy").cover,
+    introH2: "¿Por qué acudir a un médico para adelgazar en {City}?",
+    intros: [
+      [
+        "Adelgazar de forma duradera en {City} no depende solo de fuerza de voluntad: el sobrepeso tiene base biológica y muchas veces necesita una valoración médica. Un médico especializado en peso descarta causas de fondo (tiroides, resistencia a la insulina, medicación) y define un plan adaptado a ti.",
+        "Con {BRAND} accedes a esa figura sin moverte de {City}: consulta online con médico colegiado y, si el tratamiento con GLP‑1 está indicado, receta electrónica y seguimiento desde la app.",
+      ],
+      [
+        "Cuando las dietas por tu cuenta no funcionan en {City}, el siguiente paso lógico es un médico que valore tu caso a fondo. No se trata de pasar hambre, sino de entender por qué te cuesta perder peso y actuar sobre la causa.",
+        "El modelo de {BRAND} hace eso accesible: un médico revisa tu historial online y, si procede, te prescribe el tratamiento más adecuado con acompañamiento continuo.",
+      ],
+    ],
+    whyH2: "Qué hace un médico para adelgazar y cuándo receta",
+    why: [
+      "Un médico del peso evalúa tu índice de masa corporal, tu composición corporal, tu historial y tus análisis para decidir el abordaje: hábitos, tratamiento farmacológico o ambos. No prescribe a ciegas; indica fármacos GLP‑1 solo cuando hay criterio clínico.",
+      "La diferencia frente a soluciones sin control es la seguridad: el médico vigila los efectos secundarios, ajusta la dosis y revisa tu evolución. Eso convierte una pérdida de peso puntual en un cambio sostenible.",
+    ],
+    optionsH2: "Tratamientos que puede valorar el médico en {City}",
+    optionsIntro: [
+      "Si el médico considera adecuado un tratamiento farmacológico, en {City} puede valorar distintas opciones de GLP‑1 según tu objetivo y tolerancia:",
+      "Cuando está indicado, el médico elige entre las opciones disponibles la que mejor encaja en tu caso:",
+    ],
+    localH2: "Consulta con un médico para adelgazar en {City} sin esperas",
+    local: [
+      "El obstáculo en {City} no suele ser el dinero, sino conseguir una cita médica seria en poco tiempo. {BRAND} resuelve eso con consulta online y receta electrónica válida en cualquier farmacia de España.",
+      "Muchos pacientes de {City} se cansan de esperar meses por el especialista. Con la videoconsulta de {BRAND} obtienes la valoración rápido y, si procede, empiezas con seguimiento real desde el primer día.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Qué médico trata el sobrepeso en ${c.name}?`,
+        a: "Endocrinos y médicos formados en obesidad. En DoctorLife te atiende un médico colegiado online que valora tu caso y, si procede, prescribe tratamiento.",
+      },
+      {
+        q: `¿El médico online puede recetar para adelgazar en ${c.name}?`,
+        a: "Sí. Tras una valoración real, emite receta electrónica válida en toda España, incluida cualquier farmacia de tu ciudad.",
+      },
+      {
+        q: "¿Cuánto cuesta la primera consulta?",
+        a: "La primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+      },
+      {
+        q: "¿Necesito desplazarme?",
+        a: "No. La valoración y el seguimiento son online; solo acudes a tu farmacia a recoger el tratamiento.",
+      },
+    ],
+  },
+  {
+    id: "inyeccion-para-adelgazar-ciudad",
+    slug: (c) => `inyeccion-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `inyección para adelgazar ${c.name}`,
+    title: (c) => `Inyección para adelgazar en ${c.name}`,
+    h1: (c) => `Inyección para adelgazar en ${c.name}: qué es y cómo conseguirla`,
+    metaTitle: (c) =>
+      `Inyección para adelgazar en ${c.name}: cómo conseguirla | DoctorLife`,
+    metaDescription: (c) =>
+      `Inyección para adelgazar en ${c.name}: qué son los GLP‑1 (Wegovy, Mounjaro), cuándo se indican y cómo conseguirlas con receta y seguimiento. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Qué es la inyección para adelgazar en ${c.name}, cómo funciona, cuánto cuesta y cómo conseguirla de forma segura con valoración médica.`,
+    cover: getAlt("mounjaro").cover,
+    introH2: "¿Qué es la inyección para adelgazar y funciona en {City}?",
+    intros: [
+      [
+        "La «inyección para adelgazar» de la que se habla en {City} son los fármacos análogos del GLP‑1, como Wegovy (semaglutida) o Mounjaro (tirzepatida). Actúan sobre las señales de apetito y saciedad, ayudando a comer menos sin la ansiedad de las dietas restrictivas.",
+        "No son un producto estético ni un atajo sin control: se prescriben tras valoración médica y requieren seguimiento. Con {BRAND} puedes conseguirlas en {City} de forma legal, con receta y acompañamiento desde la app.",
+      ],
+      [
+        "En {City} cada vez más personas preguntan por la inyección semanal para perder peso. Son tratamientos GLP‑1 que reducen el apetito y enlentecen el vaciado del estómago, de modo que te sacias antes y durante más tiempo.",
+        "Su eficacia está respaldada por estudios, pero deben usarse con receta y seguimiento médico. {BRAND} te permite acceder a ellas en {City} sin listas de espera, siempre con valoración previa.",
+      ],
+    ],
+    whyH2: "Cómo funciona la inyección y cuándo está indicada",
+    why: [
+      "Los GLP‑1 imitan una hormona intestinal que regula el hambre y la glucosa. El resultado es menos apetito, menos picoteo y una pérdida de peso clínicamente significativa cuando se combinan con cambios de hábitos.",
+      "No están indicados para todo el mundo: el médico valora tu IMC, tu salud y tus antecedentes antes de prescribir. Usarlos sin control, comprados por canales no regulados, es un riesgo real para la salud.",
+    ],
+    optionsH2: "Qué inyecciones para adelgazar existen en {City}",
+    optionsIntro: [
+      "Estas son las principales inyecciones GLP‑1 que un médico puede valorar en {City} según tu caso:",
+      "Según tu objetivo y tu tolerancia, el médico puede elegir, si procede, entre estas opciones:",
+    ],
+    localH2: "Cómo conseguir la inyección para adelgazar en {City}",
+    local: [
+      "El paso clave en {City} es la valoración médica: sin ella, ninguna farmacia seria te dispensará el tratamiento. Con {BRAND} haces la consulta online, recibes la receta si procede y recoges la inyección en tu farmacia.",
+      "Desconfía de quien vende la inyección sin consulta en {City}: es ilegal y peligroso. La vía segura es siempre receta médica y seguimiento, que es justo lo que ofrece {BRAND}.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Dónde consigo la inyección para adelgazar en ${c.name}?`,
+        a: "Con receta médica, en cualquier farmacia de tu ciudad. En DoctorLife un médico valora tu caso online y, si procede, emite la receta electrónica.",
+      },
+      {
+        q: "¿Cuánto cuesta la inyección al mes?",
+        a: "Depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes. La primera visita médica son 25 € y se descuentan del tratamiento.",
+      },
+      {
+        q: `¿Es segura la inyección para adelgazar en ${c.name}?`,
+        a: "Sí, usada con receta y seguimiento médico. Los efectos secundarios más comunes son digestivos y suelen mejorar al ajustar la dosis.",
+      },
+      {
+        q: "¿Necesito receta?",
+        a: "Sí. Son fármacos de prescripción; no se pueden comprar legalmente sin receta. Un médico debe valorarte antes.",
+      },
+    ],
+  },
+  {
+    id: "medicamento-para-adelgazar",
+    slug: (c) => `medicamento-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `medicamento para adelgazar ${c.name}`,
+    title: (c) => `Medicamento para adelgazar en ${c.name}`,
+    h1: (c) => `Medicamento para adelgazar en ${c.name}: opciones con receta`,
+    metaTitle: (c) =>
+      `Medicamento para adelgazar en ${c.name}: opciones reales | DoctorLife`,
+    metaDescription: (c) =>
+      `Qué medicamentos para adelgazar existen en ${c.name}, cuáles funcionan de verdad y cómo conseguirlos con receta y seguimiento médico. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Guía de medicamentos para adelgazar en ${c.name}: cuáles tienen evidencia, cuándo se recetan y cómo empezar con valoración médica online.`,
+    cover: getAlt("ozempic").cover,
+    introH2: "¿Qué medicamento para adelgazar puedo usar en {City}?",
+    intros: [
+      [
+        "En {City} circulan muchos «productos para adelgazar», pero medicamentos con evidencia real hay pocos. Los más eficaces hoy son los análogos del GLP‑1 (semaglutida, tirzepatida), que se usan con receta y seguimiento médico.",
+        "Con {BRAND}, un médico colegiado valora tu caso online desde {City} y, si un medicamento está indicado, te lo prescribe con acompañamiento. Olvídate de suplementos sin respaldo: aquí hablamos de tratamiento médico real.",
+      ],
+      [
+        "Buscar un medicamento para adelgazar en {City} sin información acaba muchas veces en productos inútiles o peligrosos. La realidad es que solo unos pocos fármacos están aprobados y demuestran eficacia, y todos requieren prescripción.",
+        "El modelo de {BRAND} te conecta con un médico que decide, si procede, el medicamento adecuado y supervisa tu evolución desde {City}, sin que tengas que desplazarte.",
+      ],
+    ],
+    whyH2: "Qué medicamentos para adelgazar funcionan de verdad",
+    why: [
+      "Los fármacos GLP‑1 reducen el apetito y aumentan la saciedad, con pérdidas de peso clínicamente relevantes en los estudios. Frente a ellos, la mayoría de pastillas «quemagrasa» de venta libre no tienen evidencia y pueden ser un riesgo.",
+      "Ningún medicamento sustituye los hábitos: funcionan mejor combinados con alimentación y actividad física. Y siempre deben usarse bajo prescripción, porque tienen contraindicaciones y efectos secundarios que el médico debe controlar.",
+    ],
+    optionsH2: "Medicamentos para adelgazar que valora el médico en {City}",
+    optionsIntro: [
+      "Si el tratamiento farmacológico está indicado en tu caso, en {City} el médico puede valorar estas opciones de GLP‑1:",
+      "Según tu objetivo, tu salud y tu tolerancia, el médico elige, si procede, entre estas opciones:",
+    ],
+    localH2: "Cómo conseguir un medicamento para adelgazar en {City}",
+    local: [
+      "El único camino seguro en {City} es la receta médica. Con {BRAND} haces la consulta online, recibes la prescripción si procede y recoges el medicamento en tu farmacia, con seguimiento desde la app.",
+      "Comprar medicamentos para adelgazar por internet sin receta en {City} es ilegal y arriesgado. La vía correcta es valoración médica y receta electrónica, que es lo que ofrece {BRAND}.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Cuál es el mejor medicamento para adelgazar en ${c.name}?`,
+        a: "El que indique tu médico según tu caso. Hoy los GLP‑1 son de los más eficaces cuando están indicados, siempre con receta y seguimiento.",
+      },
+      {
+        q: `¿Puedo comprar el medicamento sin receta en ${c.name}?`,
+        a: "No legalmente. Los fármacos eficaces para adelgazar son de prescripción; un médico debe valorarte antes de recetarlos.",
+      },
+      {
+        q: "¿Las pastillas de la farmacia funcionan?",
+        a: "La mayoría de productos de venta libre no tienen evidencia sólida. Los tratamientos con respaldo científico requieren prescripción.",
+      },
+      {
+        q: "¿Cómo empiezo?",
+        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+      },
+    ],
+  },
+  {
+    id: "pastillas-para-adelgazar",
+    slug: (c) => `pastillas-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `pastillas para adelgazar ${c.name}`,
+    title: (c) => `Pastillas para adelgazar en ${c.name}`,
+    h1: (c) => `Pastillas para adelgazar en ${c.name}: qué funciona de verdad`,
+    metaTitle: (c) =>
+      `Pastillas para adelgazar en ${c.name}: qué funciona | DoctorLife`,
+    metaDescription: (c) =>
+      `Pastillas para adelgazar en ${c.name}: cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Valoración online por 25 €.`,
+    excerpt: (c) =>
+      `La verdad sobre las pastillas para adelgazar en ${c.name}: qué funciona, qué es marketing y qué tratamientos médicos son más eficaces.`,
+    cover: getAlt("saxenda").cover,
+    introH2: "¿Funcionan las pastillas para adelgazar en {City}?",
+    intros: [
+      [
+        "En {City} se venden cientos de «pastillas para adelgazar», pero la mayoría no tienen evidencia que respalde su eficacia, y algunas pueden ser un riesgo para la salud. Antes de gastar dinero en suplementos, conviene saber qué funciona de verdad.",
+        "Los tratamientos con respaldo científico para perder peso suelen ser inyectables (GLP‑1) o fármacos de prescripción, no pastillas de venta libre. Con {BRAND}, un médico valora tu caso online desde {City} y te orienta hacia lo que realmente puede ayudarte.",
+      ],
+      [
+        "«Pastillas para adelgazar» es una de las búsquedas más frecuentes en {City}, y también una de las que más decepciones genera: la inmensa mayoría de productos milagro no hacen nada o tienen efectos rebote.",
+        "La buena noticia es que sí existen tratamientos médicos eficaces. {BRAND} te conecta con un médico que valora tu caso y, si procede, te prescribe la opción adecuada con seguimiento, sin salir de {City}.",
+      ],
+    ],
+    whyH2: "Pastillas de venta libre vs. tratamiento médico",
+    why: [
+      "Los quemagrasas, drenantes y «bloqueadores» de venta libre rara vez tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (sobre todo de líquidos), pero no producen una pérdida de grasa sostenible.",
+      "Los tratamientos médicos modernos, como los análogos del GLP‑1, actúan sobre el apetito y la saciedad con evidencia clínica. La diferencia es enorme: control médico, eficacia demostrada y seguimiento frente a marketing.",
+    ],
+    optionsH2: "Alternativas médicas a las pastillas en {City}",
+    optionsIntro: [
+      "Si buscas algo que funcione de verdad en {City}, estas son las opciones que un médico puede valorar, si están indicadas en tu caso:",
+      "En lugar de pastillas sin evidencia, el médico puede considerar, si procede, estos tratamientos con respaldo:",
+    ],
+    localH2: "Qué hacer en lugar de comprar pastillas en {City}",
+    local: [
+      "Antes de comprar pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta es online y cuesta 25 €, descontables del tratamiento.",
+      "Gastar en suplementos sin evidencia rara vez compensa en {City}. Una consulta médica te ahorra dinero y te orienta hacia un tratamiento que funcione, con seguimiento real.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Qué pastillas para adelgazar funcionan en ${c.name}?`,
+        a: "Muy pocas de venta libre tienen evidencia. Los tratamientos eficaces suelen ser de prescripción; un médico debe valorar cuál te conviene.",
+      },
+      {
+        q: "¿Las pastillas de la farmacia son seguras?",
+        a: "Las de venta libre no suelen ser peligrosas, pero tampoco eficaces. Los productos comprados por internet sin control sí pueden ser un riesgo.",
+      },
+      {
+        q: `¿Hay alternativa médica en ${c.name}?`,
+        a: "Sí. Los tratamientos GLP‑1, cuando están indicados, son mucho más eficaces que las pastillas. Requieren receta y seguimiento médico.",
+      },
+      {
+        q: "¿Cómo sé qué necesito?",
+        a: "Con una valoración médica. En DoctorLife la primera visita son 25 € y el médico te orienta según tu caso.",
+      },
+    ],
+  },
+  {
+    id: "bajar-de-peso",
+    slug: (c) => `bajar-de-peso-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `bajar de peso ${c.name}`,
+    title: (c) => `Bajar de peso en ${c.name}`,
+    h1: (c) => `Bajar de peso en ${c.name}: plan médico que sí funciona`,
+    metaTitle: (c) =>
+      `Bajar de peso en ${c.name}: plan médico que funciona | DoctorLife`,
+    metaDescription: (c) =>
+      `Cómo bajar de peso en ${c.name} con apoyo médico real: valoración online, tratamiento GLP‑1 si está indicado y seguimiento para no recuperar. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Cómo bajar de peso en ${c.name} de forma sostenible: por qué fallan las dietas, cuándo ayuda el tratamiento médico y cómo empezar online.`,
+    cover: getAlt("wegovy").cover,
+    introH2: "¿Cómo bajar de peso de forma sostenible en {City}?",
+    intros: [
+      [
+        "Bajar de peso en {City} y, sobre todo, mantenerlo, es más difícil de lo que parece: el cuerpo defiende su peso y muchas dietas terminan en efecto rebote. La clave no es comer menos a cualquier precio, sino un enfoque que actúe sobre el apetito y los hábitos.",
+        "Con {BRAND}, un médico valora tu caso online desde {City} y, si está indicado, combina cambios de hábitos con tratamiento GLP‑1 y seguimiento, para que bajes de peso y no lo recuperes.",
+      ],
+      [
+        "Si has intentado bajar de peso en {City} sin éxito duradero, no es falta de voluntad: la biología juega en contra. Por eso el abordaje médico, cuando hace falta, marca la diferencia frente a las dietas por tu cuenta.",
+        "El modelo de {BRAND} te da ese apoyo en {City}: valoración médica, plan adaptado y, si procede, tratamiento con seguimiento continuo desde la app.",
+      ],
+    ],
+    whyH2: "Por qué fallan las dietas y qué hace la diferencia",
+    why: [
+      "Cuando restringes calorías, el cuerpo baja el gasto y aumenta el hambre para recuperar el peso perdido. Ese mecanismo explica por qué la mayoría de dietas fracasan a medio plazo, por mucha disciplina que pongas.",
+      "Los tratamientos GLP‑1, cuando están indicados, ayudan a controlar ese hambre y facilitan mantener el déficit sin sufrimiento. Combinados con seguimiento médico, convierten la pérdida de peso en algo sostenible.",
+    ],
+    optionsH2: "Apoyo médico para bajar de peso en {City}",
+    optionsIntro: [
+      "Si el médico considera adecuado un tratamiento, en {City} puede valorar estas opciones de GLP‑1 según tu caso:",
+      "Cuando está indicado, el médico elige, si procede, entre estas opciones la más adecuada para ti:",
+    ],
+    localH2: "Empieza a bajar de peso en {City} con seguimiento real",
+    local: [
+      "Lo que marca la diferencia en {City} no es solo empezar, sino el seguimiento. {BRAND} te acompaña en cada ajuste de dosis y en los hábitos, para que los resultados se mantengan en el tiempo.",
+      "Bajar de peso en {City} con {BRAND} es sencillo: una primera visita de 25 € y, si procede, tratamiento con seguimiento continuo, sin permanencia ni desplazamientos.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Cuál es la forma más eficaz de bajar de peso en ${c.name}?`,
+        a: "Combinar hábitos sostenibles con apoyo médico. Cuando está indicado, el tratamiento GLP‑1 con seguimiento es de lo más eficaz.",
+      },
+      {
+        q: "¿Por qué recupero el peso después de las dietas?",
+        a: "Porque el cuerpo se adapta bajando el gasto y aumentando el hambre. El seguimiento médico ayuda a evitar ese efecto rebote.",
+      },
+      {
+        q: `¿Necesito tratamiento para bajar de peso en ${c.name}?`,
+        a: "No siempre. El médico valora tu caso y decide si bastan los hábitos o si un tratamiento farmacológico está indicado.",
+      },
+      {
+        q: "¿Cómo empiezo?",
+        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+      },
+    ],
+  },
+  {
+    id: "obesidad-tratamiento",
+    slug: (c) => `tratamiento-obesidad-${c.slug}`,
+    category: "Guías",
+    keyword: (c) => `tratamiento obesidad ${c.name}`,
+    title: (c) => `Tratamiento de la obesidad en ${c.name}`,
+    h1: (c) => `Tratamiento de la obesidad en ${c.name}: abordaje médico actual`,
+    metaTitle: (c) =>
+      `Tratamiento de la obesidad en ${c.name}: abordaje médico | DoctorLife`,
+    metaDescription: (c) =>
+      `Tratamiento médico de la obesidad en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Cómo se trata la obesidad hoy en ${c.name}: enfoque médico, papel de los GLP‑1 y cómo acceder a valoración y seguimiento online.`,
+    cover: getAlt("mounjaro").cover,
+    introH2: "¿Cómo se trata la obesidad en {City} hoy?",
+    intros: [
+      [
+        "La obesidad es una enfermedad crónica, no un fallo personal, y así se aborda en {City} desde la medicina moderna. El tratamiento combina cambios de estilo de vida con apoyo médico y, cuando está indicado, fármacos que actúan sobre el apetito.",
+        "Con {BRAND}, un endocrino colegiado valora tu caso online desde {City}, define un plan y, si procede, prescribe tratamiento GLP‑1 con seguimiento desde la app, sin listas de espera.",
+      ],
+      [
+        "Tratar la obesidad en {City} requiere mucho más que «comer menos y moverse más». Es una enfermedad con base hormonal y metabólica, y su abordaje serio es médico, individualizado y con seguimiento.",
+        "El modelo de {BRAND} hace accesible ese tratamiento en {City}: valoración por endocrino, plan a medida y, cuando está indicado, fármacos con respaldo científico y acompañamiento.",
+      ],
+    ],
+    whyH2: "Por qué la obesidad necesita tratamiento médico",
+    why: [
+      "La obesidad aumenta el riesgo de diabetes, hipertensión, problemas cardiovasculares y articulares. Tratarla no es estético: es una cuestión de salud que conviene abordar con criterio médico y seguimiento.",
+      "El abordaje actual reconoce que la fuerza de voluntad no basta. Los tratamientos GLP‑1, cuando están indicados, ayudan a controlar el apetito y logran pérdidas de peso clínicamente relevantes, siempre bajo supervisión.",
+    ],
+    optionsH2: "Opciones de tratamiento de la obesidad en {City}",
+    optionsIntro: [
+      "Si el endocrino lo considera adecuado, en {City} puede valorar estas opciones de tratamiento farmacológico:",
+      "Según tu grado de obesidad y tu salud, el médico elige, si procede, entre estas opciones:",
+    ],
+    localH2: "Acceso al tratamiento de la obesidad en {City} sin esperas",
+    local: [
+      "El acceso a endocrinología por la vía pública en {City} suele estar saturado. {BRAND} ofrece valoración online con endocrino en poco tiempo y receta electrónica válida en toda España.",
+      "Tratar la obesidad a tiempo en {City} reduce riesgos para tu salud. Con {BRAND} empiezas con una primera visita de 25 € y, si procede, seguimiento continuo desde la app.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Quién trata la obesidad en ${c.name}?`,
+        a: "El endocrino es el especialista de referencia. En DoctorLife te atiende un endocrino colegiado online que valora tu caso y, si procede, prescribe tratamiento.",
+      },
+      {
+        q: `¿Qué tratamientos para la obesidad hay en ${c.name}?`,
+        a: "Cambios de hábitos, fármacos GLP‑1 cuando est��n indicados y, en casos seleccionados, cirugía. El médico decide según tu caso.",
+      },
+      {
+        q: "¿El tratamiento es solo medicación?",
+        a: "No. La medicación, cuando se indica, se combina con hábitos y seguimiento. Sin acompañamiento, los resultados no se mantienen.",
+      },
+      {
+        q: "¿Cómo empiezo?",
+        a: "Reservas la primera visita por 25 € (descontables) y el endocrino define tu plan.",
+      },
+    ],
+  },
+  {
+    id: "nutricionista-online",
+    slug: (c) => `nutricionista-online-${c.slug}`,
+    category: "Guías",
+    keyword: (c) => `nutricionista ${c.name}`,
+    title: (c) => `Nutricionista online en ${c.name}`,
+    h1: (c) => `Nutricionista online en ${c.name}: cuándo necesitas además un médico`,
+    metaTitle: (c) =>
+      `Nutricionista online en ${c.name}: cómo elegir | DoctorLife`,
+    metaDescription: (c) =>
+      `Nutricionista online en ${c.name}: qué puede hacer, cuándo necesitas además valoración médica y cómo combinar dieta y tratamiento. Primera visita médica 25 €.`,
+    excerpt: (c) =>
+      `Qué hace un nutricionista en ${c.name}, cuándo conviene sumar valoración médica y cómo combinar alimentación y tratamiento del peso.`,
+    cover: getAlt("wegovy").cover,
+    introH2: "¿Qué puede hacer un nutricionista en {City} y qué no?",
+    intros: [
+      [
+        "Un nutricionista en {City} te ayuda a mejorar tu alimentación, organizar tus comidas y crear hábitos sostenibles. Es una pieza muy valiosa, pero hay casos en los que la dieta sola no basta para perder peso.",
+        "Cuando hay obesidad o factores metabólicos de fondo, conviene sumar una valoración médica. Con {BRAND}, un médico evalúa tu caso online desde {City} y, si está indicado, combina tratamiento y seguimiento con el trabajo nutricional.",
+      ],
+      [
+        "Buscar nutricionista en {City} es un gran primer paso para cuidar tu alimentación. Ahora bien, si el objetivo es perder un peso importante y las dietas no han funcionado, el abordaje puede necesitar también apoyo médico.",
+        "El modelo de {BRAND} cubre esa parte médica en {City}: valoración, tratamiento GLP‑1 cuando está indicado y seguimiento, de forma complementaria a la educación nutricional.",
+      ],
+    ],
+    whyH2: "Nutrición y medicina: por qué se complementan",
+    why: [
+      "La alimentación es la base de cualquier proceso de pérdida de peso, y ahí el nutricionista es clave. Pero en la obesidad influyen hormonas que regulan el apetito, y ahí es donde el tratamiento médico puede ayudar.",
+      "Combinar dieta y, cuando está indicado, tratamiento GLP‑1 con seguimiento, da mejores resultados que cualquiera de las dos cosas por separado. La medicación facilita seguir el plan; la nutrición lo hace sostenible.",
+    ],
+    optionsH2: "Cuándo sumar tratamiento médico en {City}",
+    optionsIntro: [
+      "Si la alimentación por sí sola no es suficiente, en {City} el médico puede valorar, si está indicado, estas opciones de GLP‑1 como apoyo:",
+      "Cuando hay criterio clínico, el médico puede combinar el trabajo nutricional con estas opciones:",
+    ],
+    localH2: "Combina nutrición y seguimiento médico en {City}",
+    local: [
+      "Lo ideal en {City} es un enfoque integral: alimentación bien pautada y, si hace falta, apoyo médico. {BRAND} aporta la valoración médica y el seguimiento, complementando el trabajo del nutricionista.",
+      "Si en {City} la dieta no te está dando resultados, una valoración médica puede aclarar por qué. La primera visita de {BRAND} son 25 € y se descuentan del tratamiento si decides empezar.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Un nutricionista puede recetar medicamentos en ${c.name}?`,
+        a: "No. Recetar es competencia médica. El nutricionista pauta la alimentación; el médico valora y prescribe el tratamiento si procede.",
+      },
+      {
+        q: `¿Necesito nutricionista o médico en ${c.name}?`,
+        a: "Depende de tu caso. Para mejorar hábitos, el nutricionista; si hay obesidad o las dietas fallan, conviene sumar valoración médica.",
+      },
+      {
+        q: "¿DoctorLife incluye plan de alimentación?",
+        a: "DoctorLife se centra en la valoración y el tratamiento médico del peso, con seguimiento. Funciona muy bien combinado con educación nutricional.",
+      },
+      {
+        q: "¿Cuánto cuesta la valoración médica?",
+        a: "La primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+      },
+    ],
+  },
+  {
+    id: "comprar-inyeccion-adelgazar",
+    slug: (c) => `comprar-inyeccion-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `comprar inyección para adelgazar ${c.name}`,
+    title: (c) => `Comprar inyección para adelgazar en ${c.name}`,
+    h1: (c) => `Comprar inyección para adelgazar en ${c.name}: cómo hacerlo legal`,
+    metaTitle: (c) =>
+      `Comprar inyección para adelgazar en ${c.name} (legal) | DoctorLife`,
+    metaDescription: (c) =>
+      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Guía para comprar una inyección para adelgazar en ${c.name} sin riesgos: qué pedir, por qué hace falta receta y cómo empezar con seguimiento médico.`,
+    cover: getAlt("mounjaro").cover,
+    introH2: "¿Se puede comprar una inyección para adelgazar en {City}?",
+    intros: [
+      [
+        "Comprar una inyección para adelgazar en {City} es posible, pero solo por la vía legal: con receta médica. Las «inyecciones para adelgazar» son fármacos GLP‑1 (como Wegovy o Mounjaro) y no se venden sin prescripción en ninguna farmacia seria.",
+        "Con {BRAND} el proceso es directo desde {City}: un médico valora tu caso online y, si está indicado, emite la receta electrónica para que compres la inyección en tu farmacia, con seguimiento incluido.",
+      ],
+      [
+        "Mucha gente en {City} busca «comprar inyección para adelgazar» pensando que es un producto de venta libre. No lo es: son medicamentos de prescripción y comprarlos sin receta por internet es ilegal y peligroso.",
+        "La forma correcta de comprarlas en {City} pasa por una valoración médica. {BRAND} te la ofrece online, con receta electrónica si procede y recogida en tu farmacia habitual.",
+      ],
+    ],
+    whyH2: "Por qué no puedes comprar la inyección sin receta",
+    why: [
+      "Los GLP‑1 son fármacos potentes con contraindicaciones y efectos secundarios que deben vigilarse. Por eso exigen receta: un médico debe confirmar que son adecuados para ti antes de que los compres.",
+      "Las webs que ofrecen estas inyecciones «sin receta» en {City} venden producto falsificado o no homologado, con un riesgo real para tu salud. Comprar legal significa siempre: valoración, receta y farmacia.",
+    ],
+    optionsH2: "Qué inyección para adelgazar puedes comprar en {City}",
+    optionsIntro: [
+      "Estas son las inyecciones GLP‑1 que un médico puede prescribir en {City}, si están indicadas en tu caso:",
+      "Según tu objetivo y tu tolerancia, el médico puede recetar, si procede, alguna de estas opciones para que la compres en tu farmacia:",
+    ],
+    localH2: "Cómo comprar tu inyección para adelgazar en {City} paso a paso",
+    local: [
+      "El camino en {City} es sencillo: consulta online con {BRAND}, receta electrónica si procede y compra en tu farmacia. Sin desplazamientos al hospital ni listas de espera.",
+      "Comprar de forma legal en {City} te garantiza producto auténtico y seguimiento médico. {BRAND} hace la valoración online y te acompaña en cada ajuste de dosis.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Dónde puedo comprar una inyección para adelgazar en ${c.name}?`,
+        a: "Con receta médica, en cualquier farmacia de tu ciudad. En DoctorLife un médico valora tu caso online y, si procede, emite la receta electrónica.",
+      },
+      {
+        q: `¿Puedo comprarla sin receta en ${c.name}?`,
+        a: "No legalmente. Son fármacos de prescripción; las webs que las venden sin receta son ilegales y suelen vender falsificaciones.",
+      },
+      {
+        q: "¿Cuánto cuesta la inyección al mes?",
+        a: "Orientativamente entre 200 y 400 € al mes según el fármaco y la dosis. La primera visita médica son 25 € y se descuentan del tratamiento.",
+      },
+      {
+        q: "¿Cómo empiezo?",
+        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan y la receta si procede.",
+      },
+    ],
+  },
+  {
+    id: "comprar-tratamiento-adelgazar",
+    slug: (c) => `comprar-tratamiento-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `comprar tratamiento para adelgazar ${c.name}`,
+    title: (c) => `Comprar tratamiento para adelgazar en ${c.name}`,
+    h1: (c) => `Comprar tratamiento para adelgazar en ${c.name}: opciones reales`,
+    metaTitle: (c) =>
+      `Comprar tratamiento para adelgazar en ${c.name} | DoctorLife`,
+    metaDescription: (c) =>
+      `Cómo contratar un tratamiento médico para adelgazar en ${c.name}: valoración online, fármacos GLP‑1 si están indicados y seguimiento. Primera visita 25 €.`,
+    excerpt: (c) =>
+      `Qué tratamientos para adelgazar puedes contratar en ${c.name}, cuáles funcionan de verdad y cómo empezar con valoración médica online.`,
+    cover: getAlt("wegovy").cover,
+    introH2: "¿Qué tratamiento para adelgazar puedo contratar en {City}?",
+    intros: [
+      [
+        "Contratar un tratamiento para adelgazar en {City} que funcione de verdad significa elegir un enfoque médico, no un producto milagro. Los tratamientos con evidencia hoy combinan hábitos con fármacos GLP‑1 cuando están indicados.",
+        "Con {BRAND}, contratas desde {City} un tratamiento completo: valoración médica online, prescripción si procede y seguimiento continuo, todo por un modelo claro y sin permanencia.",
+      ],
+      [
+        "En {City} hay mucha oferta de «tratamientos para adelgazar», pero pocos con respaldo médico real. Antes de pagar por uno, conviene saber qué incluye: ¿hay un m��dico detrás? ¿Hay seguimiento? ¿Es legal el fármaco?",
+        "El tratamiento de {BRAND} responde a todo eso en {City}: médico colegiado, receta electrónica cuando está indicada y acompañamiento desde la app.",
+      ],
+    ],
+    whyH2: "Qué incluye un buen tratamiento para adelgazar",
+    why: [
+      "Un tratamiento serio no es solo el fármaco: incluye una valoración médica inicial, un plan adaptado, ajustes de dosis y seguimiento. Eso es lo que convierte la pérdida de peso en algo sostenible.",
+      "Desconfía de quien te vende solo un producto sin médico detrás. En {City}, el tratamiento que funciona combina supervisión médica con cambios de hábitos, y eso es justo lo que ofrece {BRAND}.",
+    ],
+    optionsH2: "Tratamientos para adelgazar disponibles en {City}",
+    optionsIntro: [
+      "Si el tratamiento farmacológico está indicado, en {City} el médico puede valorar estas opciones de GLP‑1:",
+      "Según tu caso, el médico elige, si procede, entre estas opciones como parte de tu tratamiento:",
+    ],
+    localH2: "Cómo contratar tu tratamiento para adelgazar en {City}",
+    local: [
+      "En {City} empiezas con una primera visita de 25 € (descontables). Si el tratamiento está indicado, recibes la receta y el seguimiento, sin desplazamientos ni esperas.",
+      "Contratar el tratamiento de {BRAND} en {City} es transparente: pagas la valoración, y solo continúas si decides empezar. El seguimiento va incluido durante todo el proceso.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Qué tratamiento para adelgazar puedo contratar en ${c.name}?`,
+        a: "Un tratamiento médico con valoración, plan personalizado y, si está indicado, fármacos GLP‑1 con seguimiento. El médico decide qué te conviene.",
+      },
+      {
+        q: "¿Cuánto cuesta el tratamiento?",
+        a: "La primera visita son 25 € (descontables). El tratamiento depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes.",
+      },
+      {
+        q: `¿Hay permanencia al contratar en ${c.name}?`,
+        a: "No. No hay permanencia: continúas solo mientras quieras, con seguimiento médico incluido.",
+      },
+      {
+        q: "¿Cómo empiezo?",
+        a: "Reservas la primera visita por 25 € y el médico define tu tratamiento y la receta si procede.",
+      },
+    ],
+  },
+  {
+    id: "comprar-pastillas-adelgazar",
+    slug: (c) => `comprar-pastillas-para-adelgazar-${c.slug}`,
+    category: "Adelgazar",
+    keyword: (c) => `comprar pastillas para adelgazar ${c.name}`,
+    title: (c) => `Comprar pastillas para adelgazar en ${c.name}`,
+    h1: (c) => `Comprar pastillas para adelgazar en ${c.name}: qué funciona`,
+    metaTitle: (c) =>
+      `Comprar pastillas para adelgazar en ${c.name}: guía | DoctorLife`,
+    metaDescription: (c) =>
+      `Antes de comprar pastillas para adelgazar en ${c.name}, descubre cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Valoración 25 €.`,
+    excerpt: (c) =>
+      `Qué pastillas para adelgazar puedes comprar en ${c.name}, cuáles son marketing y qué tratamientos médicos dan mejores resultados.`,
+    cover: getAlt("saxenda").cover,
+    introH2: "¿Merece la pena comprar pastillas para adelgazar en {City}?",
+    intros: [
+      [
+        "Antes de comprar pastillas para adelgazar en {City}, conviene saber que la mayoría de productos de venta libre no tienen evidencia que respalde su eficacia. Gastar en ellos rara vez compensa.",
+        "Los tratamientos que de verdad funcionan suelen ser de prescripción. Con {BRAND}, desde {City}, un médico valora tu caso y te orienta hacia lo que realmente puede ayudarte, en lugar de pastillas sin respaldo.",
+      ],
+      [
+        "«Comprar pastillas para adelgazar» es una búsqueda muy común en {City}, y también una fuente habitual de decepción: los quemagrasas de venta libre apenas funcionan y pueden tener efecto rebote.",
+        "La buena noticia es que sí hay alternativas médicas eficaces. {BRAND} te conecta en {City} con un médico que, si procede, prescribe un tratamiento con evidencia y seguimiento.",
+      ],
+    ],
+    whyH2: "Pastillas de venta libre vs. tratamiento médico",
+    why: [
+      "La mayoría de pastillas para adelgazar de venta libre no tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (líquidos), pero no producen una pérdida de grasa sostenible.",
+      "Los tratamientos médicos modernos, como los GLP‑1, actúan sobre el apetito con evidencia clínica. La diferencia frente a las pastillas es enorme: eficacia demostrada, control médico y seguimiento.",
+    ],
+    optionsH2: "Alternativas médicas a las pastillas en {City}",
+    optionsIntro: [
+      "Si buscas algo que funcione de verdad en {City}, estas son las opciones que un médico puede valorar, si están indicadas:",
+      "En lugar de pastillas sin evidencia, el médico puede considerar, si procede, estos tratamientos con respaldo:",
+    ],
+    localH2: "Qué hacer antes de comprar pastillas en {City}",
+    local: [
+      "Antes de gastar en pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta cuesta 25 €, descontables del tratamiento.",
+      "Una consulta médica en {City} te ahorra dinero en productos inútiles y te orienta hacia un tratamiento que funcione, con seguimiento real.",
+    ],
+    faqs: (c) => [
+      {
+        q: `¿Qué pastillas para adelgazar funcionan en ${c.name}?`,
+        a: "Muy pocas de venta libre tienen evidencia. Los tratamientos eficaces suelen ser de prescripción; un médico debe valorar cuál te conviene.",
+      },
+      {
+        q: `¿Puedo comprar pastillas eficaces sin receta en ${c.name}?`,
+        a: "Las de venta libre no suelen ser eficaces. Los tratamientos con evidencia requieren receta y valoración médica previa.",
+      },
+      {
+        q: `¿Hay alternativa médica en ${c.name}?`,
+        a: "Sí. Los tratamientos GLP‑1, cuando están indicados, son mucho más eficaces que las pastillas. Requieren receta y seguimiento médico.",
+      },
+      {
+        q: "¿Cómo sé qué necesito?",
+        a: "Con una valoración médica. En DoctorLife la primera visita son 25 € y el médico te orienta según tu caso.",
+      },
+    ],
+  },
 ];
+
+/* ═══════════════════════════════════════════════════════════
+   CONTEXTO LOCAL ÚNICO POR CIUDAD
+   Inyecta hechos verificables (CCAA, servicio público de salud
+   regional, hospital de referencia, población, carácter de la
+   ciudad) para que cada página tenga contenido propio y deje de
+   ser thin/doorway content.
+   ═══════════════════════════════════════════════════════════ */
+function cityFactsVars(city: City): Record<string, string> {
+  const f = getCityFacts(city.slug);
+  const hs = healthServiceFor(f.community);
+  return {
+    City: city.name,
+    trait: f.trait,
+    popText: formatCityPop(f.pop),
+    community: f.community,
+    province: f.province || f.community,
+    healthShort: hs.short,
+    healthLong: hs.long,
+    hospital: f.hospital,
+    BRAND,
+  };
+}
+
+const LOCAL_CTX_H2 = [
+  "{City} y el acceso al tratamiento del peso",
+  "Contexto sanitario: adelgazar en {City}",
+  "Qué pasa con la obesidad y los GLP‑1 en {City}",
+  "Tratamiento del peso en {City}: situación real",
+];
+
+const LOCAL_CTX_POP = [
+  "{City} es {trait}, con {popText}. En una ciudad de este tamaño, la demanda de tratamientos médicos para perder peso ha crecido con fuerza, y con ella la confusión sobre cómo acceder a ellos de forma legal y segura.",
+  "Con {popText}, {City} —{trait}— concentra a miles de personas que buscan adelgazar con apoyo médico. La pregunta habitual no es solo qué tratamiento elegir, sino cómo conseguirlo sin perderse entre listas de espera y webs sin garantías.",
+  "{City}, {trait}, reúne {popText}. Ese volumen de población explica por qué cada mes aumentan las búsquedas locales sobre GLP‑1, precios y recetas: hay mucha demanda y poca información fiable adaptada a la ciudad.",
+];
+
+const LOCAL_CTX_PUBLIC = [
+  "En {community}, la atención pública depende del {healthLong} ({healthShort}). Conseguir cita con endocrinología por esta vía en {City} puede llevar meses, y los GLP‑1 para adelgazar rara vez se financian si no hay diabetes u obesidad grave asociada. El hospital de referencia de la zona, el {hospital}, atiende sobre todo los casos más complejos.",
+  "La sanidad pública en {City} se gestiona a través del {healthLong} ({healthShort}). Aunque centros como el {hospital} son una referencia, las listas de espera para endocrinología son largas y la prescripción de Wegovy o Mounjaro con fines de peso no suele estar cubierta por el sistema público.",
+  "Quien acude al {healthShort} ({healthLong}) en {City} se encuentra a menudo con esperas prolongadas para el especialista. El {hospital} es el gran hospital de referencia, pero está orientado a la patología hospitalaria, no al seguimiento ágil de un tratamiento para adelgazar.",
+];
+
+const LOCAL_CTX_BRAND = [
+  "Por eso muchas personas de {City} eligen la vía privada online: con {BRAND} acceden a un médico colegiado por videoconsulta, sin desplazarse ni esperar meses, y con receta electrónica válida en cualquier farmacia de la ciudad. El seguimiento se hace desde la app, con ajustes de dosis cuando hacen falta.",
+  "{BRAND} resuelve ese cuello de botella en {City}: valoración médica online en poco tiempo, receta electrónica si está indicada —válida en cualquier farmacia de {City}— y seguimiento continuo desde la app, sin permanencia ni desplazamientos al hospital.",
+  "Frente a esa espera, {BRAND} ofrece a los pacientes de {City} una alternativa ágil y legal: consulta online con médico colegiado, prescripción electrónica cuando procede y acompañamiento real, recogiendo el tratamiento en su farmacia habitual.",
+];
+
+function localFaqs(city: City): Faq[] {
+  const f = getCityFacts(city.slug);
+  const hs = healthServiceFor(f.community);
+  return [
+    {
+      q: `¿La sanidad pública cubre el tratamiento para adelgazar en ${city.name}?`,
+      a: `En ${city.name} la atención pública depende del ${hs.long} (${hs.short}). Los GLP‑1 con fines de pérdida de peso rara vez se financian si no hay obesidad grave o diabetes asociada, y la espera para endocrinología suele ser larga.`,
+    },
+    {
+      q: `¿Tengo que ir a un hospital como el ${f.hospital}?`,
+      a: `No. Centros como el ${f.hospital} atienden la patología hospitalaria, pero para iniciar y seguir un tratamiento del peso no necesitas acudir presencialmente: con DoctorLife la valoración y el seguimiento son online y recoges el tratamiento en tu farmacia.`,
+    },
+    {
+      q: `¿La receta de DoctorLife es válida en las farmacias de ${city.name}?`,
+      a: `Sí. La receta electrónica que emite el médico, si el tratamiento está indicado, es válida en cualquier farmacia de ${city.name} y del resto de España.`,
+    },
+  ];
+}
+
+function localContextSection(city: City, seed: string): Section {
+  const vars = cityFactsVars(city);
+  return {
+    h2: tpl(pick(LOCAL_CTX_H2, seed + "ctxh2"), vars),
+    blocks: [
+      { type: "p", text: tpl(pick(LOCAL_CTX_POP, seed + "ctxpop"), vars) },
+      { type: "p", text: tpl(pick(LOCAL_CTX_PUBLIC, seed + "ctxpub"), vars) },
+      { type: "p", text: tpl(pick(LOCAL_CTX_BRAND, seed + "ctxbrand"), vars) },
+    ],
+  };
+}
 
 function buildLocalServicePost(cluster: LocalCluster, city: City, index: number): Post {
   const slug = cluster.slug(city);
@@ -3717,6 +4648,7 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
         { type: "p", text: tpl(cluster.why[(hash(slug + "why2") % cluster.why.length)], vars) },
       ],
     },
+    localContextSection(city, slug),
     {
       h2: tpl(cluster.optionsH2, vars),
       blocks: [
@@ -3752,7 +4684,7 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
       cover: cluster.cover,
       coverAlt: cluster.title(city),
       sections,
-      faqs: cluster.faqs(city),
+      faqs: [...cluster.faqs(city), localFaqs(city)[hash(slug) % 3]],
     },
     index,
   );
@@ -3760,8 +4692,16 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
 
 /* ── generador principal ── */
 // Fármacos con guía de "precio por ciudad" propia (todas las ciudades).
-// Incluye Saxenda para ampliar la cobertura de intención "precio".
-const PRICE_DRUG_KEYS = new Set(["wegovy", "mounjaro", "ozempic", "saxenda"]);
+// Incluye Saxenda y los principios activos (semaglutida, tirzepatida) para
+// cubrir también la intención de compra/precio por principio activo.
+const PRICE_DRUG_KEYS = new Set([
+  "wegovy",
+  "mounjaro",
+  "ozempic",
+  "saxenda",
+  "semaglutida",
+  "tirzepatida",
+]);
 
 export function generatePosts(existing: Set<string>): Post[] {
   const out: Post[] = [];
@@ -3785,6 +4725,17 @@ export function generatePosts(existing: Set<string>): Post[] {
       const slug = `precio-${drug.key}-${city.slug}`;
       if (seen.has(slug)) continue;
       out.push(buildPricePost(drug, city, index++));
+      seen.add(slug);
+    }
+  }
+
+  // 2b) "{drug} en {city}" (marca + geo, ángulo disponibilidad/desabastecimiento)
+  //     para los fármacos de peso (Wegovy, Mounjaro, Ozempic, Saxenda)
+  for (const drug of DRUGS.filter((d) => PRICE_DRUG_KEYS.has(d.key))) {
+    for (const city of CITIES) {
+      const slug = `${drug.key}-${city.slug}`;
+      if (seen.has(slug)) continue;
+      out.push(buildDrugCityPost(drug, city, index++));
       seen.add(slug);
     }
   }

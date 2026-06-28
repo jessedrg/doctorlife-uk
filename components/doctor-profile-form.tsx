@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState, useTransition } from "react"
-import { Camera, Loader2 } from "lucide-react"
+import { Camera, Loader2, Users } from "lucide-react"
 import { UserAvatar } from "@/components/user-avatar"
 import { updateDoctorProfile, uploadDoctorAvatar } from "@/app/actions/doctor"
 
@@ -11,8 +11,11 @@ type Profile = {
   licenseNumber: string | null
   bio: string | null
   acceptingPatients: boolean
+  maxPatients: number | null
   image: string | null
 }
+
+const PRESET_LIMITS = [10, 25, 50, 100]
 
 export function DoctorProfileForm({ profile }: { profile: Profile }) {
   const [image, setImage] = useState(profile.image)
@@ -21,6 +24,7 @@ export function DoctorProfileForm({ profile }: { profile: Profile }) {
   const [licenseNumber, setLicenseNumber] = useState(profile.licenseNumber ?? "")
   const [bio, setBio] = useState(profile.bio ?? "")
   const [accepting, setAccepting] = useState(profile.acceptingPatients)
+  const [maxPatients, setMaxPatients] = useState<number | null>(profile.maxPatients)
 
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
   const [pending, startTransition] = useTransition()
@@ -55,6 +59,7 @@ export function DoctorProfileForm({ profile }: { profile: Profile }) {
         licenseNumber,
         bio,
         acceptingPatients: accepting,
+        maxPatients,
       })
       setMsg(
         res.ok
@@ -157,6 +162,71 @@ export function DoctorProfileForm({ profile }: { profile: Profile }) {
           className="size-5 shrink-0 accent-ink"
         />
       </label>
+
+      {/* Límite de pacientes activos */}
+      <div className="rounded-[13px] border border-ink/15 bg-warm px-[16px] py-4">
+        <div className="flex items-start gap-3">
+          <Users className="mt-0.5 size-[18px] shrink-0 text-ink-soft" aria-hidden />
+          <div className="flex-1 min-w-0">
+            <span className="block text-[14.5px] font-medium text-ink">
+              Límite de pacientes activos
+            </span>
+            <span className="mt-0.5 block text-[12.5px] text-ink-soft">
+              Cuando alcances este número, se dejará de mostrarte como disponible para nuevas
+              suscripciones. Déjalo en «Sin límite» para no restringir.
+            </span>
+
+            {/* Presets */}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {PRESET_LIMITS.map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setMaxPatients(n)}
+                  className={`rounded-full px-3 py-1 text-[13px] font-medium transition-colors ${
+                    maxPatients === n
+                      ? "bg-ink text-paper"
+                      : "border border-ink/20 bg-paper text-ink hover:bg-ink/5"
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setMaxPatients(null)}
+                className={`rounded-full px-3 py-1 text-[13px] font-medium transition-colors ${
+                  maxPatients === null
+                    ? "bg-ink text-paper"
+                    : "border border-ink/20 bg-paper text-ink hover:bg-ink/5"
+                }`}
+              >
+                Sin límite
+              </button>
+            </div>
+
+            {/* Input personalizado */}
+            <div className="mt-3 flex items-center gap-2">
+              <input
+                type="number"
+                min={1}
+                max={9999}
+                step={1}
+                value={maxPatients ?? ""}
+                onChange={(e) => {
+                  const v = parseInt(e.target.value, 10)
+                  setMaxPatients(isNaN(v) || v <= 0 ? null : v)
+                }}
+                placeholder="Número personalizado…"
+                className="w-[190px] rounded-[10px] border border-ink/15 bg-paper px-3 py-2 text-[13.5px] text-ink outline-none transition-colors focus:border-amber"
+              />
+              {maxPatients !== null && (
+                <span className="text-[13px] text-ink-soft">pacientes máximo</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {msg && (
         <p className={`text-[13.5px] ${msg.ok ? "text-olive" : "text-clay"}`}>{msg.text}</p>

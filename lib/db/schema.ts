@@ -78,6 +78,11 @@ export const doctorProfiles = pgTable("doctor_profiles", {
   chargesEnabled: boolean("chargesEnabled").notNull().default(false),
   payoutsEnabled: boolean("payoutsEnabled").notNull().default(false),
   acceptingPatients: boolean("acceptingPatients").notNull().default(true),
+  /**
+   * Máximo de pacientes activos (suscripciones active/trialing/past_due) que
+   * el médico acepta simultáneamente. NULL = sin límite.
+   */
+  maxPatients: integer("maxPatients"),
   slotMinutes: integer("slotMinutes").notNull().default(30),
   timezone: text("timezone").notNull().default("Europe/Madrid"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
@@ -155,6 +160,10 @@ export const conversations = pgTable("conversations", {
   lastMessageAt: timestamp("lastMessageAt", { withTimezone: true }),
   // Estado fijado por el médico para organizar su bandeja: 'active' | 'pending' | 'archived'.
   doctorStatus: text("doctorStatus").notNull().default("active"),
+  // Cooldown para el email de notificación de mensaje nuevo.
+  // Guardamos cuándo se envió el último aviso a cada parte para no saturar el correo.
+  lastPatientNotifiedAt: timestamp("lastPatientNotifiedAt", { withTimezone: true }),
+  lastDoctorNotifiedAt: timestamp("lastDoctorNotifiedAt", { withTimezone: true }),
   createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 })
 

@@ -5,6 +5,7 @@ import { useQuiz } from "./quiz-context";
 import { quizSteps } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
 import { BrandLogo } from "./brand-logo";
+import { analytics } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -113,7 +114,10 @@ export function QuizModal() {
     setAnswers(next);
     setTimeout(() => {
       if (step < total - 1) setStep(step + 1);
-      else setPhase("bmi");
+      else {
+        setPhase("bmi");
+        analytics.formStep("bmi");
+      }
     }, 180);
   };
 
@@ -151,6 +155,7 @@ export function QuizModal() {
     });
     if (res.ok) {
       setPhase("done");
+      analytics.formCompleted({ source: plan, timeline: estTimeline });
     } else {
       setError(res.error);
       setPhase("details");
@@ -351,6 +356,7 @@ export function QuizModal() {
                   }
                   setError(null);
                   setPhase("details");
+                  analytics.formStep("details");
                 }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
               >

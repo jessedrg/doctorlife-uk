@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { QuizTrigger } from "./quiz-trigger";
 import { BrandLogo } from "./brand-logo";
+import { analytics } from "@/lib/analytics";
 
 const links = [
   { label: "Cómo funciona", href: "/#product" },
   { label: "Planes y precios", href: "/#planes" },
   { label: "Blog", href: "/blog" },
-  { label: "Adelgazar", href: "/adelgazar-con-supervision-medica" },
   { label: "Empezar", href: "/#cta" },
 ];
 
@@ -23,6 +23,14 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname() || "/";
+
+  // Registra la navegación desde el blog hacia la página principal.
+  const trackNav = (href: string) => {
+    const goesHome = href === "/" || href === "/#top" || href.startsWith("/#");
+    if (pathname.startsWith("/blog") && goesHome) {
+      analytics.blogToHome(href);
+    }
+  };
 
   // Bloquea el scroll del body cuando el menú móvil está abierto
   useEffect(() => {
@@ -58,6 +66,7 @@ export function Navbar() {
           href="/#top"
           onClick={(e) => {
             setOpen(false);
+            trackNav("/#top");
             if (window.location.pathname === "/") {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -71,7 +80,7 @@ export function Navbar() {
 
         {/* enlaces desktop */}
         <div className="hidden items-center gap-[28px] whitespace-nowrap text-[15px] font-medium md:flex">
-          {links.slice(0, 4).map((l) => {
+          {links.slice(0, 3).map((l) => {
             const active = isActive(pathname, l.href);
             return (
               <a
