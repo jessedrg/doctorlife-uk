@@ -1,14 +1,22 @@
 import { requireRole } from "@/lib/session"
 import { PortalShell, type NavIcon } from "@/components/portal-shell"
 import { hasPendingVerification } from "@/app/actions/verification"
+import { getPatientStatus } from "@/app/actions/subscription"
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const user = await requireRole("patient")
-  const verificationPending = await hasPendingVerification(user.id)
+  const [verificationPending, patientStatus] = await Promise.all([
+    hasPendingVerification(user.id),
+    getPatientStatus(user.id),
+  ])
+
+  // "Reservar cita" solo aparece en el sidebar cuando hay una renovación pendiente.
+  // Para la primera cita, el paciente llega desde el quiz (flujo público).
+  const showReservar = patientStatus === "followup_available"
 
   const nav: { href: string; label: string; icon: NavIcon }[] = [
     { href: "/portal", label: "Inicio", icon: "home" },
-    { href: "/portal/reservar", label: "Reservar cita", icon: "reservar" },
+    ...(showReservar ? [{ href: "/portal/reservar", label: "Reservar seguimiento", icon: "reservar" as NavIcon }] : []),
     { href: "/portal/citas", label: "Mis citas", icon: "citas" },
     { href: "/portal/progreso", label: "Mi progreso", icon: "progreso" },
     { href: "/portal/chat", label: "Chat", icon: "mensajes" },
