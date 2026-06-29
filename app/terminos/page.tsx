@@ -36,7 +36,7 @@ const sections: Section[] = [
   },
   {
     title: "5. Responsabilidad",
-    body: "El médico que revise tu caso actúa bajo su criterio profesional y responsabilidad. DoctorLife actúa como plataforma tecnológica que facilita la consulta.",
+    body: "DoctorLife es una plataforma tecnológica de intermediación que conecta pacientes con médicos colegiados independientes. DoctorLife no presta servicios médicos ni emite diagnósticos. El médico que atiende tu caso actúa exclusivamente bajo su propio criterio profesional y es el único responsable del acto médico. La relación contractual del acto médico se establece directamente entre el paciente y el médico, no con DoctorLife.",
   },
   {
     title: "6. Propiedad intelectual",

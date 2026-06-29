@@ -25,8 +25,7 @@ export function Footer() {
               <BrandLogo boxed markSize={28} textSize={23} textClassName="text-paper" />
             </a>
             <p className="mt-5 max-w-[280px] text-[15px] leading-relaxed text-paper/65">
-              Cuidado del peso dirigido por médicos colegiados, con seguimiento
-              real desde la app y tratamiento GLP‑1 supervisado.
+              Plataforma que conecta pacientes con médicos colegiados independientes para el seguimiento del peso con tratamiento GLP‑1.
             </p>
             <QuizTrigger className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink">
               Empieza por 25 €

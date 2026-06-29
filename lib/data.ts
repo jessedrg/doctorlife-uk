@@ -27,7 +27,7 @@ export const products: Product[] = [
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Chat directo con tu endocrino colegiado",
+      "Chat directo con endocrino colegiado en la plataforma",
       "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) si es necesaria",
       "Seguimiento continuo y ajustes de dosis desde la app",
       "Sin permanencia: cancela cuando quieras",
@@ -82,11 +82,11 @@ export type Expert = {
 };
 
 export const experts: Expert[] = [
-  { name: "Dra. Elena Ruiz", role: "Directora médica", spec: "Salud femenina y hormonal", img: "/experts/elena-ruiz.png" },
-  { name: "Dr. Marcus Hale", role: "Responsable de peso", spec: "Medicina metabólica", img: "/experts/marcus-hale.png" },
-  { name: "Dra. Priya Nair", role: "Jefa de endocrinología", spec: "Tiroides y hormonas", img: "/experts/priya-nair.png" },
-  { name: "Dr. James Okafor", role: "Asuntos médicos", spec: "Medicina interna", img: "/experts/james-okafor.png" },
-  { name: "Dra. Sofía Bergman", role: "Asesora de cardiología", spec: "Salud cardiovascular", img: "/experts/sofia-bergman.png" },
+  { name: "Dra. Elena Ruiz", role: "Médica independiente en la plataforma", spec: "Salud femenina y hormonal", img: "/experts/elena-ruiz.png" },
+  { name: "Dr. Marcus Hale", role: "Médico independiente en la plataforma", spec: "Medicina metabólica", img: "/experts/marcus-hale.png" },
+  { name: "Dra. Priya Nair", role: "Médica independiente en la plataforma", spec: "Tiroides y hormonas", img: "/experts/priya-nair.png" },
+  { name: "Dr. James Okafor", role: "Médico independiente en la plataforma", spec: "Medicina interna", img: "/experts/james-okafor.png" },
+  { name: "Dra. Sofía Bergman", role: "Médica independiente en la plataforma", spec: "Salud cardiovascular", img: "/experts/sofia-bergman.png" },
 ];
 
 export type Metric = { value: number; prefix?: string; suffix?: string; label: string };
