@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Reveal } from "./reveal";
-import { saveLead } from "@/app/actions/leads";
+import { subscribeNewsletter } from "@/app/actions/newsletter";
 
 export function FinalCta() {
   const [email, setEmail] = useState("");
@@ -13,7 +13,7 @@ export function FinalCta() {
     e.preventDefault();
     setStatus("loading");
     setErrorMsg("");
-    const result = await saveLead({ email, source: "guia" } as any);
+    const result = await subscribeNewsletter(email, "guia");
     if (result.ok) {
       setStatus("success");
       setEmail("");
