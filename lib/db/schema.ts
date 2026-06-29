@@ -361,3 +361,17 @@ export const verificationRequests = pgTable("verification_requests", {
 
 export type VerificationRequest = typeof verificationRequests.$inferSelect
 export type NewVerificationRequest = typeof verificationRequests.$inferInsert
+
+/**
+ * Suscriptores de newsletter capturados desde la guía «Equilibra tus hormonas»
+ * y otros CTAs del sitio público. No requieren cuenta de usuario.
+ */
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  source: text("source").notNull().default("guia"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+})
+
+export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect
+export type NewNewsletterSubscriber = typeof newsletterSubscribers.$inferInsert

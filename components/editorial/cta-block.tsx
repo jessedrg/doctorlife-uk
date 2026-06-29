@@ -88,11 +88,11 @@ export function CTABlock({
               </a>
             </div>
           </div>
-          <div className="relative min-h-[240px] md:min-h-full">
+          <div className="relative min-h-[240px] md:min-h-full md:max-h-[520px]">
             <img
               src="/hero/woman.png"
               alt="Paciente de DoctorLife sonriendo"
-              className="absolute inset-0 h-full w-full object-cover object-top"
+              className="absolute inset-0 h-full w-full object-cover object-[center_15%]"
             />
             <div
               className="pointer-events-none absolute inset-0"
