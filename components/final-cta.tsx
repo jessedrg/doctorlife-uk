@@ -1,10 +1,31 @@
+"use client";
+
+import { useState } from "react";
 import { Reveal } from "./reveal";
-import { QuizTrigger } from "./quiz-trigger";
+import { saveLead } from "@/app/actions/leads";
 
 export function FinalCta() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+    const result = await saveLead({ email, source: "guia" } as any);
+    if (result.ok) {
+      setStatus("success");
+      setEmail("");
+    } else {
+      setStatus("error");
+      setErrorMsg(result.error);
+    }
+  }
+
   return (
     <section id="cta" className="mx-auto max-w-none px-3 pt-10 sm:px-4 lg:px-5">
-      <Reveal className="relative grid min-h-[460px] grid-cols-1 overflow-hidden rounded-[40px] text-paper md:grid-cols-2" >
+      <Reveal className="relative grid min-h-[460px] grid-cols-1 overflow-hidden rounded-[40px] text-paper md:grid-cols-2">
         <div className="absolute inset-0" style={{ background: "linear-gradient(120deg,#3a4029 0%,#2a2114 60%,#171009 100%)" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(70% 80% at 95% 60%,rgba(227,181,130,.4),transparent 55%)" }} />
 
@@ -18,16 +39,35 @@ export function FinalCta() {
             Recibe gratis tu guía «Equilibra tus hormonas», escrita por médicos
             colegiados para acompañarte en tu camino.
           </p>
-          <div className="flex max-w-[380px] flex-col gap-3">
-            <input
-              placeholder="Correo electrónico"
-              className="rounded-[14px] border border-paper/[.28] px-[18px] py-4 text-[15px] text-paper outline-none placeholder:text-paper/50"
-              style={{ background: "rgba(246,240,230,.1)" }}
-            />
-            <QuizTrigger className="rounded-[14px] bg-paper py-4 text-base font-semibold text-ink">
-              Conseguir la guía
-            </QuizTrigger>
-          </div>
+
+          {status === "success" ? (
+            <div className="flex max-w-[380px] items-center gap-3 rounded-[14px] border border-sage/40 bg-sage/10 px-5 py-4 text-[15px] text-sage">
+              Guía enviada. Revisa tu correo.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex max-w-[380px] flex-col gap-3">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Correo electrónico"
+                className="rounded-[14px] border border-paper/[.28] px-[18px] py-4 text-[15px] text-paper outline-none placeholder:text-paper/50"
+                style={{ background: "rgba(246,240,230,.1)" }}
+              />
+              {status === "error" && (
+                <p className="text-[12px] text-red-400">{errorMsg}</p>
+              )}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="rounded-[14px] bg-paper py-4 text-base font-semibold text-ink transition-opacity disabled:opacity-60"
+              >
+                {status === "loading" ? "Enviando..." : "Conseguir la guía"}
+              </button>
+            </form>
+          )}
+
           <p className="mt-4 max-w-[40ch] text-[11.5px] text-paper/50">
             Al introducir tu correo aceptas nuestros Términos y Condiciones y
             reconoces la Política de Privacidad.
