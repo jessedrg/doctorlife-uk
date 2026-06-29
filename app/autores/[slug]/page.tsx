@@ -16,9 +16,9 @@ import {
   formatDate,
 } from "@/lib/articles";
 
-export function generateStaticParams() {
-  return authors.map((a) => ({ slug: a.slug }));
-}
+export const dynamic = "force-static";
+export const revalidate = 86400; // 24h ISR
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

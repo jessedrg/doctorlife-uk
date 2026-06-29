@@ -9,9 +9,9 @@ import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { posts, getPost, getRelated, seoTitle, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
-export function generateStaticParams() {
-  return posts.map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-static";
+export const revalidate = 86400; // 24h ISR — se regenera en background sin bloquear el build
+export const dynamicParams = true; // rutas no conocidas en build se generan on-demand
 
 export async function generateMetadata({
   params,

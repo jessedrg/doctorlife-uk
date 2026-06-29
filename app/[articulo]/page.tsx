@@ -3,10 +3,9 @@ import type { Metadata } from "next";
 import { ArticleLayout } from "@/components/editorial/article-layout";
 import { getArticle, articles, SITE_URL } from "@/lib/articles";
 
-/* ── Static params: pre-render all 8 articles at build time ── */
-export function generateStaticParams() {
-  return articles.map((a) => ({ articulo: a.slug }));
-}
+export const dynamic = "force-static";
+export const revalidate = 86400; // 24h ISR
+export const dynamicParams = true;
 
 /* ── Per-article <head> metadata ── */
 export async function generateMetadata({
