@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { posts, SITE_URL as BLOG_SITE_URL } from "@/lib/blog";
 import { articles, authors, SITE_URL, PILLAR } from "@/lib/articles";
 
+export const revalidate = 86400; // regenerar el sitemap una vez al día, no en cada build
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

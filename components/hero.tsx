@@ -15,16 +15,17 @@ export function Hero() {
         />
 
         {/* foto principal */}
-        <div className="absolute inset-y-0 right-0 w-full md:w-[64%]">
+        <div className="absolute inset-y-0 right-0 w-full md:w-[62%] lg:w-[58%] xl:w-[55%] 2xl:w-[52%]">
           <img
             src="/hero/woman.png"
             alt="Paciente de DoctorLife sonriendo"
-            className="h-full w-full object-cover object-top"
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "65% top" }}
           />
           {/* color overlay para fundir la foto con el bloque */}
           <div
             className="pointer-events-none absolute inset-0"
-            style={{ background: "linear-gradient(95deg,#5f6a3e 0%,rgba(95,106,62,.65) 30%,rgba(95,106,62,.15) 60%,transparent 100%)" }}
+            style={{ background: "linear-gradient(95deg,#5f6a3e 0%,rgba(95,106,62,.6) 25%,rgba(95,106,62,.1) 55%,transparent 100%)" }}
           />
         </div>
 
