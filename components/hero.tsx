@@ -1,7 +1,13 @@
 export function Hero() {
   return (
-    <section id="top" className="mx-auto mt-5 max-w-none scroll-mt-[100px] px-3 sm:px-4 lg:px-5">
-      <div className="relative min-h-[640px] overflow-hidden rounded-[36px] lg:min-h-[720px] 2xl:min-h-[820px]">
+    <section
+      id="top"
+      className="mx-auto mt-5 max-w-none scroll-mt-[100px] px-3 sm:px-4 lg:px-5"
+    >
+      <div
+        className="relative overflow-hidden rounded-[36px]"
+        style={{ height: "calc(100svh - 38px - 100px - 20px)" }}
+      >
         {/* base brand color block */}
         <div
           className="absolute inset-0"
@@ -23,10 +29,10 @@ export function Hero() {
         </div>
 
         {/* contenido */}
-        <div className="relative z-[2] flex min-h-[640px] items-center px-5 py-16 sm:px-10 lg:min-h-[720px] lg:px-14 2xl:min-h-[820px] 2xl:px-20">
+        <div className="relative z-[2] flex h-full items-center px-5 py-16 sm:px-10 lg:px-14 2xl:px-20">
           <div className="max-w-[600px] 2xl:max-w-[720px]">
             <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage 2xl:text-[15px]">
-              Tu clínica 100% online
+              Tu plataforma médica 100% online
             </div>
             <h1 className="mt-6 text-balance text-[clamp(38px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper">
               El tratamiento médico para la{" "}
