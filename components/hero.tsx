@@ -1,15 +1,12 @@
-import React from "react";
-
 export function Hero() {
   return (
     <section
       id="top"
       className="mx-auto mt-5 max-w-none scroll-mt-[100px] px-3 sm:px-4 lg:px-5"
-      style={{ "--hero-offset": "calc(40px + 72px + 20px)" } as React.CSSProperties}
     >
       <div
         className="relative overflow-hidden rounded-[36px]"
-        style={{ minHeight: "calc(100svh - var(--hero-offset))" }}
+        style={{ height: "calc(100svh - 38px - 100px - 20px)" }}
       >
         {/* base brand color block */}
         <div
@@ -32,10 +29,7 @@ export function Hero() {
         </div>
 
         {/* contenido */}
-        <div
-          className="relative z-[2] flex items-center px-5 py-16 sm:px-10 lg:px-14 2xl:px-20"
-          style={{ minHeight: "calc(100svh - var(--hero-offset))" }}
-        >
+        <div className="relative z-[2] flex h-full items-center px-5 py-16 sm:px-10 lg:px-14 2xl:px-20">
           <div className="max-w-[600px] 2xl:max-w-[720px]">
             <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage 2xl:text-[15px]">
               Tu plataforma médica 100% online
