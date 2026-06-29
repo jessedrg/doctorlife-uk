@@ -42,11 +42,11 @@ export function BlogFunnel({
             </a>
           </div>
         </div>
-        <div className="relative aspect-[5/4] w-full sm:aspect-[16/9] md:aspect-auto md:min-h-full">
+        <div className="relative aspect-[5/4] w-full sm:aspect-[16/9] md:aspect-auto md:min-h-full md:max-h-[520px]">
           <img
             src={image || "/placeholder.svg"}
             alt={imageAlt}
-            className="absolute inset-0 h-full w-full object-cover object-[center_25%] md:object-top"
+            className="absolute inset-0 h-full w-full object-cover object-[center_15%]"
           />
           {/* degradado: vertical en móvil (oscurece la parte inferior), horizontal en escritorio */}
           <div
