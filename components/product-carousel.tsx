@@ -58,7 +58,7 @@ export function ProductCarousel() {
           {products.map((p) => (
             <div
               key={p.name}
-              className="group flex w-[85%] flex-shrink-0 snap-start flex-col rounded-[28px] border p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,.35)] sm:w-[360px] md:w-[340px]"
+              className="group flex w-[85vw] flex-shrink-0 snap-start flex-col rounded-[28px] border p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(0,0,0,.35)] sm:w-[clamp(300px,28vw,420px)]"
               style={{
                 background: p.featured ? "rgba(86,96,58,.55)" : "rgba(40,44,30,.45)",
                 borderColor: p.featured ? "rgba(205,217,160,.5)" : "rgba(246,240,230,.12)",
