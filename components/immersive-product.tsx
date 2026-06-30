@@ -83,8 +83,12 @@ export function ImmersiveProduct() {
         marginLeft: "clamp(12px, 1.5vw, 20px)",
         marginRight: "clamp(12px, 1.5vw, 20px)",
         borderRadius: "44px 44px 0 0",
-        /* height: video fills viewport minus the top offset so nothing clips */
-        height: "calc(100svh - clamp(16px, 3vw, 40px))",
+        /*
+         * Total offset from viewport top to where this section starts:
+         *   announcement bar ~38px + navbar ~68px + marginTop ~40px + 16px gap = ~162px
+         * Subtract that from 100svh so the bottom edge sits flush with the viewport.
+         */
+        height: "calc(100svh - 162px)",
       }}
     >
       {/* video de fondo a pantalla completa */}
