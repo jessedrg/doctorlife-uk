@@ -27,7 +27,7 @@ export default function Home() {
               padding: "clamp(24px, 4vw, 56px) clamp(16px, 3vw, 32px)",
             }}
           >
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto w-full max-w-[1500px]">
               <ProductCarousel />
             </div>
           </section>
