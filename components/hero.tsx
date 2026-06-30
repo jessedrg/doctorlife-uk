@@ -5,14 +5,14 @@ export function Hero() {
       className="mx-auto mt-5 max-w-none scroll-mt-[100px] px-3 sm:px-4 lg:px-5"
     >
       {/*
-        Mobile browsers have a retractable address bar (~56-72px) that counts against 100vh
-        but NOT against 100svh. However, the bar is still VISIBLE on first load until the
-        user scrolls. We use 100svh (smallest viewport) so the card never overflows below
-        the visible area, even before the browser bar hides.
+        The card top offset from page top = announcement bar + navbar + mt-5 section.
+        Measured: ~150px on desktop. We add 12px bottom gap.
+        100svh already accounts for mobile browser bar being visible.
+        On mobile we reduce offset since there's no announcement bar.
       */}
       <div
-        className="relative overflow-hidden rounded-[36px]"
-        style={{ height: "calc(100svh - 80px)" }}
+        className="relative w-full overflow-hidden rounded-[36px]"
+        style={{ height: "calc(100svh - 162px)" }}
       >
         {/* base brand color block */}
         <div

@@ -77,8 +77,15 @@ export function ImmersiveProduct() {
   return (
     <section
       id="product"
-      className="grain relative mt-24 scroll-mt-20 overflow-hidden rounded-t-[44px] text-paper"
-      style={{ height: "calc(100svh - env(safe-area-inset-bottom, 0px))" }}
+      className="grain relative scroll-mt-20 overflow-hidden text-paper"
+      style={{
+        marginTop: "clamp(16px, 3vw, 40px)",
+        marginLeft: "clamp(12px, 1.5vw, 20px)",
+        marginRight: "clamp(12px, 1.5vw, 20px)",
+        marginBottom: "clamp(16px, 3vw, 40px)",
+        borderRadius: "44px",
+        height: "calc(100svh - env(safe-area-inset-bottom, 0px))",
+      }}
     >
       {/* video de fondo a pantalla completa */}
       <video
