@@ -119,10 +119,13 @@ export function ImmersiveProduct() {
       />
       {/* overlay oscuro para legibilidad del texto */}
       <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
-      {/* fundido hacia el fondo de la sección siguiente */}
+      {/* fundido suave hacia la sección siguiente */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent, #120c07)" }}
+        className="pointer-events-none absolute bottom-0 left-0 right-0"
+        style={{
+          height: "55%",
+          background: "linear-gradient(to bottom, transparent 0%, rgba(18,12,7,0.55) 50%, #120c07 100%)",
+        }}
       />
 
       {/* contenido en flex column que ocupa toda la altura */}
