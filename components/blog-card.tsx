@@ -21,15 +21,34 @@ export function BlogCard({ post, large = false }: { post: Post; large?: boolean 
       className="group flex flex-col overflow-hidden rounded-[26px] bg-warm no-underline shadow-[0_18px_50px_-30px_rgba(34,29,23,.5)] ring-1 ring-ink/[.06] transition-shadow hover:shadow-[0_24px_60px_-26px_rgba(34,29,23,.5)]"
     >
       <div
-        className={`relative flex w-full flex-col justify-between overflow-hidden p-6 ${p.bg} ${p.fg} ${large ? "aspect-[16/10] sm:aspect-[2.6/1]" : "aspect-[16/11]"}`}
+        className={`relative flex w-full flex-col justify-between overflow-hidden p-6 ${large ? `bg-ink text-paper aspect-[16/10] sm:aspect-[2.6/1]` : `${p.bg} ${p.fg} aspect-[16/11]`}`}
       >
+        {large && (
+          <>
+            <video
+              src="/products/pills-pen.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              disablePictureInPicture
+              preload="metadata"
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 35%" }}
+            />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/30 to-ink/40" />
+          </>
+        )}
         <span
-          className={`w-fit rounded-full px-[11px] py-[5px] text-[11px] font-semibold uppercase tracking-[.1em] ${p.pill}`}
+          className={`relative z-10 w-fit rounded-full px-[11px] py-[5px] text-[11px] font-semibold uppercase tracking-[.1em] ${
+            large ? "bg-paper/20 text-paper" : p.pill
+          }`}
         >
           {post.category}
         </span>
-        <div>
-          <span aria-hidden className={`mb-3 block h-px w-10 ${p.rule}`} />
+        <div className="relative z-10">
+          <span aria-hidden className={`mb-3 block h-px w-10 ${large ? "bg-paper/30" : p.rule}`} />
           <p
             className={`font-serif italic leading-[1.08] ${large ? "text-[clamp(26px,3.4vw,40px)]" : "text-[clamp(22px,4vw,28px)]"}`}
           >
