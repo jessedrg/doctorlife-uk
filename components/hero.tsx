@@ -17,10 +17,10 @@ export function Hero() {
         {/* foto principal */}
         <div className="absolute inset-y-0 right-0 w-full md:w-[62%] lg:w-[58%] xl:w-[55%] 2xl:w-[52%]">
           <img
-            src="/hero/woman.png"
+            src="https://images.unsplash.com/photo-1522556189639-b150ed9c4330?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Paciente de DoctorLife sonriendo"
             className="h-full w-full object-cover"
-            style={{ objectPosition: "65% top" }}
+            style={{ objectPosition: "50% top" }}
           />
           {/* color overlay para fundir la foto con el bloque */}
           <div
