@@ -16,19 +16,34 @@ export function MobileFollowup() {
 
           {/* phone image */}
           <div className="relative shrink-0 w-[160px] sm:w-[200px]">
-            <div
-              aria-hidden
-              className="absolute inset-[-20%] rounded-full"
-              style={{
-                background:
-                  "radial-gradient(closest-side, rgba(205,160,80,.22), transparent)",
-                filter: "blur(24px)",
-              }}
-            />
             <img
               src="/doctor-mobile.webp"
               alt="Médico de DoctorLife en videollamada por móvil"
-              className="relative w-full drop-shadow-xl"
+              className="relative w-full"
+            />
+            {/* fundido derecho — hacia el interior de la card */}
+            <div
+              aria-hidden
+              className="absolute inset-y-0 right-0 w-1/2 pointer-events-none"
+              style={{ background: "linear-gradient(to right, transparent, #1a1108)" }}
+            />
+            {/* fundido inferior */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none"
+              style={{ background: "linear-gradient(to bottom, transparent, #1a1108)" }}
+            />
+            {/* fundido superior */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-1/4 pointer-events-none"
+              style={{ background: "linear-gradient(to top, transparent, #1a1108)" }}
+            />
+            {/* fundido izquierdo */}
+            <div
+              aria-hidden
+              className="absolute inset-y-0 left-0 w-1/4 pointer-events-none"
+              style={{ background: "linear-gradient(to left, transparent, #1a1108)" }}
             />
           </div>
 
