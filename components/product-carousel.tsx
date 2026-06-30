@@ -18,7 +18,7 @@ export function ProductCarousel() {
   const next = () => scrollByCard(1);
 
   return (
-    <div id="planes" className="mt-12 scroll-mt-[110px] text-left">
+    <div id="planes" className="scroll-mt-[110px] text-left">
       {/* primera visita */}
       <div className="mb-10 flex flex-col items-start gap-5 rounded-[28px] border border-sage/30 p-7 md:flex-row md:items-center md:justify-between" style={{ background: "rgba(205,217,160,.07)" }}>
         <div>

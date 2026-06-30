@@ -18,8 +18,13 @@ export default function Home() {
         <main>
           <Hero />
           <ImmersiveProduct />
-          <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <ProductCarousel />
+          <section
+            className="grain overflow-hidden px-4 py-12 text-paper sm:px-6 sm:py-16 lg:px-8"
+            style={{ background: "radial-gradient(120% 60% at 50% 0%,#33291c 0%,#1d160f 50%,#120c07 100%)" }}
+          >
+            <div className="mx-auto max-w-6xl">
+              <ProductCarousel />
+            </div>
           </section>
           <Transformation />
           <MobileFollowup />
