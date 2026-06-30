@@ -106,7 +106,15 @@ export function ImmersiveProduct() {
       if (headerH === 0) headerH = 106; // safe fallback
       const mt = parseFloat(getComputedStyle(section).marginTop) || 0;
       // 8px breathing room at bottom
-      const h = window.innerHeight - headerH - mt - 8;
+      const viewportFit = window.innerHeight - headerH - mt - 8;
+      let h = viewportFit;
+      // On large/wide screens the object-cover video scales up and crops the
+      // bottom of the pen. Grow the card height (based on its width) so the full
+      // video is revealed, while never going below the viewport-fit height.
+      if (window.innerWidth >= 1024) {
+        const targetByWidth = Math.round(section.offsetWidth * 0.7);
+        h = Math.max(viewportFit, Math.min(targetByWidth, viewportFit * 1.45));
+      }
       section.style.height = `${Math.max(h, 400)}px`;
     };
 

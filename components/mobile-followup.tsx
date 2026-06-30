@@ -4,9 +4,9 @@ import { QuizTrigger } from "./quiz-trigger";
 
 export function MobileFollowup() {
   return (
-    <section className="relative mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <section className="relative mx-auto max-w-none px-3 py-10 sm:px-4 lg:px-5">
       <div
-        className="relative overflow-hidden rounded-[28px] p-6 sm:p-8"
+        className="relative overflow-hidden rounded-[28px] p-6 sm:p-8 lg:min-h-[440px] lg:flex lg:items-center xl:min-h-[500px]"
         style={{
           background:
             "radial-gradient(120% 80% at 60% 110%, #33291c 0%, #1d160f 52%, #120c07 100%)",
@@ -29,7 +29,7 @@ export function MobileFollowup() {
           style={{ background: "linear-gradient(to top, transparent, #1d160f)" }} />
 
         {/* copy desplazado a la derecha */}
-        <div className="relative flex flex-col gap-3 pl-[42%] text-paper sm:pl-[36%]">
+        <div className="relative flex w-full flex-col gap-3 pl-[42%] text-paper sm:pl-[36%]">
           <span className="inline-block w-fit rounded-full border border-amber/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-amber">
             100% digital
           </span>
