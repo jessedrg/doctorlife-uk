@@ -14,7 +14,7 @@ export function MobileFollowup() {
       >
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:gap-10">
 
-          {/* phone image — compact */}
+          {/* phone image */}
           <div className="relative shrink-0 w-[160px] sm:w-[200px]">
             <div
               aria-hidden
