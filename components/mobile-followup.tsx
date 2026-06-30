@@ -4,12 +4,13 @@ import { QuizTrigger } from "./quiz-trigger";
 
 export function MobileFollowup() {
   return (
-    <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+    <section className="relative mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <div
-        className="relative overflow-hidden rounded-[28px] border border-paper/10 p-6 sm:p-8"
+        className="relative overflow-hidden rounded-[28px] p-6 sm:p-8"
         style={{
           background:
             "radial-gradient(120% 80% at 60% 110%, #33291c 0%, #1d160f 52%, #120c07 100%)",
+          boxShadow: "0 0 80px 60px #f6f0e6",
         }}
       >
         {/* imagen pegada al borde izquierdo/inferior de la card, sin recuadro */}
