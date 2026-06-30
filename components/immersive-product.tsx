@@ -115,7 +115,7 @@ export function ImmersiveProduct() {
         x-webkit-airplay="deny"
         aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover"
-        style={{ objectPosition: "center center" }}
+        style={{ objectPosition: "center top" }}
       />
       {/* overlay oscuro para legibilidad del texto */}
       <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
