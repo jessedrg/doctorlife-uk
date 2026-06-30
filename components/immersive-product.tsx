@@ -46,6 +46,11 @@ export function ImmersiveProduct() {
       />
       {/* overlay oscuro para legibilidad del texto */}
       <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
+      {/* fundido hacia el fondo de la sección siguiente */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #120c07)" }}
+      />
 
       {/* contenido en flex column que ocupa toda la altura */}
       <div className="relative flex h-full flex-col items-center justify-between px-4 pb-6 pt-10 text-center sm:px-6 sm:pb-10 sm:pt-14 lg:px-8">
