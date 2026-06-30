@@ -85,15 +85,22 @@ export function ImmersiveProduct() {
     if (!section) return;
 
     const setHeight = () => {
-      // Find the nav by its actual rendered position: the first element
-      // that has position:sticky and is above this section.
+      // Sum the heights of ALL sticky/fixed elements that appear before this
+      // section in the DOM — announcement bar + nav both count.
+      const seen = new Set<HTMLElement>();
       const allEls = Array.from(document.querySelectorAll<HTMLElement>("*"));
       let headerH = 0;
       for (const el of allEls) {
         if (el === section) break;
+        if (seen.has(el)) continue;
         const pos = getComputedStyle(el).position;
         if (pos === "sticky" || pos === "fixed") {
-          headerH = Math.max(headerH, el.offsetHeight);
+          // Only count top-level sticky bars (direct children of body or main wrapper)
+          const parentPos = getComputedStyle(el.parentElement!).position;
+          if (parentPos !== "sticky" && parentPos !== "fixed") {
+            headerH += el.offsetHeight;
+            seen.add(el);
+          }
         }
       }
       if (headerH === 0) headerH = 106; // safe fallback
