@@ -8,6 +8,7 @@ import { metrics, LOSS_STAT } from "@/lib/data";
 
 export function ImmersiveProduct() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -74,32 +75,60 @@ export function ImmersiveProduct() {
     };
   }, []);
 
+  // Set height precisely: measure the sticky header stack once and on every resize.
+  // We measure the first sticky/fixed element above this section in the DOM.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const setHeight = () => {
+      // offsetTop is the element's distance from the top of its offsetParent,
+      // but we need distance from the page top. Walk the offsetParent chain.
+      let el: HTMLElement | null = section;
+      let topFromPage = 0;
+      while (el) {
+        topFromPage += el.offsetTop;
+        el = el.offsetParent as HTMLElement | null;
+      }
+      // The sticky header always occupies the top of the viewport.
+      // When the section is scrolled into view flush with the header bottom,
+      // visible height = viewport - headerHeight.
+      // But we want the card to fit exactly within the viewport when it first
+      // enters: height = viewport - topFromPage + scrollY_at_that_moment.
+      // Simplest correct formula: height = viewport - (topFromPage % viewport)
+      // Actually: when section is at top of scroll, top of card = header height.
+      // So just: height = viewport - headerHeight - marginTop - gap.
+      // We sum all sticky/fixed elements heights instead.
+      const stickyEls = Array.from(
+        document.querySelectorAll<HTMLElement>('[class*="sticky"], [class*="fixed"]')
+      ).filter((e) => e !== section && section.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_PRECEDING);
+      const headerH = stickyEls.reduce((sum, e) => sum + e.offsetHeight, 0) || 106;
+      const mt = parseFloat(getComputedStyle(section).marginTop) || 0;
+      const h = window.innerHeight - headerH - mt - 12;
+      section.style.height = `${Math.max(h, 400)}px`;
+    };
+
+    // Small delay to let layout settle (fonts, images)
+    const t = setTimeout(setHeight, 100);
+    window.addEventListener("resize", setHeight, { passive: true });
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", setHeight);
+    };
+  }, []);
+
 
 
   return (
     <section
+      ref={sectionRef}
       id="product"
       className="grain relative scroll-mt-20 overflow-hidden text-paper"
       style={{
-        marginTop: "clamp(16px, 3vw, 40px)",
-        marginLeft: "clamp(12px, 1.5vw, 20px)",
-        marginRight: "clamp(12px, 1.5vw, 20px)",
+        margin: "clamp(12px, 1.5vw, 20px) clamp(12px, 1.5vw, 20px) 0",
         borderRadius: "44px 44px 0 0",
-        /*
-         * 100svh = smallest viewport height (mobile bar already visible).
-         * The section scrolls into view with the sticky nav on top — we only
-         * need to subtract the nav height so the bottom edge aligns with the
-         * viewport when the section is snapped at the top of the scroll area.
-         * We use a CSS custom property set on :root by a tiny inline script so
-         * it works without any JS measurement in React.
-         * Fallback: 100svh with no subtraction — always safe, never clips.
-         */
-        /*
-         * The section has a marginTop that pushes it below the nav.
-         * height = 100svh minus that same marginTop so the bottom never overflows.
-         * clamp(16px,3vw,40px) mirrors the marginTop value exactly.
-         */
-        height: "calc(100svh - clamp(16px, 3vw, 40px))",
+        // Height is overwritten by JS useEffect above; fallback for SSR
+        height: "calc(100svh - 120px)",
       }}
     >
       {/* video de fondo a pantalla completa */}
