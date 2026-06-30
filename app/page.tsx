@@ -19,8 +19,8 @@ export default function Home() {
           <Hero />
           <ImmersiveProduct />
           <section
-            className="grain overflow-hidden px-4 pb-12 pt-0 text-paper sm:px-6 sm:pb-16 lg:px-8"
-            style={{ background: "#120c07" }}
+            className="grain overflow-hidden px-4 pb-12 pt-10 text-paper sm:px-6 sm:pb-16 sm:pt-14 lg:px-8"
+            style={{ background: "#120c07", borderRadius: "44px 44px 0 0" }}
           >
             <div className="mx-auto max-w-6xl">
               <ProductCarousel />
