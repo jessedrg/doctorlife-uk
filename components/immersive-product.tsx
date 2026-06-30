@@ -13,7 +13,7 @@ export function ImmersiveProduct() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Atributos críticos para iOS Safari — deben setearse en el DOM real
+    // iOS Safari requires these to be set via JS, not just JSX attributes
     video.muted = true;
     video.defaultMuted = true;
     video.setAttribute("muted", "");
@@ -21,32 +21,56 @@ export function ImmersiveProduct() {
     video.setAttribute("webkit-playsinline", "");
 
     const tryPlay = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
+      if (!video.paused) return;
+      // Re-ensure muted before every play attempt (iOS resets it sometimes)
+      video.muted = true;
+      video.play().catch(() => {});
     };
 
-    // Intentar cuando el video tiene suficientes datos
+    // Fire on every data-ready event
+    video.addEventListener("canplay", tryPlay, { passive: true });
     video.addEventListener("canplaythrough", tryPlay, { once: true });
     video.addEventListener("loadeddata", tryPlay, { once: true });
+    video.addEventListener("loadedmetadata", tryPlay, { once: true });
 
-    // Intentar inmediatamente por si ya está listo
+    // Attempt immediately
     tryPlay();
 
-    // Fallback: arrancar en el primer toque (iOS low-power mode)
+    // IntersectionObserver: re-play whenever the video enters viewport
+    // (handles the case where iOS pauses background videos)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) tryPlay();
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(video);
+
+    // On first user touch anywhere on the page, try to play
+    // (needed for iOS Low Power Mode and some restricted autoplay policies)
     const onTouch = () => tryPlay();
     document.addEventListener("touchstart", onTouch, { once: true, passive: true });
+    document.addEventListener("touchend", onTouch, { once: true, passive: true });
 
-    // Reintentar al volver a la pestaña
-    const onVisibility = () => { if (!document.hidden) tryPlay(); };
+    // Re-attempt when tab becomes visible again
+    const onVisibility = () => {
+      if (!document.hidden) tryPlay();
+    };
     document.addEventListener("visibilitychange", onVisibility);
 
-    // Forzar carga del video
+    // Re-attempt on page focus (e.g. returning from another app on mobile)
+    window.addEventListener("focus", tryPlay, { passive: true });
+
+    // Force-load the video resource
     video.load();
 
     return () => {
+      observer.disconnect();
+      video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("touchstart", onTouch);
+      document.removeEventListener("touchend", onTouch);
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("focus", tryPlay);
     };
   }, []);
 
@@ -54,7 +78,7 @@ export function ImmersiveProduct() {
     <section
       id="product"
       className="grain relative mt-24 scroll-mt-20 overflow-hidden rounded-t-[44px] text-paper"
-      style={{ height: "100svh" }}
+      style={{ height: "calc(100svh - env(safe-area-inset-bottom, 0px))" }}
     >
       {/* video de fondo a pantalla completa */}
       <video
@@ -80,7 +104,11 @@ export function ImmersiveProduct() {
       />
 
       {/* contenido en flex column que ocupa toda la altura */}
-      <div className="relative flex h-full flex-col items-center justify-between px-4 pb-6 pt-10 text-center sm:px-6 sm:pb-10 sm:pt-14 lg:px-8">
+      {/* pb-safe: extra bottom padding so metrics are never hidden behind mobile browser bar */}
+      <div
+        className="relative flex h-full flex-col items-center justify-between px-4 pt-10 text-center sm:px-6 sm:pt-14 lg:px-8"
+        style={{ paddingBottom: "max(24px, calc(env(safe-area-inset-bottom, 0px) + 20px))" }}
+      >
 
         {/* título + párrafo + CTA */}
         <div className="flex flex-col items-center gap-3 sm:gap-4">

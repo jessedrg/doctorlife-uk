@@ -4,9 +4,15 @@ export function Hero() {
       id="top"
       className="mx-auto mt-5 max-w-none scroll-mt-[100px] px-3 sm:px-4 lg:px-5"
     >
+      {/*
+        Mobile browsers have a retractable address bar (~56-72px) that counts against 100vh
+        but NOT against 100svh. However, the bar is still VISIBLE on first load until the
+        user scrolls. We use 100svh (smallest viewport) so the card never overflows below
+        the visible area, even before the browser bar hides.
+      */}
       <div
         className="relative overflow-hidden rounded-[36px]"
-        style={{ height: "calc(100svh - 38px - 100px - 20px)" }}
+        style={{ height: "calc(100svh - 80px)" }}
       >
         {/* base brand color block */}
         <div
@@ -30,16 +36,16 @@ export function Hero() {
         </div>
 
         {/* contenido */}
-        <div className="relative z-[2] flex h-full items-center px-5 py-16 sm:px-10 lg:px-14 2xl:px-20">
+        <div className="relative z-[2] flex h-full flex-col justify-center px-5 pb-10 pt-10 sm:px-10 lg:px-14 2xl:px-20">
           <div className="max-w-[600px] 2xl:max-w-[720px]">
             <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage 2xl:text-[15px]">
               Tu plataforma médica 100% online
             </div>
-            <h1 className="mt-6 text-balance text-[clamp(38px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper">
+            <h1 className="mt-4 text-balance text-[clamp(30px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper sm:mt-6">
               El tratamiento médico para la{" "}
               <span className="font-serif italic text-sage">pérdida de peso</span>, adaptado a tu realidad
             </h1>
-            <p className="mt-7 max-w-[40ch] text-balance text-[clamp(17px,1.4vw,24px)] font-light leading-[1.5] text-paper/80">
+            <p className="mt-4 max-w-[40ch] text-balance text-[clamp(15px,1.4vw,24px)] font-light leading-[1.5] text-paper/80 sm:mt-7">
               Cuidado dirigido por médicos, diseñado en torno a tu cuerpo.
             </p>
           </div>
