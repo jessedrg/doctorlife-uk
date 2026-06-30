@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { Reveal } from "./reveal";
 import { Counter } from "./counter";
 import { QuizTrigger } from "./quiz-trigger";
-import { ProductCarousel } from "./product-carousel";
 import { metrics, LOSS_STAT } from "@/lib/data";
 
 export function ImmersiveProduct() {
@@ -75,22 +74,17 @@ export function ImmersiveProduct() {
 
         {/* métricas */}
         <Reveal className="w-full max-w-[880px]">
-          <div className="grid grid-cols-4 gap-3 text-left sm:gap-[22px]">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-left sm:grid-cols-4 sm:gap-[22px]">
             {metrics.map((m) => (
               <div key={m.label} className="border-t border-paper/[.18] pt-3 sm:pt-[18px]">
-                <div className="text-[clamp(20px,3.5vw,54px)] font-light leading-none">
+                <div className="text-[clamp(24px,3.5vw,54px)] font-light leading-none">
                   <Counter to={m.value} prefix={m.prefix} suffix={m.suffix} />
                 </div>
-                <div className="mt-1 text-[clamp(9px,1.1vw,14px)] text-paper/70 leading-tight">{m.label}</div>
+                <div className="mt-1 text-[clamp(10px,1.1vw,14px)] leading-tight text-paper/70">{m.label}</div>
               </div>
             ))}
           </div>
         </Reveal>
-
-        {/* carrusel */}
-        <div className="w-full">
-          <ProductCarousel />
-        </div>
 
       </div>
     </section>
