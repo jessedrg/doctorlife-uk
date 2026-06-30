@@ -82,9 +82,9 @@ export function ImmersiveProduct() {
         marginTop: "clamp(16px, 3vw, 40px)",
         marginLeft: "clamp(12px, 1.5vw, 20px)",
         marginRight: "clamp(12px, 1.5vw, 20px)",
-        marginBottom: "clamp(16px, 3vw, 40px)",
-        borderRadius: "44px",
-        height: "calc(100svh - env(safe-area-inset-bottom, 0px))",
+        borderRadius: "44px 44px 0 0",
+        /* height: video fills viewport minus the top offset so nothing clips */
+        height: "calc(100svh - clamp(16px, 3vw, 40px))",
       }}
     >
       {/* video de fondo a pantalla completa */}
