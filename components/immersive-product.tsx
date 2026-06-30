@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { Reveal } from "./reveal";
 import { Counter } from "./counter";
 import { QuizTrigger } from "./quiz-trigger";
@@ -5,6 +8,23 @@ import { ProductCarousel } from "./product-carousel";
 import { metrics, LOSS_STAT } from "@/lib/data";
 
 export function ImmersiveProduct() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // Forzar muted y autoplay — necesario en iOS Safari
+    video.muted = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    const play = () => video.play().catch(() => {});
+    play();
+    // Reintentar si el documento gana foco (Safari background tab)
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) play();
+    });
+  }, []);
+
   return (
     <section
       id="product"
@@ -13,6 +33,7 @@ export function ImmersiveProduct() {
     >
       {/* video de fondo a pantalla completa */}
       <video
+        ref={videoRef}
         src="/products/pills-pen.mp4"
         autoPlay
         loop
