@@ -8,6 +8,7 @@ import { metrics, LOSS_STAT } from "@/lib/data";
 
 export function ImmersiveProduct() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -74,8 +75,41 @@ export function ImmersiveProduct() {
     };
   }, []);
 
+  // Dynamically set section height so it always fits exactly in the viewport
+  // without any hardcoded pixel offsets that break across screen sizes.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const updateHeight = () => {
+      // The navbar is sticky — it always occupies the top of the viewport.
+      // Measure its actual rendered height so the video fills exactly what's left.
+      const header = document.querySelector("header, nav[class*='sticky']") as HTMLElement | null;
+      const headerH = header ? header.offsetHeight : 0;
+      // Also account for the marginTop of this section itself
+      const style = getComputedStyle(section);
+      const mt = parseFloat(style.marginTop) || 0;
+      // Leave 12px breathing room at the bottom
+      const h = window.innerHeight - headerH - mt - 12;
+      section.style.height = `${Math.max(h, 300)}px`;
+    };
+
+    updateHeight();
+
+    // Re-measure on resize (orientation change, zoom, etc.)
+    window.addEventListener("resize", updateHeight, { passive: true });
+    // Re-measure after fonts/images load which can shift layout
+    window.addEventListener("load", updateHeight, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateHeight);
+      window.removeEventListener("load", updateHeight);
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="product"
       className="grain relative scroll-mt-20 overflow-hidden text-paper"
       style={{
@@ -83,11 +117,7 @@ export function ImmersiveProduct() {
         marginLeft: "clamp(12px, 1.5vw, 20px)",
         marginRight: "clamp(12px, 1.5vw, 20px)",
         borderRadius: "44px 44px 0 0",
-        /*
-         * Total offset from viewport top to where this section starts:
-         *   announcement bar ~38px + navbar ~68px + marginTop ~40px + 16px gap = ~162px
-         * Subtract that from 100svh so the bottom edge sits flush with the viewport.
-         */
+        // Height is set dynamically by the useEffect above — fallback for SSR
         height: "calc(100svh - 162px)",
       }}
     >
