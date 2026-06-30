@@ -995,7 +995,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 10 ─────────────────────────────────────────��── */
+  /* 10 ─────────────────────────────────────────���── */
   {
     slug: "plan-perder-peso-glp1",
     title: "Plan para perder peso con GLP‑1",
@@ -4632,7 +4632,7 @@ const manualPosts: Post[] = [
             head: ["Dosis", "Fase", "Precio orientativo/mes"],
             rows: [
               ["2,5 mg", "Inicio", "200–250 €"],
-              ["5 mg", "Adaptación", "230–280 ��"],
+              ["5 mg", "Adaptación", "230��280 ��"],
               ["7,5–10 mg", "Escalado", "280–330 €"],
               ["12,5–15 mg", "Mantenimiento", "300–350 €"],
             ],
@@ -5609,32 +5609,138 @@ export function getPost(slug: string): Post | undefined {
 
 /* ───────────────────────────────────────────────────────────
    Optimización del título para Google (SERP).
-   Antepone la keyword y comunica la propuesta de valor real
-   (cita médica online + receta) ANTES del corte de Google
-   (~60 caracteres), para maximizar el CTR desde la búsqueda.
+   Comunica que VENDEMOS un servicio médico (consulta + receta)
+   en vez de parecer un artículo de blog. Antepone la keyword y
+   la propuesta de valor ANTES del corte de Google (~60 chars).
    ─────────────────────────────────────────────────────────── */
-const VALUE_SUFFIX = "Cita Médica y Receta Online";
+const VALUE_SUFFIX = "Consulta + Receta Online";
 const MAX_TITLE = 62;
 
 export function seoTitle(post: Post): string {
+  // Núcleo de la keyword, sin año ni cola de blog ("Precio, Receta y…")
   const core = post.metaTitle
     .split(/[:|]/)[0]
-    .replace(/\s*\(\s*\d{4}\s*\)\s*/g, " ")
+    .replace(/\s*\(\s*\d{4}\s*\)\s*/g, " ") // quita "(2026)"
+    .replace(/\s\b20\d{2}\b/g, " ") // quita "2026" suelto
+    .replace(/\s+/g, " ")
     .trim();
+
+  const fit = (s: string) => (s.length <= MAX_TITLE ? s : null);
 
   const isComparison =
     /(?:-vs-|\bvs\b)/i.test(post.slug) || post.category === "Comparativas";
   if (isComparison) {
-    return post.metaTitle.length <= MAX_TITLE ? post.metaTitle : core;
+    // "Wegovy vs Mounjaro · Cuál Elegir con Receta"
+    return fit(`${core} · Cuál Elegir con Receta`) ?? fit(core) ?? core.slice(0, MAX_TITLE);
   }
 
+  // Para keywords de "receta" remarcamos rapidez con médico colegiado
   if (/receta/i.test(core)) {
-    const withDoctor = `${core} con Médico en 24h`;
-    return withDoctor.length <= MAX_TITLE ? withDoctor : core;
+    return (
+      fit(`${core} con Médico Colegiado en 24h`) ??
+      fit(`${core} con Médico en 24h`) ??
+      fit(core) ??
+      core.slice(0, MAX_TITLE)
+    );
   }
 
-  const withValue = `${core}: ${VALUE_SUFFIX}`;
-  return withValue.length <= MAX_TITLE ? withValue : core;
+  // Propuesta de valor comercial: consulta + receta online
+  return (
+    fit(`${core} · ${VALUE_SUFFIX}`) ??
+    fit(`${core} · Receta Online`) ??
+    fit(core) ??
+    core.slice(0, MAX_TITLE).replace(/\s+\S*$/, "").trim()
+  );
+}
+
+/* ───────────────────────────────────────────────────────────
+   Optimización de la meta description para Google (SERP).
+   Estilo "comercial" (tipo Benaes): un gancho ➤ que deja claro
+   que ofrecemos el tratamiento + ventajas con ✓, en lugar de
+   parecer la entradilla de un artículo. Se trunca por debajo del
+   corte de Google (~158 chars) sin cortar a media palabra.
+   ─────────────────────────────────────────────────────────── */
+const MAX_DESC = 158;
+
+const DRUGS = [
+  "Wegovy",
+  "Mounjaro",
+  "Ozempic",
+  "Saxenda",
+  "Tirzepatida",
+  "Semaglutida",
+];
+
+function detectDrug(post: Post): string | null {
+  const hay = `${post.title} ${post.metaTitle} ${post.keyword} ${post.slug}`;
+  for (const d of DRUGS) {
+    if (new RegExp(d, "i").test(hay)) return d;
+  }
+  if (/glp[\s-]?1/i.test(hay)) return "GLP‑1";
+  return null;
+}
+
+function detectCity(post: Post): string | null {
+  // Ciudades que aparecen como "… en <Ciudad>" en el título limpio
+  const m = post.title.match(
+    /\ben\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?)/,
+  );
+  if (!m) return null;
+  const city = m[1].trim();
+  if (/^Espa/i.test(city)) return null; // "en España" no es ciudad
+  return city;
+}
+
+function joinUnderLimit(lead: string, checks: string[], max: number): string {
+  let out = lead;
+  for (const c of checks) {
+    const next = `${out} ${c}`;
+    if (next.length > max) break;
+    out = next;
+  }
+  return out;
+}
+
+export function seoDescription(post: Post): string {
+  const drug = detectDrug(post);
+  const city = detectCity(post);
+  const slug = post.slug.toLowerCase();
+
+  // Ventajas comerciales (orden de prioridad). Se añaden hasta llenar.
+  const checks = [
+    "✓ Receta médica online",
+    "✓ Médicos colegiados",
+    "✓ Sin listas de espera",
+    "✓ 1ª visita 25 € descontable",
+    "✓ Seguimiento en nuestra app",
+  ];
+
+  let lead: string;
+  const where = city ? ` en ${city}` : "";
+
+  if (/(?:-vs-|\bvs\b)/.test(slug) || post.category === "Comparativas") {
+    // Nombre limpio de la comparativa a partir del título ("Wegovy vs Mounjaro")
+    const compareName = post.title.split(/[:|]/)[0].replace(/\s+/g, " ").trim();
+    lead = `➤ ${compareName}: cuál elegir y empieza con valoración médica.`;
+  } else if (/precio|cuanto-cuesta|coste/.test(slug)) {
+    lead = `➤ ${drug ?? "Tratamiento GLP‑1"}${where}: precio actualizado y cómo conseguirlo legalmente.`;
+  } else if (/receta/.test(slug)) {
+    lead = `➤ Consigue tu receta de ${drug ?? "GLP‑1"} online, rápido y legal.`;
+  } else if (/clinica|perder-peso|plan|adelgazar|inyeccion/.test(slug)) {
+    lead = `➤ Tratamiento médico para adelgazar${where} con ${drug ?? "GLP‑1"}.`;
+  } else if (/comprar/.test(slug)) {
+    lead = `➤ Empieza tu tratamiento con ${drug ?? "GLP‑1"}${where} hoy mismo.`;
+  } else {
+    lead = `➤ Tratamiento con ${drug ?? "GLP‑1"}${where} supervisado por médicos.`;
+  }
+
+  const built = joinUnderLimit(lead, checks, MAX_DESC);
+
+  // Fallback de seguridad: si el lead ya excede, recortamos por palabra.
+  if (built.length > MAX_DESC) {
+    return built.slice(0, MAX_DESC).replace(/\s+\S*$/, "").trim();
+  }
+  return built;
 }
 
 export function getRelated(slug: string, limit = 3): Post[] {

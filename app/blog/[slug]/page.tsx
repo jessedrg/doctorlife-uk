@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
-import { posts, getPost, getRelated, seoTitle, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
+import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
 export const dynamic = "force-static";
@@ -23,15 +23,16 @@ export async function generateMetadata({
   if (!post) return { title: `Artículo no encontrado — ${BRAND}` };
   const url = `${SITE_URL}/blog/${post.slug}`;
   const optimizedTitle = seoTitle(post);
+  const optimizedDescription = seoDescription(post);
   return {
     title: optimizedTitle,
-    description: post.metaDescription,
+    description: optimizedDescription,
     keywords: [post.keyword, "GLP-1", "pérdida de peso", "semaglutida", "tirzepatida", BRAND],
     authors: [{ name: MEDICAL_REVIEWER.name }],
     alternates: { canonical: url },
     openGraph: {
       title: optimizedTitle,
-      description: post.metaDescription,
+      description: optimizedDescription,
       url,
       type: "article",
       publishedTime: post.date,
