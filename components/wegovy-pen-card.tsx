@@ -57,8 +57,11 @@ function DoseArc() {
 export function WegovyPenCard() {
   return (
     <div
-      className="relative overflow-hidden rounded-[26px] border border-paper/15 p-8 text-paper backdrop-blur-md"
-      style={{ background: "rgba(30,36,40,.42)" }}
+      className="grain relative overflow-hidden rounded-[26px] p-8 text-paper"
+      style={{
+        background:
+          "radial-gradient(120% 80% at 50% 110%, #3a2a12 0%, #221a0c 50%, #140f07 100%)",
+      }}
     >
       {/* ambient glow behind pen */}
       <div
