@@ -75,41 +75,35 @@ export function ImmersiveProduct() {
     };
   }, []);
 
-  // Set height precisely: measure the sticky header stack once and on every resize.
-  // We measure the first sticky/fixed element above this section in the DOM.
+  // Set height so the section fills exactly the viewport when scrolled into view.
+  // Strategy: when section.scrollTop === 0, the section top is at window.scrollY
+  // below page top. The sticky nav always occupies the top. So:
+  // visibleHeight when section is at top of scroll = vh - nav.offsetHeight - section.marginTop
+  // We simply measure nav.offsetHeight at runtime — no hardcoding.
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const setHeight = () => {
-      // offsetTop is the element's distance from the top of its offsetParent,
-      // but we need distance from the page top. Walk the offsetParent chain.
-      let el: HTMLElement | null = section;
-      let topFromPage = 0;
-      while (el) {
-        topFromPage += el.offsetTop;
-        el = el.offsetParent as HTMLElement | null;
+      // Find the nav by its actual rendered position: the first element
+      // that has position:sticky and is above this section.
+      const allEls = Array.from(document.querySelectorAll<HTMLElement>("*"));
+      let headerH = 0;
+      for (const el of allEls) {
+        if (el === section) break;
+        const pos = getComputedStyle(el).position;
+        if (pos === "sticky" || pos === "fixed") {
+          headerH = Math.max(headerH, el.offsetHeight);
+        }
       }
-      // The sticky header always occupies the top of the viewport.
-      // When the section is scrolled into view flush with the header bottom,
-      // visible height = viewport - headerHeight.
-      // But we want the card to fit exactly within the viewport when it first
-      // enters: height = viewport - topFromPage + scrollY_at_that_moment.
-      // Simplest correct formula: height = viewport - (topFromPage % viewport)
-      // Actually: when section is at top of scroll, top of card = header height.
-      // So just: height = viewport - headerHeight - marginTop - gap.
-      // We sum all sticky/fixed elements heights instead.
-      const stickyEls = Array.from(
-        document.querySelectorAll<HTMLElement>('[class*="sticky"], [class*="fixed"]')
-      ).filter((e) => e !== section && section.compareDocumentPosition(e) & Node.DOCUMENT_POSITION_PRECEDING);
-      const headerH = stickyEls.reduce((sum, e) => sum + e.offsetHeight, 0) || 106;
+      if (headerH === 0) headerH = 106; // safe fallback
       const mt = parseFloat(getComputedStyle(section).marginTop) || 0;
-      const h = window.innerHeight - headerH - mt - 12;
+      // 8px breathing room at bottom
+      const h = window.innerHeight - headerH - mt - 8;
       section.style.height = `${Math.max(h, 400)}px`;
     };
 
-    // Small delay to let layout settle (fonts, images)
-    const t = setTimeout(setHeight, 100);
+    const t = setTimeout(setHeight, 150);
     window.addEventListener("resize", setHeight, { passive: true });
     return () => {
       clearTimeout(t);
