@@ -25,7 +25,7 @@ export function Hero() {
           {/* color overlay para fundir la foto con el bloque */}
           <div
             className="pointer-events-none absolute inset-0"
-            style={{ background: "linear-gradient(95deg,#5f6a3e 0%,rgba(95,106,62,.6) 25%,rgba(95,106,62,.1) 55%,transparent 100%)" }}
+            style={{ background: "linear-gradient(95deg,#5f6a3e 0%,rgba(95,106,62,.45) 20%,rgba(95,106,62,.06) 45%,transparent 70%)" }}
           />
         </div>
 
