@@ -12,7 +12,7 @@ export function Hero() {
         100svh (smallest viewport) already accounts for mobile browser bar being visible.
       */}
       <div
-        className="relative overflow-hidden rounded-[36px]"
+        className="relative w-full overflow-hidden rounded-[36px]"
         style={{ height: "calc(100svh - 86px)" }}
       >
         {/* base brand color block */}
