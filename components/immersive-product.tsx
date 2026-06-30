@@ -8,7 +8,8 @@ export function ImmersiveProduct() {
   return (
     <section
       id="product"
-      className="grain relative mt-24 scroll-mt-20 overflow-hidden rounded-t-[44px] py-[104px] text-paper"
+      className="grain relative mt-24 scroll-mt-20 overflow-hidden rounded-t-[44px] py-16 text-paper md:py-[104px]"
+      style={{ minHeight: "100svh" }}
     >
       {/* video de fondo a pantalla completa */}
       <video
@@ -17,11 +18,14 @@ export function ImmersiveProduct() {
         loop
         muted
         playsInline
+        disablePictureInPicture
+        preload="auto"
         aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: "center center" }}
       />
       {/* overlay oscuro para legibilidad del texto */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
 
       <div className="relative mx-auto max-w-none px-3 text-center sm:px-4 lg:px-5">
         <Reveal>
