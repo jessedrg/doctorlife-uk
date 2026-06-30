@@ -12,16 +12,42 @@ export function ImmersiveProduct() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    // Forzar muted y autoplay — necesario en iOS Safari
+
+    // Atributos críticos para iOS Safari — deben setearse en el DOM real
     video.muted = true;
+    video.defaultMuted = true;
     video.setAttribute("muted", "");
     video.setAttribute("playsinline", "");
-    const play = () => video.play().catch(() => {});
-    play();
-    // Reintentar si el documento gana foco (Safari background tab)
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) play();
-    });
+    video.setAttribute("webkit-playsinline", "");
+
+    const tryPlay = () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
+    };
+
+    // Intentar cuando el video tiene suficientes datos
+    video.addEventListener("canplaythrough", tryPlay, { once: true });
+    video.addEventListener("loadeddata", tryPlay, { once: true });
+
+    // Intentar inmediatamente por si ya está listo
+    tryPlay();
+
+    // Fallback: arrancar en el primer toque (iOS low-power mode)
+    const onTouch = () => tryPlay();
+    document.addEventListener("touchstart", onTouch, { once: true, passive: true });
+
+    // Reintentar al volver a la pestaña
+    const onVisibility = () => { if (!document.hidden) tryPlay(); };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Forzar carga del video
+    video.load();
+
+    return () => {
+      document.removeEventListener("touchstart", onTouch);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
 
   return (
@@ -39,7 +65,8 @@ export function ImmersiveProduct() {
         muted
         playsInline
         disablePictureInPicture
-        preload="auto"
+        preload="metadata"
+        x-webkit-airplay="deny"
         aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover"
         style={{ objectPosition: "center center" }}
