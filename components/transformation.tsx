@@ -1,5 +1,6 @@
 import { Reveal } from "./reveal";
 import { QuizTrigger } from "./quiz-trigger";
+import { WegovyPenCard } from "./wegovy-pen-card";
 
 export function Transformation() {
   return (
@@ -26,7 +27,7 @@ export function Transformation() {
         </div>
 
         {/* overlay cards */}
-        <div className="relative z-[2] mt-[46px] grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.2fr]">
+        <div className="relative z-[2] mt-[46px] grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.2fr_1fr]">
           <div className="flex flex-col gap-[18px]">
             <div className="relative min-h-[200px] overflow-hidden rounded-[26px] border border-paper/15 p-7 backdrop-blur-md" style={{ background: "rgba(30,36,40,.42)" }}>
               <div className="max-w-[16ch] text-[23px] font-light leading-[1.16]">
@@ -59,6 +60,8 @@ export function Transformation() {
               </div>
             </div>
           </div>
+
+          <WegovyPenCard />
 
           <div className="flex flex-col justify-between rounded-[26px] border border-paper/15 p-[34px] backdrop-blur-md" style={{ background: "rgba(30,36,40,.42)" }}>
             <div className="mb-7 overflow-hidden rounded-[20px]" style={{ background: "linear-gradient(160deg,#5f6a3e,#2c3439)" }}>

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { ImmersiveProduct } from "@/components/immersive-product";
 import { Transformation } from "@/components/transformation";
+import { MobileFollowup } from "@/components/mobile-followup";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
@@ -17,6 +18,7 @@ export default function Home() {
           <Hero />
           <ImmersiveProduct />
           <Transformation />
+          <MobileFollowup />
           <FinalCta />
         </main>
         <Footer />
