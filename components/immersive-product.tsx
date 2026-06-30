@@ -8,6 +8,7 @@ import { metrics, LOSS_STAT } from "@/lib/data";
 
 export function ImmersiveProduct() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -74,32 +75,61 @@ export function ImmersiveProduct() {
     };
   }, []);
 
+  // Set height so the section fills exactly the viewport when scrolled into view.
+  // Strategy: when section.scrollTop === 0, the section top is at window.scrollY
+  // below page top. The sticky nav always occupies the top. So:
+  // visibleHeight when section is at top of scroll = vh - nav.offsetHeight - section.marginTop
+  // We simply measure nav.offsetHeight at runtime — no hardcoding.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const setHeight = () => {
+      // Sum the heights of ALL sticky/fixed elements that appear before this
+      // section in the DOM — announcement bar + nav both count.
+      const seen = new Set<HTMLElement>();
+      const allEls = Array.from(document.querySelectorAll<HTMLElement>("*"));
+      let headerH = 0;
+      for (const el of allEls) {
+        if (el === section) break;
+        if (seen.has(el)) continue;
+        const pos = getComputedStyle(el).position;
+        if (pos === "sticky" || pos === "fixed") {
+          // Only count top-level sticky bars (direct children of body or main wrapper)
+          const parentPos = getComputedStyle(el.parentElement!).position;
+          if (parentPos !== "sticky" && parentPos !== "fixed") {
+            headerH += el.offsetHeight;
+            seen.add(el);
+          }
+        }
+      }
+      if (headerH === 0) headerH = 106; // safe fallback
+      const mt = parseFloat(getComputedStyle(section).marginTop) || 0;
+      // 8px breathing room at bottom
+      const h = window.innerHeight - headerH - mt - 8;
+      section.style.height = `${Math.max(h, 400)}px`;
+    };
+
+    const t = setTimeout(setHeight, 150);
+    window.addEventListener("resize", setHeight, { passive: true });
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", setHeight);
+    };
+  }, []);
+
 
 
   return (
     <section
+      ref={sectionRef}
       id="product"
       className="grain relative scroll-mt-20 overflow-hidden text-paper"
       style={{
-        marginTop: "clamp(16px, 3vw, 40px)",
-        marginLeft: "clamp(12px, 1.5vw, 20px)",
-        marginRight: "clamp(12px, 1.5vw, 20px)",
+        margin: "clamp(12px, 1.5vw, 20px) clamp(12px, 1.5vw, 20px) 0",
         borderRadius: "44px 44px 0 0",
-        /*
-         * 100svh = smallest viewport height (mobile bar already visible).
-         * The section scrolls into view with the sticky nav on top — we only
-         * need to subtract the nav height so the bottom edge aligns with the
-         * viewport when the section is snapped at the top of the scroll area.
-         * We use a CSS custom property set on :root by a tiny inline script so
-         * it works without any JS measurement in React.
-         * Fallback: 100svh with no subtraction — always safe, never clips.
-         */
-        /*
-         * The section has a marginTop that pushes it below the nav.
-         * height = 100svh minus that same marginTop so the bottom never overflows.
-         * clamp(16px,3vw,40px) mirrors the marginTop value exactly.
-         */
-        height: "calc(100svh - clamp(16px, 3vw, 40px))",
+        // Height is overwritten by JS useEffect above; fallback for SSR
+        height: "calc(100svh - 120px)",
       }}
     >
       {/* video de fondo a pantalla completa */}

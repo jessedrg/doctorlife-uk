@@ -19,12 +19,12 @@ export default function Home() {
           <Hero />
           <ImmersiveProduct />
           <section
-            className="grain overflow-hidden px-4 pb-12 pt-10 text-paper sm:px-6 sm:pb-16 sm:pt-14 lg:px-8"
+            className="grain overflow-hidden pb-12 pt-10 text-paper sm:pb-16 sm:pt-14"
             style={{
               background: "#120c07",
-              marginLeft: "clamp(12px, 1.5vw, 20px)",
-              marginRight: "clamp(12px, 1.5vw, 20px)",
+              margin: "0 clamp(12px, 1.5vw, 20px) 0",
               borderRadius: "0 0 44px 44px",
+              padding: "clamp(24px, 4vw, 56px) clamp(16px, 3vw, 32px)",
             }}
           >
             <div className="mx-auto max-w-6xl">
