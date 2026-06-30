@@ -10,7 +10,7 @@ export function ImmersiveProduct() {
     <section
       id="product"
       className="grain relative mt-24 scroll-mt-20 overflow-hidden rounded-t-[44px] py-[104px] text-paper"
-      style={{ background: "radial-gradient(120% 90% at 50% -5%,#33291c 0%,#1d160f 52%,#120c07 100%)" }}
+      style={{ background: "radial-gradient(120% 90% at 50% -5%,#2a2015 0%,#140f08 52%,#0c0805 100%)" }}
     >
       <div className="anim-glow absolute left-1/2 top-[-10%] h-[80%] w-[60%] -translate-x-1/2" style={{ background: "radial-gradient(closest-side,rgba(227,181,130,.22),transparent)", filter: "blur(20px)" }} />
 
@@ -24,13 +24,17 @@ export function ImmersiveProduct() {
         </Reveal>
 
         {/* floating render */}
-        <Parallax speed={46} className="relative mx-auto mt-[14px] h-[420px] w-[680px] max-w-[92vw]">
-          <img
-            src="/products/maren-lineup.png"
-            alt="Gama de productos DoctorLife: plumas inyectoras y pastillas GLP‑1"
-            className="anim-floatA absolute inset-0 h-full w-full object-contain"
+        <div className="relative mx-auto mt-[14px] h-[420px] w-[680px] max-w-[92vw]">
+          <video
+            src="/products/pills-pen.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label="Plumas inyectoras y pastillas GLP‑1 DoctorLife"
+            className="absolute inset-0 h-full w-full object-contain"
           />
-        </Parallax>
+        </div>
 
         <Reveal className="mx-auto mt-2 max-w-[34ch]">
           <p className="text-[clamp(20px,2.2vw,28px)] font-light leading-[1.32]">
