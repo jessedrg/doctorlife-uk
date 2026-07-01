@@ -476,6 +476,60 @@ export const CITIES: City[] = [
   // Navarra
   { name: "Barañáin", slug: "baranain" },
   { name: "Burlada", slug: "burlada" },
+  // Batch 6 — municipios >20.000 hab. que faltaban (todas con ficha real en CITY_FACTS)
+  // Comunidad de Madrid
+  { name: "Arroyomolinos", slug: "arroyomolinos" },
+  { name: "Torrelodones", slug: "torrelodones" },
+  { name: "Algete", slug: "algete" },
+  { name: "San Martín de la Vega", slug: "san-martin-de-la-vega" },
+  // Comunidad Valenciana
+  { name: "Benicarló", slug: "benicarlo" },
+  { name: "Sueca", slug: "sueca" },
+  { name: "La Pobla de Vallbona", slug: "puebla-de-vallbona" },
+  { name: "Quart de Poblet", slug: "quart-de-poblet" },
+  { name: "Sant Joan d'Alacant", slug: "san-juan-de-alicante" },
+  { name: "Altea", slug: "altea" },
+  { name: "Pilar de la Horadada", slug: "pilar-de-la-horadada" },
+  { name: "Picassent", slug: "picasent" },
+  { name: "Alfafar", slug: "alfafar" },
+  { name: "Moncada", slug: "moncada" },
+  { name: "Carcaixent", slug: "carcaixent" },
+  { name: "Puçol", slug: "puzol" },
+  { name: "Llíria", slug: "liria" },
+  { name: "Requena", slug: "requena" },
+  { name: "l'Alfàs del Pi", slug: "alfaz-del-pi" },
+  { name: "Benicàssim", slug: "benicasim" },
+  // Andalucía
+  { name: "San Roque", slug: "san-roque" },
+  { name: "Almuñécar", slug: "almunecar" },
+  { name: "Almonte", slug: "almonte" },
+  { name: "Los Barrios", slug: "los-barrios" },
+  { name: "Mairena del Alcor", slug: "mairena-del-alcor" },
+  { name: "San Juan de Aznalfarache", slug: "san-juan-de-aznalfarache" },
+  { name: "Aljaraque", slug: "aljaraque" },
+  { name: "Torrox", slug: "torrox" },
+  { name: "Atarfe", slug: "atarfe" },
+  { name: "Huércal-Overa", slug: "huercal-overa" },
+  // Cataluña
+  { name: "Santa Perpètua de Mogoda", slug: "santa-perpetua-de-mogoda" },
+  { name: "Castellar del Vallès", slug: "castellar-del-valles" },
+  { name: "Sant Feliu de Guíxols", slug: "sant-feliu-de-guixols" },
+  { name: "Les Franqueses del Vallès", slug: "les-franqueses-del-valles" },
+  { name: "Roses", slug: "roses" },
+  { name: "Sant Quirze del Vallès", slug: "sant-quirze-del-valles" },
+  // Región de Murcia
+  { name: "San Pedro del Pinatar", slug: "san-pedro-del-pinatar" },
+  { name: "La Unión", slug: "la-union" },
+  // Canarias
+  { name: "San Miguel de Abona", slug: "san-miguel-de-abona" },
+  { name: "Guía de Isora", slug: "guia-de-isora" },
+  { name: "Mogán", slug: "mogan" },
+  // Islas Baleares
+  { name: "Alcúdia", slug: "alcudia" },
+  // Comunidad Foral de Navarra
+  { name: "Valle de Egüés", slug: "valle-de-egues" },
+  // Galicia
+  { name: "O Porriño", slug: "porrino" },
 ];
 
 /* ── fármacos ── */
@@ -2955,7 +3009,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
   };
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════��═══════════════════════════════════
    CLUSTERS DE ALTA INTENCIÓN DE COMPRA (nivel nacional)
    - Comparativas cruzadas (Wegovy vs Ozempic, etc.)
    - "{fármaco} con receta online"
@@ -3571,7 +3625,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
         h1: "Pastillas para adelgazar que funcionan: qué dice la evidencia",
         metaTitle: "Pastillas para adelgazar que funcionan de verdad (2026) | DoctorLife",
         metaDescription:
-          "¿Qué pastillas para adelgazar funcionan de verdad? Diferencia entre productos sin evidencia y los tratamientos médicos como los GLP‑1. Valoración médica online.",
+          "��Qué pastillas para adelgazar funcionan de verdad? Diferencia entre productos sin evidencia y los tratamientos médicos como los GLP‑1. Valoración médica online.",
         excerpt:
           "La mayoría de «pastillas milagro» no funcionan. Te explicamos qué tratamientos sí tienen evidencia y cómo acceder a ellos de forma segura.",
         category: CAT_SLIM,
@@ -4922,7 +4976,7 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════��════
    CLÍNICA DE TRATAMIENTO POR FÁRMACO + CIUDAD (alta intención)
    "Clínica de tratamiento con {Ozempic|Wegovy|Mounjaro|GLP‑1}
    en {ciudad}". Ángulo 100% comercial: vendemos la CONSULTA y el
