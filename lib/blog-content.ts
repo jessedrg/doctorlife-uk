@@ -4784,6 +4784,184 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
   );
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CLÍNICA DE TRATAMIENTO POR FÁRMACO + CIUDAD (alta intención)
+   "Clínica de tratamiento con {Ozempic|Wegovy|Mounjaro|GLP‑1}
+   en {ciudad}". Ángulo 100% comercial: vendemos la CONSULTA y el
+   tratamiento con receta, explicando el modelo de 25 € (1ª visita
+   descontable). Contenido único por ciudad vía contexto local.
+   ═══════════════════════════════════════════════════════════ */
+type ClinicTarget = {
+  key: string; // para el slug: wegovy | ozempic | mounjaro | glp1
+  label: string; // nombre mostrado: "Wegovy", "Ozempic", "GLP‑1"
+  drugKey: string; // Drug del que sacar precio/cover/mecanismo
+  generic?: boolean; // true para el paraguas GLP‑1
+};
+
+const CLINIC_TARGETS: ClinicTarget[] = [
+  { key: "wegovy", label: "Wegovy", drugKey: "wegovy" },
+  { key: "ozempic", label: "Ozempic", drugKey: "ozempic" },
+  { key: "mounjaro", label: "Mounjaro", drugKey: "mounjaro" },
+  { key: "glp1", label: "GLP‑1", drugKey: "wegovy", generic: true },
+];
+
+const CLINIC_INTRO_BRAND: string[][] = [
+  [
+    "Buscas una clínica en {City} para tratarte con {Drug}, pero la buena noticia es que ya no necesitas una clínica presencial. {Drug} ({inn}) es un tratamiento de prescripción que un médico colegiado puede valorarte y recetarte online, y que recoges en tu farmacia de {City}.",
+    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita por 25 € —que se descuentan íntegramente del tratamiento— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
+  ],
+  [
+    "Una clínica seria para tratarte con {Drug} en {City} no te vende una caja y te deja solo: valora tu salud, ajusta la dosis y te acompaña. Ese es el modelo de {BRAND}, con la ventaja de que todo es online y sin listas de espera.",
+    "Empezar es sencillo y transparente: la primera visita cuesta 25 € y se descuenta del tratamiento si decides continuar. Desde ahí, un médico colegiado supervisa tu evolución con {Drug} y ajusta la pauta cuando hace falta, sin que tengas que desplazarte por {City}.",
+  ],
+];
+
+const CLINIC_INTRO_GLP1: string[][] = [
+  [
+    "Buscar una clínica de tratamiento GLP‑1 en {City} suele acabar en listas de espera o en webs sin garantías. En {BRAND} lo resolvemos online: un médico colegiado valora tu caso y, si un GLP‑1 (Wegovy, Ozempic o Mounjaro) está indicado, te lo prescribe con receta electrónica válida en cualquier farmacia de {City}.",
+    "Tu primera visita cuesta 25 € y se descuenta íntegramente del tratamiento si decides empezar. Sin permanencia, sin desplazamientos y con seguimiento real desde la app.",
+  ],
+  [
+    "Los análogos del GLP‑1 son hoy lo más eficaz para el control médico del peso, pero necesitan prescripción y seguimiento. En {City}, {BRAND} actúa como tu clínica online: valoración médica, receta si procede y ajustes de dosis, todo sin salir de casa.",
+    "El modelo es claro: 25 € la primera visita (descontables) y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
+  ],
+];
+
+const CLINIC_WHY_GLP1 =
+  "«GLP‑1» es la familia de fármacos (semaglutida en Wegovy y Ozempic, tirzepatida en Mounjaro) que imita una hormona intestinal que regula el apetito y la saciedad. Reduce el «ruido alimentario», estabiliza el azúcar en sangre y prolonga la sensación de plenitud, de modo que comes menos sin la ansiedad de las dietas restrictivas. No es un quemagrasas: es un tratamiento médico que necesita valoración y seguimiento.";
+
+const CLINIC_BENEFITS: string[] = [
+  "Sin listas de espera: valoración médica en poco tiempo, no en meses.",
+  "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
+  "Primera visita por 25 €, descontables íntegramente del tratamiento.",
+  "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
+  "Sin permanencia: continúas solo mientras quieras.",
+];
+
+function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): Post {
+  const drug = getAlt(target.drugKey);
+  const slug = `clinica-tratamiento-${target.key}-${city.slug}`;
+  const vars = {
+    Drug: target.label,
+    drug: target.label.toLowerCase(),
+    inn: drug.inn,
+    City: city.name,
+    BRAND,
+    frequency: drug.frequency,
+  };
+
+  const intro = target.generic
+    ? pick(CLINIC_INTRO_GLP1, slug + "intro")
+    : pick(CLINIC_INTRO_BRAND, slug + "intro");
+
+  const steps = pick(STEPS, slug + "steps").map((s) => tpl(s, vars));
+
+  const whyBlocks: Block[] = target.generic
+    ? [{ type: "p", text: tpl(CLINIC_WHY_GLP1, vars) }]
+    : [
+        { type: "p", text: tpl(pick(MECH_WEIGHT, slug + "mech"), vars) },
+        { type: "p", text: tpl(pick(RESULTS_WEIGHT, slug + "res"), vars) },
+      ];
+
+  const priceBlocks: Block[] = target.generic
+    ? [weightOptionsTable(), { type: "quote", text: PRICE_NOTE }]
+    : [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }];
+
+  const sections: Section[] = [
+    {
+      h2: tpl("¿Cómo funciona una clínica de tratamiento con {Drug} en {City}?", vars),
+      blocks: intro.map((p) => ({ type: "p", text: tpl(p, vars) }) as Block),
+    },
+    {
+      h2: target.generic
+        ? tpl("¿Qué son los GLP‑1 y por qué necesitan seguimiento médico?", vars)
+        : tpl("¿Qué es {Drug} y por qué necesita seguimiento médico?", vars),
+      blocks: whyBlocks,
+    },
+    localContextSection(city, slug),
+    {
+      h2: tpl("Precio del tratamiento con {Drug} en {City}", vars),
+      blocks: [
+        {
+          type: "p",
+          text: tpl(
+            "En {BRAND} la primera visita médica son 25 € y se descuentan íntegramente del tratamiento si decides empezar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
+            vars,
+          ),
+        },
+        ...priceBlocks,
+      ],
+    },
+    {
+      h2: tpl("Cómo empezar tu tratamiento con {Drug} en {City} paso a paso", vars),
+      blocks: [
+        { type: "list", items: steps },
+        target.generic ? glp1Links() : buyLinks(drug, city, PRICE_DRUG_KEYS.has(drug.key)),
+      ],
+    },
+    {
+      h2: tpl("Por qué elegir {BRAND} como tu clínica en {City}", vars),
+      blocks: [
+        { type: "list", items: CLINIC_BENEFITS.map((s) => tpl(s, vars)) },
+        { type: "p", text: tpl(SERVICE_CTA, vars) },
+        target.generic ? glp1Links() : buyLinks(drug, city, PRICE_DRUG_KEYS.has(drug.key)),
+      ],
+    },
+  ];
+
+  const faqs: Faq[] = [
+    {
+      q: tpl("¿Necesito ir a una clínica presencial en {City} para tratarme con {Drug}?", vars),
+      a: tpl(
+        "No. En {BRAND} la valoración y el seguimiento son online; un médico colegiado te atiende por videoconsulta y, si procede, recoges {Drug} en tu farmacia de {City}.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Cuánto cuesta empezar el tratamiento con {Drug}?", vars),
+      a: "La primera visita son 25 € y se descuentan íntegramente del tratamiento si decides empezar. No hay permanencia.",
+    },
+    {
+      q: tpl("¿La receta es válida en las farmacias de {City}?", vars),
+      a: tpl(
+        "Sí. La receta electrónica que emite el médico, si el tratamiento está indicado, es válida en cualquier farmacia de {City} y del resto de España.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿En cuánto tiempo puedo empezar en {City}?", vars),
+      a: "Sin listas de espera: reservas la primera visita online y, si el médico lo considera adecuado, puedes tener la receta en poco tiempo.",
+    },
+    localFaqs(city)[hash(slug) % 3],
+  ];
+
+  const metaDrug = target.generic ? "GLP‑1" : target.label;
+
+  return mkPost(
+    {
+      slug,
+      title: tpl(`Clínica de tratamiento con ${metaDrug} en {City}`, vars),
+      h1: tpl(`Clínica de tratamiento con ${metaDrug} en {City}: consulta y receta online`, vars),
+      metaTitle: tpl(`Clínica de tratamiento con ${metaDrug} en {City} | DoctorLife`, vars),
+      metaDescription: tpl(
+        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita 25 € descontable.`,
+        vars,
+      ),
+      excerpt: tpl(
+        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita 25 €, descontable.`,
+        vars,
+      ),
+      category: target.generic ? "Adelgazar" : drug.category,
+      keyword: `clínica ${metaDrug.toLowerCase()} ${city.name.toLowerCase()}`,
+      cover: drug.cover,
+      coverAlt: tpl(`Clínica de tratamiento con ${metaDrug} en {City}`, vars),
+      sections,
+      faqs,
+    },
+    index,
+  );
+}
+
 /* ── generador principal ── */
 // Fármacos con guía de "precio por ciudad" propia (todas las ciudades).
 // Incluye Saxenda y los principios activos (semaglutida, tirzepatida) para
@@ -4921,6 +5099,17 @@ export function generatePosts(existing: Set<string>): Post[] {
       const slug = cluster.slug(city);
       if (seen.has(slug)) continue;
       out.push(buildLocalServicePost(cluster, city, index++));
+      seen.add(slug);
+    }
+  }
+
+  // 11b) clínica de tratamiento por fármaco + ciudad (alta intención de compra)
+  //      "clinica-tratamiento-{wegovy|ozempic|mounjaro|glp1}-{ciudad}"
+  for (const target of CLINIC_TARGETS) {
+    for (const city of CITIES) {
+      const slug = `clinica-tratamiento-${target.key}-${city.slug}`;
+      if (seen.has(slug)) continue;
+      out.push(buildDrugClinicPost(target, city, index++));
       seen.add(slug);
     }
   }
