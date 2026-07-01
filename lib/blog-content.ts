@@ -244,6 +244,238 @@ export const CITIES: City[] = [
   { name: "Villanueva de la Serena", slug: "villanueva-de-la-serena" },
   { name: "Ceuta", slug: "ceuta" },
   { name: "Melilla", slug: "melilla" },
+  // Batch 4 — municipios de 30.000+ habitantes que faltaban (todas con ficha real en CITY_FACTS)
+  // Comunidad de Madrid
+  { name: "Coslada", slug: "coslada" },
+  { name: "Valdemoro", slug: "valdemoro" },
+  { name: "Aranjuez", slug: "aranjuez" },
+  { name: "Arganda del Rey", slug: "arganda-del-rey" },
+  { name: "Boadilla del Monte", slug: "boadilla-del-monte" },
+  { name: "Colmenar Viejo", slug: "colmenar-viejo" },
+  { name: "Tres Cantos", slug: "tres-cantos" },
+  { name: "Galapagar", slug: "galapagar" },
+  { name: "San Fernando de Henares", slug: "san-fernando-de-henares" },
+  // Cataluña
+  { name: "Santa Coloma de Gramenet", slug: "santa-coloma-de-gramenet" },
+  { name: "Sant Adrià de Besòs", slug: "sant-adria-de-besos" },
+  { name: "Viladecans", slug: "viladecans" },
+  { name: "Gavà", slug: "gava" },
+  { name: "Barberà del Vallès", slug: "barbera-del-valles" },
+  { name: "Montcada i Reixac", slug: "montcada-i-reixac" },
+  { name: "Sant Feliu de Llobregat", slug: "sant-feliu-de-llobregat" },
+  { name: "Esplugues de Llobregat", slug: "esplugues-de-llobregat" },
+  { name: "Sant Joan Despí", slug: "sant-joan-despi" },
+  { name: "Olot", slug: "olot" },
+  { name: "El Vendrell", slug: "el-vendrell" },
+  { name: "Sant Pere de Ribes", slug: "sant-pere-de-ribes" },
+  // Comunidad Valenciana
+  { name: "Elda", slug: "elda" },
+  { name: "Mislata", slug: "mislata" },
+  { name: "San Vicente del Raspeig", slug: "san-vicente-del-raspeig" },
+  { name: "Vila-real", slug: "vila-real" },
+  { name: "Villajoyosa", slug: "villajoyosa" },
+  { name: "Manises", slug: "manises" },
+  { name: "Aldaia", slug: "aldaia" },
+  { name: "Alaquàs", slug: "alaquas" },
+  { name: "Santa Pola", slug: "santa-pola" },
+  // Andalucía
+  { name: "Mijas", slug: "mijas" },
+  { name: "El Ejido", slug: "el-ejido" },
+  { name: "Sanlúcar de Barrameda", slug: "sanlucar-de-barrameda" },
+  { name: "Mairena del Aljarafe", slug: "mairena-del-aljarafe" },
+  { name: "Rincón de la Victoria", slug: "rincon-de-la-victoria" },
+  { name: "Alhaurín de la Torre", slug: "alhaurin-de-la-torre" },
+  { name: "Puerto Real", slug: "puerto-real" },
+  { name: "La Rinconada", slug: "la-rinconada" },
+  { name: "Los Palacios y Villafranca", slug: "los-palacios-y-villafranca" },
+  { name: "Arcos de la Frontera", slug: "arcos-de-la-frontera" },
+  { name: "Cártama", slug: "cartama" },
+  { name: "Coria del Río", slug: "coria-del-rio" },
+  { name: "Níjar", slug: "nijar" },
+  // Región de Murcia
+  { name: "Molina de Segura", slug: "molina-de-segura" },
+  { name: "Alcantarilla", slug: "alcantarilla" },
+  { name: "Cieza", slug: "cieza" },
+  { name: "Águilas", slug: "aguilas" },
+  { name: "Yecla", slug: "yecla" },
+  { name: "Totana", slug: "totana" },
+  { name: "Mazarrón", slug: "mazarron" },
+  { name: "San Javier", slug: "san-javier" },
+  { name: "Torre-Pacheco", slug: "torre-pacheco" },
+  // País Vasco
+  { name: "Leioa", slug: "leioa" },
+  // Galicia
+  { name: "Arteixo", slug: "arteixo" },
+  { name: "Ames", slug: "ames" },
+  { name: "Culleredo", slug: "culleredo" },
+  // Castilla y León
+  { name: "San Andrés del Rabanedo", slug: "san-andres-del-rabanedo" },
+  // Castilla-La Mancha
+  { name: "Puertollano", slug: "puertollano" },
+  { name: "Tomelloso", slug: "tomelloso" },
+  { name: "Alcázar de San Juan", slug: "alcazar-de-san-juan" },
+  { name: "Valdepeñas", slug: "valdepenas" },
+  { name: "Azuqueca de Henares", slug: "azuqueca-de-henares" },
+  { name: "Hellín", slug: "hellin" },
+  { name: "Illescas", slug: "illescas" },
+  // Extremadura
+  { name: "Almendralejo", slug: "almendralejo" },
+  // Cantabria
+  { name: "Camargo", slug: "camargo" },
+  { name: "Castro-Urdiales", slug: "castro-urdiales" },
+  // Islas Baleares
+  { name: "Calvià", slug: "calvia" },
+  { name: "Marratxí", slug: "marratxi" },
+  { name: "Llucmajor", slug: "llucmajor" },
+  { name: "Santa Eulària des Riu", slug: "santa-eularia-des-riu" },
+  { name: "Inca", slug: "inca" },
+  // Canarias
+  { name: "San Bartolomé de Tirajana", slug: "san-bartolome-de-tirajana" },
+  { name: "Granadilla de Abona", slug: "granadilla-de-abona" },
+  { name: "La Orotava", slug: "la-orotava" },
+  { name: "Los Realejos", slug: "los-realejos" },
+  { name: "Arucas", slug: "arucas" },
+  { name: "Agüimes", slug: "aguimes" },
+  { name: "Ingenio", slug: "ingenio" },
+  { name: "Puerto de la Cruz", slug: "puerto-de-la-cruz" },
+  // Batch 5 — municipios de ~20.000–30.000 habitantes (todas con ficha real en CITY_FACTS)
+  // Andalucía
+  { name: "Adra", slug: "adra" },
+  { name: "Vícar", slug: "vicar" },
+  { name: "Baza", slug: "baza" },
+  { name: "Armilla", slug: "armilla" },
+  { name: "Maracena", slug: "maracena" },
+  { name: "Las Gabias", slug: "las-gabias" },
+  { name: "Loja", slug: "loja" },
+  { name: "Alhaurín el Grande", slug: "alhaurin-el-grande" },
+  { name: "Coín", slug: "coin" },
+  { name: "Barbate", slug: "barbate" },
+  { name: "Rota", slug: "rota" },
+  { name: "Conil de la Frontera", slug: "conil-de-la-frontera" },
+  { name: "Isla Cristina", slug: "isla-cristina" },
+  { name: "Lepe", slug: "lepe" },
+  { name: "Ayamonte", slug: "ayamonte" },
+  { name: "Moguer", slug: "moguer" },
+  { name: "Cartaya", slug: "cartaya" },
+  { name: "Bormujos", slug: "bormujos" },
+  { name: "Camas", slug: "camas" },
+  { name: "Tomares", slug: "tomares" },
+  { name: "Morón de la Frontera", slug: "moron-de-la-frontera" },
+  { name: "Lebrija", slug: "lebrija" },
+  { name: "Carmona", slug: "carmona" },
+  { name: "Cabra", slug: "cabra" },
+  { name: "Priego de Córdoba", slug: "priego-de-cordoba" },
+  { name: "Montilla", slug: "montilla" },
+  { name: "Palma del Río", slug: "palma-del-rio" },
+  { name: "Alcalá la Real", slug: "alcala-la-real" },
+  { name: "Martos", slug: "martos" },
+  // Comunidad Valenciana
+  { name: "Almassora", slug: "almassora" },
+  { name: "Burriana", slug: "burriana" },
+  { name: "Vinaròs", slug: "vinaros" },
+  { name: "La Vall d'Uixó", slug: "la-vall-duixo" },
+  { name: "Onda", slug: "onda" },
+  { name: "Alboraya", slug: "alboraya" },
+  { name: "Xirivella", slug: "xirivella" },
+  { name: "Catarroja", slug: "catarroja" },
+  { name: "Paiporta", slug: "paiporta" },
+  { name: "Cullera", slug: "cullera" },
+  { name: "Xàtiva", slug: "xativa" },
+  { name: "Oliva", slug: "oliva" },
+  { name: "Algemesí", slug: "algemesi" },
+  { name: "Bétera", slug: "betera" },
+  { name: "Riba-roja de Túria", slug: "riba-roja-de-turia" },
+  { name: "Almoradí", slug: "almoradi" },
+  { name: "Xàbia", slug: "xabia" },
+  { name: "Mutxamel", slug: "mutxamel" },
+  { name: "El Campello", slug: "el-campello" },
+  { name: "Aspe", slug: "aspe" },
+  // Cataluña
+  { name: "Premià de Mar", slug: "premia-de-mar" },
+  { name: "El Masnou", slug: "el-masnou" },
+  { name: "Vilassar de Mar", slug: "vilassar-de-mar" },
+  { name: "Pineda de Mar", slug: "pineda-de-mar" },
+  { name: "Sant Vicenç dels Horts", slug: "sant-vicenc-dels-horts" },
+  { name: "Molins de Rei", slug: "molins-de-rei" },
+  { name: "Sant Andreu de la Barca", slug: "sant-andreu-de-la-barca" },
+  { name: "Martorell", slug: "martorell" },
+  { name: "Esparreguera", slug: "esparreguera" },
+  { name: "Olesa de Montserrat", slug: "olesa-de-montserrat" },
+  { name: "Sant Just Desvern", slug: "sant-just-desvern" },
+  { name: "Manlleu", slug: "manlleu" },
+  { name: "Banyoles", slug: "banyoles" },
+  { name: "Salt", slug: "salt" },
+  { name: "Palafrugell", slug: "palafrugell" },
+  { name: "Amposta", slug: "amposta" },
+  { name: "Valls", slug: "valls" },
+  { name: "Vila-seca", slug: "vila-seca" },
+  // Comunidad de Madrid
+  { name: "Ciempozuelos", slug: "ciempozuelos" },
+  { name: "Navalcarnero", slug: "navalcarnero" },
+  { name: "Villaviciosa de Odón", slug: "villaviciosa-de-odon" },
+  { name: "Mejorada del Campo", slug: "mejorada-del-campo" },
+  { name: "Paracuellos de Jarama", slug: "paracuellos-de-jarama" },
+  { name: "Villanueva de la Cañada", slug: "villanueva-de-la-canada" },
+  { name: "Humanes de Madrid", slug: "humanes-de-madrid" },
+  // País Vasco
+  { name: "Galdakao", slug: "galdakao" },
+  { name: "Erandio", slug: "erandio" },
+  { name: "Hernani", slug: "hernani" },
+  { name: "Lasarte-Oria", slug: "lasarte-oria" },
+  { name: "Amorebieta-Etxano", slug: "amorebieta-etxano" },
+  { name: "Llodio", slug: "llodio" },
+  // Galicia
+  { name: "Redondela", slug: "redondela" },
+  { name: "Cangas", slug: "cangas" },
+  { name: "Marín", slug: "marin" },
+  { name: "Ponteareas", slug: "ponteareas" },
+  { name: "Lalín", slug: "lalin" },
+  { name: "A Estrada", slug: "a-estrada" },
+  { name: "Carballo", slug: "carballo" },
+  { name: "Ribeira", slug: "ribeira" },
+  { name: "Cambre", slug: "cambre" },
+  // Castilla y León
+  { name: "Laguna de Duero", slug: "laguna-de-duero" },
+  { name: "Arroyo de la Encomienda", slug: "arroyo-de-la-encomienda" },
+  { name: "Villaquilambre", slug: "villaquilambre" },
+  // Castilla-La Mancha
+  { name: "Villarrobledo", slug: "villarrobledo" },
+  { name: "Almansa", slug: "almansa" },
+  { name: "Manzanares", slug: "manzanares" },
+  { name: "Seseña", slug: "sesena" },
+  // Aragón
+  { name: "Utebo", slug: "utebo" },
+  // Extremadura
+  { name: "Zafra", slug: "zafra" },
+  { name: "Navalmoral de la Mata", slug: "navalmoral-de-la-mata" },
+  // Región de Murcia
+  { name: "Caravaca de la Cruz", slug: "caravaca-de-la-cruz" },
+  { name: "Jumilla", slug: "jumilla" },
+  { name: "Archena", slug: "archena" },
+  { name: "Las Torres de Cotillas", slug: "las-torres-de-cotillas" },
+  { name: "Alhama de Murcia", slug: "alhama-de-murcia" },
+  // Islas Baleares
+  { name: "Sant Antoni de Portmany", slug: "sant-antoni-de-portmany" },
+  { name: "Sant Josep de sa Talaia", slug: "sant-josep-de-sa-talaia" },
+  // Canarias
+  { name: "Candelaria", slug: "candelaria" },
+  { name: "Tacoronte", slug: "tacoronte" },
+  { name: "Icod de los Vinos", slug: "icod-de-los-vinos" },
+  { name: "Güímar", slug: "guimar" },
+  { name: "Los Llanos de Aridane", slug: "los-llanos-de-aridane" },
+  { name: "Gáldar", slug: "galdar" },
+  { name: "La Oliva", slug: "la-oliva" },
+  { name: "Pájara", slug: "pajara" },
+  { name: "Teguise", slug: "teguise" },
+  { name: "Tías", slug: "tias" },
+  // Asturias
+  { name: "Castrillón", slug: "castrillon" },
+  // Cantabria
+  { name: "Piélagos", slug: "pielagos" },
+  { name: "El Astillero", slug: "el-astillero" },
+  // Navarra
+  { name: "Barañáin", slug: "baranain" },
+  { name: "Burlada", slug: "burlada" },
 ];
 
 /* ── fármacos ── */
@@ -3179,7 +3411,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Tratamiento de la obesidad online: opciones médicas y cómo empezar",
         metaTitle: "Tratamiento de la obesidad online: opciones médicas reales | DoctorLife",
         metaDescription:
-          "Tratamiento médico de la obesidad online: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Empieza por 25 € la primera visita.",
+          "Tratamiento m��dico de la obesidad online: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Empieza por 25 € la primera visita.",
         excerpt:
           "Qué opciones médicas existen para tratar la obesidad online, cuándo se indican los GLP‑1 y cómo es el acompañamiento médico.",
         category: CAT_SLIM,
@@ -4690,6 +4922,184 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
   );
 }
 
+/* ═══════════════════════════════════════════════════════════
+   CLÍNICA DE TRATAMIENTO POR FÁRMACO + CIUDAD (alta intención)
+   "Clínica de tratamiento con {Ozempic|Wegovy|Mounjaro|GLP‑1}
+   en {ciudad}". Ángulo 100% comercial: vendemos la CONSULTA y el
+   tratamiento con receta, explicando el modelo de 25 € (1ª visita
+   descontable). Contenido único por ciudad vía contexto local.
+   ═══════════════════════════════════════════════════════════ */
+type ClinicTarget = {
+  key: string; // para el slug: wegovy | ozempic | mounjaro | glp1
+  label: string; // nombre mostrado: "Wegovy", "Ozempic", "GLP‑1"
+  drugKey: string; // Drug del que sacar precio/cover/mecanismo
+  generic?: boolean; // true para el paraguas GLP‑1
+};
+
+const CLINIC_TARGETS: ClinicTarget[] = [
+  { key: "wegovy", label: "Wegovy", drugKey: "wegovy" },
+  { key: "ozempic", label: "Ozempic", drugKey: "ozempic" },
+  { key: "mounjaro", label: "Mounjaro", drugKey: "mounjaro" },
+  { key: "glp1", label: "GLP‑1", drugKey: "wegovy", generic: true },
+];
+
+const CLINIC_INTRO_BRAND: string[][] = [
+  [
+    "Buscas una clínica en {City} para tratarte con {Drug}, pero la buena noticia es que ya no necesitas una clínica presencial. {Drug} ({inn}) es un tratamiento de prescripción que un médico colegiado puede valorarte y recetarte online, y que recoges en tu farmacia de {City}.",
+    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita por 25 € —que se descuentan íntegramente del tratamiento— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
+  ],
+  [
+    "Una clínica seria para tratarte con {Drug} en {City} no te vende una caja y te deja solo: valora tu salud, ajusta la dosis y te acompaña. Ese es el modelo de {BRAND}, con la ventaja de que todo es online y sin listas de espera.",
+    "Empezar es sencillo y transparente: la primera visita cuesta 25 € y se descuenta del tratamiento si decides continuar. Desde ahí, un médico colegiado supervisa tu evolución con {Drug} y ajusta la pauta cuando hace falta, sin que tengas que desplazarte por {City}.",
+  ],
+];
+
+const CLINIC_INTRO_GLP1: string[][] = [
+  [
+    "Buscar una clínica de tratamiento GLP‑1 en {City} suele acabar en listas de espera o en webs sin garantías. En {BRAND} lo resolvemos online: un médico colegiado valora tu caso y, si un GLP‑1 (Wegovy, Ozempic o Mounjaro) está indicado, te lo prescribe con receta electrónica válida en cualquier farmacia de {City}.",
+    "Tu primera visita cuesta 25 € y se descuenta íntegramente del tratamiento si decides empezar. Sin permanencia, sin desplazamientos y con seguimiento real desde la app.",
+  ],
+  [
+    "Los análogos del GLP‑1 son hoy lo más eficaz para el control médico del peso, pero necesitan prescripción y seguimiento. En {City}, {BRAND} actúa como tu clínica online: valoración médica, receta si procede y ajustes de dosis, todo sin salir de casa.",
+    "El modelo es claro: 25 € la primera visita (descontables) y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
+  ],
+];
+
+const CLINIC_WHY_GLP1 =
+  "«GLP‑1» es la familia de fármacos (semaglutida en Wegovy y Ozempic, tirzepatida en Mounjaro) que imita una hormona intestinal que regula el apetito y la saciedad. Reduce el «ruido alimentario», estabiliza el azúcar en sangre y prolonga la sensación de plenitud, de modo que comes menos sin la ansiedad de las dietas restrictivas. No es un quemagrasas: es un tratamiento médico que necesita valoración y seguimiento.";
+
+const CLINIC_BENEFITS: string[] = [
+  "Sin listas de espera: valoración médica en poco tiempo, no en meses.",
+  "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
+  "Primera visita por 25 €, descontables íntegramente del tratamiento.",
+  "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
+  "Sin permanencia: continúas solo mientras quieras.",
+];
+
+function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): Post {
+  const drug = getAlt(target.drugKey);
+  const slug = `clinica-tratamiento-${target.key}-${city.slug}`;
+  const vars = {
+    Drug: target.label,
+    drug: target.label.toLowerCase(),
+    inn: drug.inn,
+    City: city.name,
+    BRAND,
+    frequency: drug.frequency,
+  };
+
+  const intro = target.generic
+    ? pick(CLINIC_INTRO_GLP1, slug + "intro")
+    : pick(CLINIC_INTRO_BRAND, slug + "intro");
+
+  const steps = pick(STEPS, slug + "steps").map((s) => tpl(s, vars));
+
+  const whyBlocks: Block[] = target.generic
+    ? [{ type: "p", text: tpl(CLINIC_WHY_GLP1, vars) }]
+    : [
+        { type: "p", text: tpl(pick(MECH_WEIGHT, slug + "mech"), vars) },
+        { type: "p", text: tpl(pick(RESULTS_WEIGHT, slug + "res"), vars) },
+      ];
+
+  const priceBlocks: Block[] = target.generic
+    ? [weightOptionsTable(), { type: "quote", text: PRICE_NOTE }]
+    : [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }];
+
+  const sections: Section[] = [
+    {
+      h2: tpl("¿Cómo funciona una clínica de tratamiento con {Drug} en {City}?", vars),
+      blocks: intro.map((p) => ({ type: "p", text: tpl(p, vars) }) as Block),
+    },
+    {
+      h2: target.generic
+        ? tpl("¿Qué son los GLP‑1 y por qué necesitan seguimiento médico?", vars)
+        : tpl("¿Qué es {Drug} y por qué necesita seguimiento médico?", vars),
+      blocks: whyBlocks,
+    },
+    localContextSection(city, slug),
+    {
+      h2: tpl("Precio del tratamiento con {Drug} en {City}", vars),
+      blocks: [
+        {
+          type: "p",
+          text: tpl(
+            "En {BRAND} la primera visita médica son 25 € y se descuentan íntegramente del tratamiento si decides empezar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
+            vars,
+          ),
+        },
+        ...priceBlocks,
+      ],
+    },
+    {
+      h2: tpl("Cómo empezar tu tratamiento con {Drug} en {City} paso a paso", vars),
+      blocks: [
+        { type: "list", items: steps },
+        target.generic ? glp1Links() : buyLinks(drug, city, PRICE_DRUG_KEYS.has(drug.key)),
+      ],
+    },
+    {
+      h2: tpl("Por qué elegir {BRAND} como tu clínica en {City}", vars),
+      blocks: [
+        { type: "list", items: CLINIC_BENEFITS.map((s) => tpl(s, vars)) },
+        { type: "p", text: tpl(SERVICE_CTA, vars) },
+        target.generic ? glp1Links() : buyLinks(drug, city, PRICE_DRUG_KEYS.has(drug.key)),
+      ],
+    },
+  ];
+
+  const faqs: Faq[] = [
+    {
+      q: tpl("¿Necesito ir a una clínica presencial en {City} para tratarme con {Drug}?", vars),
+      a: tpl(
+        "No. En {BRAND} la valoración y el seguimiento son online; un médico colegiado te atiende por videoconsulta y, si procede, recoges {Drug} en tu farmacia de {City}.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Cuánto cuesta empezar el tratamiento con {Drug}?", vars),
+      a: "La primera visita son 25 € y se descuentan íntegramente del tratamiento si decides empezar. No hay permanencia.",
+    },
+    {
+      q: tpl("¿La receta es válida en las farmacias de {City}?", vars),
+      a: tpl(
+        "Sí. La receta electrónica que emite el médico, si el tratamiento está indicado, es válida en cualquier farmacia de {City} y del resto de España.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿En cuánto tiempo puedo empezar en {City}?", vars),
+      a: "Sin listas de espera: reservas la primera visita online y, si el médico lo considera adecuado, puedes tener la receta en poco tiempo.",
+    },
+    localFaqs(city)[hash(slug) % 3],
+  ];
+
+  const metaDrug = target.generic ? "GLP‑1" : target.label;
+
+  return mkPost(
+    {
+      slug,
+      title: tpl(`Clínica de tratamiento con ${metaDrug} en {City}`, vars),
+      h1: tpl(`Clínica de tratamiento con ${metaDrug} en {City}: consulta y receta online`, vars),
+      metaTitle: tpl(`Clínica de tratamiento con ${metaDrug} en {City} | DoctorLife`, vars),
+      metaDescription: tpl(
+        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita 25 € descontable.`,
+        vars,
+      ),
+      excerpt: tpl(
+        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita 25 €, descontable.`,
+        vars,
+      ),
+      category: target.generic ? "Adelgazar" : drug.category,
+      keyword: `clínica ${metaDrug.toLowerCase()} ${city.name.toLowerCase()}`,
+      cover: drug.cover,
+      coverAlt: tpl(`Clínica de tratamiento con ${metaDrug} en {City}`, vars),
+      sections,
+      faqs,
+    },
+    index,
+  );
+}
+
 /* ── generador principal ── */
 // Fármacos con guía de "precio por ciudad" propia (todas las ciudades).
 // Incluye Saxenda y los principios activos (semaglutida, tirzepatida) para
@@ -4827,6 +5237,17 @@ export function generatePosts(existing: Set<string>): Post[] {
       const slug = cluster.slug(city);
       if (seen.has(slug)) continue;
       out.push(buildLocalServicePost(cluster, city, index++));
+      seen.add(slug);
+    }
+  }
+
+  // 11b) clínica de tratamiento por fármaco + ciudad (alta intención de compra)
+  //      "clinica-tratamiento-{wegovy|ozempic|mounjaro|glp1}-{ciudad}"
+  for (const target of CLINIC_TARGETS) {
+    for (const city of CITIES) {
+      const slug = `clinica-tratamiento-${target.key}-${city.slug}`;
+      if (seen.has(slug)) continue;
+      out.push(buildDrugClinicPost(target, city, index++));
       seen.add(slug);
     }
   }
