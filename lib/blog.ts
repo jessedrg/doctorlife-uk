@@ -995,7 +995,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 10 ─────────────────────────────────────────���── */
+  /* 10 ─────────────────────────────────────────����── */
   {
     slug: "plan-perder-peso-glp1",
     title: "Plan para perder peso con GLP‑1",
@@ -2690,7 +2690,7 @@ const manualPosts: Post[] = [
               ["0,5 mg", "Adaptación", "200–250 €"],
               ["1 mg", "Escalado", "230–270 €"],
               ["1,7 mg", "Escalado", "250–290 €"],
-              ["2,4 mg", "Mantenimiento", "270–300 €"],
+              ["2,4 mg", "Mantenimiento", "270–300 ��"],
             ],
           },
           { type: "quote", text: PRICE_NOTE },
@@ -2912,7 +2912,7 @@ const manualPosts: Post[] = [
         a: "La pluma se sitúa de forma orientativa entre 200 € y 300 € al mes según la dosis. La consulta y el seguimiento se pagan aparte.",
       },
       {
-        q: "¿Puedo hacerlo todo online desde Málaga?",
+        q: "��Puedo hacerlo todo online desde Málaga?",
         a: "S����. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Málaga.",
       },
       {
@@ -3709,7 +3709,7 @@ const manualPosts: Post[] = [
             head: ["Dosis de la pluma", "Fase", "Precio orientativo/mes"],
             rows: [
               ["0,25 mg", "Inicio", "200–230 €"],
-              ["0,5 mg", "Adaptación", "200–250 €"],
+              ["0,5 mg", "Adaptación", "200–250 ��"],
               ["1 mg", "Escalado", "230–270 €"],
               ["1,7 mg", "Escalado", "250–290 €"],
               ["2,4 mg", "Mantenimiento", "270–300 €"],
@@ -5681,13 +5681,22 @@ function detectDrug(post: Post): string | null {
 }
 
 function detectCity(post: Post): string | null {
-  // Ciudades que aparecen como "… en <Ciudad>" en el título limpio
-  const m = post.title.match(
-    /\ben\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?)/,
-  );
-  if (!m) return null;
-  const city = m[1].trim();
+  // El título limpio termina en "… en <Ciudad>" (sin puntuación final),
+  // así que la ciudad es todo lo que sigue al último " en ".
+  // Esto captura nombres compuestos: "Molina de Segura", "El Ejido",
+  // "San Vicente del Raspeig", "Vila-real", "Sant Boi de Llobregat".
+  if (!/\ben\s+/i.test(post.title)) return null;
+  const city = post.title
+    .split(/\ben\s+/i)
+    .pop()!
+    .replace(/[.:·|(].*$/, "") // corta cualquier cola de puntuación
+    .trim();
+  if (!city) return null;
   if (/^Espa/i.test(city)) return null; // "en España" no es ciudad
+  if (/\d/.test(city)) return null; // evita "24h", años, etc.
+  if (city.length > 40) return null; // evita frases largas mal detectadas
+  // Debe empezar por mayúscula (nombre propio)
+  if (!/^[A-ZÁÉÍÓÚÑ]/.test(city)) return null;
   return city;
 }
 
