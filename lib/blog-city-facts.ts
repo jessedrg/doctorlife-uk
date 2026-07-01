@@ -491,6 +491,61 @@ export const CITY_FACTS: Record<string, CityFacts> = {
   // Navarra
   baranain: { community: "Comunidad Foral de Navarra", province: "Navarra", pop: 20000, hospital: "Hospital Universitario de Navarra", trait: "ciudad del área metropolitana de Pamplona" },
   burlada: { community: "Comunidad Foral de Navarra", province: "Navarra", pop: 19000, hospital: "Hospital Universitario de Navarra", trait: "ciudad de la comarca de Pamplona, junto al río Arga" },
+
+  // Batch 6 — municipios >20.000 hab. que faltaban
+  // Comunidad de Madrid
+  arroyomolinos: { community: "Comunidad de Madrid", province: "Madrid", pop: 38000, hospital: "Hospital Universitario de Móstoles", trait: "municipio del suroeste metropolitano de Madrid" },
+  torrelodones: { community: "Comunidad de Madrid", province: "Madrid", pop: 25000, hospital: "Hospital Universitario Puerta de Hierro Majadahonda", trait: "municipio residencial de la sierra noroeste de Madrid" },
+  algete: { community: "Comunidad de Madrid", province: "Madrid", pop: 21000, hospital: "Hospital Universitario Infanta Sofía", trait: "municipio del norte del área metropolitana de Madrid" },
+  "san-martin-de-la-vega": { community: "Comunidad de Madrid", province: "Madrid", pop: 21000, hospital: "Hospital Universitario del Sureste (Arganda del Rey)", trait: "municipio del sureste metropolitano de Madrid" },
+  // Comunidad Valenciana
+  benicarlo: { community: "Comunidad Valenciana", province: "Castellón", pop: 30000, hospital: "Hospital Comarcal de Vinaròs", trait: "ciudad costera del Baix Maestrat, al norte de Castellón" },
+  sueca: { community: "Comunidad Valenciana", province: "Valencia", pop: 29000, hospital: "Hospital Universitari i Politècnic La Fe", trait: "capital de la Ribera Baixa, junto a la Albufera de Valencia" },
+  "puebla-de-vallbona": { community: "Comunidad Valenciana", province: "Valencia", pop: 27000, hospital: "Hospital Arnau de Vilanova (Valencia)", trait: "municipio del Camp de Túria, en el interior de Valencia" },
+  "quart-de-poblet": { community: "Comunidad Valenciana", province: "Valencia", pop: 27000, hospital: "Hospital Universitari i Politècnic La Fe", trait: "ciudad de l'Horta Oest, en el área metropolitana de Valencia" },
+  "san-juan-de-alicante": { community: "Comunidad Valenciana", province: "Alicante", pop: 27000, hospital: "Hospital Universitario de Sant Joan d'Alacant", trait: "municipio del área metropolitana de Alicante" },
+  altea: { community: "Comunidad Valenciana", province: "Alicante", pop: 25000, hospital: "Hospital Comarcal Marina Baixa (La Vila Joiosa)", trait: "ciudad costera de la Marina Baixa alicantina" },
+  "pilar-de-la-horadada": { community: "Comunidad Valenciana", province: "Alicante", pop: 24000, hospital: "Hospital Universitario de Torrevieja", trait: "municipio del extremo sur de la Costa Blanca" },
+  picasent: { community: "Comunidad Valenciana", province: "Valencia", pop: 23000, hospital: "Hospital Universitari i Politècnic La Fe", trait: "municipio de l'Horta Sud, en la provincia de Valencia" },
+  alfafar: { community: "Comunidad Valenciana", province: "Valencia", pop: 22000, hospital: "Hospital Universitari i Politècnic La Fe", trait: "municipio de l'Horta Sud, junto a la ciudad de Valencia" },
+  moncada: { community: "Comunidad Valenciana", province: "Valencia", pop: 22000, hospital: "Hospital Clínico Universitario de Valencia", trait: "municipio de l'Horta Nord, en la provincia de Valencia" },
+  carcaixent: { community: "Comunidad Valenciana", province: "Valencia", pop: 22000, hospital: "Hospital Universitari de la Ribera (Alzira)", trait: "municipio de la Ribera Alta, en la provincia de Valencia" },
+  puzol: { community: "Comunidad Valenciana", province: "Valencia", pop: 22000, hospital: "Hospital Clínico Universitario de Valencia", trait: "municipio costero de l'Horta Nord, en la provincia de Valencia" },
+  liria: { community: "Comunidad Valenciana", province: "Valencia", pop: 25000, hospital: "Hospital Arnau de Vilanova (Valencia)", trait: "capital del Camp de Túria, en el interior valenciano" },
+  requena: { community: "Comunidad Valenciana", province: "Valencia", pop: 21000, hospital: "Hospital General de Requena", trait: "capital de la comarca Requena-Utiel, en el interior de Valencia" },
+  "alfaz-del-pi": { community: "Comunidad Valenciana", province: "Alicante", pop: 21000, hospital: "Hospital Comarcal Marina Baixa (La Vila Joiosa)", trait: "municipio de la Marina Baixa, junto a Benidorm" },
+  benicasim: { community: "Comunidad Valenciana", province: "Castellón", pop: 21000, hospital: "Hospital General Universitario de Castellón", trait: "ciudad turística de la costa de Castellón" },
+  // Andalucía
+  "san-roque": { community: "Andalucía", province: "Cádiz", pop: 35000, hospital: "Hospital Punta de Europa (Algeciras)", trait: "municipio del Campo de Gibraltar, en el sur de Cádiz" },
+  almunecar: { community: "Andalucía", province: "Granada", pop: 28000, hospital: "Hospital Santa Ana de Motril", trait: "principal ciudad de la Costa Tropical granadina" },
+  almonte: { community: "Andalucía", province: "Huelva", pop: 25000, hospital: "Hospital Universitario Juan Ramón Jiménez (Huelva)", trait: "municipio del entorno de Doñana y la aldea de El Rocío" },
+  "los-barrios": { community: "Andalucía", province: "Cádiz", pop: 24000, hospital: "Hospital Punta de Europa (Algeciras)", trait: "municipio del Campo de Gibraltar, en el sur de Cádiz" },
+  "mairena-del-alcor": { community: "Andalucía", province: "Sevilla", pop: 24000, hospital: "Hospital Universitario Virgen del Rocío (Sevilla)", trait: "municipio de la comarca de Los Alcores, en Sevilla" },
+  "san-juan-de-aznalfarache": { community: "Andalucía", province: "Sevilla", pop: 23000, hospital: "Hospital Universitario Virgen del Rocío (Sevilla)", trait: "ciudad del Aljarafe, en el área metropolitana de Sevilla" },
+  aljaraque: { community: "Andalucía", province: "Huelva", pop: 23000, hospital: "Hospital Universitario Juan Ramón Jiménez (Huelva)", trait: "municipio del área metropolitana de Huelva" },
+  torrox: { community: "Andalucía", province: "Málaga", pop: 22000, hospital: "Hospital Comarcal de la Axarquía (Vélez-Málaga)", trait: "municipio costero de la Axarquía malagueña" },
+  atarfe: { community: "Andalucía", province: "Granada", pop: 21000, hospital: "Hospital Universitario San Cecilio (Granada)", trait: "municipio de la Vega de Granada" },
+  "huercal-overa": { community: "Andalucía", province: "Almería", pop: 21000, hospital: "Hospital La Inmaculada (Huércal-Overa)", trait: "municipio del norte de la provincia de Almería" },
+  // Cataluña
+  "santa-perpetua-de-mogoda": { community: "Cataluña", province: "Barcelona", pop: 26000, hospital: "Hospital Universitari Parc Taulí (Sabadell)", trait: "ciudad del Vallès Occidental, en la provincia de Barcelona" },
+  "castellar-del-valles": { community: "Cataluña", province: "Barcelona", pop: 25000, hospital: "Hospital Universitari Parc Taulí (Sabadell)", trait: "municipio del Vallès Occidental, en la provincia de Barcelona" },
+  "sant-feliu-de-guixols": { community: "Cataluña", province: "Girona", pop: 23000, hospital: "Hospital de Palamós", trait: "ciudad costera de la Costa Brava, en Girona" },
+  "les-franqueses-del-valles": { community: "Cataluña", province: "Barcelona", pop: 21000, hospital: "Hospital General de Granollers", trait: "municipio del Vallès Oriental, en la provincia de Barcelona" },
+  roses: { community: "Cataluña", province: "Girona", pop: 20000, hospital: "Hospital de Figueres", trait: "ciudad costera del norte de la Costa Brava" },
+  "sant-quirze-del-valles": { community: "Cataluña", province: "Barcelona", pop: 20000, hospital: "Hospital Universitari Parc Taulí (Sabadell)", trait: "municipio del Vallès Occidental, en la provincia de Barcelona" },
+  // Región de Murcia
+  "san-pedro-del-pinatar": { community: "Región de Murcia", province: "Murcia", pop: 30000, hospital: "Hospital Los Arcos del Mar Menor", trait: "municipio costero del norte del Mar Menor" },
+  "la-union": { community: "Región de Murcia", province: "Murcia", pop: 21000, hospital: "Hospital General Universitario Santa Lucía (Cartagena)", trait: "municipio de la comarca de Cartagena, cuna del cante minero" },
+  // Canarias
+  "san-miguel-de-abona": { community: "Canarias", province: "Santa Cruz de Tenerife", pop: 24000, hospital: "Hospital Universitario Nuestra Señora de Candelaria", trait: "municipio del sur de Tenerife" },
+  "guia-de-isora": { community: "Canarias", province: "Santa Cruz de Tenerife", pop: 23000, hospital: "Hospital Universitario Nuestra Señora de Candelaria", trait: "municipio del suroeste de Tenerife" },
+  mogan: { community: "Canarias", province: "Las Palmas", pop: 21000, hospital: "Hospital Universitario de Gran Canaria Doctor Negrín", trait: "municipio turístico del suroeste de Gran Canaria" },
+  // Islas Baleares
+  alcudia: { community: "Islas Baleares", province: "Islas Baleares", pop: 22000, hospital: "Hospital Universitario Son Espases (Palma)", trait: "municipio turístico del norte de Mallorca" },
+  // Comunidad Foral de Navarra
+  "valle-de-egues": { community: "Comunidad Foral de Navarra", province: "Navarra", pop: 23000, hospital: "Hospital Universitario de Navarra", trait: "municipio de la comarca de Pamplona" },
+  // Galicia
+  porrino: { community: "Galicia", province: "Pontevedra", pop: 21000, hospital: "Hospital Álvaro Cunqueiro (Vigo)", trait: "municipio industrial del área metropolitana de Vigo" },
 };
 
 /* Fallback seguro por si falta una ciudad */
