@@ -1,4 +1,8 @@
-import { TrustpilotMicro, TrustpilotCarousel } from "./trustpilot-micro";
+import {
+  TrustpilotMicro,
+  TrustpilotCarousel,
+  TRUSTPILOT_ENABLED,
+} from "./trustpilot-micro";
 
 type Props = {
   /** Fondo claro (por defecto) u oscuro. */
@@ -9,6 +13,9 @@ type Props = {
 /** Sección de opiniones de clientes con valoración + carrusel de reseñas. */
 export function TrustpilotReviewsSection({ theme = "light", className }: Props) {
   const dark = theme === "dark";
+
+  // No mostramos la sección (ni el título) hasta que haya reseñas activas.
+  if (!TRUSTPILOT_ENABLED) return null;
   return (
     <section
       className={`px-5 py-12 sm:py-16 ${className ?? ""}`}
