@@ -15,7 +15,7 @@ import { useEffect, useRef } from "react";
  * Pega ese valor en la constante BUSINESS_UNIT_ID de abajo.
  * El motor del widget (tp.widget.bootstrap) ya se carga en el footer.
  */
-const BUSINESS_UNIT_ID = "REEMPLAZA_CON_TU_BUSINESS_UNIT_ID";
+const BUSINESS_UNIT_ID = "6a31f5806ee9de82cda0a274";
 
 // Template del widget "Micro Star" (fijo para todos los negocios).
 const TEMPLATE_ID = "5419b6ffb0d04a076446a9af";
