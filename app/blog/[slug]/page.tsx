@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
+import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
@@ -294,6 +295,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </main>
         <Footer />
       </div>
+
+      <StickyCTA />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
