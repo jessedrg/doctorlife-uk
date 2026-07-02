@@ -91,6 +91,12 @@ export default function RootLayout({
             tp('register', 'wUdA9FYxfifhoMPy');
           `}
         </Script>
+        {/* Trustpilot TrustBox — motor de widgets (global: hero, blogs, footer, etc.) */}
+        <Script
+          id="trustpilot-widget-bootstrap"
+          strategy="afterInteractive"
+          src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+        />
         {children}
         <PublicWhatsAppBubble />
         {process.env.NODE_ENV === 'production' && <Analytics />}
