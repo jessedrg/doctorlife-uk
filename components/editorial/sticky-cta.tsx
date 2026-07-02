@@ -5,10 +5,10 @@ import { Check, X } from "lucide-react";
 import { analytics } from "@/lib/analytics";
 
 const INCLUYE = [
-  "Valoración médica online",
-  "Receta si procede",
-  "Seguimiento del tratamiento",
-  "Sin cita ni desplazamientos",
+  "Hasta un 22,5% de pérdida de peso",
+  "Receta médica en 3 horas laborables",
+  "Valoración y seguimiento con médico colegiado",
+  "Sin cita previa ni desplazamientos",
 ] as const;
 
 const PHONE = "711267223";
@@ -68,8 +68,9 @@ export function StickyCTA() {
                 25 €
               </span>
             </div>
-            <p className="mt-1 text-[12px] leading-tight text-paper/70 sm:text-[14px]">
-              Se descuenta íntegramente del tratamiento · respuesta en minutos
+            <p className="mt-1 text-[12px] leading-tight text-paper/75 sm:text-[14px]">
+              <span className="font-semibold text-[#8fa663]">Pierde peso de forma segura</span>{" "}
+              · la consulta se descuenta del tratamiento · respuesta en minutos
             </p>
 
             {/* Qué incluye — grande en desktop */}
