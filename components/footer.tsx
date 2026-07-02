@@ -1,3 +1,4 @@
+import Script from "next/script";
 import { QuizTrigger } from "./quiz-trigger";
 import { BrandLogo } from "./brand-logo";
 import { FooterColumns } from "./footer-columns";
@@ -63,6 +64,13 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      {/* TrustBox script */}
+      <Script
+        id="trustpilot-widget-bootstrap"
+        src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+        strategy="afterInteractive"
+      />
     </footer>
   );
 }
