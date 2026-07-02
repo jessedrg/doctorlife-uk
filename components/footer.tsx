@@ -1,6 +1,7 @@
 import { QuizTrigger } from "./quiz-trigger";
 import { BrandLogo } from "./brand-logo";
 import { FooterColumns } from "./footer-columns";
+import { TrustBox } from "./trustbox";
 
 const paymentMethods = [
   { label: "Visa", src: "/payments/visa.svg" },
@@ -31,6 +32,7 @@ export function Footer() {
               Empieza por 25 €
               <span className="text-[13px]">↗</span>
             </QuizTrigger>
+            <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
           </div>
 
           <FooterColumns />
