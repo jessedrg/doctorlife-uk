@@ -7,6 +7,7 @@ import { ProductCarousel } from "@/components/product-carousel";
 import { Transformation } from "@/components/transformation";
 import { MobileFollowup } from "@/components/mobile-followup";
 import { FinalCta } from "@/components/final-cta";
+import { TrustpilotReviewsSection } from "@/components/trustpilot-reviews-section";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -32,6 +33,7 @@ export default function Home() {
             </div>
           </section>
           <Transformation />
+          <TrustpilotReviewsSection />
           <MobileFollowup />
           <FinalCta />
         </main>
