@@ -23,7 +23,7 @@ const REVIEW_URL = "https://es.trustpilot.com/review/doctorlife.io";
  * aunque no haya reseñas, así que este interruptor manual es la forma fiable
  * de mantenerlo oculto hasta que tengas opiniones.
  */
-export const TRUSTPILOT_ENABLED = false;
+export const TRUSTPILOT_ENABLED = true;
 
 // Templates oficiales de Trustpilot (iguales para todos los negocios).
 const TEMPLATES = {
