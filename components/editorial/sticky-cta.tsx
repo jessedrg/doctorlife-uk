@@ -61,14 +61,14 @@ export function StickyCTA() {
         <div className="relative flex items-center gap-3 px-3 py-3 sm:gap-6 sm:px-6 sm:py-5">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <p className="text-[15px] font-semibold leading-tight sm:text-[21px]">
+              <p className="text-[17px] font-semibold leading-tight sm:text-[21px]">
                 Consulta médica online para adelgazar
               </p>
-              <span className="rounded-full bg-[#6B774A] px-2.5 py-0.5 text-[12px] font-bold text-white sm:text-[15px]">
+              <span className="rounded-full bg-[#6B774A] px-2.5 py-0.5 text-[14px] font-bold text-white sm:text-[15px]">
                 25 €
               </span>
             </div>
-            <p className="mt-1 text-[12px] leading-tight text-paper/75 sm:text-[14px]">
+            <p className="mt-1 text-[13.5px] leading-snug text-paper/75 sm:text-[14px]">
               <span className="font-semibold text-[#8fa663]">Pierde peso de forma segura</span>{" "}
               · la consulta se descuenta del tratamiento · respuesta en minutos
             </p>
@@ -100,9 +100,9 @@ export function StickyCTA() {
           {INCLUYE.map((item) => (
             <li
               key={item}
-              className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-[11px] leading-none text-paper/90 backdrop-blur-sm"
+              className="flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1.5 text-[13px] font-medium leading-none text-paper/95 backdrop-blur-sm"
             >
-              <Check aria-hidden className="h-3 w-3 flex-shrink-0 text-[#8fa663]" />
+              <Check aria-hidden className="h-3.5 w-3.5 flex-shrink-0 text-[#8fa663]" />
               {item}
             </li>
           ))}
