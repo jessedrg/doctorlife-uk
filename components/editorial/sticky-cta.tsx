@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
 import { analytics } from "@/lib/analytics";
@@ -8,6 +7,7 @@ import { analytics } from "@/lib/analytics";
 const INCLUYE = [
   "Valoración médica online",
   "Receta si procede",
+  "Seguimiento del tratamiento",
   "Sin cita ni desplazamientos",
 ] as const;
 
@@ -29,7 +29,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-/** Barra inferior sticky que va al grano: abre WhatsApp para empezar el tratamiento. */
+/** Barra inferior sticky con vídeo de fondo que abre WhatsApp para empezar el tratamiento. */
 export function StickyCTA() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -52,65 +52,83 @@ export function StickyCTA() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[80] px-3 pb-3 sm:px-5 sm:pb-5">
-      <div className="mx-auto flex max-w-3xl items-center gap-3 rounded-2xl border border-ink/10 bg-warm/95 px-3 py-3 text-ink shadow-[0_20px_50px_-16px_rgba(34,29,23,.45)] ring-1 ring-white/40 backdrop-blur-xl sm:gap-4 sm:rounded-3xl sm:px-5 sm:py-4">
-        {/* Avatar de la médico/paciente con badge de WhatsApp */}
-        <div className="relative flex-shrink-0">
-          <span className="block h-14 w-14 overflow-hidden rounded-full bg-ink ring-2 ring-amber/40 sm:h-16 sm:w-16">
-            <Image
-              src="/hero/woman.png"
-              alt=""
-              width={128}
-              height={128}
-              className="h-full w-full scale-110 object-cover object-[50%_18%]"
-            />
-          </span>
-          <span className="absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] ring-2 ring-warm sm:h-7 sm:w-7">
-            <WhatsAppIcon className="h-4 w-4 fill-white sm:h-4.5 sm:w-4.5" />
-          </span>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-            <p className="text-[14px] font-semibold leading-tight text-ink sm:text-[18px]">
-              Consulta médica online
-            </p>
-            <span className="rounded-full bg-amber/15 px-2 py-0.5 text-[12px] font-bold text-clay sm:text-[13px]">
-              25 €
-            </span>
-          </div>
-          <p className="mt-0.5 hidden text-[12px] leading-tight text-ink-mute sm:block sm:text-[13px]">
-            Se descuenta del tratamiento · respuesta en minutos
-          </p>
-
-          {/* Qué incluye — en línea en desktop */}
-          <ul className="mt-2 hidden flex-wrap gap-x-4 gap-y-1 sm:flex">
-            {INCLUYE.map((item) => (
-              <li key={item} className="flex items-center gap-1.5 text-[12.5px] text-ink-soft">
-                <Check aria-hidden className="h-3.5 w-3.5 flex-shrink-0 text-olive" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <button
-          type="button"
-          onClick={openWhatsApp}
-          className="flex flex-shrink-0 items-center gap-2 rounded-full bg-[#25D366] px-3.5 py-2.5 text-[13.5px] font-semibold text-white shadow-lg shadow-[#25D366]/25 transition-transform duration-200 hover:scale-[1.03] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-warm sm:px-6 sm:py-3 sm:text-[15px]"
-        >
-          <WhatsAppIcon className="h-5 w-5 fill-white" />
-          <span className="hidden min-[420px]:inline sm:inline">Empieza</span>
-          <span className="hidden sm:inline">&nbsp;ahora</span>
-        </button>
+      <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl text-paper shadow-[0_20px_50px_-16px_rgba(34,29,23,.55)] ring-1 ring-white/10 sm:rounded-3xl">
+        {/* vídeo de las plumas de fondo (como en la landing) */}
+        <video
+          src="/products/pills-pen.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          disablePictureInPicture
+          preload="metadata"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: "center 35%" }}
+        />
+        {/* overlay para legibilidad */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/80 to-ink/55"
+        />
 
         <button
           type="button"
           aria-label="Cerrar aviso"
           onClick={() => setDismissed(true)}
-          className="flex h-7 w-7 flex-shrink-0 items-center justify-center self-start rounded-full text-ink-mute transition-colors hover:bg-ink/5 hover:text-ink"
+          className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/20 text-paper/70 backdrop-blur-sm transition-colors hover:bg-black/40 hover:text-paper"
         >
           <X aria-hidden className="h-4 w-4" />
         </button>
+
+        <div className="relative flex items-center gap-3 px-3 py-3 sm:gap-5 sm:px-5 sm:py-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <p className="text-[15px] font-semibold leading-tight sm:text-[19px]">
+                Consulta médica online para adelgazar
+              </p>
+              <span className="rounded-full bg-[#25D366] px-2 py-0.5 text-[12px] font-bold text-white sm:text-[13px]">
+                25 €
+              </span>
+            </div>
+            <p className="mt-1 text-[12px] leading-tight text-paper/70 sm:text-[13.5px]">
+              Se descuenta íntegramente del tratamiento · respuesta en minutos
+            </p>
+
+            {/* Qué incluye */}
+            <ul className="mt-2 hidden flex-wrap gap-x-4 gap-y-1 sm:flex">
+              {INCLUYE.map((item) => (
+                <li key={item} className="flex items-center gap-1.5 text-[12.5px] text-paper/90">
+                  <Check aria-hidden className="h-3.5 w-3.5 flex-shrink-0 text-[#4ade80]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <button
+            type="button"
+            onClick={openWhatsApp}
+            className="flex flex-shrink-0 items-center gap-2 rounded-full bg-[#25D366] px-3.5 py-2.5 text-[13.5px] font-semibold text-white shadow-lg shadow-[#25D366]/30 transition-transform duration-200 hover:scale-[1.03] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:px-6 sm:py-3 sm:text-[15px]"
+          >
+            <WhatsAppIcon className="h-5 w-5 fill-white" />
+            <span>Empieza</span>
+            <span className="hidden sm:inline">&nbsp;ahora</span>
+          </button>
+        </div>
+
+        {/* Qué incluye — chips en móvil */}
+        <ul className="relative flex flex-wrap gap-1.5 px-3 pb-3 sm:hidden">
+          {INCLUYE.slice(0, 3).map((item) => (
+            <li
+              key={item}
+              className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-[11px] leading-none text-paper/90 backdrop-blur-sm"
+            >
+              <Check aria-hidden className="h-3 w-3 flex-shrink-0 text-[#4ade80]" />
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
