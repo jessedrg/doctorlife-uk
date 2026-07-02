@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * Widgets de Trustpilot (TrustBox).
@@ -12,16 +12,8 @@ const BUSINESS_UNIT_ID = "6a31f5806ee9de82cda0a274";
 const REVIEW_URL = "https://es.trustpilot.com/review/doctorlife.io";
 
 /**
- * Interruptor global. Mientras esté en `false`, los widgets NO se renderizan
- * en ningún sitio (hero, blogs, sección de reseñas) — no se ve nada, ni títulos
- * ni huecos vacíos.
- *
- * 👉 Cuando ya tengas reseñas publicadas en Trustpilot (en el dominio
- * doctorlife.io), cambia esto a `true` y aparecerá todo automáticamente.
- *
- * Nota: la detección automática no sirve porque Trustpilot inyecta el iframe
- * aunque no haya reseñas, así que este interruptor manual es la forma fiable
- * de mantenerlo oculto hasta que tengas opiniones.
+ * Interruptor global. Ponlo en `false` para ocultar TODOS los widgets de
+ * Trustpilot de golpe (hero, blogs y sección de reseñas).
  */
 export const TRUSTPILOT_ENABLED = true;
 
@@ -39,44 +31,23 @@ declare global {
   }
 }
 
-/**
- * Carga el widget y detecta si Trustpilot renderiza realmente el iframe.
- * Devuelve `ready=true` solo cuando hay contenido real que mostrar.
- */
-function useTrustpilot(
-  ref: React.RefObject<HTMLDivElement | null>,
-  onReady?: () => void,
-) {
-  const [ready, setReady] = useState(false);
-
+/** Pide a Trustpilot que pinte el widget dentro del elemento. */
+function useTrustpilot(ref: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     const load = () => window.Trustpilot?.loadFromElement(el, true);
     load();
-    const retry = setTimeout(load, 1500);
-
-    // Trustpilot inyecta un <iframe> cuando consigue pintar las reseñas.
-    const check = () => {
-      const iframe = el.querySelector("iframe");
-      if (iframe) {
-        setReady(true);
-        onReady?.();
-      }
-    };
-    const observer = new MutationObserver(check);
-    observer.observe(el, { childList: true, subtree: true });
-    const settle = setTimeout(check, 3500);
+    // Reintentos por si el script del bootstrap aún no ha cargado.
+    const t1 = setTimeout(load, 1200);
+    const t2 = setTimeout(load, 3000);
 
     return () => {
-      clearTimeout(retry);
-      clearTimeout(settle);
-      observer.disconnect();
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
-  }, [ref, onReady]);
-
-  return ready;
+  }, [ref]);
 }
 
 type MicroProps = {
@@ -92,21 +63,18 @@ export function TrustpilotMicro({
   align = "left",
 }: MicroProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const ready = useTrustpilot(ref);
+  useTrustpilot(ref);
 
   if (!TRUSTPILOT_ENABLED) return null;
 
   return (
     <div
       ref={ref}
-      className={`trustpilot-widget transition-opacity duration-500 ${
-        ready ? "opacity-100" : "pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
-      } ${className ?? ""}`}
-      aria-hidden={!ready}
+      className={`trustpilot-widget ${className ?? ""}`}
       data-locale="es-ES"
       data-template-id={TEMPLATES.micro}
       data-businessunit-id={BUSINESS_UNIT_ID}
-      data-style-height="20px"
+      data-style-height="24px"
       data-style-width="100%"
       data-theme={theme}
       data-text-color={theme === "dark" ? "#ffffff" : undefined}
@@ -122,31 +90,26 @@ export function TrustpilotMicro({
 type CarouselProps = {
   className?: string;
   theme?: "light" | "dark";
-  onReady?: () => void;
 };
 
 /** Carrusel de reseñas de clientes. */
-export function TrustpilotCarousel({ className, theme = "light", onReady }: CarouselProps) {
+export function TrustpilotCarousel({ className, theme = "light" }: CarouselProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const ready = useTrustpilot(ref, onReady);
+  useTrustpilot(ref);
 
   if (!TRUSTPILOT_ENABLED) return null;
 
   return (
     <div
       ref={ref}
-      className={`trustpilot-widget transition-opacity duration-500 ${
-        ready ? "opacity-100" : "pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
-      } ${className ?? ""}`}
-      aria-hidden={!ready}
+      className={`trustpilot-widget ${className ?? ""}`}
       data-locale="es-ES"
       data-template-id={TEMPLATES.carousel}
       data-businessunit-id={BUSINESS_UNIT_ID}
       data-style-height="240px"
       data-style-width="100%"
       data-theme={theme}
-      data-stars="4,5"
-      data-review-languages="es"
+      data-stars="1,2,3,4,5"
     >
       <a href={REVIEW_URL} target="_blank" rel="noopener noreferrer">
         Trustpilot
