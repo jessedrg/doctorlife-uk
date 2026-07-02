@@ -13,11 +13,15 @@ const REVIEW_URL = "https://es.trustpilot.com/review/doctorlife.io";
 
 /**
  * Interruptor global. Mientras esté en `false`, los widgets NO se renderizan
- * en ningún sitio (hero, blogs, sección de reseñas). Ponlo en `true` cuando ya
- * tengas reseñas publicadas en Trustpilot.
+ * en ningún sitio (hero, blogs, sección de reseñas) — no se ve nada, ni títulos
+ * ni huecos vacíos.
  *
- * Además, aunque esté en `true`, cada widget se auto-oculta si Trustpilot no
- * llega a pintar el iframe con reseñas (p. ej. en preview o dominio no válido).
+ * 👉 Cuando ya tengas reseñas publicadas en Trustpilot (en el dominio
+ * doctorlife.io), cambia esto a `true` y aparecerá todo automáticamente.
+ *
+ * Nota: la detección automática no sirve porque Trustpilot inyecta el iframe
+ * aunque no haya reseñas, así que este interruptor manual es la forma fiable
+ * de mantenerlo oculto hasta que tengas opiniones.
  */
 export const TRUSTPILOT_ENABLED = false;
 
@@ -39,7 +43,10 @@ declare global {
  * Carga el widget y detecta si Trustpilot renderiza realmente el iframe.
  * Devuelve `ready=true` solo cuando hay contenido real que mostrar.
  */
-function useTrustpilot(ref: React.RefObject<HTMLDivElement | null>) {
+function useTrustpilot(
+  ref: React.RefObject<HTMLDivElement | null>,
+  onReady?: () => void,
+) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -53,7 +60,10 @@ function useTrustpilot(ref: React.RefObject<HTMLDivElement | null>) {
     // Trustpilot inyecta un <iframe> cuando consigue pintar las reseñas.
     const check = () => {
       const iframe = el.querySelector("iframe");
-      if (iframe) setReady(true);
+      if (iframe) {
+        setReady(true);
+        onReady?.();
+      }
     };
     const observer = new MutationObserver(check);
     observer.observe(el, { childList: true, subtree: true });
@@ -64,7 +74,7 @@ function useTrustpilot(ref: React.RefObject<HTMLDivElement | null>) {
       clearTimeout(settle);
       observer.disconnect();
     };
-  }, [ref]);
+  }, [ref, onReady]);
 
   return ready;
 }
@@ -90,7 +100,7 @@ export function TrustpilotMicro({
     <div
       ref={ref}
       className={`trustpilot-widget transition-opacity duration-500 ${
-        ready ? "opacity-100" : "pointer-events-none opacity-0"
+        ready ? "opacity-100" : "pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
       } ${className ?? ""}`}
       aria-hidden={!ready}
       data-locale="es-ES"
@@ -112,12 +122,13 @@ export function TrustpilotMicro({
 type CarouselProps = {
   className?: string;
   theme?: "light" | "dark";
+  onReady?: () => void;
 };
 
 /** Carrusel de reseñas de clientes. */
-export function TrustpilotCarousel({ className, theme = "light" }: CarouselProps) {
+export function TrustpilotCarousel({ className, theme = "light", onReady }: CarouselProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const ready = useTrustpilot(ref);
+  const ready = useTrustpilot(ref, onReady);
 
   if (!TRUSTPILOT_ENABLED) return null;
 
@@ -125,7 +136,7 @@ export function TrustpilotCarousel({ className, theme = "light" }: CarouselProps
     <div
       ref={ref}
       className={`trustpilot-widget transition-opacity duration-500 ${
-        ready ? "opacity-100" : "pointer-events-none opacity-0"
+        ready ? "opacity-100" : "pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
       } ${className ?? ""}`}
       aria-hidden={!ready}
       data-locale="es-ES"
