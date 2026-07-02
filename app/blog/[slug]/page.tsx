@@ -8,6 +8,7 @@ import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { TrustpilotMicro } from "@/components/trustpilot-micro";
+import { TrustpilotReviewsSection } from "@/components/trustpilot-reviews-section";
 import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
@@ -277,6 +278,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}).
             </p>
           </article>
+
+          {/* opiniones de clientes */}
+          <div className="mx-auto max-w-[1100px]">
+            <TrustpilotReviewsSection />
+          </div>
 
           {/* enlazado interno geográfico (silos por ciudad/fármaco) */}
           <BlogInternalLinks groups={internalLinks} />

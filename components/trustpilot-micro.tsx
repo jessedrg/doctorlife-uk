@@ -3,30 +3,21 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Widget "Micro Star" de Trustpilot (estrellas + valoración + nº de reseñas).
+ * Widgets de Trustpilot (TrustBox).
  *
- * IMPORTANTE: el widget necesita tu **Business Unit ID** (NO la clave de invitaciones
- * `wUdA9FYxfifhoMPy`, que es para enviar invitaciones de reseña).
- *
- * Cómo obtenerlo:
- *   Trustpilot Business → Integrations → TrustBox → elige "Micro Star" →
- *   copia el valor de `data-businessunit-id` (algo tipo "5f3a1b2c3d4e5f0001abcd12").
- *
- * Pega ese valor en la constante BUSINESS_UNIT_ID de abajo.
+ * Usa tu **Business Unit ID** (NO la clave de invitaciones `wUdA9FYxfifhoMPy`).
  * El motor del widget (tp.widget.bootstrap) ya se carga en el footer.
  */
 const BUSINESS_UNIT_ID = "6a31f5806ee9de82cda0a274";
+const REVIEW_URL = "https://es.trustpilot.com/review/doctorlife.io";
 
-// Template del widget "Micro Star" (fijo para todos los negocios).
-const TEMPLATE_ID = "5419b6ffb0d04a076446a9af";
-
-type TrustpilotMicroProps = {
-  className?: string;
-  /** "light" o "dark" según el fondo donde se coloca. */
-  theme?: "light" | "dark";
-  /** Alineación del contenido del widget. */
-  align?: "left" | "center" | "right";
-};
+// Templates oficiales de Trustpilot (iguales para todos los negocios).
+const TEMPLATES = {
+  // Micro Combo: estrellas + TrustScore + nº de reseñas.
+  micro: "5419b6a8b0d04a076446a8b1",
+  // Carrusel de reseñas.
+  carousel: "53aa8912dec7e10d38f59f36",
+} as const;
 
 declare global {
   interface Window {
@@ -34,53 +25,79 @@ declare global {
   }
 }
 
+function useTrustpilot(ref: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const load = () => {
+      if (ref.current && window.Trustpilot) {
+        window.Trustpilot.loadFromElement(ref.current, true);
+      }
+    };
+    load();
+    // Reintenta por si el script del bootstrap aún no ha cargado.
+    const t = setTimeout(load, 1500);
+    return () => clearTimeout(t);
+  }, [ref]);
+}
+
+type MicroProps = {
+  className?: string;
+  theme?: "light" | "dark";
+  align?: "left" | "center" | "right";
+};
+
+/** Micro Combo: estrellas + valoración + nº de reseñas. */
 export function TrustpilotMicro({
   className,
   theme = "light",
   align = "left",
-}: TrustpilotMicroProps) {
+}: MicroProps) {
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current && window.Trustpilot) {
-      window.Trustpilot.loadFromElement(ref.current, true);
-    }
-  }, []);
-
-  if (BUSINESS_UNIT_ID === "REEMPLAZA_CON_TU_BUSINESS_UNIT_ID") {
-    // Placeholder visible solo en desarrollo para recordar que falta el ID.
-    if (process.env.NODE_ENV !== "production") {
-      return (
-        <div
-          className={className}
-          style={{ fontSize: 12, opacity: 0.6 }}
-          aria-hidden
-        >
-          [Trustpilot: añade tu Business Unit ID en components/trustpilot-micro.tsx]
-        </div>
-      );
-    }
-    return null;
-  }
+  useTrustpilot(ref);
 
   return (
     <div
       ref={ref}
       className={`trustpilot-widget ${className ?? ""}`}
       data-locale="es-ES"
-      data-template-id={TEMPLATE_ID}
+      data-template-id={TEMPLATES.micro}
       data-businessunit-id={BUSINESS_UNIT_ID}
-      data-style-height="24px"
+      data-style-height="20px"
       data-style-width="100%"
       data-theme={theme}
       data-text-color={theme === "dark" ? "#ffffff" : undefined}
       data-style-alignment={align}
     >
-      <a
-        href={`https://es.trustpilot.com/review/doctorlife.io`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href={REVIEW_URL} target="_blank" rel="noopener noreferrer">
+        Trustpilot
+      </a>
+    </div>
+  );
+}
+
+type CarouselProps = {
+  className?: string;
+  theme?: "light" | "dark";
+};
+
+/** Carrusel de reseñas de clientes. */
+export function TrustpilotCarousel({ className, theme = "light" }: CarouselProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  useTrustpilot(ref);
+
+  return (
+    <div
+      ref={ref}
+      className={`trustpilot-widget ${className ?? ""}`}
+      data-locale="es-ES"
+      data-template-id={TEMPLATES.carousel}
+      data-businessunit-id={BUSINESS_UNIT_ID}
+      data-style-height="240px"
+      data-style-width="100%"
+      data-theme={theme}
+      data-stars="4,5"
+      data-review-languages="es"
+    >
+      <a href={REVIEW_URL} target="_blank" rel="noopener noreferrer">
         Trustpilot
       </a>
     </div>
