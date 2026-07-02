@@ -112,7 +112,9 @@ export async function startPublicCheckout(input: {
  * después, cuando el paciente desbloquea su receta. Idempotente: se llama desde
  * la página de éxito y desde el webhook; solo envía emails la primera vez.
  */
-export async function provisionFromSession(sessionId: string): Promise<{ email: string } | null> {
+export async function provisionFromSession(
+  sessionId: string,
+): Promise<{ email: string; name: string; referenceId: string } | null> {
   const session = await stripe.checkout.sessions.retrieve(sessionId)
   if (session.metadata?.kind !== "public_signup") return null
   if (session.payment_status !== "paid" && session.status !== "complete") return null
@@ -217,5 +219,5 @@ export async function provisionFromSession(sessionId: string): Promise<{ email: 
     }
   }
 
-  return { email }
+  return { email, name, referenceId: session.id }
 }
