@@ -7,6 +7,7 @@ import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
+import { TrustBox } from "@/components/trustbox";
 import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
