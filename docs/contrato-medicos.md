@@ -23,7 +23,9 @@ protocolo [ ].
 
 **DE OTRA PARTE**, D./D.ª [nombre y apellidos del médico] (en adelante, "**el Profesional**" o "el
 Médico"), mayor de edad, con D.N.I./N.I.E. [ ] y domicilio a efectos de notificaciones en
-[dirección], actuando en su propio nombre y derecho como profesional sanitario autónomo.
+[dirección], con número de colegiado [ ] en el Colegio Oficial de Médicos de [ ] e inscrito en el
+**Registro Estatal de Profesionales Sanitarios (REMPE)** con número [ ], actuando en su propio nombre
+y derecho como profesional sanitario autónomo.
 
 Ambas partes se reconocen recíprocamente la capacidad legal necesaria para contratar y obligarse y, a
 tal efecto,
@@ -36,9 +38,11 @@ profesionales sanitarios independientes, facilitando la agenda, la videoconsulta
 clínica, el pago y la gestión documental, sin prestar por sí misma el acto médico.
 
 **II.** Que el Profesional es Licenciado/Graduado en Medicina, se halla en pleno ejercicio de la
-profesión, colegiado y en posesión de las titulaciones y, en su caso, especialidad vía título
-oficial, y desea ofrecer sus servicios profesionales de forma autónoma e independiente a través de la
-Plataforma.
+profesión, colegiado, inscrito en el **Registro Estatal de Profesionales Sanitarios (REMPE)** creado
+por el **Real Decreto 1192/2012, de 3 de agosto** (y gestionado por el Ministerio de Sanidad a través
+del Sistema de Información del SNS), y en posesión de las titulaciones y, en su caso, especialidad
+vía título oficial reconocido conforme al art. 15 LOPS, y desea ofrecer sus servicios profesionales
+de forma autónoma e independiente a través de la Plataforma.
 
 **III.** Que la relación entre las partes es de naturaleza estrictamente **mercantil / civil de
 arrendamiento de servicios** (arts. 1544 y 1583 y ss. del Código Civil y Ley 20/2007 del Estatuto del
@@ -46,9 +50,10 @@ Trabajo Autónomo), quedando **expresamente excluida cualquier relación laboral
 dependencia, ajenidad ni integración del Profesional en la estructura organizativa de DoctorLife.
 
 **IV.** Que el acto médico se rige por la **Ley 44/2003, de ordenación de las profesiones sanitarias
-(LOPS)**, la **Ley 41/2002, básica reguladora de la autonomía del paciente**, el **Código de
-Deontología Médica**, la normativa de protección de datos (**RGPD (UE) 2016/679** y **LO 3/2018,
-LOPDGDD**), la **Ley 34/2002, LSSI-CE**, y demás normativa sanitaria estatal y autonómica aplicable.
+(LOPS)**, la **Ley 41/2002, básica reguladora de la autonomía del paciente**, el **Real Decreto
+1192/2012 regulador del REMPE**, el **Código de Deontología Médica**, la normativa de protección de
+datos (**RGPD (UE) 2016/679** y **LO 3/2018, LOPDGDD**), la **Ley 34/2002, LSSI-CE**, y demás
+normativa sanitaria estatal y autonómica aplicable.
 
 En su virtud, las partes suscriben el presente contrato con arreglo a las siguientes
 
@@ -90,6 +95,11 @@ a) Estar en posesión del **título oficial** habilitante y, en su caso, del **t
 y a acreditarlos.
 b) Hallarse **colegiado** y de alta en el correspondiente Colegio Oficial de Médicos, sin
 inhabilitaciones, suspensiones ni impedimentos.
+c) Figurar **inscrito en el REMPE** (RD 1192/2012) y comunicar a DoctorLife de forma inmediata
+cualquier suspensión, cancelación, inhabilitación o restricción sobrevenida en dicho registro o en
+el colegio profesional. DoctorLife se reserva el derecho a verificar periódicamente la inscripción
+del Profesional en el REMPE, y la pérdida de inscripción constituirá causa de resolución inmediata
+del contrato conforme a la Cláusula Novena.
 c) Suscribir y mantener vigente un **seguro de responsabilidad civil profesional** con cobertura
 suficiente y **específica para el acto médico telemático**, por importe no inferior a [ ] € por
 siniestro, aportando certificado a requerimiento de DoctorLife.
@@ -259,7 +269,10 @@ Y en prueba de conformidad, firman por duplicado y a un solo efecto.
 ## ANEXO III — Documentación acreditativa
 
 - Copia del título de Medicina y, en su caso, del título de especialista.
-- Certificado de colegiación en vigor.
-- Póliza y último recibo del seguro de responsabilidad civil profesional.
-- Certificado electrónico cualificado para firma de recetas.
+- Certificado de colegiación en vigor (emitido por el Colegio Oficial de Médicos competente).
+- **Acreditación de inscripción en el REMPE** (número de registro y, si es posible, volcado/certificado
+  del Ministerio de Sanidad o del sistema HORUS/SIRHUS en vigor).
+- Póliza y último recibo del seguro de responsabilidad civil profesional, con cobertura específica
+  para acto médico a distancia/telemático.
+- Certificado electrónico cualificado para firma de recetas privadas electrónicas.
 - Alta en RETA y alta censal (modelo 036/037), en su caso.
