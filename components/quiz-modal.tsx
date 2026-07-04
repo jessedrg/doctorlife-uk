@@ -17,6 +17,10 @@ import { analytics } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const WA_QUIZ_URL = `https://wa.me/34711267223?text=${encodeURIComponent(
+  "Hola, me gustaría empezar mi plan con DoctorLife.",
+)}`;
+
 type Phase =
   | "questions"
   | "profile"
@@ -381,6 +385,35 @@ export function QuizModal() {
                   );
                 })}
               </div>
+
+              {/* Atajo a WhatsApp (solo en el primer paso) */}
+              {step === 0 && (
+                <div className="mt-6 flex items-center gap-3">
+                  <span className="h-px flex-1 bg-ink/10" />
+                  <span className="text-[12.5px] text-ink-mute">o si lo prefieres</span>
+                  <span className="h-px flex-1 bg-ink/10" />
+                </div>
+              )}
+              {step === 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    analytics.whatsappClicked("quiz");
+                    window.open(WA_QUIZ_URL, "_blank");
+                  }}
+                  className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-[14px] border border-ink/15 bg-warm py-[15px] text-[15.5px] font-medium text-ink transition-colors hover:border-[#25D366] hover:bg-cream"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 48 48"
+                    className="h-5 w-5 fill-[#25D366]"
+                    aria-hidden="true"
+                  >
+                    <path d="M24 4C13 4 4 13 4 24c0 3.6 1 7 2.7 9.9L4 44l10.4-2.7C17 43 20.4 44 24 44c11 0 20-9 20-20S35 4 24 4zm0 36c-3.1 0-6.1-.8-8.7-2.3l-.6-.4-6.2 1.6 1.7-6-.4-.6C8.3 30 7.5 27.1 7.5 24 7.5 14.8 15 7.5 24 7.5S40.5 15 40.5 24 33 40 24 40zm10.8-13.4c-.6-.3-3.4-1.7-3.9-1.9-.5-.2-.9-.3-1.2.3-.4.6-1.4 1.9-1.7 2.2-.3.4-.6.4-1.1.1-.6-.3-2.4-.9-4.6-2.8-1.7-1.5-2.8-3.4-3.2-3.9-.3-.6 0-.9.3-1.1l.9-1.1c.2-.3.3-.6.5-.9.2-.3.1-.6 0-.9-.1-.2-1.2-2.9-1.6-3.9-.4-1-.8-.9-1.2-.9h-1c-.3 0-.9.1-1.4.7-.5.5-1.8 1.8-1.8 4.3s1.9 5 2.1 5.4c.3.3 3.7 5.7 9 8 1.3.5 2.3.8 3 1.1 1.3.4 2.4.3 3.3.2 1-.2 3.1-1.3 3.5-2.5.4-1.2.4-2.2.3-2.5-.1-.3-.5-.4-1-.7z" />
+                  </svg>
+                  Habla con nosotros por WhatsApp
+                </button>
+              )}
             </div>
           )}
 
