@@ -158,12 +158,16 @@ export default function LandingControlDePeso() {
                     Endocrinos colegiados · 100% online
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,5vw,60px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Control de peso con{" "}
+                    Tratamiento{" "}
+                    <span className="font-serif italic text-sage">GLP-1</span> con{" "}
                     <span className="font-serif italic text-sage">
                       supervisión médica
                     </span>
                     , desde casa
                   </h1>
+                  <p className="mt-4 text-[15px] font-medium text-paper/75">
+                    Si el endocrino lo considera adecuado para tu caso.
+                  </p>
                   <p className="mt-5 max-w-[46ch] text-balance text-[clamp(15px,1.4vw,20px)] font-light leading-[1.55] text-paper/85">
                     Una valoración clínica seria con un endocrino colegiado, un plan
                     personalizado y seguimiento continuo. Si tu médico lo considera
