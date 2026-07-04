@@ -166,13 +166,8 @@ export default function LandingControlDePeso() {
                     , desde casa
                   </h1>
                   <p className="mt-4 text-[15px] font-medium text-paper/75">
-                    Si el endocrino lo considera adecuado para tu caso.
-                  </p>
-                  <p className="mt-5 max-w-[46ch] text-balance text-[clamp(15px,1.4vw,20px)] font-light leading-[1.55] text-paper/85">
-                    Una valoración clínica seria con un endocrino colegiado, un plan
-                    personalizado y seguimiento continuo. Si tu médico lo considera
-                    clínicamente indicado, puede prescribir tratamiento. Sin salas
-                    de espera y sin permanencia.
+                    Tratamiento con inyección indolora, si el endocrino lo cree
+                    adecuado para tu caso.
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
