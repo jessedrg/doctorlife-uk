@@ -60,15 +60,15 @@ const steps = [
   {
     icon: HeartPulse,
     title: "Plan y seguimiento",
-    text: "Recibes un plan personalizado y acompañamiento continuo por chat, ajustándolo a tu evolución.",
+    text: "Recibes un plan personalizado y acompañamiento continuo por chat. Si tu médico lo considera clínicamente indicado, puede prescribir tratamiento y ajustarlo a tu evolución.",
   },
 ];
 
 const benefits = [
   {
     icon: Stethoscope,
-    title: "Médicos colegiados de verdad",
-    text: "Profesionales especialistas inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
+    title: "Endocrinos y médicos colegiados",
+    text: "Especialistas en endocrinología y nutrición, colegiados e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
   },
   {
     icon: Video,
@@ -94,7 +94,11 @@ const faqs = [
   },
   {
     q: "¿Los médicos están colegiados?",
-    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS). Verificamos su titulación y colegiación antes de incorporarlos.",
+    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS), incluidos especialistas en endocrinología y nutrición. Verificamos su titulación y colegiación antes de incorporarlos.",
+  },
+  {
+    q: "¿El médico puede recetar tratamiento?",
+    a: "Sí. Cuando la valoración clínica lo justifica, el médico o endocrino puede prescribir el tratamiento que considere adecuado para tu caso y hacer su seguimiento. La indicación depende siempre de una valoración médica individual; no todos los casos requieren medicación.",
   },
   {
     q: "¿Cuánto cuesta?",
@@ -151,7 +155,7 @@ export default function LandingControlDePeso() {
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Médicos colegiados · 100% online
+                    Endocrinos colegiados · 100% online
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,5vw,60px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
                     Control de peso con{" "}
@@ -161,9 +165,10 @@ export default function LandingControlDePeso() {
                     , desde casa
                   </h1>
                   <p className="mt-5 max-w-[46ch] text-balance text-[clamp(15px,1.4vw,20px)] font-light leading-[1.55] text-paper/85">
-                    Una valoración clínica seria con un médico colegiado, un plan
-                    personalizado y seguimiento continuo. Sin salas de espera y sin
-                    permanencia.
+                    Una valoración clínica seria con un endocrino colegiado, un plan
+                    personalizado y seguimiento continuo. Si tu médico lo considera
+                    clínicamente indicado, puede prescribir tratamiento. Sin salas
+                    de espera y sin permanencia.
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -190,8 +195,8 @@ export default function LandingControlDePeso() {
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Stethoscope, label: "Médicos colegiados (REPS)" },
-                { icon: Video, label: "Videoconsulta desde casa" },
+                { icon: Stethoscope, label: "Endocrinos colegiados (REPS)" },
+                { icon: ClipboardList, label: "Prescripción si está indicada" },
                 { icon: ShieldCheck, label: "Sin permanencia" },
                 { icon: Lock, label: "Datos protegidos (RGPD)" },
               ].map(({ icon: Icon, label }) => (
@@ -398,6 +403,15 @@ export default function LandingControlDePeso() {
                   >
                     Reservar primera visita · 25 €
                   </QuizTrigger>
+                  <p className="mt-5 text-[14px] text-paper/70">
+                    ¿Quieres conocernos mejor?{" "}
+                    <a
+                      href="/#product"
+                      className="font-medium text-paper underline decoration-paper/40 underline-offset-4 transition-colors hover:decoration-paper"
+                    >
+                      Descubre cómo funciona DoctorLife
+                    </a>
+                  </p>
                 </div>
                 <div className="relative min-h-[260px] md:min-h-full">
                   <Image
