@@ -403,6 +403,15 @@ export default function LandingControlDePeso() {
                   >
                     Reservar primera visita · 25 €
                   </QuizTrigger>
+                  <p className="mt-5 text-[14px] text-paper/70">
+                    ¿Quieres conocernos mejor?{" "}
+                    <a
+                      href="/#product"
+                      className="font-medium text-paper underline decoration-paper/40 underline-offset-4 transition-colors hover:decoration-paper"
+                    >
+                      Descubre cómo funciona DoctorLife
+                    </a>
+                  </p>
                 </div>
                 <div className="relative min-h-[260px] md:min-h-full">
                   <Image
