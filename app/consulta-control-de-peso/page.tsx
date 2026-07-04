@@ -155,7 +155,7 @@ export default function LandingControlDePeso() {
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Médicos colegiados · 100% online
+                    Endocrinos colegiados · 100% online
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,5vw,60px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
                     Control de peso con{" "}
@@ -165,9 +165,10 @@ export default function LandingControlDePeso() {
                     , desde casa
                   </h1>
                   <p className="mt-5 max-w-[46ch] text-balance text-[clamp(15px,1.4vw,20px)] font-light leading-[1.55] text-paper/85">
-                    Una valoración clínica seria con un médico colegiado, un plan
-                    personalizado y seguimiento continuo. Sin salas de espera y sin
-                    permanencia.
+                    Una valoración clínica seria con un endocrino colegiado, un plan
+                    personalizado y seguimiento continuo. Si tu médico lo considera
+                    clínicamente indicado, puede prescribir tratamiento. Sin salas
+                    de espera y sin permanencia.
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -194,8 +195,8 @@ export default function LandingControlDePeso() {
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Stethoscope, label: "Médicos colegiados (REPS)" },
-                { icon: Video, label: "Videoconsulta desde casa" },
+                { icon: Stethoscope, label: "Endocrinos colegiados (REPS)" },
+                { icon: ClipboardList, label: "Prescripción si está indicada" },
                 { icon: ShieldCheck, label: "Sin permanencia" },
                 { icon: Lock, label: "Datos protegidos (RGPD)" },
               ].map(({ icon: Icon, label }) => (
