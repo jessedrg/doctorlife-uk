@@ -60,15 +60,15 @@ const steps = [
   {
     icon: HeartPulse,
     title: "Plan y seguimiento",
-    text: "Recibes un plan personalizado y acompañamiento continuo por chat, ajustándolo a tu evolución.",
+    text: "Recibes un plan personalizado y acompañamiento continuo por chat. Si tu médico lo considera clínicamente indicado, puede prescribir tratamiento y ajustarlo a tu evolución.",
   },
 ];
 
 const benefits = [
   {
     icon: Stethoscope,
-    title: "Médicos colegiados de verdad",
-    text: "Profesionales especialistas inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
+    title: "Endocrinos y médicos colegiados",
+    text: "Especialistas en endocrinología y nutrición, colegiados e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
   },
   {
     icon: Video,
@@ -94,7 +94,11 @@ const faqs = [
   },
   {
     q: "¿Los médicos están colegiados?",
-    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS). Verificamos su titulación y colegiación antes de incorporarlos.",
+    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS), incluidos especialistas en endocrinología y nutrición. Verificamos su titulación y colegiación antes de incorporarlos.",
+  },
+  {
+    q: "¿El médico puede recetar tratamiento?",
+    a: "Sí. Cuando la valoración clínica lo justifica, el médico o endocrino puede prescribir el tratamiento que considere adecuado para tu caso y hacer su seguimiento. La indicación depende siempre de una valoración médica individual; no todos los casos requieren medicación.",
   },
   {
     q: "¿Cuánto cuesta?",
