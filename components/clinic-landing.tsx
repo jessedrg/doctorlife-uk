@@ -15,6 +15,7 @@ import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
 import { BrandLogo } from "@/components/brand-logo";
 import { TrustBox } from "@/components/trustbox";
+import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
@@ -26,14 +27,14 @@ export type ClinicConfig = {
 
 const heroPoints = [
   { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
-  { icon: ClipboardList, label: "Estudio personalizado: IMC, edad metabólica y hábitos" },
+  { icon: ClipboardList, label: "Tratamiento GLP-1 personalizado, si el médico lo considera adecuado" },
   { icon: MessageSquareText, label: "Seguimiento médico de tu evolución por mensajes" },
 ];
 
 const packIncludes = [
   "Valoración médica con un médico colegiado en España",
   "Estudio integral personalizado: IMC, edad metabólica y estilo de vida",
-  "Plan de tratamiento adaptado a tu caso, si el médico lo considera adecuado",
+  "Tratamiento GLP-1 adaptado a tu caso, si el médico lo considera adecuado",
   "Plan nutricional y seguimiento médico de tu evolución",
 ];
 
@@ -46,7 +47,7 @@ const steps = [
   {
     icon: FileCheck2,
     title: "Un médico colegiado te valora",
-    text: "Un médico colegiado revisa tu solicitud, emite un diagnóstico y, si procede, recomienda un plan adecuado para tu caso.",
+    text: "Un médico colegiado revisa tu solicitud, emite un diagnóstico y, si procede, prescribe un tratamiento GLP-1 adecuado para tu caso.",
   },
   {
     icon: MessageSquareText,
@@ -120,15 +121,15 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Programa de control de peso
+                    Tratamiento GLP-1 con seguimiento médico
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,4.8vw,56px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Pierde peso con seguimiento médico real
+                    Adelgaza con tratamiento GLP-1 supervisado por médicos
                   </h1>
                   <p className="mt-4 max-w-[46ch] text-[16px] font-medium leading-relaxed text-paper/80">
-                    Valoración con médicos colegiados en España y un plan
-                    personalizado para tu control de peso. Sin desplazamientos,
-                    sin esperas y sin permanencia.
+                    Valoración con médicos colegiados en España y, si procede, un
+                    tratamiento GLP-1 personalizado para tu control de peso. Sin
+                    desplazamientos, sin esperas y sin permanencia.
                   </p>
 
                   <ul className="mt-7 flex flex-col gap-3">
@@ -178,16 +179,8 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                   </div>
                 </div>
 
-                <div className="relative mx-auto aspect-[4/3] w-full max-w-[440px] overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-paper/15 lg:max-w-none">
-                  <Image
-                    src="/landing/consulta-online.png"
-                    alt="Médica colegiada durante una consulta médica online"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 90vw, 45vw"
-                    className="object-cover"
-                    style={{ objectPosition: "60% center" }}
-                  />
+                <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
+                  <BeforeAfterCarousel variant="dark" count={3} />
                 </div>
               </div>
             </div>
@@ -381,7 +374,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 id="cta-final"
                 className="mx-auto max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1]"
               >
-                Empieza hoy tu programa de control de peso
+                Empieza hoy tu tratamiento GLP-1 supervisado
               </h2>
               <div className="mt-5 flex flex-wrap items-end justify-center gap-x-3 gap-y-1">
                 <span className="text-[clamp(36px,6vw,52px)] font-semibold leading-none text-paper">
