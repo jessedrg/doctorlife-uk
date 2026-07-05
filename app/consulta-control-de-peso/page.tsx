@@ -15,6 +15,7 @@ import { QuizTrigger } from "@/components/quiz-trigger";
 import { Navbar } from "@/components/navbar";
 import { BrandLogo } from "@/components/brand-logo";
 import { TrustBox } from "@/components/trustbox";
+import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 const PATH = "/consulta-control-de-peso";
@@ -131,27 +132,8 @@ export default function LandingControlDePeso() {
                     "linear-gradient(155deg,#6b774a 0%,#5f6a3e 45%,#454d2e 100%)",
                 }}
               />
-              {/* imagen */}
-              <div className="absolute inset-y-0 right-0 hidden w-[52%] md:block">
-                <Image
-                  src="/landing/consulta-online.png"
-                  alt="Médica colegiada durante una videoconsulta de control de peso"
-                  fill
-                  priority
-                  sizes="52vw"
-                  className="object-cover"
-                  style={{ objectPosition: "60% center" }}
-                />
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(95deg,#5f6a3e 0%,rgba(95,106,62,.5) 22%,rgba(95,106,62,.08) 46%,transparent 72%)",
-                  }}
-                />
-              </div>
 
-              <div className="relative z-[2] flex flex-col justify-center px-5 py-14 sm:px-10 lg:px-14 lg:py-20">
+              <div className="relative z-[2] grid grid-cols-1 items-center gap-10 px-5 py-12 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12 lg:px-14 lg:py-16">
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
@@ -185,6 +167,11 @@ export default function LandingControlDePeso() {
                   <div className="mt-7 max-w-[280px]">
                     <TrustBox theme="dark" alignment="left" />
                   </div>
+                </div>
+
+                {/* Carrusel de casos before/after */}
+                <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
+                  <BeforeAfterCarousel />
                 </div>
               </div>
             </div>
