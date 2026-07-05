@@ -8,6 +8,7 @@ import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { TrustBox } from "@/components/trustbox";
+import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 
@@ -248,6 +249,20 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 {idx === insertAt - 1 && <BlogFunnel />}
               </section>
             ))}
+
+            {/* Casos reales antes / después */}
+            <section className="mt-14 rounded-[28px] border border-ink/10 bg-warm px-5 py-8 sm:px-8">
+              <h2 className="text-balance text-center text-[clamp(22px,2.8vw,30px)] font-normal leading-[1.15] text-ink">
+                Casos reales con tratamiento GLP-1
+              </h2>
+              <p className="mx-auto mt-3 max-w-[440px] text-center text-[15px] leading-relaxed text-ink-soft">
+                Personas que empezaron su plan con supervisión médica. Desliza para
+                ver más casos.
+              </p>
+              <div className="mx-auto mt-6 max-w-[460px]">
+                <BeforeAfterCarousel variant="light" />
+              </div>
+            </section>
 
             {/* FAQ */}
             <section>
