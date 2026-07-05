@@ -28,7 +28,7 @@ export default function Page() {
         ),
         subtitle:
           "Programa de control de peso con inyección indolora semanal, supervisado por endocrinos colegiados. Resultados visibles con acompañamiento médico continuo.",
-        photos: 3,
+        photos: 4,
       }}
     />
   );

@@ -28,7 +28,7 @@ export default function Page() {
         ),
         subtitle:
           "Programa de control de peso con GLP-1 supervisado por endocrinos colegiados. Empieza hoy tu valoración.",
-        photos: 3,
+        photos: 4,
       }}
     />
   );
