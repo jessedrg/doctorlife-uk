@@ -26,9 +26,14 @@ const CASES = [
 
 const INTERVAL = 3500;
 
-export function BeforeAfterCarousel() {
+export function BeforeAfterCarousel({
+  variant = "dark",
+}: {
+  variant?: "dark" | "light";
+}) {
   const [index, setIndex] = useState(0);
   const touchX = useRef<number | null>(null);
+  const isLight = variant === "light";
 
   const go = useCallback((next: number) => {
     setIndex((next + CASES.length) % CASES.length);
@@ -44,7 +49,9 @@ export function BeforeAfterCarousel() {
   return (
     <div className="w-full">
       <div
-        className="relative overflow-hidden rounded-[24px] bg-ink/20 shadow-2xl ring-1 ring-paper/15"
+        className={`relative overflow-hidden rounded-[24px] bg-ink/20 shadow-2xl ring-1 ${
+          isLight ? "ring-ink/10" : "ring-paper/15"
+        }`}
         onTouchStart={(e) => {
           touchX.current = e.touches[0].clientX;
         }}
@@ -102,13 +109,21 @@ export function BeforeAfterCarousel() {
             aria-label={`Ver caso ${i + 1}`}
             onClick={() => go(i)}
             className={`h-2 rounded-full transition-all ${
-              i === index ? "w-6 bg-sage" : "w-2 bg-paper/40"
+              i === index
+                ? "w-6 bg-sage"
+                : isLight
+                  ? "w-2 bg-ink/25"
+                  : "w-2 bg-paper/40"
             }`}
           />
         ))}
       </div>
 
-      <p className="mt-3 text-center text-[11px] leading-snug text-paper/60">
+      <p
+        className={`mt-3 text-center text-[11px] leading-snug ${
+          isLight ? "text-ink-mute" : "text-paper/60"
+        }`}
+      >
         Resultados obtenidos con tratamiento médico basado en GLP-1. Imágenes
         ilustrativas. Los resultados dependen de cada persona y de la valoración
         médica; no están garantizados.
