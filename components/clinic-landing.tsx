@@ -10,12 +10,22 @@ import {
   FileCheck2,
   Check,
   Star,
+  Users,
+  TrendingDown,
+  HeartPulse,
+  Utensils,
+  Truck,
+  CalendarCheck,
+  ChevronDown,
+  Syringe,
 } from "lucide-react";
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
 import { BrandLogo } from "@/components/brand-logo";
 import { Navbar } from "@/components/navbar";
 import { TrustBox } from "@/components/trustbox";
+import { Counter } from "@/components/counter";
+import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
@@ -28,13 +38,42 @@ export type ClinicConfig = {
 const heroPoints = [
   { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
   { icon: ClipboardList, label: "Tratamiento GLP-1 personalizado, si el médico lo considera adecuado" },
+  { icon: Syringe, label: "Inyección semanal indolora, fácil de aplicar en casa" },
+  { icon: Truck, label: "Recíbelo en casa, sin colas ni desplazamientos" },
   { icon: MessageSquareText, label: "Seguimiento médico de tu evolución por mensajes" },
+];
+
+const stats = [
+  { to: 12000, prefix: "+", suffix: "", label: "Pacientes atendidos" },
+  { to: 14, prefix: "−", suffix: " kg", label: "Media con seguimiento*" },
+  { to: 4.8, prefix: "", suffix: "/5", label: "Valoración de pacientes" },
+  { to: 3, prefix: "<", suffix: " h", label: "Respuesta de tu médico" },
+];
+
+const benefits = [
+  {
+    icon: Utensils,
+    title: "Reduce el apetito de forma natural",
+    text: "El tratamiento GLP-1 actúa sobre las señales de hambre y saciedad, ayudándote a comer menos sin pasar hambre ni ansiedad.",
+  },
+  {
+    icon: TrendingDown,
+    title: "Pérdida de peso sostenida",
+    text: "Diseñado para bajar de peso de forma progresiva y mantenerlo en el tiempo, no para efectos rebote de dietas milagro.",
+  },
+  {
+    icon: HeartPulse,
+    title: "Siempre con control médico",
+    text: "Un médico colegiado valora tu caso, ajusta la dosis y supervisa tu evolución. Nunca estás solo en el proceso.",
+  },
 ];
 
 const packIncludes = [
   "Valoración médica con un médico colegiado en España",
   "Estudio integral personalizado: IMC, edad metabólica y estilo de vida",
   "Tratamiento GLP-1 adaptado a tu caso, si el médico lo considera adecuado",
+  "Inyección semanal indolora y fácil de aplicar en casa",
+  "Envío a domicilio de forma discreta",
   "Plan nutricional y seguimiento médico de tu evolución",
 ];
 
@@ -51,8 +90,52 @@ const steps = [
   },
   {
     icon: MessageSquareText,
-    title: "Seguimiento por mensajes",
-    text: "Escribes a tu médico como parte de la consulta ante cualquier duda, efecto o ajuste que necesites.",
+    title: "Recíbelo y haz seguimiento",
+    text: "Recibes tu tratamiento en casa y escribes a tu médico ante cualquier duda, efecto o ajuste que necesites.",
+  },
+];
+
+const testimonials = [
+  {
+    img: "/testimonials/maria.png",
+    quote:
+      "En 4 meses bajé lo que llevaba años intentando. Lo mejor: un médico revisando mi evolución cada semana. Me sentí acompañada de verdad.",
+    name: "María, 41",
+    detail: "4 meses · Tratamiento GLP-1 + seguimiento",
+  },
+  {
+    img: "/testimonials/daniel.png",
+    quote:
+      "Por primera vez el peso se fue y no volvió. Sin colas, sin esperas y con respuestas del médico en horas. Ojalá lo hubiera hecho antes.",
+    name: "Daniel, 38",
+    detail: "9 meses · Tratamiento GLP-1 + analíticas",
+  },
+];
+
+const faqs = [
+  {
+    q: "¿Es seguro?",
+    a: "Sí. Cada tratamiento lo valora y prescribe un médico colegiado en España tras revisar tu historia clínica. Además, tienes seguimiento médico continuo durante todo el proceso.",
+  },
+  {
+    q: "¿Necesito una receta previa?",
+    a: "No. Si el médico considera que el tratamiento es adecuado para tu caso, él mismo emite la prescripción tras tu valoración. Todo el proceso es online.",
+  },
+  {
+    q: "¿Cuánto peso puedo perder?",
+    a: "Depende de cada persona, tu punto de partida y tu constancia. Muchos pacientes logran pérdidas significativas con seguimiento, pero los resultados varían y no están garantizados.",
+  },
+  {
+    q: "¿Tiene permanencia?",
+    a: "No hay permanencia. Puedes pausar o cancelar cuando quieras, sin penalizaciones.",
+  },
+  {
+    q: "¿Y si no soy apto para el tratamiento?",
+    a: "Si tras la valoración el médico determina que el tratamiento no es adecuado para ti, no se te cobra el tratamiento y recibirás recomendaciones para tu caso.",
+  },
+  {
+    q: "¿Cómo recibo el tratamiento?",
+    a: "Si el médico lo prescribe, lo recibes en tu domicilio de forma discreta, sin necesidad de desplazarte a una farmacia.",
   },
 ];
 
@@ -99,7 +182,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
         {/* ── Navegación del sitio ── */}
         <Navbar />
 
-        <main>
+        <main className="pb-24 lg:pb-0">
           {/* ── Hero con oferta ── */}
           <section className="mx-auto mt-2 max-w-none px-3 sm:px-4 lg:px-5">
             <div className="relative w-full overflow-hidden rounded-[36px]">
@@ -111,22 +194,37 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 }}
               />
 
-              <div className="relative z-[2] grid grid-cols-1 items-center gap-10 px-5 py-12 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12 lg:px-14 lg:py-14">
+              <div className="relative z-[2] grid grid-cols-1 items-center gap-8 px-5 py-8 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12 lg:px-14 lg:py-14">
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
                     Tratamiento GLP-1 con seguimiento médico
                   </span>
-                  <h1 className="mt-5 text-balance text-[clamp(30px,4.8vw,56px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Adelgaza con tratamiento GLP-1 supervisado por médicos
+                  <h1 className="mt-5 text-balance text-[clamp(32px,4.8vw,56px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
+                    Pierde peso con tratamiento{" "}
+                    <span className="font-serif italic text-sage">GLP-1</span>{" "}
+                    supervisado por médicos
                   </h1>
-                  <p className="mt-4 max-w-[46ch] text-[16px] font-medium leading-relaxed text-paper/80">
+
+                  {/* Prueba social rápida */}
+                  <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <div className="flex items-center gap-1 text-sage">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} aria-hidden className="h-[18px] w-[18px] fill-current" />
+                      ))}
+                    </div>
+                    <span className="text-[14px] font-medium text-paper/85">
+                      <span className="font-semibold text-paper">4,8/5</span> · +12.000 pacientes atendidos
+                    </span>
+                  </div>
+
+                  <p className="mt-5 hidden max-w-[46ch] text-[16px] font-medium leading-relaxed text-paper/80 lg:block">
                     Valoración con médicos colegiados en España y, si procede, un
-                    tratamiento GLP-1 personalizado para tu control de peso. Sin
-                    desplazamientos, sin esperas y sin permanencia.
+                    tratamiento GLP-1 personalizado que recibes en casa. Sin
+                    esperas y sin permanencia.
                   </p>
 
-                  <ul className="mt-7 flex flex-col gap-3">
+                  <ul className="mt-6 hidden flex-col gap-3 lg:flex">
                     {heroPoints.map(({ icon: Icon, label }) => (
                       <li
                         key={label}
@@ -142,7 +240,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                   </ul>
 
                   {/* Precio */}
-                  <div className="mt-8">
+                  <div className="mt-7">
                     <span className="text-[13px] font-medium uppercase tracking-[.14em] text-sage">
                       Primera valoración médica
                     </span>
@@ -159,7 +257,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                   <div className="mt-6 flex flex-wrap items-center gap-3">
                     <QuizTrigger
                       plan={planPrefix}
-                      className="rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper shadow-lg"
+                      className="rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper shadow-lg transition-transform hover:scale-[1.02]"
                     >
                       Solicitar mi valoración
                     </QuizTrigger>
@@ -168,7 +266,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                     </span>
                   </div>
 
-                  <div className="mt-7 max-w-[280px]">
+                  <div className="mt-7 hidden max-w-[280px] lg:block">
                     <TrustBox theme="dark" alignment="left" />
                   </div>
                 </div>
@@ -183,13 +281,44 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                     className="object-cover"
                     style={{ objectPosition: "60% center" }}
                   />
+                  {/* Badge de resultado sobre la imagen */}
+                  <div className="absolute bottom-4 left-4 flex items-center gap-3 rounded-[16px] bg-espresso/85 px-4 py-3 backdrop-blur-sm">
+                    <TrendingDown aria-hidden className="h-6 w-6 text-sage" />
+                    <div className="leading-tight">
+                      <span className="block text-[20px] font-semibold text-paper">
+                        −14 kg
+                      </span>
+                      <span className="text-[12px] text-paper/75">
+                        media con seguimiento*
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* ── Barra de confianza ── */}
+          {/* ── Banda de estadísticas ── */}
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
+            <ul className="grid grid-cols-2 gap-4 rounded-[24px] border border-ink/10 bg-warm px-4 py-6 md:grid-cols-4 md:px-8">
+              {stats.map((s) => (
+                <li key={s.label} className="text-center">
+                  <Counter
+                    to={s.to}
+                    prefix={s.prefix}
+                    suffix={s.suffix}
+                    className="block text-[clamp(28px,4vw,40px)] font-semibold leading-none text-olive"
+                  />
+                  <span className="mt-2 block text-[13px] font-medium leading-tight text-ink-soft">
+                    {s.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* ── Barra de confianza ── */}
+          <section className="mx-auto max-w-[1100px] px-5 pt-6">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {trustBar.map(({ icon: Icon, label }) => (
                 <li
@@ -203,6 +332,78 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 </li>
               ))}
             </ul>
+          </section>
+
+          {/* ── Resultados reales ── */}
+          <section
+            aria-labelledby="resultados"
+            className="mx-auto max-w-[1100px] px-5 pt-20"
+          >
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12">
+              <div>
+                <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
+                  Resultados reales
+                </span>
+                <h2
+                  id="resultados"
+                  className="mt-3 text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
+                >
+                  Personas como tú, con un cambio que dura
+                </h2>
+                <p className="mt-4 max-w-[44ch] text-[15.5px] leading-relaxed text-ink-soft">
+                  Miles de pacientes han transformado su relación con el peso
+                  combinando tratamiento GLP-1 y seguimiento médico continuo. Sin
+                  dietas imposibles y sin efecto rebote.
+                </p>
+                <div className="mt-7">
+                  <QuizTrigger
+                    plan={`${planPrefix}-resultados`}
+                    className="inline-block rounded-full bg-ink px-8 py-[15px] text-[16px] font-bold text-paper transition-transform hover:scale-[1.02]"
+                  >
+                    Quiero mis resultados
+                  </QuizTrigger>
+                </div>
+              </div>
+              <div className="mx-auto w-full max-w-[460px] lg:max-w-none">
+                <BeforeAfterCarousel variant="light" count={3} />
+              </div>
+            </div>
+          </section>
+
+          {/* ── ¿Por qué funciona el GLP-1? ── */}
+          <section
+            aria-labelledby="por-que"
+            className="mx-auto max-w-[1100px] px-5 pt-20"
+          >
+            <div className="text-center">
+              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
+                Por qué funciona
+              </span>
+              <h2
+                id="por-que"
+                className="mx-auto mt-3 max-w-[22ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
+              >
+                El enfoque médico que sí da resultados
+              </h2>
+            </div>
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {benefits.map(({ icon: Icon, title, text }) => (
+                <div
+                  key={title}
+                  className="rounded-[24px] border border-ink/10 bg-warm p-7"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/60">
+                    <Icon aria-hidden className="h-6 w-6 text-olive" />
+                  </div>
+                  <h3 className="mt-5 text-[19px] font-medium text-ink">
+                    {title}
+                  </h3>
+                  <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
+                    {text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </section>
 
           {/* ── Precio + ¿Qué incluye tu programa? ── */}
@@ -254,16 +455,23 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
 
                 <QuizTrigger
                   plan={`${planPrefix}-precio`}
-                  className="mt-7 w-full rounded-full bg-clay px-8 py-[16px] text-[16.5px] font-bold text-paper shadow-lg"
+                  className="mt-7 w-full rounded-full bg-clay px-8 py-[16px] text-[16.5px] font-bold text-paper shadow-lg transition-transform hover:scale-[1.02]"
                 >
                   Solicitar mi valoración
                 </QuizTrigger>
 
-                <p className="mt-5 text-[13.5px] leading-relaxed text-paper/70">
-                  Reserva tu plaza hoy y dispones de{" "}
-                  <span className="font-semibold text-paper">3 meses</span> para
-                  realizar tu valoración.
-                </p>
+                <ul className="mt-6 flex flex-col gap-2.5 text-left">
+                  {[
+                    "Sin compromiso ni permanencia",
+                    "Si no eres apto, no pagas el tratamiento",
+                    "Médicos colegiados en España",
+                  ].map((t) => (
+                    <li key={t} className="flex items-center gap-2.5 text-[13.5px] text-paper/85">
+                      <Check aria-hidden className="h-4 w-4 flex-shrink-0 text-sage" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
 
                 <div className="mt-6 flex items-center justify-center gap-1.5 text-sage">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -290,7 +498,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 id="como-funciona"
                 className="mt-3 max-w-[22ch] text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.12]"
               >
-                Tres pasos para empezar tu programa
+                Empieza hoy en tres sencillos pasos
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
                 {steps.map(({ icon: Icon, title, text }, i) => (
@@ -316,7 +524,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               <div className="mt-10">
                 <QuizTrigger
                   plan={`${planPrefix}-como`}
-                  className="inline-block rounded-full bg-clay px-8 py-[15px] text-[16px] font-bold text-paper"
+                  className="inline-block rounded-full bg-clay px-8 py-[15px] text-[16px] font-bold text-paper transition-transform hover:scale-[1.02]"
                 >
                   Solicitar mi valoración
                 </QuizTrigger>
@@ -324,8 +532,105 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
             </div>
           </section>
 
+          {/* ── Testimonios ── */}
+          <section
+            aria-labelledby="testimonios"
+            className="mx-auto max-w-[1100px] px-5 pt-20"
+          >
+            <div className="text-center">
+              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
+                Testimonios
+              </span>
+              <h2
+                id="testimonios"
+                className="mx-auto mt-3 max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
+              >
+                Lo que dicen quienes ya lo han conseguido
+              </h2>
+            </div>
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+              {testimonials.map((t) => (
+                <figure
+                  key={t.name}
+                  className="flex flex-col rounded-[24px] border border-ink/10 bg-warm p-7 sm:p-8"
+                >
+                  <div className="flex items-center gap-1 text-clay">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} aria-hidden className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 font-serif text-[clamp(18px,2.2vw,23px)] font-normal italic leading-[1.4] text-ink">
+                    {"\u201C"}
+                    {t.quote}
+                    {"\u201D"}
+                  </blockquote>
+                  <figcaption className="mt-6 flex items-center gap-4">
+                    <span className="relative block h-[52px] w-[52px] overflow-hidden rounded-full">
+                      <Image
+                        src={t.img}
+                        alt={t.name}
+                        fill
+                        sizes="52px"
+                        className="object-cover object-[center_20%]"
+                      />
+                    </span>
+                    <span>
+                      <span className="block text-[15px] font-medium text-ink">
+                        {t.name}
+                      </span>
+                      <span className="block text-[13px] text-ink-mute">
+                        {t.detail}
+                      </span>
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <p className="mx-auto mt-6 max-w-[60ch] text-center text-[11.5px] leading-relaxed text-ink-mute">
+              Los testimonios reflejan experiencias individuales. Los resultados
+              varían según cada persona. Consulta siempre con tu médico.
+            </p>
+          </section>
+
+          {/* ── Preguntas frecuentes ── */}
+          <section
+            aria-labelledby="faq"
+            className="mx-auto max-w-[820px] px-5 pt-20"
+          >
+            <div className="text-center">
+              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
+                Preguntas frecuentes
+              </span>
+              <h2
+                id="faq"
+                className="mx-auto mt-3 max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
+              >
+                Resolvemos tus dudas antes de empezar
+              </h2>
+            </div>
+            <div className="mt-8 flex flex-col gap-3">
+              {faqs.map((f) => (
+                <details
+                  key={f.q}
+                  className="group rounded-[18px] border border-ink/10 bg-warm px-5 py-4 [&_svg]:open:rotate-180"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-medium text-ink marker:hidden">
+                    {f.q}
+                    <ChevronDown
+                      aria-hidden
+                      className="h-5 w-5 flex-shrink-0 text-olive transition-transform"
+                    />
+                  </summary>
+                  <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
+                    {f.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
           {/* ── Opiniones + pago seguro ── */}
-          <section className="mx-auto max-w-[1100px] px-5 pt-6">
+          <section className="mx-auto max-w-[1100px] px-5 pt-20">
             <div className="grid grid-cols-1 items-center gap-6 rounded-[32px] border border-ink/10 bg-warm p-8 sm:p-10 md:grid-cols-2">
               <div>
                 <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
@@ -372,6 +677,12 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
             className="mx-auto max-w-[1100px] px-5 py-16"
           >
             <div className="overflow-hidden rounded-[32px] bg-espresso px-6 py-14 text-center text-paper sm:px-12">
+              <div className="mx-auto mb-5 flex items-center justify-center gap-2 text-sage">
+                <CalendarCheck aria-hidden className="h-5 w-5" />
+                <span className="text-[13px] font-semibold uppercase tracking-[.16em]">
+                  Plazas limitadas esta semana
+                </span>
+              </div>
               <h2
                 id="cta-final"
                 className="mx-auto max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1]"
@@ -388,7 +699,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               </div>
               <QuizTrigger
                 plan={`${planPrefix}-final`}
-                className="mt-7 inline-block rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper"
+                className="mt-7 inline-block rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper transition-transform hover:scale-[1.02]"
               >
                 Solicitar mi valoración
               </QuizTrigger>
@@ -399,14 +710,36 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
             </div>
 
             <p className="mx-auto mt-8 max-w-[70ch] text-center text-[12.5px] leading-relaxed text-ink-mute">
-              Servicio de telemedicina prestado por médicos colegiados en España.
-              La indicación de cualquier tratamiento depende siempre de una
+              *Dato orientativo basado en la evolución de pacientes con
+              seguimiento; los resultados varían en cada persona. Servicio de
+              telemedicina prestado por médicos colegiados en España. La
+              indicación de cualquier tratamiento depende siempre de una
               valoración médica individual. Este servicio no garantiza resultados
               concretos y no sustituye la atención presencial cuando sea necesaria.
               Tratamos tus datos conforme al RGPD y la LOPDGDD.
             </p>
           </section>
         </main>
+
+        {/* ── Barra CTA fija en móvil ── */}
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-warm/95 px-4 py-3 backdrop-blur-sm lg:hidden">
+          <div className="flex items-center justify-between gap-3">
+            <div className="leading-tight">
+              <span className="block text-[18px] font-semibold text-ink">
+                {FIRST_VISIT}
+              </span>
+              <span className="text-[11.5px] text-ink-mute">
+                y luego {MONTHLY} · sin permanencia
+              </span>
+            </div>
+            <QuizTrigger
+              plan={`${planPrefix}-sticky`}
+              className="rounded-full bg-clay px-6 py-[13px] text-[15px] font-bold text-paper shadow-md"
+            >
+              Empezar ahora
+            </QuizTrigger>
+          </div>
+        </div>
 
         {/* ── Footer legal mínimo ── */}
         <footer className="border-t border-ink/10 bg-warm">
