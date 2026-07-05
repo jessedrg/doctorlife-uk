@@ -14,8 +14,8 @@ import {
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
 import { BrandLogo } from "@/components/brand-logo";
+import { Navbar } from "@/components/navbar";
 import { TrustBox } from "@/components/trustbox";
-import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
@@ -96,14 +96,8 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }}
       />
       <div className="overflow-x-clip bg-paper">
-        {/* ── Cabecera mínima (sin navegación) ── */}
-        <header className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-5">
-          <BrandLogo markSize={26} textSize={21} />
-          <span className="hidden items-center gap-2 text-[13.5px] font-medium text-ink-soft sm:flex">
-            <Stethoscope aria-hidden className="h-4 w-4 text-olive" />
-            Médicos colegiados en España
-          </span>
-        </header>
+        {/* ── Navegación del sitio ── */}
+        <Navbar />
 
         <main>
           {/* ── Hero con oferta ── */}
@@ -179,8 +173,16 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                   </div>
                 </div>
 
-                <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
-                  <BeforeAfterCarousel variant="dark" count={3} />
+                <div className="relative mx-auto aspect-[4/3] w-full max-w-[440px] overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-paper/15 lg:max-w-none">
+                  <Image
+                    src="/landing/consulta-online.png"
+                    alt="Médica colegiada durante una consulta médica online"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 90vw, 45vw"
+                    className="object-cover"
+                    style={{ objectPosition: "60% center" }}
+                  />
                 </div>
               </div>
             </div>
