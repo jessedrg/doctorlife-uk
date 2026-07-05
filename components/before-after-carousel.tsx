@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const CASES = [
+const ALL_CASES = [
   {
     src: "/landing/before-after-1.png",
     alt: "Antes y después de un caso de control de peso con tratamiento GLP-1",
@@ -28,9 +28,12 @@ const INTERVAL = 3500;
 
 export function BeforeAfterCarousel({
   variant = "dark",
+  count = 3,
 }: {
   variant?: "dark" | "light";
+  count?: number;
 }) {
+  const CASES = ALL_CASES.slice(0, Math.max(1, Math.min(count, ALL_CASES.length)));
   const [index, setIndex] = useState(0);
   const touchX = useRef<number | null>(null);
   const isLight = variant === "light";
@@ -101,7 +104,11 @@ export function BeforeAfterCarousel({
       </div>
 
       {/* Puntos de navegación */}
-      <div className="mt-3 flex items-center justify-center gap-2">
+      <div
+        className={`mt-3 flex items-center justify-center gap-2 ${
+          CASES.length <= 1 ? "hidden" : ""
+        }`}
+      >
         {CASES.map((c, i) => (
           <button
             key={c.src}
