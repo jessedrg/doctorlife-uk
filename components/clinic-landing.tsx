@@ -71,8 +71,8 @@ const payments = [
   { src: "/payments/google-pay.svg", alt: "Google Pay" },
 ];
 
-const PRICE_BEFORE = "149€";
-const PRICE_NOW = "79€";
+const FIRST_VISIT = "25 €";
+const MONTHLY = "100 €/mes";
 
 export function ClinicLanding({ config }: { config: ClinicConfig }) {
   const { path, planPrefix } = config;
@@ -148,16 +148,18 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                   </ul>
 
                   {/* Precio */}
-                  <div className="mt-8 flex flex-wrap items-end gap-x-4 gap-y-1">
-                    <span className="text-[22px] font-medium text-paper/50 line-through decoration-clay/80 decoration-2">
-                      {PRICE_BEFORE}
+                  <div className="mt-8">
+                    <span className="text-[13px] font-medium uppercase tracking-[.14em] text-sage">
+                      Primera valoración médica
                     </span>
-                    <span className="text-[clamp(40px,6vw,58px)] font-semibold leading-none text-paper">
-                      {PRICE_NOW}
-                    </span>
-                    <span className="mb-1 rounded-full bg-clay px-3 py-1 text-[12.5px] font-bold uppercase tracking-wide text-paper">
-                      Ahorra 70€
-                    </span>
+                    <div className="mt-1 flex flex-wrap items-end gap-x-3 gap-y-1">
+                      <span className="text-[clamp(40px,6vw,58px)] font-semibold leading-none text-paper">
+                        {FIRST_VISIT}
+                      </span>
+                      <span className="mb-1 text-[15px] font-medium text-paper/75">
+                        y luego {MONTHLY} · sin permanencia
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -243,18 +245,17 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               {/* Tarjeta de precio */}
               <div className="flex flex-col justify-center rounded-[28px] bg-espresso p-8 text-center text-paper sm:p-10">
                 <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-sage">
-                  Oferta de lanzamiento
+                  Primera valoración médica
                 </span>
-                <div className="mt-4 flex items-end justify-center gap-3">
-                  <span className="text-[24px] font-medium text-paper/45 line-through decoration-clay decoration-2">
-                    {PRICE_BEFORE}
-                  </span>
+                <div className="mt-4 flex items-end justify-center gap-2">
                   <span className="text-[clamp(48px,8vw,68px)] font-semibold leading-none text-paper">
-                    {PRICE_NOW}
+                    {FIRST_VISIT}
                   </span>
                 </div>
-                <p className="mt-2 text-[14px] text-paper/70">
-                  Valoración médica inicial + plan personalizado
+                <p className="mt-3 text-[14px] text-paper/70">
+                  Después{" "}
+                  <span className="font-semibold text-paper">{MONTHLY}</span> de
+                  seguimiento médico · sin permanencia
                 </p>
 
                 <QuizTrigger
@@ -386,12 +387,12 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               >
                 Empieza hoy tu programa de control de peso
               </h2>
-              <div className="mt-5 flex items-end justify-center gap-3">
-                <span className="text-[20px] font-medium text-paper/45 line-through decoration-clay decoration-2">
-                  {PRICE_BEFORE}
-                </span>
+              <div className="mt-5 flex flex-wrap items-end justify-center gap-x-3 gap-y-1">
                 <span className="text-[clamp(36px,6vw,52px)] font-semibold leading-none text-paper">
-                  {PRICE_NOW}
+                  {FIRST_VISIT}
+                </span>
+                <span className="mb-1 text-[15px] font-medium text-paper/75">
+                  y luego {MONTHLY} · sin permanencia
                 </span>
               </div>
               <QuizTrigger

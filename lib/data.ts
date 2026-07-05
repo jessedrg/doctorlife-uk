@@ -28,7 +28,7 @@ export const products: Product[] = [
     featured: true,
     features: [
       "Chat directo con endocrino colegiado en la plataforma",
-      "Receta de GLP‑1 (Wegovy, Mounjaro u Ozempic) si es necesaria",
+      "Receta de tratamiento GLP‑1 si el médico lo considera necesario",
       "Seguimiento continuo y ajustes de dosis desde la app",
       "Sin permanencia: cancela cuando quieras",
     ],
@@ -120,11 +120,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Recursos",
     links: [
-      { label: "Blog", href: "/blog" },
       { label: "Adelgazar con supervisión médica", href: "/adelgazar-con-supervision-medica" },
-      { label: "Comprar Wegovy Barcelona", href: "/blog/comprar-wegovy-barcelona" },
-      { label: "Comprar Mounjaro Barcelona", href: "/blog/comprar-mounjaro-barcelona" },
-      { label: "Wegovy precio España", href: "/blog/wegovy-precio-espana" },
     ],
   },
   {

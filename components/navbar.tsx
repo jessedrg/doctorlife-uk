@@ -9,7 +9,6 @@ import { analytics } from "@/lib/analytics";
 const links = [
   { label: "Cómo funciona", href: "/#product" },
   { label: "Planes y precios", href: "/#planes" },
-  { label: "Blog", href: "/blog" },
   { label: "Empezar", href: "/#cta" },
 ];
 
@@ -80,7 +79,7 @@ export function Navbar() {
 
         {/* enlaces desktop */}
         <div className="hidden items-center gap-[28px] whitespace-nowrap text-[15px] font-medium md:flex">
-          {links.slice(0, 3).map((l) => {
+          {links.slice(0, 2).map((l) => {
             const active = isActive(pathname, l.href);
             return (
               <a
