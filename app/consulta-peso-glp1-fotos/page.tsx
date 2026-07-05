@@ -29,7 +29,7 @@ export default function Page() {
         ),
         subtitle:
           "Tratamiento con GLP-1, si el endocrino lo cree adecuado para tu caso.",
-        photos: 4,
+        photos: 3,
       }}
     />
   );

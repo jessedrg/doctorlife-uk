@@ -27,7 +27,7 @@ export default function Page() {
         ),
         subtitle:
           "Valoración con endocrino colegiado y plan personalizado, desde casa.",
-        photos: 4,
+        photos: 3,
       }}
     />
   );

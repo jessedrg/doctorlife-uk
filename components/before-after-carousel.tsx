@@ -22,19 +22,13 @@ const ALL_CASES = [
     lost: "−16 kg",
     weeks: "en 22 semanas",
   },
-  {
-    src: "/landing/before-after-4.png",
-    alt: "Antes y después de un caso de control de peso con tratamiento GLP-1",
-    lost: "−12 kg",
-    weeks: "en 18 semanas",
-  },
 ];
 
 const INTERVAL = 3500;
 
 export function BeforeAfterCarousel({
   variant = "dark",
-  count = 4,
+  count = 3,
 }: {
   variant?: "dark" | "light";
   count?: number;
