@@ -14,7 +14,6 @@ import {
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
 import { BrandLogo } from "@/components/brand-logo";
-import { Experts } from "@/components/experts";
 import { TrustBox } from "@/components/trustbox";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
@@ -329,9 +328,6 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               </div>
             </div>
           </section>
-
-          {/* ── Nuestro equipo médico ── */}
-          <Experts />
 
           {/* ── Opiniones + pago seguro ── */}
           <section className="mx-auto max-w-[1100px] px-5 pt-6">
