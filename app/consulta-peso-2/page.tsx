@@ -166,8 +166,8 @@ export default function LandingControlDePeso2() {
                     , desde casa
                   </h1>
                   <p className="mt-4 text-[15px] font-medium text-paper/75">
-                    Tratamiento con inyección indolora, si el endocrino lo cree
-                    adecuado para tu caso.
+                    Tratamiento con GLP-1, si el endocrino lo cree adecuado para
+                    tu caso.
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
