@@ -17,6 +17,7 @@ import {
   Truck,
   CalendarCheck,
   ChevronDown,
+  Syringe,
 } from "lucide-react";
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
@@ -37,6 +38,7 @@ export type ClinicConfig = {
 const heroPoints = [
   { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
   { icon: ClipboardList, label: "Tratamiento GLP-1 personalizado, si el médico lo considera adecuado" },
+  { icon: Syringe, label: "Inyección semanal indolora, fácil de aplicar en casa" },
   { icon: Truck, label: "Recíbelo en casa, sin colas ni desplazamientos" },
   { icon: MessageSquareText, label: "Seguimiento médico de tu evolución por mensajes" },
 ];
@@ -70,6 +72,7 @@ const packIncludes = [
   "Valoración médica con un médico colegiado en España",
   "Estudio integral personalizado: IMC, edad metabólica y estilo de vida",
   "Tratamiento GLP-1 adaptado a tu caso, si el médico lo considera adecuado",
+  "Inyección semanal indolora y fácil de aplicar en casa",
   "Envío a domicilio de forma discreta",
   "Plan nutricional y seguimiento médico de tu evolución",
 ];
