@@ -7,20 +7,15 @@ import {
   Clock,
   Lock,
   BadgeCheck,
-  Scale,
-  Activity,
-  HeartPulse,
-  FlaskConical,
-  UserRound,
   FileCheck2,
+  Check,
+  Star,
 } from "lucide-react";
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
-import { Navbar } from "@/components/navbar";
 import { BrandLogo } from "@/components/brand-logo";
 import { Experts } from "@/components/experts";
 import { TrustBox } from "@/components/trustbox";
-import { FooterColumns } from "@/components/footer-columns";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
@@ -31,42 +26,16 @@ export type ClinicConfig = {
 };
 
 const heroPoints = [
-  { icon: Clock, label: "Respuesta de un médico colegiado en menos de 3 horas" },
-  { icon: ClipboardList, label: "Consulta basada en un cuestionario médico seguro" },
-  { icon: MessageSquareText, label: "Mensajes escritos con tu médico durante todo el proceso" },
+  { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
+  { icon: ClipboardList, label: "Estudio personalizado: IMC, edad metabólica y hábitos" },
+  { icon: MessageSquareText, label: "Seguimiento médico de tu evolución por mensajes" },
 ];
 
-const services = [
-  {
-    icon: Scale,
-    title: "Control de peso",
-    text: "Valoración clínica del sobrepeso y la obesidad con un plan personalizado y seguimiento médico continuo.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Salud metabólica",
-    text: "Revisión de tu metabolismo, azúcar y colesterol para prevenir y cuidar tu salud a largo plazo.",
-  },
-  {
-    icon: Activity,
-    title: "Salud hormonal y tiroides",
-    text: "Evaluación de síntomas hormonales y de tiroides por especialistas en endocrinología.",
-  },
-  {
-    icon: UserRound,
-    title: "Salud femenina",
-    text: "Acompañamiento en salud hormonal femenina con médicas colegiadas, de forma discreta y cercana.",
-  },
-  {
-    icon: FlaskConical,
-    title: "Analíticas y biomarcadores",
-    text: "Interpretación de tus analíticas y recomendaciones personalizadas basadas en evidencia.",
-  },
-  {
-    icon: Stethoscope,
-    title: "Medicina general online",
-    text: "Consulta médica general para resolver dudas y orientarte sobre los siguientes pasos.",
-  },
+const packIncludes = [
+  "Valoración médica con un médico colegiado en España",
+  "Estudio integral personalizado: IMC, edad metabólica y estilo de vida",
+  "Plan de tratamiento adaptado a tu caso, si el médico lo considera adecuado",
+  "Plan nutricional y seguimiento médico de tu evolución",
 ];
 
 const steps = [
@@ -77,13 +46,13 @@ const steps = [
   },
   {
     icon: FileCheck2,
-    title: "Un médico colegiado te revisa",
-    text: "Un médico colegiado valora tu solicitud, emite un diagnóstico y, si procede, recomienda un tratamiento adecuado para tu caso.",
+    title: "Un médico colegiado te valora",
+    text: "Un médico colegiado revisa tu solicitud, emite un diagnóstico y, si procede, recomienda un plan adecuado para tu caso.",
   },
   {
     icon: MessageSquareText,
     title: "Seguimiento por mensajes",
-    text: "Puedes escribir a tu médico como parte de la consulta ante cualquier duda, efecto secundario o ajuste que necesites.",
+    text: "Escribes a tu médico como parte de la consulta ante cualquier duda, efecto o ajuste que necesites.",
   },
 ];
 
@@ -102,6 +71,9 @@ const payments = [
   { src: "/payments/google-pay.svg", alt: "Google Pay" },
 ];
 
+const PRICE_BEFORE = "149€";
+const PRICE_NOW = "79€";
+
 export function ClinicLanding({ config }: { config: ClinicConfig }) {
   const { path, planPrefix } = config;
 
@@ -112,7 +84,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
     url: `${SITE_URL}${path}`,
     medicalSpecialty: "Endocrinology",
     description:
-      "Servicio de telemedicina con médicos colegiados en España. Consulta médica online basada en cuestionario, con diagnóstico y tratamiento si procede.",
+      "Servicio de telemedicina con médicos colegiados en España. Valoración médica online del control de peso basada en cuestionario, con diagnóstico y plan si procede.",
     areaServed: "ES",
     priceRange: "€€",
   };
@@ -124,11 +96,18 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }}
       />
       <div className="overflow-x-clip bg-paper">
-        <Navbar />
+        {/* ── Cabecera mínima (sin navegación) ── */}
+        <header className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-5">
+          <BrandLogo markSize={26} textSize={21} />
+          <span className="hidden items-center gap-2 text-[13.5px] font-medium text-ink-soft sm:flex">
+            <Stethoscope aria-hidden className="h-4 w-4 text-olive" />
+            Médicos colegiados en España
+          </span>
+        </header>
 
         <main>
-          {/* ── Hero ── */}
-          <section className="mx-auto mt-5 max-w-none px-3 sm:px-4 lg:px-5">
+          {/* ── Hero con oferta ── */}
+          <section className="mx-auto mt-2 max-w-none px-3 sm:px-4 lg:px-5">
             <div className="relative w-full overflow-hidden rounded-[36px]">
               <div
                 className="absolute inset-0"
@@ -138,19 +117,19 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 }}
               />
 
-              <div className="relative z-[2] grid grid-cols-1 items-center gap-10 px-5 py-12 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12 lg:px-14 lg:py-16">
+              <div className="relative z-[2] grid grid-cols-1 items-center gap-10 px-5 py-12 sm:px-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-12 lg:px-14 lg:py-14">
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Telemedicina en España
+                    Programa de control de peso
                   </span>
-                  <h1 className="mt-5 text-balance text-[clamp(32px,5.2vw,62px)] font-light leading-[1.03] tracking-[-.03em] text-paper">
-                    Tu médico online, estés donde estés
+                  <h1 className="mt-5 text-balance text-[clamp(30px,4.8vw,56px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
+                    Pierde peso con seguimiento médico real
                   </h1>
                   <p className="mt-4 max-w-[46ch] text-[16px] font-medium leading-relaxed text-paper/80">
-                    Consulta médica online con médicos colegiados en España, sin
-                    esperas ni citas previas. Rellena un cuestionario y recibe una
-                    valoración clínica personalizada.
+                    Valoración con médicos colegiados en España y un plan
+                    personalizado para tu control de peso. Sin desplazamientos,
+                    sin esperas y sin permanencia.
                   </p>
 
                   <ul className="mt-7 flex flex-col gap-3">
@@ -168,12 +147,25 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                     ))}
                   </ul>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                  {/* Precio */}
+                  <div className="mt-8 flex flex-wrap items-end gap-x-4 gap-y-1">
+                    <span className="text-[22px] font-medium text-paper/50 line-through decoration-clay/80 decoration-2">
+                      {PRICE_BEFORE}
+                    </span>
+                    <span className="text-[clamp(40px,6vw,58px)] font-semibold leading-none text-paper">
+                      {PRICE_NOW}
+                    </span>
+                    <span className="mb-1 rounded-full bg-clay px-3 py-1 text-[12.5px] font-bold uppercase tracking-wide text-paper">
+                      Ahorra 70€
+                    </span>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
                     <QuizTrigger
                       plan={planPrefix}
-                      className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
+                      className="rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper shadow-lg"
                     >
-                      Empezar cuestionario médico
+                      Solicitar mi valoración
                     </QuizTrigger>
                     <span className="text-[13.5px] text-paper/70">
                       Sin compromiso · en unos minutos
@@ -217,54 +209,76 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
             </ul>
           </section>
 
-          {/* ── Conoce DoctorLife ── */}
-          <section className="mx-auto max-w-[860px] px-5 pt-20 text-center">
-            <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Conoce DoctorLife
-            </span>
-            <h2 className="mx-auto mt-4 max-w-[24ch] text-balance text-[clamp(26px,3.6vw,42px)] font-light leading-[1.1] text-ink">
-              Un servicio médico online, rápido y seguro
-            </h2>
-            <p className="mx-auto mt-5 max-w-[56ch] text-[16.5px] leading-relaxed text-ink-soft">
-              DoctorLife te permite acceder a una valoración médica de forma
-              rápida y sin desplazarte. Solo tienes que rellenar un breve
-              cuestionario clínico y, si lo deseas, indicar tus preferencias. A
-              continuación, un médico colegiado revisa tu solicitud y, si procede,
-              emite un diagnóstico y te da recomendaciones de tratamiento.
-            </p>
-          </section>
-
-          {/* ── Servicios disponibles ── */}
+          {/* ── Precio + ¿Qué incluye tu programa? ── */}
           <section
-            aria-labelledby="servicios"
-            className="mx-auto max-w-[1100px] px-5 pt-16"
+            aria-labelledby="programa"
+            className="mx-auto max-w-[1100px] px-5 pt-20"
           >
-            <div className="flex flex-col gap-3 text-center">
-              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Servicios disponibles
-              </span>
-              <h2
-                id="servicios"
-                className="mx-auto max-w-[22ch] text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.1] text-ink"
-              >
-                Cuidamos distintas áreas de tu salud
-              </h2>
-            </div>
-            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map(({ icon: Icon, title, text }) => (
-                <div
-                  key={title}
-                  className="rounded-[24px] border border-ink/10 bg-warm p-7"
+            <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-[1.1fr_.9fr]">
+              {/* Qué incluye */}
+              <div className="rounded-[28px] border border-ink/10 bg-warm p-8 sm:p-10">
+                <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
+                  Tu programa
+                </span>
+                <h2
+                  id="programa"
+                  className="mt-3 text-balance text-[clamp(24px,3.2vw,36px)] font-light leading-[1.1] text-ink"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/50">
-                    <Icon aria-hidden className="h-6 w-6 text-olive" />
-                  </div>
-                  <h3 className="mt-5 text-[19px] font-medium text-ink">{title}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-ink-soft">
-                    {text}
-                  </p>
+                  ¿Qué incluye tu programa?
+                </h2>
+                <ul className="mt-7 flex flex-col gap-4">
+                  {packIncludes.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-sage/60">
+                        <Check aria-hidden className="h-4 w-4 text-olive" />
+                      </span>
+                      <span className="text-[15.5px] leading-relaxed text-ink-soft">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Tarjeta de precio */}
+              <div className="flex flex-col justify-center rounded-[28px] bg-espresso p-8 text-center text-paper sm:p-10">
+                <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-sage">
+                  Oferta de lanzamiento
+                </span>
+                <div className="mt-4 flex items-end justify-center gap-3">
+                  <span className="text-[24px] font-medium text-paper/45 line-through decoration-clay decoration-2">
+                    {PRICE_BEFORE}
+                  </span>
+                  <span className="text-[clamp(48px,8vw,68px)] font-semibold leading-none text-paper">
+                    {PRICE_NOW}
+                  </span>
                 </div>
-              ))}
+                <p className="mt-2 text-[14px] text-paper/70">
+                  Valoración médica inicial + plan personalizado
+                </p>
+
+                <QuizTrigger
+                  plan={`${planPrefix}-precio`}
+                  className="mt-7 w-full rounded-full bg-clay px-8 py-[16px] text-[16.5px] font-bold text-paper shadow-lg"
+                >
+                  Solicitar mi valoración
+                </QuizTrigger>
+
+                <p className="mt-5 text-[13.5px] leading-relaxed text-paper/70">
+                  Reserva tu plaza hoy y dispones de{" "}
+                  <span className="font-semibold text-paper">3 meses</span> para
+                  realizar tu valoración.
+                </p>
+
+                <div className="mt-6 flex items-center justify-center gap-1.5 text-sage">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} aria-hidden className="h-4 w-4 fill-current" />
+                  ))}
+                  <span className="ml-1.5 text-[13px] text-paper/70">
+                    Valorado por miles de pacientes
+                  </span>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -281,7 +295,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 id="como-funciona"
                 className="mt-3 max-w-[22ch] text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.12]"
               >
-                Tres pasos para hablar con un médico
+                Tres pasos para empezar tu programa
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
                 {steps.map(({ icon: Icon, title, text }, i) => (
@@ -307,9 +321,9 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               <div className="mt-10">
                 <QuizTrigger
                   plan={`${planPrefix}-como`}
-                  className="inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
+                  className="inline-block rounded-full bg-clay px-8 py-[15px] text-[16px] font-bold text-paper"
                 >
-                  Empezar cuestionario médico
+                  Solicitar mi valoración
                 </QuizTrigger>
               </div>
             </div>
@@ -370,18 +384,26 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 id="cta-final"
                 className="mx-auto max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1]"
               >
-                Habla hoy con un médico colegiado
+                Empieza hoy tu programa de control de peso
               </h2>
-              <p className="mx-auto mt-4 max-w-[52ch] text-[15.5px] leading-relaxed text-paper/75">
-                Rellena el cuestionario médico y recibe una valoración clínica
-                personalizada. Sin desplazamientos, sin esperas y sin permanencia.
-              </p>
+              <div className="mt-5 flex items-end justify-center gap-3">
+                <span className="text-[20px] font-medium text-paper/45 line-through decoration-clay decoration-2">
+                  {PRICE_BEFORE}
+                </span>
+                <span className="text-[clamp(36px,6vw,52px)] font-semibold leading-none text-paper">
+                  {PRICE_NOW}
+                </span>
+              </div>
               <QuizTrigger
                 plan={`${planPrefix}-final`}
-                className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
+                className="mt-7 inline-block rounded-full bg-clay px-9 py-[16px] text-[16.5px] font-bold text-paper"
               >
-                Empezar cuestionario médico
+                Solicitar mi valoración
               </QuizTrigger>
+              <p className="mx-auto mt-4 max-w-[52ch] text-[14px] leading-relaxed text-paper/70">
+                Reserva tu plaza hoy · Sin permanencia · Médicos colegiados en
+                España
+              </p>
             </div>
 
             <p className="mx-auto mt-8 max-w-[70ch] text-center text-[12.5px] leading-relaxed text-ink-mute">
@@ -394,34 +416,28 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
           </section>
         </main>
 
-        {/* ── Footer ── */}
-        <footer className="px-3 pb-6 pt-[40px] sm:px-4 lg:px-5">
-          <div className="mx-auto max-w-none overflow-hidden rounded-[32px] bg-ink text-paper">
-            <div className="grid grid-cols-2 gap-x-10 gap-y-2 px-8 pb-6 pt-12 md:grid-cols-[1.6fr_1fr_1fr_1fr_1fr] md:gap-y-8 md:px-14">
-              <div className="col-span-2 md:col-span-1">
-                <a
-                  href="/"
-                  aria-label="DoctorLife — inicio"
-                  className="inline-flex no-underline"
-                >
-                  <BrandLogo
-                    boxed
-                    markSize={28}
-                    textSize={23}
-                    textClassName="text-paper"
-                  />
-                </a>
-                <p className="mt-5 max-w-[320px] text-[15px] leading-relaxed text-paper/65">
-                  Plataforma de telemedicina que conecta a pacientes con médicos
-                  colegiados en España para una atención rápida, segura y cercana.
-                </p>
-              </div>
-              <FooterColumns />
-            </div>
-            <div className="flex flex-col gap-2 border-t border-paper/10 px-8 py-6 text-[13px] text-paper/55 sm:flex-row sm:items-center sm:justify-between md:px-14">
-              <span>© {new Date().getFullYear()} DoctorLife. Todos los derechos reservados.</span>
-              <span>Servicio de telemedicina con médicos colegiados en España.</span>
-            </div>
+        {/* ── Footer legal mínimo ── */}
+        <footer className="border-t border-ink/10 bg-warm">
+          <div className="mx-auto flex max-w-[1100px] flex-col items-center gap-4 px-5 py-10 text-center">
+            <BrandLogo markSize={24} textSize={19} />
+            <p className="max-w-[52ch] text-[13.5px] leading-relaxed text-ink-mute">
+              Plataforma de telemedicina que conecta a pacientes con médicos
+              colegiados en España para una atención rápida, segura y cercana.
+            </p>
+            <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-ink-soft">
+              <a href="/aviso-legal" className="hover:text-ink">
+                Aviso legal
+              </a>
+              <a href="/privacidad" className="hover:text-ink">
+                Política de privacidad
+              </a>
+              <a href="/contacto" className="hover:text-ink">
+                Contacto
+              </a>
+            </nav>
+            <span className="text-[12.5px] text-ink-mute">
+              © {new Date().getFullYear()} {BRAND}. Todos los derechos reservados.
+            </span>
           </div>
         </footer>
       </div>
