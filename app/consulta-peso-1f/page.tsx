@@ -18,14 +18,14 @@ import { TrustBox } from "@/components/trustbox";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
-const PATH = "/consulta-control-de-peso";
+const PATH = "/consulta-peso-1f";
 
 export const metadata: Metadata = {
   title: "Consulta médica online para el control de peso | DoctorLife",
   description:
     "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento continuo. Primera visita 25 €, sin permanencia.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     url: `${SITE_URL}${PATH}`,
@@ -115,7 +115,7 @@ const faqs = [
   },
 ];
 
-export default function LandingControlDePeso() {
+export default function LandingPeso1Foto() {
   return (
     <QuizProvider>
       <div className="overflow-x-clip bg-paper">
@@ -154,7 +154,7 @@ export default function LandingControlDePeso() {
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
                     <QuizTrigger
-                      plan="ads-control-peso"
+                      plan="ads-peso-1f"
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
                       Reservar primera visita · 25 €
@@ -169,9 +169,9 @@ export default function LandingControlDePeso() {
                   </div>
                 </div>
 
-                {/* Carrusel de casos before/after */}
+                {/* Carrusel de casos before/after (1 foto) */}
                 <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
-                  <BeforeAfterCarousel />
+                  <BeforeAfterCarousel count={1} />
                 </div>
               </div>
             </div>
@@ -322,7 +322,7 @@ export default function LandingControlDePeso() {
                   <span className="mb-1 text-[14px] text-paper/70">/mes</span>
                 </p>
                 <QuizTrigger
-                  plan="ads-control-peso-precio"
+                  plan="ads-peso-1f-precio"
                   className="mt-7 block w-full rounded-full bg-sage px-7 py-[15px] text-center text-[16px] font-semibold text-ink"
                 >
                   Reservar primera visita
@@ -384,7 +384,7 @@ export default function LandingControlDePeso() {
                     permanencia y con el rigor de médicos colegiados.
                   </p>
                   <QuizTrigger
-                    plan="ads-control-peso-final"
+                    plan="ads-peso-1f-final"
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
                     Reservar primera visita · 25 €
@@ -452,7 +452,7 @@ export default function LandingControlDePeso() {
                   médica.
                 </p>
                 <QuizTrigger
-                  plan="ads-control-peso-footer"
+                  plan="ads-peso-1f-footer"
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
                   Reservar primera visita · 25 €

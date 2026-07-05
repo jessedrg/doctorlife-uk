@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import {
   ShieldCheck,
@@ -18,33 +17,19 @@ import { TrustBox } from "@/components/trustbox";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
-const PATH = "/consulta-control-de-peso";
-
-export const metadata: Metadata = {
-  title: "Consulta médica online para el control de peso | DoctorLife",
-  description:
-    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento continuo. Primera visita 25 €, sin permanencia.",
-  alternates: { canonical: `${SITE_URL}${PATH}` },
-  robots: { index: true, follow: true },
-  openGraph: {
-    type: "website",
-    url: `${SITE_URL}${PATH}`,
-    title: "Consulta médica online para el control de peso | DoctorLife",
-    description:
-      "Valoración con médicos colegiados, 100% online. Plan personalizado y seguimiento. Primera visita 25 €, sin permanencia.",
-  },
-};
-
-const serviceLd = {
-  "@context": "https://schema.org",
-  "@type": "MedicalBusiness",
-  name: BRAND,
-  url: `${SITE_URL}${PATH}`,
-  medicalSpecialty: "Endocrinology",
-  description:
-    "Servicio de telemedicina para el control de peso con médicos colegiados en España. Valoración clínica, plan personalizado y seguimiento continuo.",
-  areaServed: "ES",
-  priceRange: "€€",
+export type LandingConfig = {
+  /** Ruta canónica, p. ej. "/consulta-peso-glp1" */
+  path: string;
+  /** Prefijo para los eventos de analítica, p. ej. "ads-peso-glp1" */
+  planPrefix: string;
+  /** Texto del badge superior */
+  eyebrow: string;
+  /** Titular (acepta JSX para estilar partes) */
+  headline: React.ReactNode;
+  /** Subtítulo bajo el titular */
+  subtitle: string;
+  /** Nº de casos antes/después a mostrar (0 = sin fotos) */
+  photos: number;
 };
 
 const steps = [
@@ -115,7 +100,21 @@ const faqs = [
   },
 ];
 
-export default function LandingControlDePeso() {
+export function WeightLossLanding({ config }: { config: LandingConfig }) {
+  const { path, planPrefix, eyebrow, headline, subtitle, photos } = config;
+
+  const serviceLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    name: BRAND,
+    url: `${SITE_URL}${path}`,
+    medicalSpecialty: "Endocrinology",
+    description:
+      "Servicio de telemedicina para el control de peso con médicos colegiados en España. Valoración clínica, plan personalizado y seguimiento continuo.",
+    areaServed: "ES",
+    priceRange: "€€",
+  };
+
   return (
     <QuizProvider>
       <div className="overflow-x-clip bg-paper">
@@ -137,24 +136,18 @@ export default function LandingControlDePeso() {
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Endocrinos colegiados · 100% online
+                    {eyebrow}
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,5vw,60px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Tratamiento{" "}
-                    <span className="font-serif italic text-sage">GLP-1</span> con{" "}
-                    <span className="font-serif italic text-sage">
-                      supervisión médica
-                    </span>
-                    , desde casa
+                    {headline}
                   </h1>
                   <p className="mt-4 text-[15px] font-medium text-paper/75">
-                    Tratamiento con GLP-1, si el endocrino lo cree adecuado para
-                    tu caso.
+                    {subtitle}
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
                     <QuizTrigger
-                      plan="ads-control-peso"
+                      plan={planPrefix}
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
                       Reservar primera visita · 25 €
@@ -169,10 +162,24 @@ export default function LandingControlDePeso() {
                   </div>
                 </div>
 
-                {/* Carrusel de casos before/after */}
-                <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
-                  <BeforeAfterCarousel />
-                </div>
+                {/* Media: carrusel de casos o imagen de consulta */}
+                {photos > 0 ? (
+                  <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
+                    <BeforeAfterCarousel count={photos} />
+                  </div>
+                ) : (
+                  <div className="relative mx-auto aspect-[4/3] w-full max-w-[440px] overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-paper/15 lg:max-w-none">
+                    <Image
+                      src="/landing/consulta-online.png"
+                      alt="Médica colegiada durante una videoconsulta de control de peso"
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 90vw, 45vw"
+                      className="object-cover"
+                      style={{ objectPosition: "60% center" }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -322,7 +329,7 @@ export default function LandingControlDePeso() {
                   <span className="mb-1 text-[14px] text-paper/70">/mes</span>
                 </p>
                 <QuizTrigger
-                  plan="ads-control-peso-precio"
+                  plan={`${planPrefix}-precio`}
                   className="mt-7 block w-full rounded-full bg-sage px-7 py-[15px] text-center text-[16px] font-semibold text-ink"
                 >
                   Reservar primera visita
@@ -384,7 +391,7 @@ export default function LandingControlDePeso() {
                     permanencia y con el rigor de médicos colegiados.
                   </p>
                   <QuizTrigger
-                    plan="ads-control-peso-final"
+                    plan={`${planPrefix}-final`}
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
                     Reservar primera visita · 25 €
@@ -452,7 +459,7 @@ export default function LandingControlDePeso() {
                   médica.
                 </p>
                 <QuizTrigger
-                  plan="ads-control-peso-footer"
+                  plan={`${planPrefix}-footer`}
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
                   Reservar primera visita · 25 €
