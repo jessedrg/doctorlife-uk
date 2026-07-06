@@ -9,8 +9,9 @@ import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { TrustBox } from "@/components/trustbox";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
-import { posts, getPost, getRelated, seoTitle, seoDescription, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
+import { posts, getPost, getRelated, seoTitle, seoDescription, drugInfo, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
+import { drugSchema } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // 24h ISR — se regenera en background sin bloquear el build
@@ -192,6 +193,17 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     })),
   };
 
+  // Ficha Drug para posts sobre un fármaco concreto (medicamento con receta).
+  const drug = drugInfo(post);
+  const drugLd = drug
+    ? drugSchema({
+        name: drug.name,
+        nonProprietaryName: drug.inn,
+        description: post.metaDescription,
+        url,
+      })
+    : null;
+
   return (
     <QuizProvider>
       <div className="overflow-x-clip bg-paper">
@@ -317,7 +329,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+          {drugLd && (
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(drugLd) }} />
+          )}
     </QuizProvider>
   );
 }

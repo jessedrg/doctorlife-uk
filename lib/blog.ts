@@ -995,7 +995,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 10 ─────────────────────────────────────────����── */
+  /* 10 ─────────────────────────────────────────�����── */
   {
     slug: "plan-perder-peso-glp1",
     title: "Plan para perder peso con GLP‑1",
@@ -5671,13 +5671,31 @@ const DRUGS = [
   "Semaglutida",
 ];
 
-function detectDrug(post: Post): string | null {
+export function detectDrug(post: Post): string | null {
   const hay = `${post.title} ${post.metaTitle} ${post.keyword} ${post.slug}`;
   for (const d of DRUGS) {
     if (new RegExp(d, "i").test(hay)) return d;
   }
   if (/glp[\s-]?1/i.test(hay)) return "GLP‑1";
   return null;
+}
+
+/* Marca comercial -> denominación común internacional (principio activo). */
+const DRUG_INN: Record<string, string | undefined> = {
+  Wegovy: "semaglutida",
+  Ozempic: "semaglutida",
+  Rybelsus: "semaglutida",
+  Mounjaro: "tirzepatida",
+  Saxenda: "liraglutida",
+  Semaglutida: "semaglutida",
+  Tirzepatida: "tirzepatida",
+};
+
+/** Devuelve el nombre del fármaco y su INN (si se detecta) para JSON-LD Drug. */
+export function drugInfo(post: Post): { name: string; inn?: string } | null {
+  const name = detectDrug(post);
+  if (!name || name === "GLP‑1") return null;
+  return { name, inn: DRUG_INN[name] };
 }
 
 function detectCity(post: Post): string | null {

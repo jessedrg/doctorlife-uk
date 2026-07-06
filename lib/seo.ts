@@ -18,11 +18,32 @@ export const organizationSchema = {
   name: BRAND,
   url: SITE_URL,
   logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
+  image: `${SITE_URL}/icon.png`,
   email: CONTACT_EMAIL,
   description:
     "Cuidado del peso y hormonal dirigido por médicos colegiados, con tratamiento GLP‑1 supervisado y seguimiento real desde la app.",
   medicalSpecialty: ["Endocrinology", "Bariatrics"],
+  knowsAbout: [
+    "Obesidad",
+    "Sobrepeso",
+    "Salud metabólica",
+    "Tratamiento GLP‑1",
+    "Endocrinología",
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "ES",
+  },
   areaServed: { "@type": "Country", name: "España" },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: CONTACT_EMAIL,
+    availableLanguage: ["Spanish"],
+    areaServed: "ES",
+  },
+  /* Perfiles externos verificables (refuerza la entidad en YMYL). */
+  sameAs: ["https://es.trustpilot.com/review/doctorlife.io"],
   availableLanguage: "es",
 } as const;
 
@@ -91,6 +112,31 @@ export function toolSchema(opts: {
     inLanguage: "es-ES",
     isAccessibleForFree: true,
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  };
+}
+
+/* Ficha de medicamento -> Drug (útil en posts sobre fármacos GLP‑1).
+   Marca el estado de prescripción para dejar claro a Google/IA que es
+   contenido informativo sobre un medicamento con receta, no venta. */
+export function drugSchema(opts: {
+  name: string;
+  /** Denominación común internacional (p. ej. "semaglutida"). */
+  nonProprietaryName?: string;
+  description?: string;
+  url?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Drug",
+    name: opts.name,
+    ...(opts.nonProprietaryName
+      ? { nonProprietaryName: opts.nonProprietaryName }
+      : {}),
+    ...(opts.description ? { description: opts.description } : {}),
+    ...(opts.url ? { url: opts.url } : {}),
+    prescriptionStatus: "PrescriptionOnly",
+    inLanguage: "es-ES",
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
 }

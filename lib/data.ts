@@ -121,6 +121,8 @@ export const footerColumns: FooterColumn[] = [
     title: "Recursos",
     links: [
       { label: "Adelgazar con supervisión médica", href: "/adelgazar-con-supervision-medica" },
+      { label: "Blog médico", href: "/blog" },
+      { label: "Nuestros médicos", href: "/autores" },
     ],
   },
   {
