@@ -579,3 +579,143 @@ export function formatCityPop(n: number): string {
   }
   return `unos ${Math.round(n / 1000)}.000 habitantes`;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   CONTENIDO PROFUNDO Y ÚNICO — SOLO CIUDADES TIER 1
+   Las ciudades grandes tienen competencia SEO real (clínicas
+   físicas, otras webs). Para ganar ahí no basta con la plantilla:
+   añadimos contenido escrito a mano y verídico (distritos reales,
+   municipios del área metropolitana, logística de entrega y una
+   FAQ local específica) que ninguna plantilla puede replicar.
+   El resto de ciudades ya posicionan con el contexto local base.
+   ═══════════════════════════════════════════════════════════ */
+export type Tier1Content = {
+  /** Distritos/zonas reales de la ciudad (para intención hiperlocal). */
+  districts: string[];
+  /** Municipios del área metropolitana (amplían la cobertura de búsqueda). */
+  metro: string[];
+  /** Párrafo sobre la entrega/recogida del tratamiento en la ciudad. */
+  delivery: string;
+  /** Párrafo sobre el panorama de la sanidad privada local. */
+  privateScene: string;
+  /** Pregunta y respuesta locales, específicas y no replicables. */
+  faq: { q: string; a: string };
+};
+
+export const TIER1_CONTENT: Record<string, Tier1Content> = {
+  madrid: {
+    districts: ["Centro", "Salamanca", "Chamberí", "Retiro", "Chamartín", "Tetuán", "Arganzuela", "Moncloa-Aravaca"],
+    metro: ["Móstoles", "Alcalá de Henares", "Fuenlabrada", "Leganés", "Getafe", "Alcorcón"],
+    delivery:
+      "En Madrid capital la receta electrónica llega al móvil normalmente el mismo día de la consulta, y puedes recogerla en cualquier farmacia de la ciudad —desde el centro (Sol, Malasaña, Chamberí) hasta los barrios de Salamanca o Chamartín— o en toda la Comunidad. Si la farmacia de tu barrio no tiene stock de Wegovy o Mounjaro, el sistema de receta electrónica te permite recogerlo en otra sin repetir trámite.",
+    privateScene:
+      "Madrid concentra la mayor oferta de clínicas privadas de obesidad y endocrinología de España, sobre todo en la zona de Nuevos Ministerios, Salamanca y el eje de la Castellana. Esa oferta presencial suele implicar precios altos por consulta y semanas de espera para primera visita; la vía online de DoctorLife evita el desplazamiento y acorta los tiempos manteniendo al mismo médico durante todo el seguimiento.",
+    faq: {
+      q: "¿Puedo recoger el tratamiento en una farmacia de mi distrito en Madrid?",
+      a: "Sí. La receta electrónica es válida en cualquier farmacia de la Comunidad de Madrid, tanto en distritos del centro (Centro, Chamberí, Salamanca) como en barrios periféricos o en municipios del área metropolitana como Móstoles, Getafe o Alcalá de Henares.",
+    },
+  },
+  barcelona: {
+    districts: ["Eixample", "Ciutat Vella", "Gràcia", "Sarrià-Sant Gervasi", "Sants-Montjuïc", "Les Corts", "Sant Martí"],
+    metro: ["L'Hospitalet de Llobregat", "Badalona", "Terrassa", "Sabadell", "Santa Coloma de Gramenet"],
+    delivery:
+      "En Barcelona la receta electrónica está integrada con CatSalut, de modo que el documento emitido por el médico de DoctorLife es válido en cualquier farmacia de la ciudad —del Eixample a Gràcia, Sants o Sant Martí— y de toda Cataluña. La recogida es inmediata una vez el médico emite la prescripción, sin necesidad de pasar por un CAP.",
+    privateScene:
+      "Barcelona tiene una densa red de clínicas privadas de medicina estética y endocrinología, concentrada en el Eixample y la zona alta (Sarrià-Sant Gervasi). La consulta presencial ahí suele ser cara y con lista de espera; la alternativa online mantiene la valoración con médico colegiado y añade seguimiento continuo desde la app, algo que la consulta puntual presencial no siempre ofrece.",
+    faq: {
+      q: "¿La receta de DoctorLife funciona con la farmacia y CatSalut en Barcelona?",
+      a: "Sí. La receta electrónica privada es válida en todas las farmacias de Barcelona y Cataluña. No sustituye a tu tarjeta sanitaria pública, pero te permite recoger el tratamiento en cualquier farmacia del Eixample, Gràcia o del área metropolitana como L'Hospitalet o Badalona.",
+    },
+  },
+  valencia: {
+    districts: ["Ciutat Vella", "L'Eixample", "Extramurs", "Campanar", "Quatre Carreres", "Algirós", "Benimaclet"],
+    metro: ["Torrent", "Paterna", "Mislata", "Burjassot", "Alaquàs"],
+    delivery:
+      "En Valencia la receta electrónica emitida tras la videoconsulta se puede canjear en cualquier farmacia de la ciudad, desde Ciutat Vella y L'Eixample hasta Benimaclet o Quatre Carreres, y en toda la Comunitat. No hace falta desplazarse a un centro de salud: recibes la prescripción en el móvil y recoges el tratamiento donde te resulte cómodo.",
+    privateScene:
+      "La sanidad privada en Valencia ha crecido mucho en torno a la obesidad y la nutrición, con clínicas concentradas en L'Eixample y el centro. Aun así, la primera visita presencial con endocrino privado suele tener demora; DoctorLife resuelve la valoración online y mantiene el seguimiento por la app, evitando desplazamientos por la ciudad.",
+    faq: {
+      q: "¿Cuánto tardo en tener la receta si vivo en Valencia?",
+      a: "Tras la videoconsulta, si el médico considera el tratamiento adecuado, la receta electrónica suele estar disponible el mismo día. Es válida en cualquier farmacia de Valencia y de la Comunitat Valenciana, incluidos municipios del área como Torrent, Paterna o Mislata.",
+    },
+  },
+  sevilla: {
+    districts: ["Casco Antiguo", "Triana", "Los Remedios", "Nervión", "Macarena", "Este-Alcosa", "Cerro-Amate"],
+    metro: ["Dos Hermanas", "Alcalá de Guadaíra", "Mairena del Aljarafe", "Utrera"],
+    delivery:
+      "En Sevilla la receta electrónica del médico de DoctorLife es válida en cualquier farmacia de la ciudad —de Triana y Los Remedios a Nervión o la Macarena— y de toda Andalucía. La recogida es inmediata tras la consulta, sin pasar por el centro de salud ni por listas de espera del SAS.",
+    privateScene:
+      "Sevilla cuenta con una oferta privada notable en Nervión y Los Remedios, pero el acceso a endocrinología para el peso sigue siendo caro y lento presencialmente. La consulta online con DoctorLife permite iniciar el tratamiento sin desplazarse y con seguimiento real, algo especialmente útil en verano por el calor de la ciudad.",
+    faq: {
+      q: "¿Necesito ir a una clínica en Sevilla para empezar?",
+      a: "No. Toda la valoración es online con médico colegiado. Si el tratamiento está indicado, recibes la receta electrónica y la recoges en cualquier farmacia de Sevilla o de su área metropolitana, como Dos Hermanas o Mairena del Aljarafe.",
+    },
+  },
+  malaga: {
+    districts: ["Centro", "Ensanche Centro", "El Palo", "Teatinos", "Churriana", "Carretera de Cádiz", "Cruz de Humilladero"],
+    metro: ["Torremolinos", "Rincón de la Victoria", "Fuengirola", "Marbella"],
+    delivery:
+      "En Málaga la receta electrónica se canjea en cualquier farmacia de la ciudad y de la Costa del Sol. Recibes la prescripción en el móvil tras la videoconsulta y la recoges donde prefieras, del Centro a Teatinos o El Palo, sin depender de la cita presencial.",
+    privateScene:
+      "Málaga y la Costa del Sol tienen una densa oferta de clínicas privadas orientadas al peso y la estética, sobre todo hacia Marbella. Los precios ahí son de los más altos de España; la vía online de DoctorLife ofrece la misma valoración médica colegiada sin la prima de precio de la zona turística.",
+    faq: {
+      q: "¿Sirve la receta si vivo en la Costa del Sol y no en Málaga capital?",
+      a: "Sí. La receta electrónica es válida en toda Andalucía, así que puedes recogerla igual en Málaga capital que en Torremolinos, Fuengirola o Marbella, sin desplazarte a la ciudad.",
+    },
+  },
+  zaragoza: {
+    districts: ["Centro", "Delicias", "Universidad", "Actur-Rey Fernando", "Las Fuentes", "San José", "Casablanca"],
+    metro: ["Utebo", "Cuarte de Huerva", "Villanueva de Gállego"],
+    delivery:
+      "En Zaragoza la receta electrónica emitida tras la consulta es válida en cualquier farmacia de la ciudad —de Delicias al Centro o el Actur— y de todo Aragón. La recogida es inmediata, sin pasar por el centro de salud del SALUD.",
+    privateScene:
+      "Al ser el gran núcleo urbano de Aragón, Zaragoza concentra casi toda la oferta privada de la comunidad, pero fuera de la ciudad el acceso presencial es limitado. La consulta online de DoctorLife iguala el acceso para toda la provincia sin obligar a desplazarse a la capital.",
+    faq: {
+      q: "¿Puedo hacer el seguimiento sin volver a desplazarme en Zaragoza?",
+      a: "Sí. Todo el seguimiento se realiza desde la app: ajustes de dosis, dudas y renovación de receta sin acudir presencialmente. Solo necesitas ir a tu farmacia habitual de Zaragoza a recoger el tratamiento.",
+    },
+  },
+  murcia: {
+    districts: ["Centro", "El Carmen", "La Flota", "Vistabella", "Santa María de Gracia", "Infante Juan Manuel"],
+    metro: ["Molina de Segura", "Alcantarilla", "Santomera", "Beniel"],
+    delivery:
+      "En Murcia la receta electrónica es válida en cualquier farmacia de la ciudad y de toda la Región. Tras la videoconsulta recibes la prescripción en el móvil y la recoges sin pasar por el centro de salud del SMS.",
+    privateScene:
+      "La oferta privada de endocrinología en Murcia se concentra en el centro y en torno a los grandes hospitales, con demoras habituales para primera visita. DoctorLife permite iniciar el tratamiento online y mantener el seguimiento por la app, útil también para quienes viven en la huerta y el área metropolitana.",
+    faq: {
+      q: "¿La receta vale para las farmacias de la Región de Murcia?",
+      a: "Sí. La receta electrónica es válida en toda la Región de Murcia, tanto en la capital como en municipios como Molina de Segura o Alcantarilla, sin necesidad de desplazarte a un hospital.",
+    },
+  },
+  alicante: {
+    districts: ["Centro", "Ensanche-Diputación", "Carolinas", "San Blas", "Playa de San Juan", "Vistahermosa"],
+    metro: ["Elche", "San Vicente del Raspeig", "San Juan de Alicante", "Mutxamel"],
+    delivery:
+      "En Alicante la receta electrónica del médico de DoctorLife se canjea en cualquier farmacia de la ciudad y de la provincia, de la Playa de San Juan al centro. La recibes el mismo día de la consulta y la recoges sin trámites presenciales.",
+    privateScene:
+      "La Costa Blanca tiene una oferta privada amplia y muy orientada al turismo de salud, con precios elevados en temporada. La consulta online de DoctorLife ofrece valoración médica colegiada estable todo el año, sin la variabilidad de precios de las clínicas de zona turística.",
+    faq: {
+      q: "¿Puedo recoger el tratamiento en Elche o San Vicente si no estoy en Alicante capital?",
+      a: "Sí. La receta electrónica es válida en toda la provincia de Alicante y la Comunitat Valenciana, así que puedes recogerla en Elche, San Vicente del Raspeig o San Juan igual que en la capital.",
+    },
+  },
+  bilbao: {
+    districts: ["Abando", "Indautxu", "Casco Viejo", "Deusto", "Begoña", "Rekalde", "Basurto-Zorroza"],
+    metro: ["Barakaldo", "Getxo", "Portugalete", "Santurtzi", "Leioa"],
+    delivery:
+      "En Bilbao la receta electrónica es válida en cualquier farmacia de la villa —de Abando e Indautxu al Casco Viejo o Deusto— y de todo el País Vasco. La recogida es inmediata tras la videoconsulta, sin pasar por el ambulatorio de Osakidetza.",
+    privateScene:
+      "Bilbao y el Gran Bilbao concentran buena parte de la sanidad privada vasca, con clínicas en Abando e Indautxu. Aun con esa oferta, la primera visita presencial suele demorarse; DoctorLife resuelve la valoración online y cubre por igual a quienes viven en la margen izquierda o en Getxo sin desplazarse al centro.",
+    faq: {
+      q: "¿La receta sirve en las farmacias de Bilbao y el Gran Bilbao?",
+      a: "Sí. La receta electrónica es válida en todo el País Vasco, así que la puedes recoger tanto en Bilbao (Abando, Indautxu, Deusto) como en Barakaldo, Getxo o Portugalete.",
+    },
+  },
+};
+
+export function getTier1Content(slug: string): Tier1Content | null {
+  return TIER1_CONTENT[slug] ?? null;
+}
+
+/** Lista de slugs Tier 1 (ciudades con contenido profundo). */
+export const TIER1_SLUGS = Object.keys(TIER1_CONTENT);
