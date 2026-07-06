@@ -120,6 +120,8 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Recursos",
     links: [
+      { label: "Sobre nosotros", href: "/sobre-nosotros" },
+      { label: "Política editorial", href: "/politica-editorial" },
       { label: "Adelgazar con supervisión médica", href: "/adelgazar-con-supervision-medica" },
       { label: "Blog médico", href: "/blog" },
       { label: "Nuestros médicos", href: "/autores" },
