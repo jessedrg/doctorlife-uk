@@ -40,7 +40,6 @@ const heroPoints = [
 ];
 
 const stats = [
-  { to: 12000, prefix: "+", suffix: "", label: "Pacientes atendidos" },
   { to: 14, prefix: "−", suffix: " kg", label: "Media con seguimiento*" },
   { to: 4.8, prefix: "", suffix: "/5", label: "Valoración de pacientes" },
   { to: 3, prefix: "<", suffix: " h", label: "Respuesta de tu médico" },
@@ -239,7 +238,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                       ))}
                     </div>
                     <span className="text-[14px] font-medium text-paper/85">
-                      <span className="font-semibold text-paper">4,8/5</span> · +12.000 pacientes atendidos
+                      <span className="font-semibold text-paper">4,8/5</span> · valoración de nuestros pacientes
                     </span>
                   </div>
 
@@ -315,7 +314,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
 
           {/* ── Banda de estadísticas ── */}
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
-            <ul className="grid grid-cols-2 gap-4 rounded-[24px] border border-ink/10 bg-warm px-4 py-6 md:grid-cols-4 md:px-8">
+            <ul className="grid grid-cols-1 gap-4 rounded-[24px] border border-ink/10 bg-warm px-4 py-6 sm:grid-cols-3 md:px-8">
               {stats.map((s) => (
                 <li key={s.label} className="text-center">
                   <Counter
