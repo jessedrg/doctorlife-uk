@@ -7,11 +7,19 @@ import { BlogCard } from "@/components/blog-card";
 import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
-import { TrustBox } from "@/components/trustbox";
-import { BeforeAfterCarousel } from "@/components/before-after-carousel";
+import dynamic from "next/dynamic";
+
+const TrustBox = dynamic(
+  () => import("@/components/trustbox").then((m) => m.TrustBox),
+  { ssr: false },
+);
+const BeforeAfterCarousel = dynamic(
+  () => import("@/components/before-after-carousel").then((m) => m.BeforeAfterCarousel),
+  { ssr: false },
+);
 import { posts, getPost, getRelated, seoTitle, seoDescription, drugInfo, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
-import { drugSchema } from "@/lib/seo";
+import { drugSchema, breadcrumbSchema } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // 24h ISR — se regenera en background sin bloquear el build
@@ -173,15 +181,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
-      { "@type": "ListItem", position: 3, name: post.title, item: url },
-    ],
-  };
+  const breadcrumbLd = breadcrumbSchema([
+    { name: "Inicio", url: SITE_URL },
+    { name: "Blog", url: `${SITE_URL}/blog` },
+    { name: post.title, url },
+  ]);
 
   const faqLd = {
     "@context": "https://schema.org",
