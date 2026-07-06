@@ -51,7 +51,6 @@ const packIncludes = [
   "Seguimiento con el endocrino durante todo el tratamiento",
   "Chat en vivo con tu médico siempre que lo necesites",
   "Inyección semanal indolora y fácil de aplicar en casa",
-  "Envío a domicilio de forma discreta",
 ];
 
 const steps = [
