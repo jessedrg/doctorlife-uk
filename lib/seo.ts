@@ -19,6 +19,9 @@ export const organizationSchema = {
   url: SITE_URL,
   logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
   image: `${SITE_URL}/icon.png`,
+  slogan: "Tu cuerpo, por fin entendido",
+  // TODO(negocio): añadir el nº de registro sanitario real como `identifier`
+  // cuando esté disponible (refuerza E-E-A-T en salud). No inventar.
   email: CONTACT_EMAIL,
   description:
     "Cuidado del peso y hormonal dirigido por médicos colegiados, con tratamiento GLP‑1 supervisado y seguimiento real desde la app.",
