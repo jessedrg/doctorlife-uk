@@ -15,7 +15,6 @@ import {
   getCityFacts,
   healthServiceFor,
   formatCityPop,
-  getTier1Content,
 } from "./blog-city-facts";
 
 const BRAND = "DoctorLife";
@@ -883,7 +882,6 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
       ],
     },
     localContextSection(city, slug),
-    ...tier1Sections(city),
     {
       h2: tpl("Precio de {Drug} en {City} por dosis", vars),
       blocks: [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }],
@@ -923,11 +921,9 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
     },
   ];
 
-  const t1Faq = tier1Faq(city);
   const faqs: Faq[] = [
     ...(drug.kind === "weight" ? weightFaqs(drug, city) : diabetesFaqs(drug, city)),
     localFaqs(city)[hash(slug) % 3],
-    ...(t1Faq ? [t1Faq] : []),
   ];
 
   return {
@@ -998,7 +994,6 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
       ],
     },
     localContextSection(city, slug),
-    ...tier1Sections(city),
     {
       h2: tpl("¿Qué es {Drug} y por qué necesita receta?", vars),
       blocks: [
@@ -1053,7 +1048,6 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
       a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
     },
     localFaqs(city)[hash(slug) % 3],
-    ...(tier1Faq(city) ? [tier1Faq(city) as Faq] : []),
   ];
 
   return {
@@ -4455,7 +4449,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     ],
     whyH2: "Pastillas de venta libre vs. tratamiento médico",
     why: [
-      "Los quemagrasas, drenantes y «bloqueadores» de venta libre rara vez tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (sobre todo de líquidos), pero no producen una pérdida de grasa sostenible.",
+      "Los quemagrasas, drenantes y ��bloqueadores» de venta libre rara vez tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (sobre todo de líquidos), pero no producen una pérdida de grasa sostenible.",
       "Los tratamientos médicos modernos, como los análogos del GLP‑1, actúan sobre el apetito y la saciedad con evidencia clínica. La diferencia es enorme: control médico, eficacia demostrada y seguimiento frente a marketing.",
     ],
     optionsH2: "Alternativas médicas a las pastillas en {City}",
@@ -4674,7 +4668,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar inyección para adelgazar en ${c.name} (legal) | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
+      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qu�� necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
     excerpt: (c) =>
       `Guía para comprar una inyección para adelgazar en ${c.name} sin riesgos: qué pedir, por qué hace falta receta y cómo empezar con seguimiento médico.`,
     cover: getAlt("mounjaro").cover,
@@ -4920,51 +4914,6 @@ function localContextSection(city: City, seed: string): Section {
       { type: "p", text: tpl(pick(LOCAL_CTX_BRAND, seed + "ctxbrand"), vars) },
     ],
   };
-}
-
-/* ── contenido profundo SOLO para ciudades Tier 1 (grandes) ──
-   Devuelve secciones extra escritas a mano y verídicas: entrega/recogida
-   por distritos y una sección de zonas + área metropolitana. Para el resto
-   de ciudades devuelve [] y se mantiene la plantilla base. */
-function tier1Sections(city: City): Section[] {
-  const t = getTier1Content(city.slug);
-  if (!t) return [];
-  const districts = listToTextLocal(t.districts);
-  const metro = listToTextLocal(t.metro);
-  return [
-    {
-      h2: `Recoger y empezar el tratamiento en ${city.name}`,
-      blocks: [
-        { type: "p", text: t.delivery },
-        { type: "p", text: t.privateScene },
-      ],
-    },
-    {
-      h2: `Zonas de ${city.name} que atendemos`,
-      blocks: [
-        {
-          type: "p",
-          text: `Al ser una consulta online, en ${city.name} llegamos a todos los distritos y barrios —${districts}—, sin que tengas que desplazarte al centro. La receta electrónica que emite el médico, si el tratamiento está indicado, es válida en cualquier farmacia de la ciudad.`,
-        },
-        {
-          type: "p",
-          text: `También atendemos a pacientes del área metropolitana de ${city.name}, como ${metro}, con el mismo proceso: videoconsulta con médico colegiado, receta electrónica cuando procede y seguimiento desde la app.`,
-        },
-      ],
-    },
-  ];
-}
-
-/* variante local de unir lista con comas y "y" (evita depender de otros módulos) */
-function listToTextLocal(items: string[]): string {
-  if (items.length <= 1) return items[0] ?? "";
-  return items.slice(0, -1).join(", ") + " y " + items[items.length - 1];
-}
-
-/* FAQ local específica para Tier 1 (además de las localFaqs base) */
-function tier1Faq(city: City): Faq | null {
-  const t = getTier1Content(city.slug);
-  return t ? t.faq : null;
 }
 
 function buildLocalServicePost(cluster: LocalCluster, city: City, index: number): Post {
