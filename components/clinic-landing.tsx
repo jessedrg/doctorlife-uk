@@ -46,12 +46,11 @@ const stats = [
 ];
 
 const packIncludes = [
-  "Valoración médica con un médico colegiado en España",
-  "Estudio integral personalizado: IMC, edad metabólica y estilo de vida",
-  "Tratamiento GLP-1 adaptado a tu caso, si el médico lo considera adecuado",
+  "Videoconsulta con un médico colegiado en España",
+  "Cita y prescripción del tratamiento GLP-1, si el médico lo prescribe",
+  "Seguimiento con el endocrino durante todo el tratamiento",
+  "Chat en vivo con tu médico siempre que lo necesites",
   "Inyección semanal indolora y fácil de aplicar en casa",
-  "Envío a domicilio de forma discreta",
-  "Plan nutricional y seguimiento médico de tu evolución",
 ];
 
 const steps = [
