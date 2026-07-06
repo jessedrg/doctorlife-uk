@@ -23,9 +23,20 @@ import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
 import { BrandLogo } from "@/components/brand-logo";
 import { Navbar } from "@/components/navbar";
-import { TrustBox } from "@/components/trustbox";
-import { Counter } from "@/components/counter";
-import { BeforeAfterCarousel } from "@/components/before-after-carousel";
+import dynamic from "next/dynamic";
+
+const TrustBox = dynamic(
+  () => import("@/components/trustbox").then((m) => m.TrustBox),
+  { ssr: false },
+);
+const Counter = dynamic(
+  () => import("@/components/counter").then((m) => m.Counter),
+  { ssr: false },
+);
+const BeforeAfterCarousel = dynamic(
+  () => import("@/components/before-after-carousel").then((m) => m.BeforeAfterCarousel),
+  { ssr: false },
+);
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
