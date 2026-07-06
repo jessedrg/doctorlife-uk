@@ -4309,7 +4309,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     slug: (c) => `inyeccion-para-adelgazar-${c.slug}`,
     category: "Adelgazar",
     keyword: (c) => `inyección para adelgazar ${c.name}`,
-    title: (c) => `Inyecci��n para adelgazar en ${c.name}`,
+    title: (c) => `Inyección para adelgazar en ${c.name}`,
     h1: (c) => `Inyección para adelgazar en ${c.name}: qué es y cómo conseguirla`,
     metaTitle: (c) =>
       `Inyección para adelgazar en ${c.name}: cómo conseguirla | DoctorLife`,
@@ -4449,7 +4449,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     ],
     whyH2: "Pastillas de venta libre vs. tratamiento médico",
     why: [
-      "Los quemagrasas, drenantes y ��bloqueadores» de venta libre rara vez tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (sobre todo de líquidos), pero no producen una pérdida de grasa sostenible.",
+      "Los quemagrasas, drenantes y «bloqueadores» de venta libre rara vez tienen estudios serios detrás. Pueden dar una sensación inicial de pérdida (sobre todo de líquidos), pero no producen una pérdida de grasa sostenible.",
       "Los tratamientos médicos modernos, como los análogos del GLP‑1, actúan sobre el apetito y la saciedad con evidencia clínica. La diferencia es enorme: control médico, eficacia demostrada y seguimiento frente a marketing.",
     ],
     optionsH2: "Alternativas médicas a las pastillas en {City}",
@@ -4668,7 +4668,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar inyección para adelgazar en ${c.name} (legal) | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qu�� necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
+      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
     excerpt: (c) =>
       `Guía para comprar una inyección para adelgazar en ${c.name} sin riesgos: qué pedir, por qué hace falta receta y cómo empezar con seguimiento médico.`,
     cover: getAlt("mounjaro").cover,
