@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { QuizProvider } from "@/components/quiz-context";
 import { Announcement } from "@/components/announcement";
 import { Navbar } from "@/components/navbar";
@@ -8,6 +9,22 @@ import { Transformation } from "@/components/transformation";
 import { MobileFollowup } from "@/components/mobile-followup";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
+
+export const metadata: Metadata = {
+  title: "DoctorLife — Tu cuerpo, por fin entendido",
+  description:
+    "Cuidado del peso y hormonal dirigido por médicos colegiados en España, con seguimiento real desde la app. Sin listas de espera y sin permanencia.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "DoctorLife — Tu cuerpo, por fin entendido",
+    description:
+      "Cuidado del peso y hormonal dirigido por médicos colegiados en España, con seguimiento real desde la app.",
+    url: "/",
+    type: "website",
+    locale: "es_ES",
+    siteName: "DoctorLife",
+  },
+};
 
 export default function Home() {
   return (

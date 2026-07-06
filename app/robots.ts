@@ -16,7 +16,32 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   }
 
   return {
-    rules: { userAgent: "*", allow: "/" },
+    rules: [
+      // Buscadores y crawlers generales.
+      { userAgent: "*", allow: "/" },
+      // Asistentes de IA (GEO): permitimos indexar el contenido médico para
+      // que nos citen como fuente. No exponemos áreas privadas.
+      {
+        userAgent: [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Google-Extended",
+          "Applebot-Extended",
+          "ClaudeBot",
+          "Claude-User",
+          "anthropic-ai",
+          "Amazonbot",
+          "Bytespider",
+          "cohere-ai",
+          "Meta-ExternalAgent",
+        ],
+        allow: "/",
+        disallow: ["/medico", "/admin", "/portal", "/api", "/sign-in", "/sign-up"],
+      },
+    ],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,
   };

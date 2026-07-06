@@ -66,6 +66,11 @@ export default function RootLayout({
       className={`${hanken.variable} ${sora.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
     >
       <body className="bg-paper text-ink font-sans antialiased">
+        {/* Preconexión a orígenes de terceros: acelera el arranque de
+            scripts diferidos y mejora LCP/INP. React 19 los eleva al <head>. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://widget.trustpilot.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://invitejs.trustpilot.com" />
         {/* Entidad de marca + buscador de sitelinks (global) */}
         <JsonLd data={[organizationSchema, websiteSchema]} />
         {/* Google Ads (gtag.js) — conversiones */}
