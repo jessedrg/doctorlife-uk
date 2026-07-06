@@ -10,14 +10,10 @@ import {
   FileCheck2,
   Check,
   Star,
-  Users,
   TrendingDown,
-  HeartPulse,
-  Utensils,
   Truck,
   CalendarCheck,
   ChevronDown,
-  Syringe,
 } from "lucide-react";
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
@@ -25,7 +21,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { Navbar } from "@/components/navbar";
 import { TrustBox } from "@/components/trustbox";
 import { Counter } from "@/components/counter";
-import { BeforeAfterCarousel } from "@/components/before-after-carousel";
+import { HeroVideo } from "@/components/hero-video";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type ClinicConfig = {
@@ -36,11 +32,11 @@ export type ClinicConfig = {
 };
 
 const heroPoints = [
-  { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
-  { icon: ClipboardList, label: "Tratamiento GLP-1 personalizado, si el médico lo considera adecuado" },
-  { icon: Syringe, label: "Inyección semanal indolora, fácil de aplicar en casa" },
+  { icon: TrendingDown, label: "Reduce hasta un 25% de tu peso con tratamiento GLP-1" },
+  { icon: Stethoscope, label: "Asesoría y llamada con un médico colegiado en España" },
+  { icon: MessageSquareText, label: "Seguimiento en vivo por chat, cuando quieras" },
+  { icon: FileCheck2, label: "Receta médica emitida si el médico lo prescribe" },
   { icon: Truck, label: "Recíbelo en casa, sin colas ni desplazamientos" },
-  { icon: MessageSquareText, label: "Seguimiento médico de tu evolución por mensajes" },
 ];
 
 const stats = [
@@ -48,24 +44,6 @@ const stats = [
   { to: 14, prefix: "−", suffix: " kg", label: "Media con seguimiento*" },
   { to: 4.8, prefix: "", suffix: "/5", label: "Valoración de pacientes" },
   { to: 3, prefix: "<", suffix: " h", label: "Respuesta de tu médico" },
-];
-
-const benefits = [
-  {
-    icon: Utensils,
-    title: "Reduce el apetito de forma natural",
-    text: "El tratamiento GLP-1 actúa sobre las señales de hambre y saciedad, ayudándote a comer menos sin pasar hambre ni ansiedad.",
-  },
-  {
-    icon: TrendingDown,
-    title: "Pérdida de peso sostenida",
-    text: "Diseñado para bajar de peso de forma progresiva y mantenerlo en el tiempo, no para efectos rebote de dietas milagro.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Siempre con control médico",
-    text: "Un médico colegiado valora tu caso, ajusta la dosis y supervisa tu evolución. Nunca estás solo en el proceso.",
-  },
 ];
 
 const packIncludes = [
@@ -201,9 +179,9 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                     Tratamiento GLP-1 con seguimiento médico
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(32px,4.8vw,56px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Pierde peso con tratamiento{" "}
-                    <span className="font-serif italic text-sage">GLP-1</span>{" "}
-                    supervisado por médicos
+                    Pierde hasta un{" "}
+                    <span className="font-serif italic text-sage">25%</span> de tu
+                    peso con tratamiento GLP-1
                   </h1>
 
                   {/* Prueba social rápida */}
@@ -218,17 +196,11 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                     </span>
                   </div>
 
-                  <p className="mt-5 hidden max-w-[46ch] text-[16px] font-medium leading-relaxed text-paper/80 lg:block">
-                    Valoración con médicos colegiados en España y, si procede, un
-                    tratamiento GLP-1 personalizado que recibes en casa. Sin
-                    esperas y sin permanencia.
-                  </p>
-
-                  <ul className="mt-6 hidden flex-col gap-3 lg:flex">
+                  <ul className="mt-6 flex flex-col gap-2.5">
                     {heroPoints.map(({ icon: Icon, label }) => (
                       <li
                         key={label}
-                        className="flex items-start gap-3 text-[14.5px] leading-snug text-paper/85"
+                        className="flex items-start gap-3 text-[14px] leading-snug text-paper/85 sm:text-[14.5px]"
                       >
                         <Icon
                           aria-hidden
@@ -272,24 +244,20 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 </div>
 
                 <div className="relative mx-auto aspect-[4/3] w-full max-w-[440px] overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-paper/15 lg:max-w-none">
-                  <Image
-                    src="/landing/consulta-online.png"
-                    alt="Médica colegiada durante una consulta médica online"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 90vw, 45vw"
-                    className="object-cover"
-                    style={{ objectPosition: "60% center" }}
+                  <HeroVideo
+                    src="/products/pills-pen.mp4"
+                    poster="/landing/consulta-online.png"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
-                  {/* Badge de resultado sobre la imagen */}
+                  {/* Badge de resultado sobre el vídeo */}
                   <div className="absolute bottom-4 left-4 flex items-center gap-3 rounded-[16px] bg-espresso/85 px-4 py-3 backdrop-blur-sm">
                     <TrendingDown aria-hidden className="h-6 w-6 text-sage" />
                     <div className="leading-tight">
                       <span className="block text-[20px] font-semibold text-paper">
-                        −14 kg
+                        hasta −25%
                       </span>
                       <span className="text-[12px] text-paper/75">
-                        media con seguimiento*
+                        de tu peso corporal*
                       </span>
                     </div>
                   </div>
@@ -332,78 +300,6 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                 </li>
               ))}
             </ul>
-          </section>
-
-          {/* ── Resultados reales ── */}
-          <section
-            aria-labelledby="resultados"
-            className="mx-auto max-w-[1100px] px-5 pt-20"
-          >
-            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-12">
-              <div>
-                <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                  Resultados reales
-                </span>
-                <h2
-                  id="resultados"
-                  className="mt-3 text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
-                >
-                  Personas como tú, con un cambio que dura
-                </h2>
-                <p className="mt-4 max-w-[44ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  Miles de pacientes han transformado su relación con el peso
-                  combinando tratamiento GLP-1 y seguimiento médico continuo. Sin
-                  dietas imposibles y sin efecto rebote.
-                </p>
-                <div className="mt-7">
-                  <QuizTrigger
-                    plan={`${planPrefix}-resultados`}
-                    className="inline-block rounded-full bg-ink px-8 py-[15px] text-[16px] font-bold text-paper transition-transform hover:scale-[1.02]"
-                  >
-                    Quiero mis resultados
-                  </QuizTrigger>
-                </div>
-              </div>
-              <div className="mx-auto w-full max-w-[460px] lg:max-w-none">
-                <BeforeAfterCarousel variant="light" count={3} />
-              </div>
-            </div>
-          </section>
-
-          {/* ── ¿Por qué funciona el GLP-1? ── */}
-          <section
-            aria-labelledby="por-que"
-            className="mx-auto max-w-[1100px] px-5 pt-20"
-          >
-            <div className="text-center">
-              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Por qué funciona
-              </span>
-              <h2
-                id="por-que"
-                className="mx-auto mt-3 max-w-[22ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
-              >
-                El enfoque médico que sí da resultados
-              </h2>
-            </div>
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {benefits.map(({ icon: Icon, title, text }) => (
-                <div
-                  key={title}
-                  className="rounded-[24px] border border-ink/10 bg-warm p-7"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sage/60">
-                    <Icon aria-hidden className="h-6 w-6 text-olive" />
-                  </div>
-                  <h3 className="mt-5 text-[19px] font-medium text-ink">
-                    {title}
-                  </h3>
-                  <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
-                    {text}
-                  </p>
-                </div>
-              ))}
-            </div>
           </section>
 
           {/* ── Precio + ¿Qué incluye tu programa? ── */}
