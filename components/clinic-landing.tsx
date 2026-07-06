@@ -40,7 +40,6 @@ const heroPoints = [
 ];
 
 const stats = [
-  { to: 12000, prefix: "+", suffix: "", label: "Pacientes atendidos" },
   { to: 14, prefix: "−", suffix: " kg", label: "Media con seguimiento*" },
   { to: 4.8, prefix: "", suffix: "/5", label: "Valoración de pacientes" },
   { to: 3, prefix: "<", suffix: " h", label: "Respuesta de tu médico" },
@@ -73,20 +72,39 @@ const steps = [
   },
 ];
 
-const testimonials = [
+/** Reseñas reales verificadas en Trustpilot (es.trustpilot.com/review/doctorlife.io) */
+const reviews = [
   {
-    img: "/testimonials/maria.png",
-    quote:
-      "En 4 meses bajé lo que llevaba años intentando. Lo mejor: un médico revisando mi evolución cada semana. Me sentí acompañada de verdad.",
-    name: "María, 41",
-    detail: "4 meses · Tratamiento GLP-1 + seguimiento",
+    name: "Eric Jenkins",
+    initial: "E",
+    stars: 5,
+    title: "Todo online sin perder cercanía",
+    text: "Lo que más me gustó de Dr. Life fue poder hacer todo online sin perder la sensación de estar bien atendido. He bajado 14 kg y mis analíticas han mejorado muchísimo.",
+    timeAgo: "Hace 3 días",
   },
   {
-    img: "/testimonials/daniel.png",
-    quote:
-      "Por primera vez el peso se fue y no volvió. Sin colas, sin esperas y con respuestas del médico en horas. Ojalá lo hubiera hecho antes.",
-    name: "Daniel, 38",
-    detail: "9 meses · Tratamiento GLP-1 + analíticas",
+    name: "Samuel Shah",
+    initial: "S",
+    stars: 5,
+    title: "18 kg en 5 meses",
+    text: "Empecé el tratamiento con bastante miedo porque había probado muchas dietas sin éxito. En 5 meses he perdido 18 kg y el seguimiento con el endocrino ha sido excelente. Me he sentido acompañado en todo momento.",
+    timeAgo: "Hace 3 días",
+  },
+  {
+    name: "Max",
+    initial: "M",
+    stars: 5,
+    title: "Tratamiento GLP-1 10/10",
+    text: "Hice tratamiento glp1 y la verdad que 10/10, contento con el resultado y el trato.",
+    timeAgo: "Hace 4 días",
+  },
+  {
+    name: "Zachary Moore",
+    initial: "Z",
+    stars: 4,
+    title: "Por fin un tratamiento que funciona",
+    text: "Después de años luchando con mi peso, por fin encontré un tratamiento que funciona y un equipo que entiende el problema de la obesidad. Muy recomendable.",
+    timeAgo: "Hace 3 días",
   },
 ];
 
@@ -134,6 +152,34 @@ const payments = [
 
 const FIRST_VISIT = "25 €";
 const MONTHLY = "100 €/mes";
+
+const TRUSTPILOT_URL = "https://es.trustpilot.com/review/doctorlife.io";
+const TRUSTPILOT_GREEN = "#00b67a";
+
+/** Fila de estrellas con el estilo verde de Trustpilot (cuadro verde + estrella blanca). */
+function TrustpilotStars({ rating, size = 24 }: { rating: number; size?: number }) {
+  return (
+    <div className="flex items-center gap-[2px]" aria-label={`${rating} de 5 estrellas`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span
+          key={i}
+          className="flex items-center justify-center"
+          style={{
+            width: size,
+            height: size,
+            backgroundColor: i < rating ? TRUSTPILOT_GREEN : "#dcdce6",
+          }}
+        >
+          <Star
+            aria-hidden
+            className="fill-white text-white"
+            style={{ width: size * 0.66, height: size * 0.66 }}
+          />
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export function ClinicLanding({ config }: { config: ClinicConfig }) {
   const { path, planPrefix } = config;
@@ -192,7 +238,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
                       ))}
                     </div>
                     <span className="text-[14px] font-medium text-paper/85">
-                      <span className="font-semibold text-paper">4,8/5</span> · +12.000 pacientes atendidos
+                      <span className="font-semibold text-paper">4,8/5</span> · valoración de nuestros pacientes
                     </span>
                   </div>
 
@@ -268,7 +314,7 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
 
           {/* ── Banda de estadísticas ── */}
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
-            <ul className="grid grid-cols-2 gap-4 rounded-[24px] border border-ink/10 bg-warm px-4 py-6 md:grid-cols-4 md:px-8">
+            <ul className="grid grid-cols-1 gap-4 rounded-[24px] border border-ink/10 bg-warm px-4 py-6 sm:grid-cols-3 md:px-8">
               {stats.map((s) => (
                 <li key={s.label} className="text-center">
                   <Counter
@@ -428,63 +474,108 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
             </div>
           </section>
 
-          {/* ── Testimonios ── */}
+          {/* ── Opiniones reales de Trustpilot ── */}
           <section
             aria-labelledby="testimonios"
             className="mx-auto max-w-[1100px] px-5 pt-20"
           >
-            <div className="text-center">
-              <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Testimonios
-              </span>
+            <div className="flex flex-col items-center text-center">
               <h2
                 id="testimonios"
-                className="mx-auto mt-3 max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
+                className="max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
               >
-                Lo que dicen quienes ya lo han conseguido
+                Lo que dicen nuestros pacientes
               </h2>
+
+              {/* Cabecera con TrustScore, estilo Trustpilot */}
+              <div className="mt-6 flex flex-col items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Star
+                    aria-hidden
+                    className="h-6 w-6 fill-current"
+                    style={{ color: TRUSTPILOT_GREEN }}
+                  />
+                  <span className="text-[20px] font-semibold text-ink">Trustpilot</span>
+                </div>
+                <TrustpilotStars rating={4} size={30} />
+                <p className="text-[14px] text-ink-soft">
+                  <span className="font-semibold text-ink">Excelente</span>{" "}
+                  · TrustScore <span className="font-semibold text-ink">4,1</span>{" "}
+                  · Basado en{" "}
+                  <a
+                    href={TRUSTPILOT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-ink underline underline-offset-2"
+                  >
+                    opiniones reales
+                  </a>
+                </p>
+              </div>
             </div>
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-              {testimonials.map((t) => (
+
+            {/* Tarjetas de reseñas con estilo Trustpilot */}
+            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {reviews.map((r) => (
                 <figure
-                  key={t.name}
-                  className="flex flex-col rounded-[24px] border border-ink/10 bg-warm p-7 sm:p-8"
+                  key={r.name}
+                  className="flex flex-col rounded-[16px] border border-ink/10 bg-paper p-6"
                 >
-                  <div className="flex items-center gap-1 text-clay">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} aria-hidden className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <blockquote className="mt-4 font-serif text-[clamp(18px,2.2vw,23px)] font-normal italic leading-[1.4] text-ink">
-                    {"\u201C"}
-                    {t.quote}
-                    {"\u201D"}
-                  </blockquote>
-                  <figcaption className="mt-6 flex items-center gap-4">
-                    <span className="relative block h-[52px] w-[52px] overflow-hidden rounded-full">
-                      <Image
-                        src={t.img}
-                        alt={t.name}
-                        fill
-                        sizes="52px"
-                        className="object-cover object-[center_20%]"
-                      />
+                  <TrustpilotStars rating={r.stars} size={22} />
+                  <figcaption className="mt-4 flex items-center gap-3">
+                    <span
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-[15px] font-semibold text-paper"
+                      style={{ backgroundColor: TRUSTPILOT_GREEN }}
+                      aria-hidden
+                    >
+                      {r.initial}
                     </span>
-                    <span>
-                      <span className="block text-[15px] font-medium text-ink">
-                        {t.name}
+                    <span className="min-w-0">
+                      <span className="flex items-center gap-1.5">
+                        <span className="truncate text-[14.5px] font-semibold text-ink">
+                          {r.name}
+                        </span>
+                        <BadgeCheck
+                          aria-label="Verificada"
+                          className="h-4 w-4 flex-shrink-0"
+                          style={{ color: TRUSTPILOT_GREEN }}
+                        />
                       </span>
-                      <span className="block text-[13px] text-ink-mute">
-                        {t.detail}
+                      <span className="block text-[12px] text-ink-mute">
+                        {r.timeAgo}
                       </span>
                     </span>
                   </figcaption>
+                  <h3 className="mt-4 text-[15px] font-semibold leading-snug text-ink">
+                    {r.title}
+                  </h3>
+                  <blockquote className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-soft">
+                    {r.text}
+                  </blockquote>
                 </figure>
               ))}
             </div>
+
+            <div className="mt-8 text-center">
+              <a
+                href={TRUSTPILOT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-warm px-6 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:bg-ink/[.04]"
+              >
+                <Star
+                  aria-hidden
+                  className="h-4 w-4 fill-current"
+                  style={{ color: TRUSTPILOT_GREEN }}
+                />
+                Ver todas las opiniones en Trustpilot
+              </a>
+            </div>
+
             <p className="mx-auto mt-6 max-w-[60ch] text-center text-[11.5px] leading-relaxed text-ink-mute">
-              Los testimonios reflejan experiencias individuales. Los resultados
-              varían según cada persona. Consulta siempre con tu médico.
+              Opiniones verificadas publicadas en Trustpilot. Reflejan
+              experiencias individuales; los resultados varían según cada persona.
+              Consulta siempre con tu médico.
             </p>
           </section>
 
