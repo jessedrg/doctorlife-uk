@@ -181,13 +181,13 @@ export default function TdeePage() {
             <div className="flex flex-col items-start gap-6 p-8 md:flex-row md:items-center md:justify-between md:p-10">
               <div className="space-y-2">
                 <span className="inline-block rounded-full bg-sage/20 px-3 py-1 text-xs font-medium uppercase tracking-wider text-sage">
-                  Primera visita 25 €
+                  Primera visita gratis
                 </span>
                 <p className="text-2xl font-semibold text-paper md:text-3xl text-balance">
                   ¿List@ para empezar?
                 </p>
                 <p className="max-w-sm text-sm leading-relaxed text-paper/60">
-                  Reserva tu primera visita (descontables del tratamiento) y empieza con un plan
+                  Reserva tu primera visita gratis y empieza con un plan
                   diseñado en torno a ti.
                 </p>
               </div>

@@ -23,7 +23,7 @@ const PATH = "/consulta-peso-3f";
 export const metadata: Metadata = {
   title: "Consulta médica online para el control de peso | DoctorLife",
   description:
-    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento continuo. Primera visita 25 €, sin permanencia.",
+    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento continuo. Primera visita gratis, sin permanencia.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
   openGraph: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}${PATH}`,
     title: "Consulta médica online para el control de peso | DoctorLife",
     description:
-      "Valoración con médicos colegiados, 100% online. Plan personalizado y seguimiento. Primera visita 25 €, sin permanencia.",
+      "Valoración con médicos colegiados, 100% online. Plan personalizado y seguimiento. Primera visita gratis, sin permanencia.",
   },
 };
 
@@ -91,7 +91,7 @@ const benefits = [
 const faqs = [
   {
     q: "¿Qué incluye la primera visita?",
-    a: "Una valoración clínica completa con un médico colegiado por videollamada, en la que se revisa tu historia y tus objetivos y se define el punto de partida. Su importe (25 €) se descuenta de tu suscripción si continúas.",
+    a: "Una valoración clínica completa con un médico colegiado por videollamada, en la que se revisa tu historia y tus objetivos y se define el punto de partida. La primera visita es gratis, sin compromiso.",
   },
   {
     q: "¿Los médicos están colegiados?",
@@ -103,7 +103,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta?",
-    a: "La primera visita cuesta 25 € (descontables). Después, una única suscripción de 100 €/mes que incluye seguimiento por chat con tu médico y ajuste del plan. Sin permanencia.",
+    a: "La primera visita es gratis. Oferta de lanzamiento: el primer mes 60 € y, después, una única suscripción de 100 €/mes que incluye seguimiento por chat con tu médico y ajuste del plan. Sin permanencia.",
   },
   {
     q: "¿Necesito acudir presencialmente?",
@@ -157,10 +157,10 @@ export default function LandingPeso3Fotos() {
                       plan="ads-peso-3f"
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
-                      Reservar primera visita · 25 €
+                      Reservar primera visita gratis
                     </QuizTrigger>
                     <span className="text-[13.5px] text-paper/70">
-                      Importe descontable · sin compromiso
+                      Gratis · sin compromiso
                     </span>
                   </div>
 
@@ -281,11 +281,10 @@ export default function LandingPeso3Fotos() {
                   id="precio"
                   className="mt-3 text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.1] text-ink"
                 >
-                  Empieza por 25 € y decide con calma
+                  Empieza gratis y decide con calma
                 </h2>
                 <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  La primera visita cuesta 25 € y es descontable. Si decides
-                  continuar, una única suscripción de 100 €/mes cubre el seguimiento
+                  La primera visita es gratis. Si decides continuar, oferta de lanzamiento: el primer mes 60 € y, después, una suscripción de 100 €/mes que cubre el seguimiento
                   con tu médico y el ajuste de tu plan. Sin permanencia y sin
                   sorpresas.
                 </p>
@@ -310,16 +309,14 @@ export default function LandingPeso3Fotos() {
               <div className="rounded-[24px] bg-espresso p-8 text-paper">
                 <p className="text-[14px] text-paper/70">Primera visita</p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[48px] font-light leading-none">25 €</span>
-                  <span className="mb-1 text-[14px] text-paper/70">descontable</span>
+                  <span className="text-[48px] font-light leading-none">Gratis</span>
+                  <span className="mb-1 text-[14px] text-paper/70">sin compromiso</span>
                 </p>
                 <div className="my-6 h-px bg-paper/15" />
-                <p className="text-[14px] text-paper/70">Después, si continúas</p>
+                <p className="text-[14px] text-paper/70">Si continúas · oferta de lanzamiento</p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[32px] font-light leading-none">
-                    100 €
-                  </span>
-                  <span className="mb-1 text-[14px] text-paper/70">/mes</span>
+                  <span className="text-[32px] font-light leading-none">60 €</span>
+                  <span className="mb-1 text-[14px] text-paper/70">primer mes, luego 100 €/mes</span>
                 </p>
                 <QuizTrigger
                   plan="ads-peso-3f-precio"
@@ -380,14 +377,14 @@ export default function LandingPeso3Fotos() {
                     Da el primer paso hoy, con un médico de tu lado
                   </h2>
                   <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-paper/75">
-                    Reserva tu primera visita por 25 €. Sin desplazamientos, sin
+                    Reserva tu primera visita gratis. Sin desplazamientos, sin
                     permanencia y con el rigor de médicos colegiados.
                   </p>
                   <QuizTrigger
                     plan="ads-peso-3f-final"
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
-                    Reservar primera visita · 25 €
+                    Reservar primera visita gratis
                   </QuizTrigger>
                   <p className="mt-5 text-[14px] text-paper/70">
                     ¿Quieres conocernos mejor?{" "}
@@ -455,7 +452,7 @@ export default function LandingPeso3Fotos() {
                   plan="ads-peso-3f-footer"
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
-                  Reservar primera visita · 25 €
+                  Reservar primera visita gratis
                   <span className="text-[13px]">↗</span>
                 </QuizTrigger>
                 <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />

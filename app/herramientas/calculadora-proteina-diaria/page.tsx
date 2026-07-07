@@ -153,11 +153,11 @@ export default function CalculadoraProteinaPage() {
             <div className="mt-14 rounded-[24px] bg-espresso px-8 py-10 text-paper flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <div>
                 <span className="inline-block mb-3 rounded-full bg-sage/20 px-3 py-1 text-xs font-medium text-sage">
-                  Primera visita 25 €
+                  Primera visita gratis
                 </span>
                 <h3 className="font-serif text-2xl font-semibold mb-1">¿List@ para empezar?</h3>
                 <p className="text-paper/60 text-sm leading-relaxed max-w-sm">
-                  Reserva tu primera visita (descontable del tratamiento) y empieza con un plan de nutrición y peso diseñado en torno a ti.
+                  Reserva tu primera visita gratis y empieza con un plan de nutrición y peso diseñado en torno a ti.
                 </p>
               </div>
               <div className="flex flex-col gap-3 shrink-0">

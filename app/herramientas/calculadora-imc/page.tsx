@@ -154,13 +154,13 @@ export default function CalculadoraImcPage() {
           <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 text-center md:flex-row md:text-left">
             <div className="flex-1">
               <span className="mb-3 inline-block rounded-full bg-sage/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[.14em] text-sage">
-                Primera visita 25 €
+                Primera visita gratis
               </span>
               <h2 className="text-balance text-3xl font-bold text-paper md:text-4xl">
                 ¿List@ para empezar?
               </h2>
               <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-paper/65">
-                Reserva tu primera visita por 25 € (descontables del tratamiento) y empieza con un plan diseñado en torno a ti.
+                Reserva tu primera visita gratis y empieza con un plan diseñado en torno a ti.
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3 md:items-end">

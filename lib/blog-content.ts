@@ -4609,7 +4609,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Nutricionista online en ${c.name}: cómo elegir | DoctorLife`,
     metaDescription: (c) =>
-      `Nutricionista online en ${c.name}: qué puede hacer, cuándo necesitas además valoración médica y cómo combinar dieta y tratamiento. Primera visita médica 25 €.`,
+      `Nutricionista online en ${c.name}: qué puede hacer, cuándo necesitas además valoración médica y cómo combinar dieta y tratamiento. Primera visita médica gratis.`,
     excerpt: (c) =>
       `Qué hace un nutricionista en ${c.name}, cuándo conviene sumar valoración médica y cómo combinar alimentación y tratamiento del peso.`,
     cover: getAlt("wegovy").cover,
@@ -4786,7 +4786,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar pastillas para adelgazar en ${c.name}: guía | DoctorLife`,
     metaDescription: (c) =>
-      `Antes de comprar pastillas para adelgazar en ${c.name}, descubre cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Valoración 25 €.`,
+      `Antes de comprar pastillas para adelgazar en ${c.name}, descubre cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Valoración gratis.`,
     excerpt: (c) =>
       `Qué pastillas para adelgazar puedes comprar en ${c.name}, cuáles son marketing y qué tratamientos médicos dan mejores resultados.`,
     cover: getAlt("saxenda").cover,
@@ -4976,12 +4976,12 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
   );
 }
 
-/* ══════════════════════════════════════════════════════��════
+/* ══════════════════════════════════════════════════════��═══���
    CLÍNICA DE TRATAMIENTO POR FÁRMACO + CIUDAD (alta intención)
    "Clínica de tratamiento con {Ozempic|Wegovy|Mounjaro|GLP‑1}
    en {ciudad}". Ángulo 100% comercial: vendemos la CONSULTA y el
-   tratamiento con receta, explicando el modelo gratis (1ª visita
-   descontable). Contenido único por ciudad vía contexto local.
+   tratamiento con receta, explicando el modelo (1ª visita
+   gratis). Contenido único por ciudad vía contexto local.
    ═══════════════════════════════════════════════════════════ */
 type ClinicTarget = {
   key: string; // para el slug: wegovy | ozempic | mounjaro | glp1
@@ -5000,22 +5000,22 @@ const CLINIC_TARGETS: ClinicTarget[] = [
 const CLINIC_INTRO_BRAND: string[][] = [
   [
     "Buscas una clínica en {City} para tratarte con {Drug}, pero la buena noticia es que ya no necesitas una clínica presencial. {Drug} ({inn}) es un tratamiento de prescripción que un médico colegiado puede valorarte y recetarte online, y que recoges en tu farmacia de {City}.",
-    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita gratis —que se descuentan íntegramente del tratamiento— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
+    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita gratis —sin compromiso— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
   ],
   [
     "Una clínica seria para tratarte con {Drug} en {City} no te vende una caja y te deja solo: valora tu salud, ajusta la dosis y te acompaña. Ese es el modelo de {BRAND}, con la ventaja de que todo es online y sin listas de espera.",
-    "Empezar es sencillo y transparente: la primera visita cuesta 25 € y se descuenta del tratamiento si decides continuar. Desde ahí, un médico colegiado supervisa tu evolución con {Drug} y ajusta la pauta cuando hace falta, sin que tengas que desplazarte por {City}.",
+    "Empezar es sencillo y transparente: la primera visita es gratis y solo pagas si decides continuar. Desde ahí, un médico colegiado supervisa tu evolución con {Drug} y ajusta la pauta cuando hace falta, sin que tengas que desplazarte por {City}.",
   ],
 ];
 
 const CLINIC_INTRO_GLP1: string[][] = [
   [
     "Buscar una clínica de tratamiento GLP‑1 en {City} suele acabar en listas de espera o en webs sin garantías. En {BRAND} lo resolvemos online: un médico colegiado valora tu caso y, si un GLP‑1 (Wegovy, Ozempic o Mounjaro) está indicado, te lo prescribe con receta electrónica válida en cualquier farmacia de {City}.",
-    "Tu primera visita cuesta 25 € y se descuenta íntegramente del tratamiento si decides empezar. Sin permanencia, sin desplazamientos y con seguimiento real desde la app.",
+    "Tu primera visita es gratis y solo pagas si decides continuar. Sin permanencia, sin desplazamientos y con seguimiento real desde la app.",
   ],
   [
     "Los análogos del GLP‑1 son hoy lo más eficaz para el control médico del peso, pero necesitan prescripción y seguimiento. En {City}, {BRAND} actúa como tu clínica online: valoración médica, receta si procede y ajustes de dosis, todo sin salir de casa.",
-    "El modelo es claro: 25 € la primera visita y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
+    "El modelo es claro: la primera visita es gratis y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
   ],
 ];
 
@@ -5025,7 +5025,7 @@ const CLINIC_WHY_GLP1 =
 const CLINIC_BENEFITS: string[] = [
   "Sin listas de espera: valoración médica en poco tiempo, no en meses.",
   "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
-  "Primera visita gratis, descontables íntegramente del tratamiento.",
+  "Primera visita gratis, sin compromiso.",
   "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
   "Sin permanencia: continúas solo mientras quieras.",
 ];
@@ -5077,7 +5077,7 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
         {
           type: "p",
           text: tpl(
-            "En {BRAND} la primera visita médica es gratis y se descuentan íntegramente del tratamiento si decides empezar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
+            "En {BRAND} la es gratis y solo pagas si decides continuar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
             vars,
           ),
         },
@@ -5111,7 +5111,7 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
     },
     {
       q: tpl("¿Cuánto cuesta empezar el tratamiento con {Drug}?", vars),
-      a: "La primera visita es gratis y se descuentan íntegramente del tratamiento si decides empezar. No hay permanencia.",
+      a: "La primera visita es gratis y solo pagas si decides continuar. No hay permanencia.",
     },
     {
       q: tpl("¿La receta es válida en las farmacias de {City}?", vars),
@@ -5136,11 +5136,11 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
       h1: tpl(`Clínica de tratamiento con ${metaDrug} en {City}: consulta y receta online`, vars),
       metaTitle: tpl(`Clínica de tratamiento con ${metaDrug} en {City} | DoctorLife`, vars),
       metaDescription: tpl(
-        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita gratis descontable.`,
+        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita gratis.`,
         vars,
       ),
       excerpt: tpl(
-        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita gratis, descontable.`,
+        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita gratis.`,
         vars,
       ),
       category: target.generic ? "Adelgazar" : drug.category,

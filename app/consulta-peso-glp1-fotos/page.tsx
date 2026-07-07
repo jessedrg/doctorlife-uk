@@ -7,7 +7,7 @@ const PATH = "/consulta-peso-glp1-fotos";
 export const metadata: Metadata = {
   title: "Tratamiento GLP-1 con supervisión médica online | DoctorLife",
   description:
-    "Tratamiento GLP-1 con endocrinos colegiados, 100% online, si está clínicamente indicado. Plan personalizado y seguimiento. Primera visita 25 €.",
+    "Tratamiento GLP-1 con endocrinos colegiados, 100% online, si está clínicamente indicado. Plan personalizado y seguimiento. Primera visita gratis.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };

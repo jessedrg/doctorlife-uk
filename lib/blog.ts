@@ -1560,7 +1560,7 @@ const manualPosts: Post[] = [
             caption: "Qué pagas al empezar con Ozempic en Madrid",
             head: ["Concepto", "Dónde se paga", "Precio orientativo"],
             rows: [
-              ["Primera visita médica", "DoctorLife (online)", "25 €"],
+              ["Primera visita médica", "DoctorLife (online)", "Gratis"],
               ["Plan de seguimiento mensual", "DoctorLife (online)", "desde 149 €/mes"],
               ["Medicación (pluma)", "Farmacia de Madrid", "≈100–130 €/pluma"],
             ],
@@ -2060,7 +2060,7 @@ const manualPosts: Post[] = [
             caption: "Qué pagas al comprar Mounjaro online",
             head: ["Concepto", "Dónde se paga", "Precio orientativo"],
             rows: [
-              ["Primera visita médica", "DoctorLife (online)", "25 €"],
+              ["Primera visita médica", "DoctorLife (online)", "Gratis"],
               ["Plan de seguimiento mensual", "DoctorLife (online)", "desde 149 €/mes"],
               ["Medicación (pluma, según dosis)", "Farmacia", "≈180–280 €/pluma"],
             ],
@@ -3434,7 +3434,7 @@ const manualPosts: Post[] = [
             caption: "Qué incluye un tratamiento médico de pérdida de peso",
             head: ["Concepto", "Qué cubre", "Precio orientativo"],
             rows: [
-              ["Primera visita", "Valoración médica completa", "25 €"],
+              ["Primera visita", "Valoración médica completa", "Gratis"],
               ["Seguimiento mensual", "Ajustes de dosis y soporte", "desde 149 €/mes"],
               ["Medicación GLP‑1", "Pluma según dosis (en farmacia)", "200–350 €/mes"],
             ],
@@ -4730,7 +4730,7 @@ const manualPosts: Post[] = [
             caption: "Qué incluye un tratamiento médico de pérdida de peso",
             head: ["Concepto", "Qué cubre", "Precio orientativo"],
             rows: [
-              ["Primera visita", "Valoración médica completa", "25 €"],
+              ["Primera visita", "Valoración médica completa", "Gratis"],
               ["Seguimiento mensual", "Ajustes de dosis y soporte", "desde 149 €/mes"],
               ["Medicación GLP‑1", "Pluma según dosis (en farmacia)", "200–350 €/mes"],
             ],
@@ -5738,7 +5738,7 @@ export function seoDescription(post: Post): string {
     "✓ Receta médica online",
     "✓ Médicos colegiados",
     "✓ Sin listas de espera",
-    "✓ 1ª visita gratis descontable",
+    "✓ 1ª visita gratis",
     "✓ Seguimiento en nuestra app",
   ];
 

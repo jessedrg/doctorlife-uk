@@ -7,7 +7,7 @@ const PATH = "/consulta-peso-suave";
 export const metadata: Metadata = {
   title: "Consulta médica online para el control de peso | DoctorLife",
   description:
-    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento. Primera visita 25 €, sin permanencia.",
+    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento. Primera visita gratis, sin permanencia.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };

@@ -139,14 +139,13 @@ export default function HerramientasPage() {
             <div className="flex flex-col items-center gap-8 rounded-[28px] bg-ink px-8 py-12 text-center md:flex-row md:px-14 md:text-left">
               <div className="flex-1">
                 <span className="mb-3 inline-block rounded-full bg-sage/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[.14em] text-sage">
-                  Primera visita 25 €
+                  Primera visita gratis
                 </span>
                 <h2 className="text-balance text-3xl font-bold text-paper md:text-4xl">
                   ¿List@ para un plan de verdad?
                 </h2>
                 <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-paper/65">
-                  Las calculadoras orientan, pero tu cuerpo es único. Reserva tu primera visita por
-                  25 € (descontables del tratamiento) y empieza con un plan diseñado en torno a ti.
+                  Las calculadoras orientan, pero tu cuerpo es único. Reserva tu primera visita gratis y empieza con un plan diseñado en torno a ti.
                 </p>
               </div>
               <div className="shrink-0">

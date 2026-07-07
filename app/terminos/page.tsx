@@ -28,7 +28,7 @@ const sections: Section[] = [
   },
   {
     title: "3. Precio y pago",
-    body: "La consulta cuesta 25 €. Solo cobramos si el médico aprueba el tratamiento. Si lo declina, te devolvemos el importe íntegro en 48 h.",
+    body: "La primera consulta es gratis, sin compromiso. Si el médico aprueba el tratamiento y decides continuar, la suscripción mensual es de 100 €/mes (oferta de lanzamiento: primer mes 60 €), sin permanencia y cancelable cuando quieras.",
   },
   {
     title: "4. Limitaciones del servicio",

@@ -7,7 +7,7 @@ const PATH = "/consulta-peso-max";
 export const metadata: Metadata = {
   title: "Pierde peso con GLP-1 y seguimiento médico | DoctorLife",
   description:
-    "Programa de control de peso con GLP-1 supervisado por endocrinos colegiados, 100% online. Empieza hoy tu valoración. Primera visita 25 €.",
+    "Programa de control de peso con GLP-1 supervisado por endocrinos colegiados, 100% online. Empieza hoy tu valoración. Primera visita gratis.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
