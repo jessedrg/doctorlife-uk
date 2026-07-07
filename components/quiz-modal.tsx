@@ -403,15 +403,15 @@ export function QuizModal() {
                 })}
               </div>
 
-              {/* Atajo a WhatsApp (solo en el primer paso; oculto en campañas) */}
-              {step === 0 && !isAds && (
+              {/* Atajo a WhatsApp (solo en el primer paso) */}
+              {step === 0 && (
                 <div className="mt-6 flex items-center gap-3">
                   <span className="h-px flex-1 bg-ink/10" />
                   <span className="text-[12.5px] text-ink-mute">o si lo prefieres</span>
                   <span className="h-px flex-1 bg-ink/10" />
                 </div>
               )}
-              {step === 0 && !isAds && (
+              {step === 0 && (
                 <button
                   type="button"
                   onClick={() => {
@@ -889,14 +889,20 @@ export function QuizModal() {
 
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
-                  25€
+                  {isAds ? "0€" : "25€"}
                 </span>
-                <p className="text-[13.5px] leading-snug text-ink-soft">
-                  <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
-                  {isAds
-                    ? " Si decides continuar, lo desbloqueas con la suscripción mensual y te descontamos esos 25\u00a0€ del primer mes (después, 65\u00a0€/mes + IVA). Cancela cuando quieras."
-                    : " Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te descontamos esos 25\u00a0€ del primer mes (después, 65\u00a0€/mes + IVA). Cancela cuando quieras."}
-                </p>
+                {isAds ? (
+                  <p className="text-[13.5px] leading-snug text-ink-soft">
+                    <span className="font-semibold text-ink">Tu primera valoración es gratis.</span> Si decides
+                    continuar, lo gestionas con la suscripción mensual (100&nbsp;€/mes + IVA). Cancela cuando quieras.
+                  </p>
+                ) : (
+                  <p className="text-[13.5px] leading-snug text-ink-soft">
+                    <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
+                    Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te descontamos
+                    esos 25&nbsp;€ del primer mes (después, 65&nbsp;€/mes + IVA). Cancela cuando quieras.
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col gap-[11px]">
