@@ -148,7 +148,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
   const { planPrefix } = config;
 
   return (
-    <QuizProvider>
+    <QuizProvider variant="ads">
       <main className="min-h-screen bg-paper text-ink">
         {/* ── Cabecera mínima: solo logo (sin navbar) ── */}
         <header className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-5">

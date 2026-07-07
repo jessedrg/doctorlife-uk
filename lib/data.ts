@@ -104,6 +104,32 @@ export const quizSteps: QuizStep[] = [
   { q: "¿Has usado un GLP‑1 antes?", opts: ["Ahora mismo lo uso", "En el pasado", "Nunca"] },
 ];
 
+/* ── Variante neutra para campañas (Google Ads): sin nombrar fármacos ── */
+export const adsQuizSteps: QuizStep[] = [
+  {
+    q: "¿Cuál es tu objetivo principal?",
+    opts: ["Cuidar mi peso", "Mejorar mi salud metabólica", "Mantener mi peso actual"],
+  },
+];
+
+export const adsProducts: Product[] = [
+  {
+    name: "Plan de seguimiento médico",
+    subtitle:
+      "Todo lo que necesitas para cuidar tu peso con seguimiento médico real, en una sola cuota.",
+    price: "100€/mes + IVA",
+    tag: "Suscripción",
+    img: "/products/maren-pen.png",
+    featured: true,
+    features: [
+      "Chat directo con médico colegiado en la plataforma",
+      "Valoración médica personalizada de tu caso",
+      "Seguimiento continuo desde la app",
+      "Sin permanencia: cancela cuando quieras",
+    ],
+  },
+];
+
 export type FooterLink = { label: string; href: string };
 export type FooterColumn = { title: string; links: FooterLink[] };
 
