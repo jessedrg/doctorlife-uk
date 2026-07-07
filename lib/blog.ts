@@ -48,7 +48,7 @@ export const MEDICAL_REVIEWER = {
 };
 
 const PRICE_NOTE =
-  "En DoctorLife tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
+  "En DoctorLife tu primera visita médica es gratis, sin compromiso. Todo el seguimiento se gestiona desde nuestra app interna.";
 
 const manualPosts: Post[] = [
   /* 1 ───────────────────────────────────────────── */
@@ -58,7 +58,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Barcelona: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Barcelona (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Guía para comprar Wegovy en Barcelona con receta médica: precios reales, cómo conseguir la prescripción y empezar con seguimiento médico. Primera visita 25 €.",
+      "Guía para comprar Wegovy en Barcelona con receta médica: precios reales, cómo conseguir la prescripción y empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "Todo lo que necesitas para comprar Wegovy en Barcelona de forma legal y segura: precio, receta médica y cómo empezar con acompañamiento clínico.",
     category: "Wegovy",
@@ -128,7 +128,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables del tratamiento).",
+              "Reserva tu primera visita médica (gratis).",
               "Completa tu historial y objetivos de salud en la app.",
               "Un médico colegiado valora si Wegovy u otro GLP‑1 es adecuado para ti.",
               "Si procede, recibes la prescripción y las pautas de dosis.",
@@ -167,7 +167,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita médica son 25 € y se descuentan del tratamiento. El plan de seguimiento empieza desde 149 €/mes; la medicación se compra aparte en farmacia si se prescribe.",
+        a: "La primera visita médica es gratis. El plan de seguimiento empieza desde 149 €/mes; la medicación se compra aparte en farmacia si se prescribe.",
       },
       {
         q: "¿En cuánto tiempo se ven resultados?",
@@ -183,7 +183,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Barcelona: guía completa",
     metaTitle: "Comprar Mounjaro en Barcelona (2026): Precio, Receta y Resultados",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Barcelona con receta: precio, diferencias con Wegovy, resultados y cómo empezar con seguimiento médico. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Barcelona con receta: precio, diferencias con Wegovy, resultados y cómo empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "Mounjaro (tirzepatida) es uno de los GLP‑1 más eficaces para perder peso. Te explicamos precio, receta y cómo empezar en Barcelona.",
     category: "Mounjaro",
@@ -270,7 +270,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica por 25 € (descontables del tratamiento).",
+              "Primera visita médica gratis.",
               "Valoración de tu caso por un endocrino colegiado.",
               "Prescripción y pauta de dosis si es adecuado para ti.",
               "Seguimiento desde la app con ajustes y soporte continuo.",
@@ -315,7 +315,7 @@ const manualPosts: Post[] = [
     h1: "Wegovy precio en España: cuánto cuesta y cómo conseguirlo",
     metaTitle: "Wegovy Precio España 2026: Cuánto Cuesta por Dosis y Cómo Conseguirlo",
     metaDescription:
-      "Precio de Wegovy en España por dosis (0,25 a 2,4 mg), qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita 25 €.",
+      "Precio de Wegovy en España por dosis (0,25 a 2,4 mg), qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Cuánto cuesta realmente Wegovy en España, dosis a dosis, y qué incluye un tratamiento completo con seguimiento médico.",
     category: "Precios",
@@ -407,8 +407,8 @@ const manualPosts: Post[] = [
         a: "Porque depende de la dosis de la pluma y de si el precio incluye o no la consulta y el seguimiento médico.",
       },
       {
-        q: "¿La primera visita en DoctorLife se descuenta?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -420,7 +420,7 @@ const manualPosts: Post[] = [
     h1: "Ozempic vs Wegovy vs Mounjaro: cuál elegir para perder peso",
     metaTitle: "Ozempic vs Wegovy vs Mounjaro: Diferencias y Cuál Elegir (2026)",
     metaDescription:
-      "Comparativa clara de Ozempic, Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis y cuál te conviene. Valoración médica desde 25 €.",
+      "Comparativa clara de Ozempic, Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis y cuál te conviene. Primera visita gratis.",
     excerpt:
       "Ozempic, Wegovy y Mounjaro se confunden a menudo. Te explicamos las diferencias reales y cuál tiene sentido según tu caso.",
     category: "Comparativas",
@@ -523,7 +523,7 @@ const manualPosts: Post[] = [
     h1: "Cómo conseguir receta de Wegovy online en España",
     metaTitle: "Receta de Wegovy Online en España: Cómo Conseguirla de Forma Legal",
     metaDescription:
-      "Cómo conseguir una receta de Wegovy online en España de forma legal y segura, con valoración médica real. Primera visita 25 €, seguimiento por app.",
+      "Cómo conseguir una receta de Wegovy online en España de forma legal y segura, con valoración médica real. Primera visita gratis, seguimiento por app.",
     excerpt:
       "Conseguir receta de Wegovy online es posible y legal si hay una valoración médica real detrás. Te explicamos cómo funciona.",
     category: "Receta",
@@ -549,7 +549,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita online (25 €, descontables).",
+              "Reservas tu primera visita online gratis.",
               "Rellenas tu historial clínico y objetivos en la app.",
               "Un médico valora tu caso y, si procede, emite la receta.",
               "Recoges la medicación en tu farmacia.",
@@ -619,7 +619,7 @@ const manualPosts: Post[] = [
     h1: "Mounjaro precio en España: cuánto cuesta la tirzepatida",
     metaTitle: "Mounjaro Precio España 2026: Cuánto Cuesta la Tirzepatida por Dosis",
     metaDescription:
-      "Precio de Mounjaro (tirzepatida) en España por dosis, qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita 25 €.",
+      "Precio de Mounjaro (tirzepatida) en España por dosis, qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Cuánto cuesta Mounjaro en España según la dosis y qué incluye un tratamiento completo con acompañamiento médico.",
     category: "Precios",
@@ -712,7 +712,7 @@ const manualPosts: Post[] = [
     h1: "Semaglutida: qué es y cómo comprarla con receta en España",
     metaTitle: "Comprar Semaglutida con Receta en España: Guía Segura (2026)",
     metaDescription:
-      "Qué es la semaglutida (Ozempic, Wegovy, Rybelsus), para qué sirve y cómo comprarla con receta de forma legal en España. Valoración médica desde 25 €.",
+      "Qué es la semaglutida (Ozempic, Wegovy, Rybelsus), para qué sirve y cómo comprarla con receta de forma legal en España. Primera visita gratis.",
     excerpt:
       "La semaglutida está detrás de Ozempic, Wegovy y Rybelsus. Te explicamos qué es y cómo comprarla con receta de forma segura.",
     category: "Semaglutida",
@@ -816,7 +816,7 @@ const manualPosts: Post[] = [
     h1: "Tirzepatida para adelgazar: resultados, dosis y cómo empezar",
     metaTitle: "Tirzepatida para Adelgazar: Resultados, Dosis y Precio (2026)",
     metaDescription:
-      "Cómo funciona la tirzepatida (Mounjaro) para adelgazar: resultados reales, dosis, efectos secundarios y cómo empezar con seguimiento médico. Primera visita 25 €.",
+      "Cómo funciona la tirzepatida (Mounjaro) para adelgazar: resultados reales, dosis, efectos secundarios y cómo empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "La tirzepatida es uno de los tratamientos más eficaces para perder peso. Resultados, dosis y cómo empezar de forma segura.",
     category: "Mounjaro",
@@ -915,7 +915,7 @@ const manualPosts: Post[] = [
     h1: "Clínica de Wegovy en Barcelona: cómo elegir bien",
     metaTitle: "Clínica de Wegovy en Barcelona: Cómo Elegir y Qué Esperar (2026)",
     metaDescription:
-      "Cómo elegir una clínica de Wegovy en Barcelona: qué buscar, precios, seguimiento y señales de alerta. Empieza con médicos colegiados desde 25 €.",
+      "Cómo elegir una clínica de Wegovy en Barcelona: qué buscar, precios, seguimiento y señales de alerta. Empieza con médicos colegiados gratis.",
     excerpt:
       "No todas las clínicas son iguales. Te explicamos qué debe ofrecer una buena clínica de Wegovy en Barcelona.",
     category: "Wegovy",
@@ -1002,7 +1002,7 @@ const manualPosts: Post[] = [
     h1: "Bajar de peso con GLP‑1: plan completo paso a paso",
     metaTitle: "Plan para Perder Peso con GLP‑1: Guía Paso a Paso (2026)",
     metaDescription:
-      "Plan completo para perder peso con GLP‑1 (Wegovy, Mounjaro): fases, nutrición, seguimiento y mantenimiento para resultados duraderos. Empieza desde 25 €.",
+      "Plan completo para perder peso con GLP‑1 (Wegovy, Mounjaro): fases, nutrición, seguimiento y mantenimiento para resultados duraderos. Empieza gratis.",
     excerpt:
       "Un GLP‑1 funciona mejor con un plan. Te enseñamos el método completo para perder peso y, sobre todo, no recuperarlo.",
     category: "Pérdida de peso",
@@ -1194,7 +1194,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica por 25 € (descontables del tratamiento).",
+              "Primera visita médica gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de dosis si es adecuado para ti.",
               "Seguimiento desde la app con ajustes y soporte continuo.",
@@ -1519,7 +1519,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Madrid: precio, receta y cómo empezar con seguimiento",
     metaTitle: "Comprar Ozempic en Madrid (2026): Precio, Receta y Clínica Online",
     metaDescription:
-      "Cómo comprar Ozempic en Madrid de forma legal: precio en farmacia, cómo conseguir la receta médica y empezar con seguimiento online. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Madrid de forma legal: precio en farmacia, cómo conseguir la receta médica y empezar con seguimiento online. Primera visita gratis.",
     excerpt:
       "Guía para comprar Ozempic en Madrid con receta: precios reales, farmacias, desabastecimiento y cómo empezar con acompañamiento médico desde cualquier distrito.",
     category: "Ozempic",
@@ -1560,7 +1560,7 @@ const manualPosts: Post[] = [
             caption: "Qué pagas al empezar con Ozempic en Madrid",
             head: ["Concepto", "Dónde se paga", "Precio orientativo"],
             rows: [
-              ["Primera visita médica", "DoctorLife (online)", "25 € (descontables)"],
+              ["Primera visita médica", "DoctorLife (online)", "25 €"],
               ["Plan de seguimiento mensual", "DoctorLife (online)", "desde 149 €/mes"],
               ["Medicación (pluma)", "Farmacia de Madrid", "≈100–130 €/pluma"],
             ],
@@ -1578,7 +1578,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica (25 €, descontables del tratamiento).",
+              "Reservas tu primera visita médica (gratis).",
               "Rellenas tu historial clínico y objetivos en la app.",
               "Un médico colegiado valora si la semaglutida es adecuada para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -1646,7 +1646,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro en Valencia: precio, receta y seguimiento médico",
     metaTitle: "Comprar Mounjaro en Valencia (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Guía para comprar Mounjaro (tirzepatida) en Valencia con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita 25 €.",
+      "Guía para comprar Mounjaro (tirzepatida) en Valencia con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro en Valencia de forma legal y segura: precio de la tirzepatida, receta médica, disponibilidad y cómo empezar con acompañamiento clínico.",
     category: "Mounjaro",
@@ -1701,7 +1701,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables).",
+              "Reserva tu primera visita médica (gratis).",
               "Completa historial y objetivos de salud en la app.",
               "Un médico valora si la tirzepatida es adecuada para ti.",
               "Si procede, recibes la prescripción y el plan de escalado de dosis.",
@@ -1765,7 +1765,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Sevilla: precio, receta y cómo empezar con seguimiento",
     metaTitle: "Comprar Wegovy en Sevilla (2026): Precio, Receta y Clínica Online",
     metaDescription:
-      "Cómo comprar Wegovy en Sevilla con receta médica: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Sevilla con receta médica: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Sevilla de forma legal y segura: precio de la semaglutida 2,4 mg, receta médica, desabastecimiento y cómo empezar con acompañamiento clínico.",
     category: "Wegovy",
@@ -1821,7 +1821,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables del tratamiento).",
+              "Reserva tu primera visita médica (gratis).",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la prescripción y las pautas de dosis.",
@@ -1885,7 +1885,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida en Getafe: precio, receta y seguimiento médico online",
     metaTitle: "Comprar Tirzepatida en Getafe (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Getafe con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita 25 €.",
+      "Cómo comprar tirzepatida (Mounjaro) en Getafe con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
     excerpt:
       "Comprar tirzepatida en Getafe de forma legal y segura: precio de Mounjaro, receta médica y cómo empezar con acompañamiento clínico desde el área metropolitana de Madrid.",
     category: "Mounjaro",
@@ -1940,7 +1940,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables).",
+              "Reserva tu primera visita médica (gratis).",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si la tirzepatida es adecuada para ti.",
               "Si procede, recibes la prescripción y el plan de escalado de dosis.",
@@ -2004,7 +2004,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro online en España: cómo hacerlo legal, seguro y con receta",
     metaTitle: "Comprar Mounjaro Online en España (2026): Receta, Precio y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) online en España de forma legal: receta médica electrónica, precio por dosis y seguimiento. Primera visita 25 €, sin esperas.",
+      "Cómo comprar Mounjaro (tirzepatida) online en España de forma legal: receta médica electrónica, precio por dosis y seguimiento. Primera visita gratis, sin esperas.",
     excerpt:
       "Comprar Mounjaro online en España paso a paso: cómo conseguir la receta de tirzepatida sin desplazarte, precio real y por qué el seguimiento médico marca la diferencia.",
     category: "Mounjaro",
@@ -2039,7 +2039,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables del tratamiento).",
+              "Reservas tu primera visita médica online (gratis).",
               "Completas tu historial clínico y tus objetivos de peso en la app.",
               "Un médico colegiado valora si la tirzepatida es adecuada y segura para ti.",
               "Si procede, recibes la receta electrónica y el plan de escalado de dosis.",
@@ -2060,7 +2060,7 @@ const manualPosts: Post[] = [
             caption: "Qué pagas al comprar Mounjaro online",
             head: ["Concepto", "Dónde se paga", "Precio orientativo"],
             rows: [
-              ["Primera visita médica", "DoctorLife (online)", "25 € (descontables)"],
+              ["Primera visita médica", "DoctorLife (online)", "25 €"],
               ["Plan de seguimiento mensual", "DoctorLife (online)", "desde 149 €/mes"],
               ["Medicación (pluma, según dosis)", "Farmacia", "≈180–280 €/pluma"],
             ],
@@ -2102,7 +2102,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta comprar Mounjaro online?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma (≈180–280 € según dosis) se paga en la farmacia.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma (≈180–280 € según dosis) se paga en la farmacia.",
       },
     ],
   },
@@ -2114,7 +2114,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy online en España: receta, precio y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy Online en España (2026): Receta, Precio y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Wegovy (semaglutida 2,4 mg) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita 25 €.",
+      "Cómo comprar Wegovy (semaglutida 2,4 mg) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy online en España de forma legal: cómo conseguir la receta de semaglutida 2,4 mg sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Wegovy",
@@ -2149,7 +2149,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables del tratamiento).",
+              "Reservas tu primera visita médica online (gratis).",
               "Completas tu historial clínico y tus objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado y seguro para ti.",
               "Si procede, recibes la receta electrónica y la pauta de escalado de dosis.",
@@ -2210,7 +2210,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta comprar Wegovy online?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma (≈200–300 € según dosis) se paga en la farmacia.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma (≈200–300 € según dosis) se paga en la farmacia.",
       },
       {
         q: "¿Cómo recibo la receta si compro Wegovy online?",
@@ -2226,7 +2226,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida online en España: receta, precio y seguimiento médico",
     metaTitle: "Comprar Tirzepatida Online en España (2026): Receta, Precio y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita 25 €, sin esperas.",
+      "Cómo comprar tirzepatida (Mounjaro) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis, sin esperas.",
     excerpt:
       "Comprar tirzepatida online en España de forma legal y segura: cómo conseguir la receta de Mounjaro sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Mounjaro",
@@ -2256,7 +2256,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables del tratamiento).",
+              "Reservas tu primera visita médica online (gratis).",
               "Completas tu historial clínico y tus objetivos en la app.",
               "Un médico colegiado valora si la tirzepatida es adecuada y segura para ti.",
               "Si procede, recibes la receta electrónica y el plan de escalado de dosis.",
@@ -2320,7 +2320,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta comprar tirzepatida online?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma (≈180–280 € según dosis) se paga en la farmacia.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma (≈180–280 € según dosis) se paga en la farmacia.",
       },
     ],
   },
@@ -2332,7 +2332,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Madrid: precio, receta y cómo empezar hoy",
     metaTitle: "Comprar Wegovy en Madrid (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Madrid de forma legal y segura: precio por dosis, cómo conseguir la receta sin lista de espera y empezar con seguimiento médico. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Madrid de forma legal y segura: precio por dosis, cómo conseguir la receta sin lista de espera y empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Madrid con receta médica y sin esperas: precio real por dosis, cómo conseguir la prescripción online y empezar con seguimiento clínico de verdad.",
     category: "Wegovy",
@@ -2385,7 +2385,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables del tratamiento).",
+              "Reserva tu primera visita médica online (gratis).",
               "Completa tu historial clínico y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado y seguro para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -2424,7 +2424,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € y se descuentan del tratamiento. El seguimiento médico empieza desde 149 €/mes; la pluma se compra aparte en farmacia si se prescribe.",
+        a: "La primera visita es gratis. El seguimiento médico empieza desde 149 €/mes; la pluma se compra aparte en farmacia si se prescribe.",
       },
       {
         q: "¿Es seguro tomar Wegovy?",
@@ -2440,7 +2440,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Madrid: precio, receta y resultados",
     metaTitle: "Comprar Mounjaro en Madrid (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Madrid con receta: precio por dosis, diferencias con Wegovy y cómo empezar con seguimiento médico sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Madrid con receta: precio por dosis, diferencias con Wegovy y cómo empezar con seguimiento médico sin esperas. Primera visita gratis.",
     excerpt:
       "Mounjaro (tirzepatida) es uno de los GLP‑1 más eficaces para perder peso. Te explicamos cómo comprarlo en Madrid con receta, su precio y cómo empezar con seguimiento médico.",
     category: "Mounjaro",
@@ -2505,7 +2505,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia y haces el seguimiento desde la app.",
@@ -2538,7 +2538,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento médico empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento médico empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -2550,7 +2550,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Barcelona: precio, receta y qué debes saber",
     metaTitle: "Comprar Ozempic en Barcelona (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Barcelona con receta: precio, por qué es un fármaco para la diabetes y qué alternativa usar si tu objetivo es perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Barcelona con receta: precio, por qué es un fármaco para la diabetes y qué alternativa usar si tu objetivo es perder peso. Primera visita gratis.",
     excerpt:
       "Comprar Ozempic en Barcelona con receta médica: precio real, por qué Ozempic está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -2618,7 +2618,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Un médico colegiado valora tu caso y tu objetivo real.",
               "Si procede, recibes la prescripción del fármaco más adecuado.",
               "Seguimiento continuo desde la app con ajustes de dosis y soporte.",
@@ -2642,7 +2642,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta la consulta en DoctorLife?",
-        a: "La primera visita son 25 € (descontables del tratamiento). El seguimiento empieza desde 149 €/mes; el fármaco se compra aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; el fármaco se compra aparte en farmacia.",
       },
     ],
   },
@@ -2654,7 +2654,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Valencia: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Valencia (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Valencia con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Valencia con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Valencia de forma legal y segura: precio por dosis, cómo conseguir la receta online sin lista de espera y empezar con acompañamiento médico real.",
     category: "Wegovy",
@@ -2702,7 +2702,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -2735,8 +2735,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta es online y, si procede, recibes la receta electrónica el mismo día para retirar la pluma en tu farmacia de Valencia.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -2748,7 +2748,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Sevilla: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Sevilla (2026): Precio, Receta y Resultados",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Sevilla con receta: precio por dosis, resultados esperables y cómo empezar con seguimiento médico sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Sevilla con receta: precio por dosis, resultados esperables y cómo empezar con seguimiento médico sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Sevilla con receta médica: precio por dosis, qué resultados esperar y cómo empezar con seguimiento médico y receta electrónica.",
     category: "Mounjaro",
@@ -2823,7 +2823,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). Si el médico lo considera adecuado, recibes la receta y empiezas el seguimiento desde 149 €/mes.",
+        a: "Reservas la primera visita gratis. Si el médico lo considera adecuado, recibes la receta y empiezas el seguimiento desde 149 €/mes.",
       },
     ],
   },
@@ -2835,7 +2835,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Málaga: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Málaga (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Málaga con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Málaga con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Málaga de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -2883,7 +2883,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -2929,7 +2929,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Bilbao: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Bilbao (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Bilbao con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Bilbao con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Bilbao con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -2976,7 +2976,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia de Bilbao y haces el seguimiento desde la app.",
@@ -3009,7 +3009,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -3021,7 +3021,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Valencia: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Valencia (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Valencia con receta: precio, por qué es un fármaco para diabetes y qué alternativa elegir si quieres perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Valencia con receta: precio, por qué es un fármaco para diabetes y qué alternativa elegir si quieres perder peso. Primera visita gratis.",
     excerpt:
       "Comprar Ozempic en Valencia con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -3099,7 +3099,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -3111,7 +3111,7 @@ const manualPosts: Post[] = [
     h1: "Comprar semaglutida online en España: receta, precio y seguimiento médico",
     metaTitle: "Comprar Semaglutida Online en España (2026): Receta y Precio",
     metaDescription:
-      "Cómo comprar semaglutida (Wegovy/Ozempic) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita 25 €, sin esperas.",
+      "Cómo comprar semaglutida (Wegovy/Ozempic) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis, sin esperas.",
     excerpt:
       "Comprar semaglutida online en España de forma legal: cómo conseguir la receta de Wegovy u Ozempic sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Wegovy",
@@ -3159,7 +3159,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables).",
+              "Reservas tu primera visita médica online gratis.",
               "Completas tu historial clínico y objetivos en la app.",
               "Un médico colegiado valora si la semaglutida es adecuada y segura para ti.",
               "Si procede, recibes la receta electrónica y el plan de dosis.",
@@ -3193,7 +3193,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
       },
     ],
   },
@@ -3205,7 +3205,7 @@ const manualPosts: Post[] = [
     h1: "Wegovy vs Mounjaro: cuál elegir para perder peso en 2026",
     metaTitle: "Wegovy vs Mounjaro: Diferencias, Eficacia y Cuál Elegir (2026)",
     metaDescription:
-      "Comparativa clara de Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis, precio y cuál te conviene. Valoración médica desde 25 €.",
+      "Comparativa clara de Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis, precio y cuál te conviene. Primera visita gratis.",
     excerpt:
       "Wegovy y Mounjaro son los dos GLP‑1 más usados para adelgazar. Te explicamos las diferencias reales en eficacia, dosis y precio, y cuál tiene sentido según tu caso.",
     category: "Comparativas",
@@ -3298,7 +3298,7 @@ const manualPosts: Post[] = [
     h1: "Saxenda precio en España: cuánto cuesta y cómo conseguirlo con receta",
     metaTitle: "Saxenda Precio España 2026: Cuánto Cuesta y Cómo Conseguirlo",
     metaDescription:
-      "Precio de Saxenda (liraglutida) en España, cómo se usa, diferencias con Wegovy y Mounjaro y cómo empezar con receta y seguimiento médico. Primera visita 25 €.",
+      "Precio de Saxenda (liraglutida) en España, cómo se usa, diferencias con Wegovy y Mounjaro y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Cuánto cuesta Saxenda (liraglutida) en España, cómo se administra y en qué se diferencia de Wegovy y Mounjaro, con receta y seguimiento médico real.",
     category: "Precios",
@@ -3351,7 +3351,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Un médico colegiado valora qué GLP‑1 encaja mejor en tu caso.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
               "Seguimiento continuo desde la app con ajustes y soporte.",
@@ -3396,7 +3396,7 @@ const manualPosts: Post[] = [
     h1: "Clínica de pérdida de peso en Madrid: tratamiento médico con GLP‑1",
     metaTitle: "Clínica de Pérdida de Peso en Madrid (2026): Tratamiento Médico GLP‑1",
     metaDescription:
-      "Cómo elegir una clínica de pérdida de peso en Madrid con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita 25 €.",
+      "Cómo elegir una clínica de pérdida de peso en Madrid con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita gratis.",
     excerpt:
       "Qué buscar en una clínica de pérdida de peso en Madrid: médicos colegiados, tratamiento GLP‑1 con receta, seguimiento real y precios transparentes, también online.",
     category: "Clínica",
@@ -3434,7 +3434,7 @@ const manualPosts: Post[] = [
             caption: "Qué incluye un tratamiento médico de pérdida de peso",
             head: ["Concepto", "Qué cubre", "Precio orientativo"],
             rows: [
-              ["Primera visita", "Valoración médica completa", "25 € (descontables)"],
+              ["Primera visita", "Valoración médica completa", "25 €"],
               ["Seguimiento mensual", "Ajustes de dosis y soporte", "desde 149 €/mes"],
               ["Medicación GLP‑1", "Pluma según dosis (en farmacia)", "200–350 €/mes"],
             ],
@@ -3448,7 +3448,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables del tratamiento).",
+              "Reserva tu primera visita médica (gratis).",
               "Un médico colegiado valora tu historial y descarta causas tratables.",
               "Si procede, recibes la prescripción del GLP‑1 más adecuado.",
               "Seguimiento continuo desde la app con un equipo médico real.",
@@ -3477,7 +3477,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar en Madrid?",
-        a: "La primera visita son 25 € (descontables del tratamiento). El seguimiento empieza desde 149 €/mes y la medicación se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes y la medicación se paga aparte en farmacia.",
       },
       {
         q: "¿Cómo sé si una clínica es seria?",
@@ -3493,7 +3493,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida en Madrid: precio, receta y cómo empezar",
     metaTitle: "Comprar Tirzepatida en Madrid (2026): Precio, Receta y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Madrid con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita 25 €.",
+      "Cómo comprar tirzepatida (Mounjaro) en Madrid con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar tirzepatida (Mounjaro) en Madrid con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -3540,7 +3540,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial clínico y objetivos en la app.",
               "Un médico colegiado valora si la tirzepatida es adecuada para ti.",
               "Si procede, recibes la receta electrónica y el plan de escalado de dosis.",
@@ -3586,7 +3586,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Sevilla: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Sevilla (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qu�� alternativa elegir si tu objetivo es perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qu�� alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
     excerpt:
       "Comprar Ozempic en Sevilla con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -3664,7 +3664,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -3676,7 +3676,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Zaragoza: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Zaragoza (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Wegovy en Zaragoza con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Zaragoza con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Zaragoza de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -3724,7 +3724,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -3757,8 +3757,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Zaragoza.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -3770,7 +3770,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Granada: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Granada (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Granada con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Granada con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Granada con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -3817,7 +3817,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia de Granada y haces el seguimiento desde la app.",
@@ -3850,7 +3850,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -3862,7 +3862,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Palma de Mallorca: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Palma (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Palma de Mallorca con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Palma de Mallorca con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Palma de Mallorca de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -3910,7 +3910,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -3943,8 +3943,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Palma.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -3956,7 +3956,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Córdoba: precio, receta y cómo empezar hoy",
     metaTitle: "Comprar Wegovy en Córdoba (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Córdoba con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Córdoba con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Córdoba de forma legal y segura: precio por dosis, cómo conseguir la receta online sin lista de espera y empezar con acompañamiento médico real.",
     category: "Wegovy",
@@ -4004,7 +4004,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -4050,7 +4050,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Las Palmas: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Las Palmas (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Las Palmas con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Las Palmas con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Las Palmas de Gran Canaria con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico.",
     category: "Mounjaro",
@@ -4097,7 +4097,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia de Las Palmas y haces el seguimiento desde la app.",
@@ -4130,7 +4130,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -4142,7 +4142,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Málaga: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Málaga (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Málaga con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Málaga con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
     excerpt:
       "Comprar Ozempic en Málaga con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -4220,7 +4220,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -4232,7 +4232,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Murcia: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Murcia (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Murcia con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Murcia con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Murcia de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4280,7 +4280,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -4313,8 +4313,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Murcia.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -4326,7 +4326,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Bilbao: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Bilbao (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Bilbao con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Bilbao con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Bilbao de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4374,7 +4374,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -4407,8 +4407,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Bilbao.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -4420,7 +4420,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Zaragoza: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Zaragoza (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Zaragoza con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita 25 €.",
+      "Cómo comprar Ozempic en Zaragoza con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
     excerpt:
       "Comprar Ozempic en Zaragoza con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -4498,7 +4498,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
       },
     ],
   },
@@ -4510,7 +4510,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Saxenda (liraglutida) en España: precio, receta y cómo empezar",
     metaTitle: "Comprar Saxenda en España (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Saxenda (liraglutida) en España con receta: precio, cómo se usa y alternativas semanales como Wegovy y Mounjaro. Primera visita 25 €, sin esperas.",
+      "Cómo comprar Saxenda (liraglutida) en España con receta: precio, cómo se usa y alternativas semanales como Wegovy y Mounjaro. Primera visita gratis, sin esperas.",
     excerpt:
       "Comprar Saxenda (liraglutida) en España con receta médica: precio, cómo se administra a diario y cuándo conviene una alternativa semanal como Wegovy o Mounjaro.",
     category: "Precios",
@@ -4587,7 +4587,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -4599,7 +4599,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida (Mounjaro) en Barcelona: precio, receta y cómo empezar",
     metaTitle: "Comprar Tirzepatida en Barcelona (2026): Precio, Receta y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Barcelona con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita 25 €.",
+      "Cómo comprar tirzepatida (Mounjaro) en Barcelona con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar tirzepatida (Mounjaro) en Barcelona con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -4646,7 +4646,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables).",
+              "Reservas tu primera visita médica online gratis.",
               "Completas tu historial clínico y objetivos en la app.",
               "Un médico colegiado valora si la tirzepatida es adecuada y segura para ti.",
               "Si procede, recibes la receta electrónica y el plan de escalado de dosis.",
@@ -4680,7 +4680,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar?",
-        a: "La primera visita son 25 € (descontables) y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
+        a: "La primera visita es gratis y el seguimiento desde 149 €/mes. La pluma se paga en la farmacia según la dosis.",
       },
     ],
   },
@@ -4692,7 +4692,7 @@ const manualPosts: Post[] = [
     h1: "Clínica de pérdida de peso en Barcelona: tratamiento médico con GLP‑1",
     metaTitle: "Clínica de Pérdida de Peso en Barcelona (2026): Tratamiento GLP‑1",
     metaDescription:
-      "Cómo elegir una clínica de pérdida de peso en Barcelona con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita 25 €.",
+      "Cómo elegir una clínica de pérdida de peso en Barcelona con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita gratis.",
     excerpt:
       "Qué buscar en una clínica de pérdida de peso en Barcelona: médicos colegiados, tratamiento GLP‑1 con receta, seguimiento real y precios transparentes, también online.",
     category: "Clínica",
@@ -4730,7 +4730,7 @@ const manualPosts: Post[] = [
             caption: "Qué incluye un tratamiento médico de pérdida de peso",
             head: ["Concepto", "Qué cubre", "Precio orientativo"],
             rows: [
-              ["Primera visita", "Valoración médica completa", "25 € (descontables)"],
+              ["Primera visita", "Valoración médica completa", "25 €"],
               ["Seguimiento mensual", "Ajustes de dosis y soporte", "desde 149 €/mes"],
               ["Medicación GLP‑1", "Pluma según dosis (en farmacia)", "200–350 €/mes"],
             ],
@@ -4744,7 +4744,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica (25 €, descontables del tratamiento).",
+              "Reserva tu primera visita médica (gratis).",
               "Un médico colegiado valora tu historial y descarta causas tratables.",
               "Si procede, recibes la prescripción del GLP‑1 más adecuado.",
               "Seguimiento continuo desde la app con un equipo médico real.",
@@ -4773,7 +4773,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar en Barcelona?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes y la medicación se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes y la medicación se paga aparte en farmacia.",
       },
       {
         q: "¿Cómo sé si una clínica es seria?",
@@ -4789,7 +4789,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Alicante: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Alicante (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Wegovy en Alicante con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Alicante con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Alicante de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4837,7 +4837,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -4870,8 +4870,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Alicante.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -4883,7 +4883,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Málaga: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Málaga (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Málaga con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Málaga con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Málaga con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -4930,7 +4930,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia de Málaga y haces el seguimiento desde la app.",
@@ -4963,7 +4963,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -4975,7 +4975,7 @@ const manualPosts: Post[] = [
     h1: "Ozempic vs Saxenda: diferencias, eficacia y cuál elegir",
     metaTitle: "Ozempic vs Saxenda: Diferencias, Eficacia y Cuál Elegir (2026)",
     metaDescription:
-      "Comparativa de Ozempic y Saxenda: principio activo, frecuencia, eficacia, precio e indicaciones. Descubre cuál encaja en tu caso con valoración médica desde 25 €.",
+      "Comparativa de Ozempic y Saxenda: principio activo, frecuencia, eficacia, precio e indicaciones. Descubre cuál encaja en tu caso con valoración médica gratis.",
     excerpt:
       "Ozempic y Saxenda son dos GLP‑1 muy distintos en frecuencia e indicación. Te explicamos las diferencias en eficacia, dosis y precio, y cuál tiene sentido según tu objetivo.",
     category: "Comparativas",
@@ -5054,7 +5054,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -5066,7 +5066,7 @@ const manualPosts: Post[] = [
     h1: "Precio de Ozempic en Valencia: cuánto cuesta y cómo conseguirlo con receta",
     metaTitle: "Precio de Ozempic en Valencia (2026): Cuánto Cuesta con Receta",
     metaDescription:
-      "Precio de Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo con receta y seguimiento médico. Primera visita 25 €.",
+      "Precio de Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Cuánto cuesta Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo de forma legal con receta y seguimiento médico.",
     category: "Precios",
@@ -5103,7 +5103,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Un médico colegiado valora tu caso y tu objetivo real.",
               "Si procede, recibes la prescripción del fármaco más adecuado.",
               "Retiras el medicamento en tu farmacia de Valencia y haces el seguimiento desde la app.",
@@ -5136,7 +5136,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
       },
     ],
   },
@@ -5148,7 +5148,7 @@ const manualPosts: Post[] = [
     h1: "Comprar GLP‑1 online en España: opciones, receta y precios",
     metaTitle: "Comprar GLP-1 Online en España (2026): Opciones, Receta y Precios",
     metaDescription:
-      "Guía para comprar medicamentos GLP‑1 online en España de forma legal: Wegovy, Mounjaro, Ozempic y Saxenda, con receta electrónica y seguimiento médico. Primera visita 25 €.",
+      "Guía para comprar medicamentos GLP‑1 online en España de forma legal: Wegovy, Mounjaro, Ozempic y Saxenda, con receta electrónica y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Qué medicamentos GLP‑1 puedes conseguir online en España (Wegovy, Mounjaro, Ozempic, Saxenda), cómo funciona la receta electrónica y cuánto cuesta cada opción.",
     category: "Wegovy",
@@ -5191,7 +5191,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reservas tu primera visita médica online (25 €, descontables).",
+              "Reservas tu primera visita médica online gratis.",
               "Un médico colegiado valora qué GLP‑1 encaja en tu caso.",
               "Si procede, recibes la receta electrónica y el plan de dosis.",
               "Retiras el medicamento en tu farmacia y haces el seguimiento desde la app.",
@@ -5224,7 +5224,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el GLP‑1 más adecuado.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el GLP‑1 más adecuado.",
       },
     ],
   },
@@ -5236,7 +5236,7 @@ const manualPosts: Post[] = [
     h1: "¿Wegovy está financiado por la Seguridad Social en España?",
     metaTitle: "¿Wegovy Financiado por la Seguridad Social? (España 2026)",
     metaDescription:
-      "Resolvemos si Wegovy está financiado por la Seguridad Social en España, cuánto cuesta de forma privada y cómo conseguirlo con receta y seguimiento médico. Primera visita 25 €.",
+      "Resolvemos si Wegovy está financiado por la Seguridad Social en España, cuánto cuesta de forma privada y cómo conseguirlo con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "¿Cubre la Seguridad Social el Wegovy? Te explicamos la situación de la financiación en España, el coste privado real y cómo conseguirlo de forma legal con receta médica.",
     category: "Wegovy",
@@ -5279,7 +5279,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
               "Retiras Wegovy en tu farmacia y haces el seguimiento desde la app.",
@@ -5312,7 +5312,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe Wegovy con seguimiento.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe Wegovy con seguimiento.",
       },
     ],
   },
@@ -5324,7 +5324,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Vigo: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Vigo (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Vigo con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita 25 €.",
+      "Cómo comprar Wegovy en Vigo con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
     excerpt:
       "Comprar Wegovy en Vigo de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -5372,7 +5372,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Completa tu historial y objetivos en la app.",
               "Un médico colegiado valora si Wegovy es adecuado para ti.",
               "Si procede, recibes la receta electrónica y la pauta de dosis.",
@@ -5405,8 +5405,8 @@ const manualPosts: Post[] = [
         a: "Sí. La consulta y la receta electrónica se gestionan online; solo retiras la pluma en tu farmacia de Vigo.",
       },
       {
-        q: "¿La primera visita se descuenta del tratamiento?",
-        a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+        q: "¿La primera visita tiene algún coste?",
+        a: "No, la primera visita es gratis, sin compromiso.",
       },
     ],
   },
@@ -5418,7 +5418,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Zaragoza: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Zaragoza (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Zaragoza con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita 25 €.",
+      "Cómo comprar Mounjaro (tirzepatida) en Zaragoza con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Zaragoza con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -5465,7 +5465,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Primera visita médica online por 25 € (descontables del tratamiento).",
+              "Primera visita médica online gratis.",
               "Valoración de tu caso por un médico colegiado.",
               "Prescripción y pauta de escalado de dosis si es adecuado para ti.",
               "Retiras Mounjaro en tu farmacia de Zaragoza y haces el seguimiento desde la app.",
@@ -5498,7 +5498,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cuánto cuesta empezar con DoctorLife?",
-        a: "La primera visita son 25 € (descontables). El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
+        a: "La primera visita es gratis. El seguimiento empieza desde 149 €/mes; la pluma se paga aparte en farmacia.",
       },
     ],
   },
@@ -5510,7 +5510,7 @@ const manualPosts: Post[] = [
     h1: "Inyección para adelgazar: qué es, precio en España y cómo conseguirla",
     metaTitle: "Inyección para Adelgazar: Precio en España y Cómo Conseguirla (2026)",
     metaDescription:
-      "Qué inyecciones para adelgazar existen en España (Wegovy, Mounjaro, Saxenda), cuánto cuestan por dosis y cómo conseguirlas con receta y seguimiento médico. Primera visita 25 €.",
+      "Qué inyecciones para adelgazar existen en España (Wegovy, Mounjaro, Saxenda), cuánto cuestan por dosis y cómo conseguirlas con receta y seguimiento médico. Primera visita gratis.",
     excerpt:
       "Las inyecciones para adelgazar (GLP‑1) son lo más eficaz hoy. Te explicamos cuáles existen en España, su precio por dosis y cómo conseguirlas de forma legal con receta.",
     category: "Precios",
@@ -5566,7 +5566,7 @@ const manualPosts: Post[] = [
           {
             type: "list",
             items: [
-              "Reserva tu primera visita médica online (25 €, descontables).",
+              "Reserva tu primera visita médica online gratis.",
               "Un médico colegiado valora qué inyección encaja en tu caso.",
               "Si procede, recibes la receta electrónica y el plan de dosis.",
               "Retiras la medicación en tu farmacia y haces el seguimiento desde la app.",
@@ -5590,7 +5590,7 @@ const manualPosts: Post[] = [
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe la inyección más adecuada.",
+        a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe la inyección más adecuada.",
       },
     ],
   },
@@ -5738,7 +5738,7 @@ export function seoDescription(post: Post): string {
     "✓ Receta médica online",
     "✓ Médicos colegiados",
     "✓ Sin listas de espera",
-    "✓ 1ª visita 25 € descontable",
+    "✓ 1ª visita gratis descontable",
     "✓ Seguimiento en nuestra app",
   ];
 

@@ -21,10 +21,10 @@ import type { Post, Section, Faq, Block } from "./blog";
 const BRAND = "DoctorLife";
 
 const PRICE_NOTE =
-  "En DoctorLife tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
+  "En DoctorLife tu primera visita médica es gratis, sin compromiso. Todo el seguimiento se gestiona desde nuestra app interna.";
 
 const SERVICE_CTA =
-  "En DoctorLife, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita son 25 € y se descuentan del tratamiento.";
+  "En DoctorLife, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita es gratis.";
 
 const ILLEGAL_NOTE =
   "Cualquier web, app o particular que ofrezca estos fármacos 'sin receta' en España actúa de forma ilegal y pone en riesgo tu salud. La receta siempre exige una valoración médica previa.";
@@ -70,7 +70,7 @@ function ctaSection(): Section {
       {
         type: "list",
         items: [
-          "Reservas tu primera visita online por 25 € (descontables del tratamiento).",
+          "Reservas tu primera visita online gratis.",
           "Completas tu historial clínico y tus objetivos desde la app.",
           "Un endocrino colegiado valora tu caso y, si procede, define el tratamiento y la dosis de inicio.",
           "Recibes la receta electrónica, válida en cualquier farmacia de España.",
@@ -1165,7 +1165,7 @@ function glp1Precio(): Draft {
         blocks: [
           {
             type: "p",
-            text: "En DoctorLife el modelo es transparente: la primera visita son 25 € (descontables del tratamiento) e incluye la valoración del endocrino. Si el tratamiento es adecuado, recibes la receta y el seguimiento desde la app, sin permanencia.",
+            text: "En DoctorLife el modelo es transparente: la primera visita es gratis e incluye la valoración del endocrino. Si el tratamiento es adecuado, recibes la receta y el seguimiento desde la app, sin permanencia.",
           },
         ],
       },

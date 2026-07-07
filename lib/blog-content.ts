@@ -20,7 +20,7 @@ import {
 const BRAND = "DoctorLife";
 
 const PRICE_NOTE =
-  "En DoctorLife tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
+  "En DoctorLife tu primera visita médica es gratis, sin compromiso. Todo el seguimiento se gestiona desde nuestra app interna.";
 
 /* ── utilidades deterministas ── */
 function hash(s: string): number {
@@ -699,21 +699,21 @@ const DIAB_INTROS: [string, string][] = [
 ];
 
 const STEPS_V1 = [
-  "Reservas tu primera visita médica online por 25 € (descontables del tratamiento).",
+  "Reservas tu primera visita médica online gratis.",
   "Completas tu historial clínico y tus objetivos desde la app, sin moverte de {City}.",
   "Un médico colegiado valora si {Drug} es adecuado y seguro para ti.",
   "Si procede, recibes la receta electrónica y una pauta de dosis personalizada.",
   "Retiras {Drug} en tu farmacia de {City} y haces todo el seguimiento desde la app.",
 ];
 const STEPS_V2 = [
-  "Haces la consulta online (25 €, descontables) desde cualquier punto de {City}.",
+  "Haces la consulta online gratis desde cualquier punto de {City}.",
   "Respondes a un cuestionario médico sobre tu salud, tu peso y tus objetivos.",
   "El médico revisa tu caso y decide si {Drug} encaja contigo.",
   "Recibes la prescripción y el plan de inicio si el tratamiento es adecuado.",
   "Recoges {Drug} en tu farmacia de {City} y te acompañamos en cada ajuste de dosis.",
 ];
 const STEPS_V3 = [
-  "Reservas tu valoración médica online por 25 € (se descuentan del tratamiento).",
+  "Reservas tu valoración médica online gratis.",
   "Cuentas tu historia clínica y tu objetivo de peso en pocos minutos.",
   "Un médico colegiado confirma si {Drug} es la mejor opción para ti.",
   "Si procede, te llega la receta electrónica lista para tu farmacia de {City}.",
@@ -932,7 +932,7 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
     h1: tpl("Comprar {Drug} en {City}: precio, receta y cómo empezar", vars),
     metaTitle: tpl("Comprar {Drug} en {City}: Receta Online con Médico en 24h", vars),
     metaDescription: tpl(
-      "Consigue {Drug} en {City} con una cita médica online: receta electrónica en 24h, sin listas de espera ni desplazamientos. Médicos colegiados y seguimiento real. 1ª visita 25 €.",
+      "Consigue {Drug} en {City} con una cita médica online: receta electrónica en 24h, sin listas de espera ni desplazamientos. Médicos colegiados y seguimiento real. 1ª visita gratis.",
       vars,
     ),
     excerpt: tpl(
@@ -1009,7 +1009,7 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
           items: [
             "Evita las webs «sin receta»: además de ilegales, suelen vender producto falso o caducado y acabas pagando dos veces.",
             tpl("Empieza con la dosis mínima eficaz y escálala solo cuando el médico lo indique: pagar de más por dosis altas innecesarias es un error frecuente.", vars),
-            "Aprovecha que en DoctorLife la primera visita (25 €) se descuenta íntegramente del tratamiento.",
+            "Aprovecha que en DoctorLife la primera visita es gratis.",
             tpl("Compara presentaciones y stock entre varias farmacias de {City} antes de comprar.", vars),
           ],
         },
@@ -1028,7 +1028,7 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
     {
       q: tpl("¿Cuánto cuesta {Drug} en {City}?", vars),
       a: tpl(
-        "De forma orientativa, entre {low} y {high} al mes según la dosis. La consulta y el seguimiento médico se pagan aparte; en DoctorLife la primera visita son 25 € y se descuentan del tratamiento.",
+        "De forma orientativa, entre {low} y {high} al mes según la dosis. La consulta y el seguimiento médico se pagan aparte; en DoctorLife la primera visita es gratis.",
         { ...vars, low: drug.priceLow, high: drug.priceHigh },
       ),
     },
@@ -1044,8 +1044,8 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
       ),
     },
     {
-      q: "¿La primera visita se descuenta del tratamiento?",
-      a: "Sí. Los 25 € de la primera visita se descuentan íntegramente del tratamiento si decides empezar.",
+      q: "¿La primera visita tiene algún coste?",
+      a: "No, la primera visita es gratis, sin compromiso.",
     },
     localFaqs(city)[hash(slug) % 3],
   ];
@@ -1056,7 +1056,7 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
     h1: tpl("Precio de {Drug} en {City}: cuánto cuesta y cómo conseguirlo con receta", vars),
     metaTitle: tpl("{Drug} Precio en {City} 2026 | Receta Online con Médico", vars),
     metaDescription: tpl(
-      "Precio de {Drug} en {City} por dosis y cómo conseguirlo legal: cita médica online y receta electrónica sin esperas. Médicos colegiados y seguimiento incluido. 1ª visita 25 €.",
+      "Precio de {Drug} en {City} por dosis y cómo conseguirlo legal: cita médica online y receta electrónica sin esperas. Médicos colegiados y seguimiento incluido. 1ª visita gratis.",
       vars,
     ),
     excerpt: tpl(
@@ -1163,7 +1163,7 @@ function buildDrugCityPost(drug: Drug, city: City, index: number): Post {
     h1: tpl("{Drug} en {City}: dónde conseguirlo, precio y disponibilidad", vars),
     metaTitle: tpl("{Drug} en {City} | Cita y Receta Online sin Esperas", vars),
     metaDescription: tpl(
-      "{Drug} en {City}: consíguelo con receta a través de una cita médica online, sin listas de espera. Precio por dosis, disponibilidad y seguimiento real. 1ª visita 25 €.",
+      "{Drug} en {City}: consíguelo con receta a través de una cita médica online, sin listas de espera. Precio por dosis, disponibilidad y seguimiento real. 1ª visita gratis.",
       vars,
     ),
     excerpt: tpl(
@@ -1196,7 +1196,7 @@ function weightFaqs(drug: Drug, city: City): Faq[] {
     {
       q: tpl("¿Cuánto cuesta {Drug} en {City}?", vars),
       a: tpl(
-        "La pluma se sitúa de forma orientativa entre {low} y {high} al mes según la dosis. La consulta y el seguimiento se pagan aparte; en DoctorLife la primera visita son 25 € (descontables).",
+        "La pluma se sitúa de forma orientativa entre {low} y {high} al mes según la dosis. La consulta y el seguimiento se pagan aparte; en DoctorLife la primera visita es gratis.",
         { ...vars, low: drug.priceLow, high: drug.priceHigh },
       ),
     },
@@ -1231,7 +1231,7 @@ function weightFaqs(drug: Drug, city: City): Faq[] {
     {
       q: "¿Cómo empiezo con DoctorLife?",
       a: tpl(
-        "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe {Drug} con seguimiento desde la app.",
+        "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe {Drug} con seguimiento desde la app.",
         vars,
       ),
     },
@@ -1267,7 +1267,7 @@ function diabetesFaqs(drug: Drug, city: City): Faq[] {
     },
     {
       q: "¿Cómo empiezo con DoctorLife?",
-      a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
+      a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado.",
     },
   ];
 }
@@ -1553,7 +1553,7 @@ function buildResearchPost(drug: Research, intent: Intent, index: number): Post 
             {
               type: "list",
               items: [
-                "Reserva una primera visita online con un médico colegiado (25 € en DoctorLife, descontables).",
+                "Reserva una primera visita online con un médico colegiado (gratis en DoctorLife).",
                 "El endocrino valora tu caso, tu historial y tus objetivos.",
                 "Si es adecuado, te prescribe un GLP‑1 aprobado con receta electrónica.",
                 "Sigues tu evolución y ajustas la dosis desde la app, con tu equipo médico.",
@@ -1819,7 +1819,7 @@ function researchFaqs(drug: Research, intent: Intent): Faq[] {
     },
     {
       q: "¿Cómo empiezo con DoctorLife?",
-      a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe un tratamiento aprobado con seguimiento desde la app.",
+      a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe un tratamiento aprobado con seguimiento desde la app.",
     },
   ];
 }
@@ -1898,7 +1898,7 @@ function buildNoRxPost(d: NoRx, index: number): Post {
         {
           type: "list",
           items: [
-            "Reserva tu primera visita por 25 € (descontables del tratamiento).",
+            "Reserva tu primera visita gratis.",
             tpl("El médico valora si {Name} es adecuado para ti.", vars),
             "Si procede, recibes la receta electrónica válida en toda España.",
             "Seguimiento y ajustes de dosis desde la app, sin desplazamientos.",
@@ -1955,7 +1955,7 @@ function buildNoRxPost(d: NoRx, index: number): Post {
       },
       {
         q: "¿Cómo empiezo con DoctorLife?",
-        a: "Reservas la primera visita por 25 € (descontables) y, si procede, recibes tu receta con seguimiento desde la app.",
+        a: "Reservas la primera visita gratis y, si procede, recibes tu receta con seguimiento desde la app.",
       },
     ],
   };
@@ -2255,7 +2255,7 @@ function buildNoRxPillar(): Post {
       },
       {
         q: "¿Cuánto tarda?",
-        a: "Reservas tu primera visita por 25 € (descontables) y, si el médico lo considera adecuado, puedes tener la receta el mismo día.",
+        a: "Reservas tu primera visita gratis y, si el médico lo considera adecuado, puedes tener la receta el mismo día.",
       },
     ],
   };
@@ -2353,7 +2353,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
   const ctaP: Block = {
     type: "p",
     text: tpl(
-      "En {BRAND}, un endocrino colegiado valora tu caso por videoconsulta y, si {Drug} es adecuado para ti, te prescribe el tratamiento con seguimiento desde la app. La primera visita son 25 € y se descuentan del tratamiento.",
+      "En {BRAND}, un endocrino colegiado valora tu caso por videoconsulta y, si {Drug} es adecuado para ti, te prescribe el tratamiento con seguimiento desde la app. La primera visita es gratis.",
       vars,
     ),
   };
@@ -2430,7 +2430,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables). Un endocrino valora tu caso y, si procede, te prescribe el tratamiento con seguimiento.",
+          a: "Reservas la primera visita gratis. Un endocrino valora tu caso y, si procede, te prescribe el tratamiento con seguimiento.",
         },
       ];
       break;
@@ -2493,7 +2493,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y, si procede, empiezas con seguimiento médico desde la app.",
+          a: "Reservas la primera visita gratis y, si procede, empiezas con seguimiento médico desde la app.",
         },
       ];
       break;
@@ -2550,7 +2550,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y empiezas con seguimiento médico real.",
+          a: "Reservas la primera visita gratis y empiezas con seguimiento médico real.",
         },
       ];
       break;
@@ -2610,7 +2610,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y recibes una pauta de dosis personalizada si el tratamiento es adecuado.",
+          a: "Reservas la primera visita gratis y recibes una pauta de dosis personalizada si el tratamiento es adecuado.",
         },
       ];
       break;
@@ -2676,7 +2676,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y resuelves estas dudas con un endocrino.",
+          a: "Reservas la primera visita gratis y resuelves estas dudas con un endocrino.",
         },
       ];
       break;
@@ -2732,7 +2732,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y haces el seguimiento desde la app.",
+          a: "Reservas la primera visita gratis y haces el seguimiento desde la app.",
         },
       ];
       break;
@@ -2792,7 +2792,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y te explicamos la pauta y la técnica de inyección.",
+          a: "Reservas la primera visita gratis y te explicamos la pauta y la técnica de inyección.",
         },
       ];
       break;
@@ -2855,7 +2855,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y planificamos también la fase de mantenimiento.",
+          a: "Reservas la primera visita gratis y planificamos también la fase de mantenimiento.",
         },
       ];
       break;
@@ -2918,7 +2918,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y resolvemos estas dudas prácticas.",
+          a: "Reservas la primera visita gratis y resolvemos estas dudas prácticas.",
         },
       ];
       break;
@@ -2981,7 +2981,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
-          a: "Reservas la primera visita por 25 € (descontables) y un endocrino revisa tu caso y tu pauta.",
+          a: "Reservas la primera visita gratis y un endocrino revisa tu caso y tu pauta.",
         },
       ];
       break;
@@ -3026,7 +3026,7 @@ const CAT_GUIDE = "Guías";
 const CAT_SLIM = "Adelgazar";
 
 const SERVICE_CTA =
-  "En {BRAND}, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita son 25 € y se descuentan del tratamiento.";
+  "En {BRAND}, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita es gratis.";
 
 function glp1Links(): Block {
   return {
@@ -3177,7 +3177,7 @@ function buildComparePost(aKey: string, bKey: string, index: number): Post {
     },
     {
       q: "¿Cómo empiezo con DoctorLife?",
-      a: "Reservas la primera visita por 25 € (descontables). El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado con seguimiento.",
+      a: "Reservas la primera visita gratis. El médico valora tu caso y, si procede, te prescribe el tratamiento más adecuado con seguimiento.",
     },
   ];
 
@@ -3238,7 +3238,7 @@ function buildRxOnlinePost(drug: Drug, index: number): Post {
         {
           type: "list",
           items: [
-            "Reservas tu primera visita online por 25 € (descontables del tratamiento).",
+            "Reservas tu primera visita online gratis.",
             tpl("Completas tu historial clínico y tus objetivos desde la app.", vars),
             tpl("Un médico colegiado valora si {Drug} encaja contigo.", vars),
             "Si procede, recibes la receta electrónica válida en toda España.",
@@ -3282,7 +3282,7 @@ function buildRxOnlinePost(drug: Drug, index: number): Post {
     },
     {
       q: "¿Cómo empiezo con DoctorLife?",
-      a: "Reservas la primera visita por 25 € (descontables) y, si procede, recibes tu receta con seguimiento.",
+      a: "Reservas la primera visita gratis y, si procede, recibes tu receta con seguimiento.",
     },
   ];
   return mkPost(
@@ -3292,7 +3292,7 @@ function buildRxOnlinePost(drug: Drug, index: number): Post {
       h1: tpl("Receta de {Drug} online: cómo conseguirla legalmente", vars),
       metaTitle: tpl("Receta de {Drug} Online en 24h con Médico Colegiado", vars),
       metaDescription: tpl(
-        "Consigue tu receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica en 24h y seguimiento. Sin esperas. 1ª visita 25 €.",
+        "Consigue tu receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica en 24h y seguimiento. Sin esperas. 1ª visita gratis.",
         vars,
       ),
       excerpt: tpl(
@@ -3323,7 +3323,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Endocrino online: consulta de endocrinología por videollamada",
         metaTitle: "Endocrino online: consulta de endocrinología sin esperas | DoctorLife",
         metaDescription:
-          "Consulta con un endocrino online colegiado para peso, diabetes y tiroides. Videoconsulta, receta electrónica si procede y seguimiento. Primera visita 25 €.",
+          "Consulta con un endocrino online colegiado para peso, diabetes y tiroides. Videoconsulta, receta electrónica si procede y seguimiento. Primera visita gratis.",
         excerpt:
           "Cómo funciona una consulta de endocrinología online: para qué sirve, qué puede recetar el médico y cómo empezar sin listas de espera.",
         category: CAT_GUIDE,
@@ -3384,7 +3384,7 @@ function buildServicePosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cuánto cuesta la primera consulta?",
-            a: "En DoctorLife la primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+            a: "En DoctorLife la primera visita es gratis.",
           },
         ],
         cover: getAlt("ozempic").cover,
@@ -3401,7 +3401,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Clínica para adelgazar online: cómo elegir y qué esperar",
         metaTitle: "Clínica para adelgazar online: cómo funciona y cuál elegir | DoctorLife",
         metaDescription:
-          "Qué es una clínica para adelgazar online, cómo funciona el tratamiento médico del peso con GLP‑1 y cómo elegir un servicio serio y legal. Primera visita 25 €.",
+          "Qué es una clínica para adelgazar online, cómo funciona el tratamiento médico del peso con GLP‑1 y cómo elegir un servicio serio y legal. Primera visita gratis.",
         excerpt:
           "Qué ofrece una clínica para adelgazar online, cómo distinguir una seria de una dudosa y cómo es el tratamiento médico del peso paso a paso.",
         category: CAT_SLIM,
@@ -3448,7 +3448,7 @@ function buildServicePosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cuánto cuesta empezar?",
-            a: "La primera visita son 25 € (descontables). Después, una suscripción de 100 €/mes sin permanencia.",
+            a: "La primera visita es gratis. Después, una suscripción de 100 €/mes sin permanencia.",
           },
         ],
         cover: getAlt("wegovy").cover,
@@ -3465,7 +3465,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Tratamiento de la obesidad online: opciones médicas y cómo empezar",
         metaTitle: "Tratamiento de la obesidad online: opciones médicas reales | DoctorLife",
         metaDescription:
-          "Tratamiento m��dico de la obesidad online: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Empieza por 25 € la primera visita.",
+          "Tratamiento m��dico de la obesidad online: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. La primera visita es gratis.",
         excerpt:
           "Qué opciones médicas existen para tratar la obesidad online, cuándo se indican los GLP‑1 y cómo es el acompañamiento médico.",
         category: CAT_SLIM,
@@ -3508,7 +3508,7 @@ function buildServicePosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo empiezo?",
-            a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+            a: "Reservas la primera visita gratis y el médico define tu plan.",
           },
         ],
         cover: getAlt("mounjaro").cover,
@@ -3583,7 +3583,7 @@ function buildStockPost(drug: Drug, index: number): Post {
     },
     {
       q: "¿Cómo empiezo con DoctorLife?",
-      a: "Reservas la primera visita por 25 € (descontables) y el médico valora la mejor opción disponible para ti.",
+      a: "Reservas la primera visita gratis y el médico valora la mejor opción disponible para ti.",
     },
   ];
   return mkPost(
@@ -3671,7 +3671,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo accedo a un tratamiento que funcione?",
-            a: "Con una consulta médica. En DoctorLife la primera visita son 25 € (descontables).",
+            a: "Con una consulta médica. En DoctorLife la primera visita es gratis.",
           },
         ],
         cover: getAlt("wegovy").cover,
@@ -3735,7 +3735,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo empiezo?",
-            a: "Reservas la primera visita por 25 € (descontables) y, si procede, el médico te la prescribe con seguimiento.",
+            a: "Reservas la primera visita gratis y, si procede, el médico te la prescribe con seguimiento.",
           },
         ],
         cover: getAlt("wegovy").cover,
@@ -3798,7 +3798,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo accedo a un tratamiento real?",
-            a: "Con una consulta médica. En DoctorLife la primera visita son 25 € (descontables).",
+            a: "Con una consulta médica. En DoctorLife la primera visita es gratis.",
           },
         ],
         cover: getAlt("ozempic").cover,
@@ -3863,7 +3863,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo empiezo?",
-            a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+            a: "Reservas la primera visita gratis y el médico define tu plan.",
           },
         ],
         cover: getAlt("wegovy").cover,
@@ -3880,7 +3880,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
         h1: "Adelgazar con diabetes tipo 2: tratamiento y opciones",
         metaTitle: "Adelgazar con diabetes tipo 2: opciones médicas reales | DoctorLife",
         metaDescription:
-          "Cómo adelgazar con diabetes tipo 2 de forma segura: por qué importa, qué papel juegan los GLP‑1 y cómo abordarlo con seguimiento médico. Primera visita 25 €.",
+          "Cómo adelgazar con diabetes tipo 2 de forma segura: por qué importa, qué papel juegan los GLP‑1 y cómo abordarlo con seguimiento médico. Primera visita gratis.",
         excerpt:
           "Perder peso con diabetes tipo 2 mejora el control de la enfermedad. Te explicamos las opciones médicas y cómo abordarlo con seguridad.",
         category: CAT_SLIM,
@@ -3927,7 +3927,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo empiezo?",
-            a: "Reservas la primera visita por 25 € (descontables) y un endocrino valora tu caso.",
+            a: "Reservas la primera visita gratis y un endocrino valora tu caso.",
           },
         ],
         cover: getAlt("ozempic").cover,
@@ -3944,7 +3944,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
         h1: "Adelgazar en la menopausia: por qué cuesta más y qué ayuda",
         metaTitle: "Adelgazar en la menopausia: por qué cuesta y qué funciona | DoctorLife",
         metaDescription:
-          "Por qué se gana peso en la menopausia y cómo adelgazar de forma realista: hábitos, cuándo ayuda un tratamiento médico GLP‑1 y seguimiento. Primera visita 25 €.",
+          "Por qué se gana peso en la menopausia y cómo adelgazar de forma realista: hábitos, cuándo ayuda un tratamiento médico GLP‑1 y seguimiento. Primera visita gratis.",
         excerpt:
           "En la menopausia cuesta más perder peso por los cambios hormonales. Te explicamos qué funciona y cuándo un tratamiento médico puede ayudar.",
         category: CAT_SLIM,
@@ -3987,7 +3987,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cómo empiezo?",
-            a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+            a: "Reservas la primera visita gratis y el médico define tu plan.",
           },
         ],
         cover: getAlt("wegovy").cover,
@@ -4052,14 +4052,14 @@ function weightOptionsTable(): Block {
 
 const LOCAL_STEPS: string[][] = [
   [
-    "Reservas tu primera visita online por 25 € (descontables del tratamiento) desde {City}.",
+    "Reservas tu primera visita online gratis desde {City}.",
     "Completas tu historial clínico y tus objetivos desde la app, sin desplazarte.",
     "Un endocrino colegiado valora tu caso y, si procede, define el tratamiento.",
     "Recibes la receta electrónica válida en cualquier farmacia de {City}.",
     "Haces el seguimiento y los ajustes de dosis desde la app, sin nuevas esperas.",
   ],
   [
-    "Haces la consulta online (25 €, descontables) desde cualquier punto de {City}.",
+    "Haces la consulta online gratis desde cualquier punto de {City}.",
     "Respondes a un cuestionario médico sobre tu salud, tu peso y tus objetivos.",
     "El médico revisa tu caso y decide el plan más adecuado para ti.",
     "Si procede, te llega la prescripción y la pauta de inicio.",
@@ -4078,7 +4078,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Clínica para adelgazar en ${c.name}: tratamiento médico online | DoctorLife`,
     metaDescription: (c) =>
-      `Clínica para adelgazar en ${c.name} con endocrino colegiado: valoración online, tratamiento GLP‑1 si procede y seguimiento. Primera visita 25 €, sin esperas.`,
+      `Clínica para adelgazar en ${c.name} con endocrino colegiado: valoración online, tratamiento GLP‑1 si procede y seguimiento. Primera visita gratis, sin esperas.`,
     excerpt: (c) =>
       `Cómo funciona una clínica para adelgazar en ${c.name}: valoración médica, tratamiento del peso con GLP‑1 cuando está indicado y seguimiento, todo online.`,
     cover: getAlt("wegovy").cover,
@@ -4119,7 +4119,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta empezar?",
-        a: "La primera visita son 25 € y se descuentan del tratamiento. Después, una suscripción sin permanencia.",
+        a: "La primera visita es gratis. Después, una suscripción sin permanencia.",
       },
       {
         q: "¿Tengo que ir presencialmente?",
@@ -4137,7 +4137,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Endocrino en ${c.name}: consulta online sin esperas | DoctorLife`,
     metaDescription: (c) =>
-      `Consulta con un endocrino en ${c.name} de forma online: valoración de peso, diabetes y tiroides, receta electrónica si procede y seguimiento. Primera visita 25 €.`,
+      `Consulta con un endocrino en ${c.name} de forma online: valoración de peso, diabetes y tiroides, receta electrónica si procede y seguimiento. Primera visita gratis.`,
     excerpt: (c) =>
       `Cómo acceder a un endocrino en ${c.name} sin listas de espera: consulta online, para qué sirve, qué puede recetar y cómo empezar.`,
     cover: getAlt("ozempic").cover,
@@ -4178,7 +4178,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta la primera consulta?",
-        a: "La primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+        a: "La primera visita es gratis.",
       },
       {
         q: "¿Es fiable la endocrinología online?",
@@ -4196,7 +4196,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Tratamiento para adelgazar en ${c.name}: opciones médicas reales | DoctorLife`,
     metaDescription: (c) =>
-      `Tratamiento médico para adelgazar en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Empieza por 25 € la primera visita.`,
+      `Tratamiento médico para adelgazar en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. La primera visita es gratis.`,
     excerpt: (c) =>
       `Qué tratamientos médicos para adelgazar existen en ${c.name}, cuándo se indican los GLP‑1 y cómo empezar con valoración y seguimiento médico.`,
     cover: getAlt("mounjaro").cover,
@@ -4224,7 +4224,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     localH2: "Empezar tu tratamiento para adelgazar en {City}",
     local: [
       "La clave no es solo el fármaco, sino el seguimiento. En {City}, {BRAND} te acompaña en cada ajuste de dosis y en los hábitos, para que los resultados se mantengan y evites el efecto rebote.",
-      "Empezar es sencillo desde {City}: una primera visita de 25 € y, si procede, el tratamiento con seguimiento continuo. Sin permanencia y sin desplazamientos.",
+      "Empezar es sencillo desde {City}: una primera visita gratis y, si procede, el tratamiento con seguimiento continuo. Sin permanencia y sin desplazamientos.",
     ],
     faqs: (c) => [
       {
@@ -4241,7 +4241,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € (descontables) y el endocrino define tu plan.",
+        a: "Reservas la primera visita gratis y el endocrino define tu plan.",
       },
     ],
   },
@@ -4255,7 +4255,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Médico para adelgazar en ${c.name}: consulta online | DoctorLife`,
     metaDescription: (c) =>
-      `Habla con un médico para adelgazar en ${c.name} sin esperas: valoración online, tratamiento GLP‑1 si está indicado y seguimiento. Primera visita 25 €.`,
+      `Habla con un médico para adelgazar en ${c.name} sin esperas: valoración online, tratamiento GLP‑1 si está indicado y seguimiento. Primera visita gratis.`,
     excerpt: (c) =>
       `Cómo encontrar un médico para adelgazar en ${c.name}: qué hace, cuándo receta GLP‑1 y cómo empezar con consulta y seguimiento online.`,
     cover: getAlt("wegovy").cover,
@@ -4296,7 +4296,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta la primera consulta?",
-        a: "La primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+        a: "La primera visita es gratis.",
       },
       {
         q: "¿Necesito desplazarme?",
@@ -4314,7 +4314,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Inyección para adelgazar en ${c.name}: cómo conseguirla | DoctorLife`,
     metaDescription: (c) =>
-      `Inyección para adelgazar en ${c.name}: qué son los GLP‑1 (Wegovy, Mounjaro), cuándo se indican y cómo conseguirlas con receta y seguimiento. Primera visita 25 €.`,
+      `Inyección para adelgazar en ${c.name}: qué son los GLP‑1 (Wegovy, Mounjaro), cuándo se indican y cómo conseguirlas con receta y seguimiento. Primera visita gratis.`,
     excerpt: (c) =>
       `Qué es la inyección para adelgazar en ${c.name}, cómo funciona, cuánto cuesta y cómo conseguirla de forma segura con valoración médica.`,
     cover: getAlt("mounjaro").cover,
@@ -4351,7 +4351,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta la inyección al mes?",
-        a: "Depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes. La primera visita médica son 25 € y se descuentan del tratamiento.",
+        a: "Depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes. La primera visita médica es gratis.",
       },
       {
         q: `¿Es segura la inyección para adelgazar en ${c.name}?`,
@@ -4373,7 +4373,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Medicamento para adelgazar en ${c.name}: opciones reales | DoctorLife`,
     metaDescription: (c) =>
-      `Qué medicamentos para adelgazar existen en ${c.name}, cuáles funcionan de verdad y cómo conseguirlos con receta y seguimiento médico. Primera visita 25 €.`,
+      `Qué medicamentos para adelgazar existen en ${c.name}, cuáles funcionan de verdad y cómo conseguirlos con receta y seguimiento médico. Primera visita gratis.`,
     excerpt: (c) =>
       `Guía de medicamentos para adelgazar en ${c.name}: cuáles tienen evidencia, cuándo se recetan y cómo empezar con valoración médica online.`,
     cover: getAlt("ozempic").cover,
@@ -4418,7 +4418,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+        a: "Reservas la primera visita gratis y el médico define tu plan.",
       },
     ],
   },
@@ -4432,7 +4432,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Pastillas para adelgazar en ${c.name}: qué funciona | DoctorLife`,
     metaDescription: (c) =>
-      `Pastillas para adelgazar en ${c.name}: cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Valoración online por 25 €.`,
+      `Pastillas para adelgazar en ${c.name}: cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Primera visita gratis.`,
     excerpt: (c) =>
       `La verdad sobre las pastillas para adelgazar en ${c.name}: qué funciona, qué es marketing y qué tratamientos médicos son más eficaces.`,
     cover: getAlt("saxenda").cover,
@@ -4459,7 +4459,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     ],
     localH2: "Qué hacer en lugar de comprar pastillas en {City}",
     local: [
-      "Antes de comprar pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta es online y cuesta 25 €, descontables del tratamiento.",
+      "Antes de comprar pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta es online y es gratis.",
       "Gastar en suplementos sin evidencia rara vez compensa en {City}. Una consulta médica te ahorra dinero y te orienta hacia un tratamiento que funcione, con seguimiento real.",
     ],
     faqs: (c) => [
@@ -4477,7 +4477,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo sé qué necesito?",
-        a: "Con una valoración médica. En DoctorLife la primera visita son 25 € y el médico te orienta según tu caso.",
+        a: "Con una valoración médica. En DoctorLife la primera visita es gratis y el médico te orienta según tu caso.",
       },
     ],
   },
@@ -4491,7 +4491,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Bajar de peso en ${c.name}: plan médico que funciona | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo bajar de peso en ${c.name} con apoyo médico real: valoración online, tratamiento GLP‑1 si está indicado y seguimiento para no recuperar. Primera visita 25 €.`,
+      `Cómo bajar de peso en ${c.name} con apoyo médico real: valoración online, tratamiento GLP‑1 si está indicado y seguimiento para no recuperar. Primera visita gratis.`,
     excerpt: (c) =>
       `Cómo bajar de peso en ${c.name} de forma sostenible: por qué fallan las dietas, cuándo ayuda el tratamiento médico y cómo empezar online.`,
     cover: getAlt("wegovy").cover,
@@ -4519,7 +4519,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     localH2: "Empieza a bajar de peso en {City} con seguimiento real",
     local: [
       "Lo que marca la diferencia en {City} no es solo empezar, sino el seguimiento. {BRAND} te acompaña en cada ajuste de dosis y en los hábitos, para que los resultados se mantengan en el tiempo.",
-      "Bajar de peso en {City} con {BRAND} es sencillo: una primera visita de 25 € y, si procede, tratamiento con seguimiento continuo, sin permanencia ni desplazamientos.",
+      "Bajar de peso en {City} con {BRAND} es sencillo: una primera visita gratis y, si procede, tratamiento con seguimiento continuo, sin permanencia ni desplazamientos.",
     ],
     faqs: (c) => [
       {
@@ -4536,7 +4536,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan.",
+        a: "Reservas la primera visita gratis y el médico define tu plan.",
       },
     ],
   },
@@ -4550,7 +4550,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Tratamiento de la obesidad en ${c.name}: abordaje médico | DoctorLife`,
     metaDescription: (c) =>
-      `Tratamiento médico de la obesidad en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Primera visita 25 €.`,
+      `Tratamiento médico de la obesidad en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Primera visita gratis.`,
     excerpt: (c) =>
       `Cómo se trata la obesidad hoy en ${c.name}: enfoque médico, papel de los GLP‑1 y cómo acceder a valoración y seguimiento online.`,
     cover: getAlt("mounjaro").cover,
@@ -4578,7 +4578,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     localH2: "Acceso al tratamiento de la obesidad en {City} sin esperas",
     local: [
       "El acceso a endocrinología por la vía pública en {City} suele estar saturado. {BRAND} ofrece valoración online con endocrino en poco tiempo y receta electrónica válida en toda España.",
-      "Tratar la obesidad a tiempo en {City} reduce riesgos para tu salud. Con {BRAND} empiezas con una primera visita de 25 € y, si procede, seguimiento continuo desde la app.",
+      "Tratar la obesidad a tiempo en {City} reduce riesgos para tu salud. Con {BRAND} empiezas con una primera visita gratis y, si procede, seguimiento continuo desde la app.",
     ],
     faqs: (c) => [
       {
@@ -4595,7 +4595,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € (descontables) y el endocrino define tu plan.",
+        a: "Reservas la primera visita gratis y el endocrino define tu plan.",
       },
     ],
   },
@@ -4637,7 +4637,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     localH2: "Combina nutrición y seguimiento médico en {City}",
     local: [
       "Lo ideal en {City} es un enfoque integral: alimentación bien pautada y, si hace falta, apoyo médico. {BRAND} aporta la valoración médica y el seguimiento, complementando el trabajo del nutricionista.",
-      "Si en {City} la dieta no te está dando resultados, una valoración médica puede aclarar por qué. La primera visita de {BRAND} son 25 € y se descuentan del tratamiento si decides empezar.",
+      "Si en {City} la dieta no te está dando resultados, una valoración médica puede aclarar por qué. La primera visita de {BRAND} es gratis.",
     ],
     faqs: (c) => [
       {
@@ -4654,7 +4654,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta la valoración médica?",
-        a: "La primera visita son 25 € y se descuentan del tratamiento si decides empezar.",
+        a: "La primera visita es gratis.",
       },
     ],
   },
@@ -4668,7 +4668,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar inyección para adelgazar en ${c.name} (legal) | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita 25 €.`,
+      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita gratis.`,
     excerpt: (c) =>
       `Guía para comprar una inyección para adelgazar en ${c.name} sin riesgos: qué pedir, por qué hace falta receta y cómo empezar con seguimiento médico.`,
     cover: getAlt("mounjaro").cover,
@@ -4709,11 +4709,11 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta la inyección al mes?",
-        a: "Orientativamente entre 200 y 400 € al mes según el fármaco y la dosis. La primera visita médica son 25 € y se descuentan del tratamiento.",
+        a: "Orientativamente entre 200 y 400 € al mes según el fármaco y la dosis. La primera visita médica es gratis.",
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € (descontables) y el médico define tu plan y la receta si procede.",
+        a: "Reservas la primera visita gratis y el médico define tu plan y la receta si procede.",
       },
     ],
   },
@@ -4727,7 +4727,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar tratamiento para adelgazar en ${c.name} | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo contratar un tratamiento médico para adelgazar en ${c.name}: valoración online, fármacos GLP‑1 si están indicados y seguimiento. Primera visita 25 €.`,
+      `Cómo contratar un tratamiento médico para adelgazar en ${c.name}: valoración online, fármacos GLP‑1 si están indicados y seguimiento. Primera visita gratis.`,
     excerpt: (c) =>
       `Qué tratamientos para adelgazar puedes contratar en ${c.name}, cuáles funcionan de verdad y cómo empezar con valoración médica online.`,
     cover: getAlt("wegovy").cover,
@@ -4754,7 +4754,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     ],
     localH2: "Cómo contratar tu tratamiento para adelgazar en {City}",
     local: [
-      "En {City} empiezas con una primera visita de 25 € (descontables). Si el tratamiento está indicado, recibes la receta y el seguimiento, sin desplazamientos ni esperas.",
+      "En {City} empiezas con una primera visita gratis. Si el tratamiento está indicado, recibes la receta y el seguimiento, sin desplazamientos ni esperas.",
       "Contratar el tratamiento de {BRAND} en {City} es transparente: pagas la valoración, y solo continúas si decides empezar. El seguimiento va incluido durante todo el proceso.",
     ],
     faqs: (c) => [
@@ -4764,7 +4764,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cuánto cuesta el tratamiento?",
-        a: "La primera visita son 25 € (descontables). El tratamiento depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes.",
+        a: "La primera visita es gratis. El tratamiento depende del fármaco y la dosis, orientativamente entre 200 y 400 € al mes.",
       },
       {
         q: `¿Hay permanencia al contratar en ${c.name}?`,
@@ -4772,7 +4772,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo empiezo?",
-        a: "Reservas la primera visita por 25 € y el médico define tu tratamiento y la receta si procede.",
+        a: "Reservas la primera visita gratis y el médico define tu tratamiento y la receta si procede.",
       },
     ],
   },
@@ -4813,7 +4813,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     ],
     localH2: "Qué hacer antes de comprar pastillas en {City}",
     local: [
-      "Antes de gastar en pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta cuesta 25 €, descontables del tratamiento.",
+      "Antes de gastar en pastillas en {City}, lo más rentable es una valoración médica que te diga qué necesitas realmente. Con {BRAND} esa consulta es gratis.",
       "Una consulta médica en {City} te ahorra dinero en productos inútiles y te orienta hacia un tratamiento que funcione, con seguimiento real.",
     ],
     faqs: (c) => [
@@ -4831,7 +4831,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
       },
       {
         q: "¿Cómo sé qué necesito?",
-        a: "Con una valoración médica. En DoctorLife la primera visita son 25 € y el médico te orienta según tu caso.",
+        a: "Con una valoración médica. En DoctorLife la primera visita es gratis y el médico te orienta según tu caso.",
       },
     ],
   },
@@ -4980,7 +4980,7 @@ function buildLocalServicePost(cluster: LocalCluster, city: City, index: number)
    CLÍNICA DE TRATAMIENTO POR FÁRMACO + CIUDAD (alta intención)
    "Clínica de tratamiento con {Ozempic|Wegovy|Mounjaro|GLP‑1}
    en {ciudad}". Ángulo 100% comercial: vendemos la CONSULTA y el
-   tratamiento con receta, explicando el modelo de 25 € (1ª visita
+   tratamiento con receta, explicando el modelo gratis (1ª visita
    descontable). Contenido único por ciudad vía contexto local.
    ═══════════════════════════════════════════════════════════ */
 type ClinicTarget = {
@@ -5000,7 +5000,7 @@ const CLINIC_TARGETS: ClinicTarget[] = [
 const CLINIC_INTRO_BRAND: string[][] = [
   [
     "Buscas una clínica en {City} para tratarte con {Drug}, pero la buena noticia es que ya no necesitas una clínica presencial. {Drug} ({inn}) es un tratamiento de prescripción que un médico colegiado puede valorarte y recetarte online, y que recoges en tu farmacia de {City}.",
-    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita por 25 € —que se descuentan íntegramente del tratamiento— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
+    "En {BRAND} funcionamos como tu clínica de tratamiento con {Drug} en {City}, pero sin salas de espera: reservas tu primera visita gratis —que se descuentan íntegramente del tratamiento— y, si {Drug} es adecuado para ti, recibes la receta electrónica y el seguimiento desde la app.",
   ],
   [
     "Una clínica seria para tratarte con {Drug} en {City} no te vende una caja y te deja solo: valora tu salud, ajusta la dosis y te acompaña. Ese es el modelo de {BRAND}, con la ventaja de que todo es online y sin listas de espera.",
@@ -5015,7 +5015,7 @@ const CLINIC_INTRO_GLP1: string[][] = [
   ],
   [
     "Los análogos del GLP‑1 son hoy lo más eficaz para el control médico del peso, pero necesitan prescripción y seguimiento. En {City}, {BRAND} actúa como tu clínica online: valoración médica, receta si procede y ajustes de dosis, todo sin salir de casa.",
-    "El modelo es claro: 25 € la primera visita (descontables) y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
+    "El modelo es claro: 25 € la primera visita y solo continúas si decides tratarte. Un endocrino colegiado elige, si procede, el GLP‑1 más adecuado para tu caso.",
   ],
 ];
 
@@ -5025,7 +5025,7 @@ const CLINIC_WHY_GLP1 =
 const CLINIC_BENEFITS: string[] = [
   "Sin listas de espera: valoración médica en poco tiempo, no en meses.",
   "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
-  "Primera visita por 25 €, descontables íntegramente del tratamiento.",
+  "Primera visita gratis, descontables íntegramente del tratamiento.",
   "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
   "Sin permanencia: continúas solo mientras quieras.",
 ];
@@ -5077,7 +5077,7 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
         {
           type: "p",
           text: tpl(
-            "En {BRAND} la primera visita médica son 25 € y se descuentan íntegramente del tratamiento si decides empezar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
+            "En {BRAND} la primera visita médica es gratis y se descuentan íntegramente del tratamiento si decides empezar. El resto es un modelo claro y sin permanencia; la medicación se paga aparte en tu farmacia de {City} según la dosis.",
             vars,
           ),
         },
@@ -5111,7 +5111,7 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
     },
     {
       q: tpl("¿Cuánto cuesta empezar el tratamiento con {Drug}?", vars),
-      a: "La primera visita son 25 € y se descuentan íntegramente del tratamiento si decides empezar. No hay permanencia.",
+      a: "La primera visita es gratis y se descuentan íntegramente del tratamiento si decides empezar. No hay permanencia.",
     },
     {
       q: tpl("¿La receta es válida en las farmacias de {City}?", vars),
@@ -5136,11 +5136,11 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
       h1: tpl(`Clínica de tratamiento con ${metaDrug} en {City}: consulta y receta online`, vars),
       metaTitle: tpl(`Clínica de tratamiento con ${metaDrug} en {City} | DoctorLife`, vars),
       metaDescription: tpl(
-        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita 25 € descontable.`,
+        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita gratis descontable.`,
         vars,
       ),
       excerpt: tpl(
-        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita 25 €, descontable.`,
+        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita gratis, descontable.`,
         vars,
       ),
       category: target.generic ? "Adelgazar" : drug.category,
