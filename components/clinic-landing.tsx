@@ -149,7 +149,7 @@ const payments = [
   { src: "/payments/google-pay.svg", alt: "Google Pay" },
 ];
 
-const FIRST_VISIT = "25 €";
+const FIRST_VISIT = "Gratis";
 const MONTHLY = "100 €/mes";
 
 const TRUSTPILOT_URL = "https://es.trustpilot.com/review/doctorlife.io";
