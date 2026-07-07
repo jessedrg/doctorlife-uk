@@ -58,7 +58,7 @@ const planIncludes = [
   "Plan adaptado a tu historia clínica y tus objetivos",
   "Seguimiento con el equipo médico durante todo el proceso",
   "Chat con tu médico siempre que lo necesites",
-  "Prescripción del tratamiento que el médico considere adecuado, si procede",
+  "Recomendaciones personalizadas según tu valoración clínica",
 ];
 
 const TRUSTPILOT_URL = "https://es.trustpilot.com/review/doctorlife.io";
@@ -341,7 +341,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </span>
               <span className="flex items-center gap-2 text-[14.5px] font-medium text-ink">
                 <FileCheck2 aria-hidden className="h-5 w-5 text-olive" />
-                Prescripción solo si el médico lo indica
+                Seguimiento médico personalizado
               </span>
             </div>
             <div className="mt-6 flex justify-center">
@@ -484,8 +484,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 {BRAND} es un servicio de consulta médica online prestado por
                 médicos colegiados en España. La información de esta página tiene
                 carácter general y no sustituye el consejo médico profesional.
-                Cualquier tratamiento se prescribe únicamente si un médico lo
-                considera adecuado tras valorar cada caso. Consulta siempre con tu
+                Cada caso se valora de forma individual. Consulta siempre con tu
                 médico.
               </p>
               <p className="text-[12px] text-ink-mute">
