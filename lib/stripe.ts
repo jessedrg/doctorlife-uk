@@ -12,12 +12,12 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
  * Reparto de ingresos DoctorLife:
  *
  * Suscripción mensual (100 € IVA incl.):
- *  - Primer pago (activación): el paciente paga 75 € (100 - 25 ya abonados).
+ *  - Primer pago (activación): oferta de lanzamiento, el paciente paga 60 €.
  *    El médico recibe 10 € como comisión de captación.
  *  - Renovaciones mensuales: el paciente paga 100 €.
  *    El médico recibe 35 € fijos; el resto (65 €) se queda en la plataforma.
  *
- * Primera visita (pago único de 25 €): el importe íntegro va al médico.
+ * Primera visita: gratis (0 €), sin pago; la cuenta y la cita se crean directamente.
  */
 
 /** Comisión al médico en la activación (primer pago de suscripción). */
