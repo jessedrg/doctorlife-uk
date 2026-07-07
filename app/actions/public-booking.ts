@@ -23,10 +23,14 @@ export async function getPublicSlots(days = 14): Promise<PooledSlot[]> {
 }
 
 /**
- * Flujo público (sin cuenta): el visitante elige hora y paga la PRIMERA VISITA
- * (pago único de 25 €). La cuenta del paciente se crea DESPUÉS del pago (ver
- * provisionFromSession) y se le envían las credenciales por email. La suscripción
- * mensual se activa más tarde, cuando el paciente desbloquea su receta.
+ * Flujo público (sin cuenta): el visitante elige hora para su PRIMERA VISITA,
+ * que ahora es GRATIS. Como no hay cobro (0 €), no se usa Stripe: creamos la
+ * cuenta y la cita directamente y enviamos las credenciales por email. La
+ * suscripción mensual se activa más tarde, cuando el paciente desbloquea su
+ * receta.
+ *
+ * Si en el futuro la primera visita vuelve a tener coste (FIRST_VISIT_CENTS > 0),
+ * se reactiva automáticamente el flujo de pago con Stripe Checkout.
  */
 export async function startPublicCheckout(input: {
   name: string
@@ -55,9 +59,30 @@ export async function startPublicCheckout(input: {
   const slot = slots.find((s) => s.startUtc === start.toISOString())
   if (!slot) return { error: "Ese horario ya no está disponible. Elige otro." }
 
-  // La primera consulta (25 €) va ÍNTEGRA al médico asignado a la llamada: es un
-  // cargo con destino (destination charge) sin comisión de plataforma, siempre
-  // que su cuenta Connect esté lista para cobrar.
+  const baseUrl = await getRequestBaseUrl()
+
+  // ── Primera visita GRATIS: sin pago, provisionamos directamente ──
+  if (FIRST_VISIT_CENTS <= 0) {
+    try {
+      const res = await provisionVisit({
+        name,
+        email,
+        doctorId: slot.doctorId,
+        startUtcISO: slot.startUtc,
+        endUtcISO: slot.endUtc,
+        // Clave de idempotencia sintética (no hay sesión de Stripe).
+        referenceId: `free-${email}-${slot.startUtc}`,
+        paymentIntentId: null,
+      })
+      if (!res) return { error: "No se pudo completar la reserva. Inténtalo de nuevo." }
+      const params = new URLSearchParams({ ref: res.referenceId, email: res.email, name: res.name })
+      return { url: `${baseUrl}/bienvenido?${params.toString()}` }
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "No se pudo completar la reserva." }
+    }
+  }
+
+  // ── Fallback: primera visita con coste → cobro con Stripe Checkout ──
   const [doc] = await db
     .select({ stripeAccountId: doctorProfiles.stripeAccountId, chargesEnabled: doctorProfiles.chargesEnabled })
     .from(doctorProfiles)
@@ -69,7 +94,6 @@ export async function startPublicCheckout(input: {
     paymentIntentData.transfer_data = { destination: doc.stripeAccountId }
   }
 
-  const baseUrl = await getRequestBaseUrl()
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -107,23 +131,26 @@ export async function startPublicCheckout(input: {
 }
 
 /**
- * Crea la cuenta del paciente y su primera cita a partir de una sesión de
- * Checkout pagada (pago único de 25 €). NO crea suscripción: esa se activa
- * después, cuando el paciente desbloquea su receta. Idempotente: se llama desde
- * la página de éxito y desde el webhook; solo envía emails la primera vez.
+ * Núcleo de provisión: crea (idempotente) la cuenta del paciente, su primera
+ * cita y envía las credenciales. Reutilizado por el flujo gratuito (directo) y
+ * por el flujo de pago (desde la sesión de Stripe).
+ *
+ * `referenceId` actúa como clave de idempotencia de la cita
+ * (columna stripeSessionId): para el flujo gratuito es una clave sintética; para
+ * el de pago es el id de la sesión de Stripe.
  */
-export async function provisionFromSession(
-  sessionId: string,
-): Promise<{ email: string; name: string; referenceId: string } | null> {
-  const session = await stripe.checkout.sessions.retrieve(sessionId)
-  if (session.metadata?.kind !== "public_signup") return null
-  if (session.payment_status !== "paid" && session.status !== "complete") return null
-
-  const email = (session.metadata.email || session.customer_email || "").toLowerCase()
-  const name = session.metadata.name || "Paciente"
-  const doctorId = session.metadata.doctorId
-  const startUtcISO = session.metadata.startUtcISO
-  const endUtcISO = session.metadata.endUtcISO
+async function provisionVisit(params: {
+  name: string
+  email: string
+  doctorId: string
+  startUtcISO: string
+  endUtcISO?: string | null
+  referenceId: string
+  paymentIntentId?: string | null
+}): Promise<{ email: string; name: string; referenceId: string } | null> {
+  const email = params.email.toLowerCase()
+  const name = params.name || "Paciente"
+  const { doctorId, startUtcISO, endUtcISO, referenceId } = params
   if (!email || !doctorId || !startUtcISO) return null
 
   // 1) Cuenta del paciente (con contraseña temporal) — idempotente.
@@ -148,11 +175,11 @@ export async function provisionFromSession(
     }
   }
 
-  // 2) Cita confirmada de la primera visita (pago único 25 €). Idempotente por sesión.
+  // 2) Cita confirmada de la primera visita. Idempotente por referencia.
   const [existingAppt] = await db
     .select({ id: appointments.id })
     .from(appointments)
-    .where(eq(appointments.stripeSessionId, session.id))
+    .where(eq(appointments.stripeSessionId, referenceId))
     .limit(1)
   if (!existingAppt) {
     const start = new Date(startUtcISO)
@@ -167,8 +194,8 @@ export async function provisionFromSession(
         status: "confirmed",
         amountCents: FIRST_VISIT_CENTS,
         applicationFeeCents: 0,
-        stripePaymentIntentId: (session.payment_intent as string | null) ?? null,
-        stripeSessionId: session.id,
+        stripePaymentIntentId: params.paymentIntentId ?? null,
+        stripeSessionId: referenceId,
       })
       .returning({ id: appointments.id })
 
@@ -219,5 +246,36 @@ export async function provisionFromSession(
     }
   }
 
-  return { email, name, referenceId: session.id }
+  return { email, name, referenceId }
+}
+
+/**
+ * Crea la cuenta del paciente y su primera cita a partir de una sesión de
+ * Checkout pagada. Solo se usa cuando la primera visita tiene coste. Idempotente:
+ * se llama desde la página de éxito y desde el webhook; solo envía emails la
+ * primera vez.
+ */
+export async function provisionFromSession(
+  sessionId: string,
+): Promise<{ email: string; name: string; referenceId: string } | null> {
+  const session = await stripe.checkout.sessions.retrieve(sessionId)
+  if (session.metadata?.kind !== "public_signup") return null
+  if (session.payment_status !== "paid" && session.status !== "complete") return null
+
+  const email = (session.metadata.email || session.customer_email || "").toLowerCase()
+  const name = session.metadata.name || "Paciente"
+  const doctorId = session.metadata.doctorId
+  const startUtcISO = session.metadata.startUtcISO
+  const endUtcISO = session.metadata.endUtcISO
+  if (!email || !doctorId || !startUtcISO) return null
+
+  return provisionVisit({
+    name,
+    email,
+    doctorId,
+    startUtcISO,
+    endUtcISO,
+    referenceId: session.id,
+    paymentIntentId: (session.payment_intent as string | null) ?? null,
+  })
 }

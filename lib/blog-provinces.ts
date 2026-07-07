@@ -16,10 +16,10 @@ import type { Post, Section, Faq, Block } from "./blog";
 const BRAND = "DoctorLife";
 
 const PRICE_NOTE =
-  "En DoctorLife tu primera visita médica son solo 25 € y se descuentan íntegramente del tratamiento si decides empezar. Todo el seguimiento se gestiona desde nuestra app interna.";
+  "En DoctorLife tu primera visita médica es gratis, sin compromiso. Todo el seguimiento se gestiona desde nuestra app interna.";
 
 const SERVICE_CTA =
-  "En DoctorLife, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita son 25 € y se descuentan del tratamiento.";
+  "En DoctorLife, un endocrino colegiado valora tu caso por videoconsulta y, si el tratamiento es adecuado para ti, te lo prescribe con receta electrónica y seguimiento desde la app. La primera visita es gratis.";
 
 /* ── utilidades deterministas (independientes de blog-content) ── */
 function hash(s: string): number {
@@ -402,7 +402,7 @@ function buildProvincePost(p: Province, index: number): Post {
         {
           type: "list",
           items: [
-            tpl("Reservas tu primera visita online por 25 € (descontables del tratamiento) desde cualquier punto de {Name}.", vars),
+            tpl("Reservas tu primera visita online gratis desde cualquier punto de {Name}.", vars),
             "Completas tu historial clínico y tus objetivos desde la app, sin desplazarte.",
             "Un endocrino colegiado valora tu caso y, si procede, define el tratamiento y la dosis de inicio.",
             tpl("Recibes la receta electrónica, válida en cualquier farmacia de {Name}.", vars),
@@ -446,7 +446,7 @@ function buildProvincePost(p: Province, index: number): Post {
     },
     {
       q: tpl("¿Cuánto cuesta el tratamiento para adelgazar en {Name}?", vars),
-      a: "La medicación en farmacia oscila entre 120 € y 350 €/mes según el fármaco y la dosis. En DoctorLife la primera visita médica son 25 € (descontables del tratamiento) y el seguimiento se gestiona desde la app.",
+      a: "La medicación en farmacia oscila entre 120 € y 350 €/mes según el fármaco y la dosis. En DoctorLife la primera visita médica es gratis y el seguimiento se gestiona desde la app.",
     },
     {
       q: tpl("¿Atendéis toda la provincia de {Name}?", vars),
@@ -474,7 +474,7 @@ function buildProvincePost(p: Province, index: number): Post {
     h1: tpl("Adelgazar con GLP‑1 en la provincia de {Name}: precios, receta y cómo empezar", vars),
     metaTitle: tpl("Tratamiento para adelgazar en {Name}: Wegovy, Mounjaro y Ozempic | DoctorLife", vars),
     metaDescription: tpl(
-      "Cómo empezar un tratamiento GLP‑1 para adelgazar en la provincia de {Name}: precios de Wegovy, Mounjaro y Ozempic, cómo conseguir la receta, endocrino online y cobertura en {capital} y toda la provincia. Primera visita 25 €.",
+      "Cómo empezar un tratamiento GLP‑1 para adelgazar en la provincia de {Name}: precios de Wegovy, Mounjaro y Ozempic, cómo conseguir la receta, endocrino online y cobertura en {capital} y toda la provincia. Primera visita gratis.",
       vars,
     ),
     excerpt: tpl(

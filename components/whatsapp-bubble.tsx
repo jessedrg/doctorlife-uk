@@ -12,7 +12,7 @@ const MESSAGES = [
   "¿Cómo empieza tu plan?",
   "Consulta en 2 minutos",
   "Médico responde hoy",
-  "Primera visita 25 €",
+  "Primera visita gratis",
 ];
 
 export function WhatsAppBubble() {

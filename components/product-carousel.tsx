@@ -148,8 +148,9 @@ export function ProductCarousel() {
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
-        *La primera visita médica cuesta solo <span className="font-semibold text-paper/80">25&nbsp;€</span>. Si decides
-        continuar, la suscripción es de <span className="font-semibold text-paper/80">100&nbsp;€/mes</span> sin permanencia
+        *La primera visita médica es <span className="font-semibold text-paper/80">gratis</span>. Si decides
+        continuar, oferta de lanzamiento: <span className="font-semibold text-paper/80">primer mes 60&nbsp;€</span> (después,
+        <span className="font-semibold text-paper/80">100&nbsp;€/mes</span> sin permanencia)
         e incluye chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. La medicación solo
         está disponible si es prescrita tras una consulta médica y requiere una membresía DoctorLife activa.
       </p>

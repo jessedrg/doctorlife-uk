@@ -322,7 +322,7 @@ export function BmiHero() {
               </p>
               {(category.id === "sobre" || category.id === "obesidad") && (
                 <QuizTrigger className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sage py-3 text-[14px] font-semibold text-ink">
-                  Hablar con un médico — primera visita 25 €
+                  Hablar con un médico — primera visita gratis
                 </QuizTrigger>
               )}
             </div>

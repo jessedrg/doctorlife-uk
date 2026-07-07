@@ -65,12 +65,12 @@ export function StickyCTA() {
                 Consulta médica online para adelgazar
               </p>
               <span className="rounded-full bg-[#6B774A] px-2.5 py-0.5 text-[14px] font-bold text-white sm:text-[15px]">
-                25 €
+                Gratis
               </span>
             </div>
             <p className="mt-1 text-[13.5px] leading-snug text-paper/75 sm:text-[14px]">
               <span className="font-semibold text-[#8fa663]">Pierde peso de forma segura</span>{" "}
-              · la consulta se descuenta del tratamiento · respuesta en minutos
+              · primera consulta gratis · respuesta en minutos
             </p>
 
             {/* Qué incluye — grande en desktop */}

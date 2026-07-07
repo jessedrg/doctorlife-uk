@@ -2,7 +2,7 @@ import { QuizTrigger } from "@/components/quiz-trigger";
 
 /**
  * Bloque de conversión reutilizable dentro de los artículos de la guía.
- * Replica el CTA del blog: empuja a reservar la primera visita (25 €) abriendo
+ * Replica el CTA del blog: empuja a reservar la primera visita (gratis) abriendo
  * el formulario de onboarding (quiz) mediante QuizTrigger.
  *
  * variant "compact": banda compacta a mitad del artículo.
@@ -23,14 +23,14 @@ export function CTABlock({
     return (
       <aside className="my-10 overflow-hidden rounded-[24px] bg-espresso px-7 py-8 text-paper sm:px-9">
         <span className="inline-block rounded-full bg-sage px-[13px] py-[5px] text-[12px] font-semibold text-ink">
-          Primera visita 25 €
+          Primera visita gratis
         </span>
         <h3 className="mt-4 text-balance text-[clamp(20px,2.6vw,26px)] font-light leading-[1.15]">
           {title ?? "¿List@ para empezar?"}
         </h3>
         <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-paper/75">
           {subtitle ??
-            "Reserva tu primera visita por 25 € (descontables). Después, 100 €/mes con chat con tu endocrino, receta de GLP‑1 si es necesaria y seguimiento. Sin permanencia."}
+            "Reserva tu primera visita gratis. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes) con chat con tu endocrino, receta de GLP‑1 si es necesaria y seguimiento. Sin permanencia."}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <QuizTrigger
@@ -56,7 +56,7 @@ export function CTABlock({
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr]">
           <div className="p-8 sm:p-10">
             <span className="inline-block rounded-full bg-sage px-[13px] py-[5px] text-xs font-semibold text-ink">
-              Primera visita 25 €
+              Primera visita gratis
             </span>
             <h2
               id="cta-form-heading"
@@ -66,7 +66,7 @@ export function CTABlock({
             </h2>
             <p className="mt-3 max-w-[46ch] text-[15px] leading-relaxed text-paper/75">
               {subtitle ??
-                "Reserva tu primera visita por 25 € (descontables). Después, una sola suscripción de 100 €/mes, sin permanencia."}
+                "Reserva tu primera visita gratis. Oferta de lanzamiento: primer mes 60 €; después, una sola suscripción de 100 €/mes, sin permanencia."}
             </p>
             <ul className="mt-6 flex flex-col gap-2.5 text-[14.5px] text-paper/85">
               <li className="flex items-center gap-2"><span aria-hidden className="text-sage">✓</span> Médicos colegiados de verdad</li>

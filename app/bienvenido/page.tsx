@@ -11,15 +11,16 @@ export const metadata = {
 export default async function BienvenidoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ session_id?: string; ref?: string; email?: string; name?: string }>
 }) {
-  const { session_id } = await searchParams
+  const { session_id, ref, email: emailParam, name: nameParam } = await searchParams
 
   let email: string | null = null
   let name: string | null = null
   let referenceId: string | null = null
   let ok = false
   if (session_id) {
+    // Flujo con pago (Stripe): provisionamos a partir de la sesión.
     try {
       const res = await provisionFromSession(session_id)
       if (res) {
@@ -31,6 +32,12 @@ export default async function BienvenidoPage({
     } catch {
       ok = false
     }
+  } else if (ref && emailParam) {
+    // Flujo gratuito: la cuenta y la cita ya se crearon en startPublicCheckout.
+    email = emailParam
+    name = nameParam ?? null
+    referenceId = ref
+    ok = true
   }
 
   return (
@@ -52,19 +59,19 @@ export default async function BienvenidoPage({
         </div>
 
         <h1 className="mt-6 text-balance text-[28px] font-light leading-tight tracking-[-.02em]">
-          {ok ? "¡Pago confirmado!" : "Estamos procesando tu pago"}
+          {ok ? "¡Reserva confirmada!" : "Estamos procesando tu reserva"}
         </h1>
 
         <p className="mx-auto mt-3 max-w-[42ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft">
           {ok ? (
             <>
-              Tu primera visita está reservada. Hemos enviado tus credenciales de acceso
+              Tu primera visita gratuita está reservada. Hemos enviado tus credenciales de acceso
               {email ? <> a <span className="font-medium text-ink">{email}</span></> : ""}. Revisa
               tu correo (incluida la carpeta de spam) para entrar a tu panel.
             </>
           ) : (
             <>
-              En cuanto se confirme el pago te enviaremos por correo tus credenciales de acceso al
+              En cuanto se confirme tu reserva te enviaremos por correo tus credenciales de acceso al
               panel. Si ya lo recibiste, puedes iniciar sesión directamente.
             </>
           )}
