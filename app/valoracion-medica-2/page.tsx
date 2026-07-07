@@ -10,6 +10,7 @@ const PATH = "/valoracion-medica-2";
 const config: ValoracionConfig = {
   path: PATH,
   planPrefix: "ads-valoracion-2",
+  hideReviews: true,
 };
 
 export const metadata: Metadata = {

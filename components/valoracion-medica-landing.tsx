@@ -25,6 +25,8 @@ export type ValoracionConfig = {
   path: string;
   /** Prefijo para los eventos de analítica, p. ej. "ads-valoracion" */
   planPrefix: string;
+  /** Oculta el widget TrustBox y la sección de opiniones de Trustpilot */
+  hideReviews?: boolean;
 };
 
 const heroPoints = [
@@ -344,13 +346,16 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 Seguimiento médico personalizado
               </span>
             </div>
-            <div className="mt-6 flex justify-center">
-              <TrustBox />
-            </div>
+            {!config.hideReviews && (
+              <div className="mt-6 flex justify-center">
+                <TrustBox />
+              </div>
+            )}
           </div>
         </section>
 
         {/* ── Opiniones reales (estilo Trustpilot) ── */}
+        {!config.hideReviews && (
         <section aria-labelledby="opiniones" className="mx-auto max-w-[1100px] px-5 pt-20">
           <div className="flex flex-col items-center text-center">
             <h2
@@ -418,6 +423,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
             </a>
           </div>
         </section>
+        )}
 
         {/* ── FAQ ── */}
         <section aria-labelledby="faq" className="mx-auto max-w-[760px] px-5 pt-20">
