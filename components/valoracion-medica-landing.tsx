@@ -12,6 +12,7 @@ import {
   Video,
   HeartPulse,
   ChevronDown,
+  Pill,
 } from "lucide-react";
 import { QuizProvider } from "@/components/quiz-context";
 import { QuizTrigger } from "@/components/quiz-trigger";
@@ -27,6 +28,8 @@ export type ValoracionConfig = {
   planPrefix: string;
   /** Oculta el widget TrustBox y la sección de opiniones de Trustpilot */
   hideReviews?: boolean;
+  /** Muestra un distintivo de tratamiento médico GLP-1 en el hero */
+  showGlpBadge?: boolean;
 };
 
 const heroPoints = [
@@ -183,6 +186,17 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 adecuado, te propone un plan personalizado con seguimiento
                 continuo.
               </p>
+
+              {config.showGlpBadge && (
+                <div className="mt-5 flex justify-center lg:justify-start">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-4 py-2 text-[13.5px] font-medium text-paper ring-1 ring-sage/30">
+                    <Pill aria-hidden className="h-4 w-4 flex-shrink-0 text-sage" />
+                    <span className="text-pretty">
+                      Tratamiento médico GLP-1, si el médico lo considera adecuado
+                    </span>
+                  </span>
+                </div>
+              )}
 
               {/* Prueba social */}
               <div className="mt-6 flex items-center justify-center gap-2 lg:justify-start">

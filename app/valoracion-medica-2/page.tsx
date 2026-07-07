@@ -11,6 +11,7 @@ const config: ValoracionConfig = {
   path: PATH,
   planPrefix: "ads-valoracion-2",
   hideReviews: true,
+  showGlpBadge: true,
 };
 
 export const metadata: Metadata = {
