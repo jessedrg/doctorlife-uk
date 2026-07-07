@@ -723,7 +723,7 @@ export function QuizModal() {
                         selected ? "border-clay/60 bg-clay/12 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                       }`}
                     >
-                      <span>{c.label}</span>
+                      <span>{sa(c.label)}</span>
                       <span
                         className={`mt-0.5 flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-md border text-[11px] ${
                           selected ? "border-clay bg-clay text-paper" : "border-ink/25 text-transparent"
