@@ -47,11 +47,11 @@ export function ProductCarousel() {
       <div className="mb-10 flex flex-col items-start gap-5 rounded-[28px] border border-sage/30 p-7 md:flex-row md:items-center md:justify-between" style={{ background: "rgba(205,217,160,.07)" }}>
         <div>
           <div className="text-[clamp(20px,2.2vw,26px)] font-light leading-[1.2]">
-            Tu primera visita son solo{" "}
-            <span className="font-serif italic text-sage">25 €</span>
+            Tu primera consulta es{" "}
+            <span className="font-serif italic text-sage">gratis</span>
           </div>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
-            Y se descuentan íntegramente de tu suscripción de 100 €/mes si decides
+            Después, una suscripción de 100 €/mes sin permanencia si decides
             empezar. Todo tu seguimiento se gestiona desde la app interna de DoctorLife.
           </p>
         </div>
