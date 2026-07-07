@@ -159,10 +159,11 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </span>
         </header>
 
-        {/* ── Hero (sin imagen) ── */}
+        {/* ── Hero (con imagen del médico en el móvil) ── */}
         <section className="relative overflow-hidden bg-espresso text-paper">
-          <div className="mx-auto max-w-[1100px] px-5 py-16 sm:py-20">
-            <div className="mx-auto max-w-[720px] text-center">
+          <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-10 px-5 py-16 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
+            {/* Columna de texto */}
+            <div className="text-center lg:text-left">
               <span className="inline-flex items-center gap-2 rounded-full bg-paper/10 px-4 py-1.5 text-[13px] font-medium text-paper/90 ring-1 ring-paper/15">
                 <Stethoscope aria-hidden className="h-4 w-4 text-sage" />
                 Valoración médica online
@@ -174,7 +175,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 profesional
               </h1>
 
-              <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-[16px] leading-relaxed text-paper/80">
+              <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-[16px] leading-relaxed text-paper/80 lg:mx-0">
                 Completa un breve cuestionario de salud y un médico colegiado en
                 España valora tu caso en una videoconsulta. Si lo considera
                 adecuado, te propone un plan personalizado con seguimiento
@@ -182,7 +183,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </p>
 
               {/* Prueba social */}
-              <div className="mt-6 flex items-center justify-center gap-2">
+              <div className="mt-6 flex items-center justify-center gap-2 lg:justify-start">
                 <div className="flex items-center gap-1 text-sage">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} aria-hidden className="h-[18px] w-[18px] fill-current" />
@@ -193,7 +194,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 </span>
               </div>
 
-              <div className="mt-8 flex flex-col items-center gap-3">
+              <div className="mt-8 flex flex-col items-center gap-3 lg:items-start">
                 <QuizTrigger
                   plan={`${planPrefix}-hero`}
                   className="w-full max-w-[360px] rounded-full bg-sage px-8 py-[16px] text-[16px] font-bold text-espresso"
@@ -205,7 +206,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 </span>
               </div>
 
-              <ul className="mx-auto mt-10 grid max-w-[640px] grid-cols-1 gap-3 sm:grid-cols-2">
+              <ul className="mx-auto mt-10 grid max-w-[640px] grid-cols-1 gap-3 sm:grid-cols-2 lg:mx-0">
                 {heroPoints.map(({ icon: Icon, label }) => (
                   <li
                     key={label}
@@ -216,6 +217,21 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* Columna de imagen: médico en videollamada desde el móvil */}
+            <div className="relative mx-auto w-full max-w-[420px] lg:max-w-none">
+              {/* resplandor que funde la imagen en el fondo */}
+              <div
+                aria-hidden
+                className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                style={{ background: "radial-gradient(circle, rgba(179,196,168,.28) 0%, transparent 70%)" }}
+              />
+              <img
+                src="/doctor-mobile.webp"
+                alt="Médico colegiado de DoctorLife atendiendo una videoconsulta desde el móvil"
+                className="relative mx-auto h-auto w-full max-w-[380px] object-contain lg:max-w-[440px]"
+              />
             </div>
           </div>
         </section>
