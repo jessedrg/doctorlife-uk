@@ -24,13 +24,13 @@ export const organizationSchema = {
   // cuando esté disponible (refuerza E-E-A-T en salud). No inventar.
   email: CONTACT_EMAIL,
   description:
-    "Cuidado del peso y hormonal dirigido por médicos colegiados, con tratamiento GLP‑1 supervisado y seguimiento real desde la app.",
+    "Cuidado del peso y hormonal dirigido por médicos colegiados, con valoración médica y seguimiento real desde la app.",
   medicalSpecialty: ["Endocrinology", "Bariatrics"],
   knowsAbout: [
     "Obesidad",
     "Sobrepeso",
     "Salud metabólica",
-    "Tratamiento GLP‑1",
+    "Control de peso",
     "Endocrinología",
   ],
   address: {

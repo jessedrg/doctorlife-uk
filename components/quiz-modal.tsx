@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuiz } from "./quiz-context";
-import { quizSteps, products } from "@/lib/data";
+import { quizSteps, products, adsQuizSteps, adsProducts } from "@/lib/data";
 import { saveLead } from "@/app/actions/leads";
 import { getPublicSlots, startPublicCheckout } from "@/app/actions/public-booking";
 import {
@@ -49,8 +49,22 @@ const FLOW: Phase[] = [
   "done",
 ];
 
+/** Sanea textos que mencionan el fármaco/tratamiento para la variante de campañas. */
+function sanitizeAds(text: string) {
+  return text
+    .replace(/Reacción alérgica grave previa a un GLP[-‑]1/g, "Reacción alérgica grave previa a este tipo de tratamiento")
+    .replace(/Los GLP[-‑]1 no se recomiendan/g, "Este servicio no se recomienda")
+    .replace(/GLP[-‑]1/g, "el control de peso")
+    .replace(/\bTratamiento\b/g, "Servicio")
+    .replace(/\btratamiento\b/g, "servicio");
+}
+
 export function QuizModal() {
-  const { open, initialPlan, closeQuiz } = useQuiz();
+  const { open, initialPlan, closeQuiz, variant } = useQuiz();
+  const isAds = variant === "ads";
+  const steps = isAds ? adsQuizSteps : quizSteps;
+  const productList = isAds ? adsProducts : products;
+  const sa = (text: string) => (isAds ? sanitizeAds(text) : text);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [phase, setPhase] = useState<Phase>("questions");
@@ -71,7 +85,7 @@ export function QuizModal() {
   const [paying, setPaying] = useState(false);
   const [blockedSaved, setBlockedSaved] = useState(false);
 
-  const total = quizSteps.length;
+  const total = steps.length;
   const emailRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
@@ -97,7 +111,10 @@ export function QuizModal() {
   };
 
   // Solo hay un plan contratable: el destacado. Lo preseleccionamos siempre.
-  const mainPlan = useMemo(() => products.find((p) => !p.comingSoon) ?? products[0], []);
+  const mainPlan = useMemo(
+    () => productList.find((p) => !p.comingSoon) ?? productList[0],
+    [productList],
+  );
 
   // Agrupa los huecos por día para el selector de la fase "slot".
   const slotsByDate = useMemo(() => {
@@ -319,7 +336,7 @@ export function QuizModal() {
       onClick={close}
       role="dialog"
       aria-modal="true"
-      aria-label="Comprueba si el tratamiento es para ti"
+      aria-label={isAds ? "Comprueba si es para ti" : "Comprueba si el tratamiento es para ti"}
     >
       <div
         className="quiz-card flex max-h-[94dvh] w-full max-w-[580px] flex-col overflow-hidden rounded-t-[28px] bg-paper sm:max-h-[90dvh] sm:rounded-[30px]"
@@ -356,10 +373,10 @@ export function QuizModal() {
                 Paso {step + 1} de {total}
               </div>
               <h3 className="mb-[22px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
-                {quizSteps[step].q}
+                {steps[step].q}
               </h3>
               <div className="flex flex-col gap-[11px]">
-                {quizSteps[step].opts.map((opt) => {
+                {steps[step].opts.map((opt) => {
                   const selected = answers[step] === opt;
                   return (
                     <button
@@ -425,7 +442,9 @@ export function QuizModal() {
                 Cuéntanos un poco más
               </h3>
               <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
-                Estos datos nos ayudan a comprobar si el tratamiento es seguro para ti.
+                {isAds
+                  ? "Estos datos nos ayudan a comprobar si es adecuado para ti."
+                  : "Estos datos nos ayudan a comprobar si el tratamiento es seguro para ti."}
               </p>
 
               <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
@@ -654,7 +673,7 @@ export function QuizModal() {
                         selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                       }`}
                     >
-                      {c.label}
+                      {sa(c.label)}
                       <span
                         className={`flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-md border text-[11px] ${
                           selected ? "border-sage bg-sage text-ink" : "border-ink/25 text-transparent"
@@ -704,7 +723,7 @@ export function QuizModal() {
                         selected ? "border-clay/60 bg-clay/12 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                       }`}
                     >
-                      <span>{c.label}</span>
+                      <span>{sa(c.label)}</span>
                       <span
                         className={`mt-0.5 flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-md border text-[11px] ${
                           selected ? "border-clay bg-clay text-paper" : "border-ink/25 text-transparent"
@@ -742,7 +761,9 @@ export function QuizModal() {
               </div>
               <h3 className="mb-3 mt-4 text-center text-[26px] font-light leading-[1.14] tracking-[-.02em] text-balance sm:text-[29px]">
                 {verdict.status === "eligible"
-                  ? "Buenas noticias: encajas en el tratamiento"
+                  ? isAds
+                    ? "Buenas noticias: podemos ayudarte"
+                    : "Buenas noticias: encajas en el tratamiento"
                   : "Podemos ayudarte, con revisión médica"}
               </h3>
 
@@ -757,15 +778,15 @@ export function QuizModal() {
                       >
                         {verdict.status === "eligible" ? "✓" : "!"}
                       </span>
-                      <span>{r}</span>
+                      <span>{sa(r)}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               <p className="mt-4 text-[12.5px] leading-relaxed text-ink-mute">
-                Este resultado es orientativo. La decisión final sobre el tratamiento la toma siempre tu
-                endocrino colegiado durante la consulta, tras revisar tu historia clínica completa.
+                Este resultado es orientativo. La decisión final la toma siempre tu
+                médico colegiado durante la consulta, tras revisar tu historia clínica completa.
               </p>
 
               <button
@@ -791,10 +812,14 @@ export function QuizModal() {
                 !
               </div>
               <h3 className="mb-3 mt-5 text-[25px] font-light leading-[1.16] tracking-[-.02em] text-balance sm:text-[28px]">
-                El tratamiento con GLP‑1 no es adecuado para ti ahora
+                {isAds
+                  ? "Este servicio no es adecuado para ti ahora"
+                  : "El tratamiento con GLP‑1 no es adecuado para ti ahora"}
               </h3>
               <p className="mx-auto mb-4 max-w-[44ch] text-[15px] leading-relaxed text-ink-soft">
-                Según tus respuestas, este tratamiento podría no ser seguro en tu caso. Tu salud es lo primero.
+                {isAds
+                  ? "Según tus respuestas, este servicio podría no ser seguro en tu caso. Tu salud es lo primero."
+                  : "Según tus respuestas, este tratamiento podría no ser seguro en tu caso. Tu salud es lo primero."}
               </p>
 
               <div className="rounded-[18px] border border-clay/25 bg-clay/8 px-5 py-4 text-left">
@@ -804,7 +829,7 @@ export function QuizModal() {
                       <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-clay/25 text-[10px] text-ink">
                         !
                       </span>
-                      <span>{r}</span>
+                      <span>{sa(r)}</span>
                     </li>
                   ))}
                 </ul>
@@ -864,17 +889,24 @@ export function QuizModal() {
 
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
-                  25€
+                  {isAds ? "0€" : "25€"}
                 </span>
-                <p className="text-[13.5px] leading-snug text-ink-soft">
-                  <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
-                  Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te
-                  descontamos esos 25&nbsp;€ del primer mes (después, 65&nbsp;€/mes + IVA). Cancela cuando quieras.
-                </p>
+                {isAds ? (
+                  <p className="text-[13.5px] leading-snug text-ink-soft">
+                    <span className="font-semibold text-ink">Tu primera valoración es gratis.</span> Si decides
+                    continuar, lo gestionas con la suscripción mensual (100&nbsp;€/mes + IVA). Cancela cuando quieras.
+                  </p>
+                ) : (
+                  <p className="text-[13.5px] leading-snug text-ink-soft">
+                    <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
+                    Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te descontamos
+                    esos 25&nbsp;€ del primer mes (después, 65&nbsp;€/mes + IVA). Cancela cuando quieras.
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col gap-[11px]">
-                {products.map((p) => {
+                {productList.map((p) => {
                   const selected = plan === p.name;
                   const expanded = expandedPlan === p.name;
                   return (
