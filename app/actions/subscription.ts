@@ -12,7 +12,7 @@ import {
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe, DOCTOR_SHARE_CENTS, DOCTOR_ACTIVATION_CENTS } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
-import { getPlan, defaultPlan, FIRST_VISIT_CENTS, SUBSCRIPTION_PRICE_CENTS, type PlanInfo } from "@/lib/plans"
+import { getPlan, defaultPlan, FIRST_MONTH_DISCOUNT_CENTS, SUBSCRIPTION_PRICE_CENTS, type PlanInfo } from "@/lib/plans"
 import { hasPendingVerification } from "@/app/actions/verification"
 import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray } from "drizzle-orm"
@@ -201,13 +201,13 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
   }
 
   try {
-    // Primer mes: 100 € − 25 € (primera visita ya abonada) = 75 €.
+    // Oferta de lanzamiento — Primer mes: 100 € − 40 € = 60 €.
     // Meses siguientes: 100 € recurrentes.
     const firstMonthCoupon = await stripe.coupons.create({
-      amount_off: FIRST_VISIT_CENTS,   // 2500 céntimos = 25 €
+      amount_off: FIRST_MONTH_DISCOUNT_CENTS,   // 4000 céntimos = 40 €
       currency: "eur",
       duration: "once",
-      name: "Primera visita ya abonada (−25 €)",
+      name: "Oferta de lanzamiento (−40 € el primer mes)",
     })
 
     const baseUrl = await getRequestBaseUrl()
@@ -225,7 +225,7 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
             product_data: {
               name: `${plan.name} · DoctorLife`,
               description:
-                "Suscripción mensual con seguimiento médico. Primer mes: 75 € (25 € de la primera visita ya abonados).",
+                "Suscripción mensual con seguimiento médico. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes).",
             },
           },
         },
@@ -344,7 +344,7 @@ export async function payoutDoctorForInvoice(invoice: {
   }
 
   // Importe que recibe el médico:
-  // - Activación (primer pago 75 €): 10 € de comisión por captación.
+  // - Activación (primer pago 60 € con la oferta de lanzamiento): 10 € de comisión por captación.
   // - Renovación (100 € mensuales): 35 € fijos; el resto (65 €) se queda en la empresa.
   const amountPaid = invoice.amount_paid ?? 0
   const targetAmount = isActivation ? DOCTOR_ACTIVATION_CENTS : DOCTOR_SHARE_CENTS

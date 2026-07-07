@@ -889,18 +889,19 @@ export function QuizModal() {
 
               <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
                 <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
-                  {isAds ? "0€" : "25€"}
+                  0€
                 </span>
                 {isAds ? (
                   <p className="text-[13.5px] leading-snug text-ink-soft">
                     <span className="font-semibold text-ink">Tu primera valoración es gratis.</span> Si decides
-                    continuar, lo gestionas con la suscripción mensual (100&nbsp;€/mes + IVA). Cancela cuando quieras.
+                    continuar, lo gestionas con la suscripción mensual. Oferta de lanzamiento: primer mes
+                    60&nbsp;€ (después, 100&nbsp;€/mes + IVA). Cancela cuando quieras.
                   </p>
                 ) : (
                   <p className="text-[13.5px] leading-snug text-ink-soft">
-                    <span className="font-semibold text-ink">Hoy solo pagas 25&nbsp;€</span> por tu primera visita.
-                    Si tu médico te receta tratamiento, lo desbloqueas con la suscripción mensual y te descontamos
-                    esos 25&nbsp;€ del primer mes (después, 65&nbsp;€/mes + IVA). Cancela cuando quieras.
+                    <span className="font-semibold text-ink">Tu primera visita es gratis.</span> Si tu médico te
+                    receta tratamiento, lo desbloqueas con la suscripción mensual. Oferta de lanzamiento: primer
+                    mes 60&nbsp;€ (después, 100&nbsp;€/mes + IVA). Cancela cuando quieras.
                   </p>
                 )}
               </div>
@@ -1025,7 +1026,7 @@ export function QuizModal() {
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
                 Usaremos tu correo como usuario para entrar a tu panel. En el siguiente paso eliges tu
-                primera cita con el endocrino y completas el pago.
+                primera cita con el endocrino. La primera visita es gratis.
               </p>
 
               <div className="mb-6 flex flex-wrap gap-2">
@@ -1100,7 +1101,7 @@ export function QuizModal() {
                 <a href="/privacidad" className="underline decoration-ink/25 underline-offset-2 hover:text-ink">
                   política de privacidad
                 </a>
-                . El pago se realiza en el siguiente paso, tras elegir tu cita.
+                . Tu primera visita es gratis, sin tarjeta ni compromiso.
               </p>
 
               {phase !== "submitting" && (
@@ -1111,14 +1112,14 @@ export function QuizModal() {
             </div>
           )}
 
-          {/* SLOT: elegir hora y pagar */}
+          {/* SLOT: elegir hora */}
           {phase === "slot" && (
             <div className="quiz-fade">
               <h3 className="text-[24px] font-light tracking-[-.02em] sm:text-[27px]">Elige tu primera cita</h3>
               <p className="mt-2 max-w-[46ch] text-[15px] leading-relaxed text-ink-soft">
-                Reserva tu videollamada con un endocrino. Al confirmar pagarás tu{" "}
-                <span className="font-medium text-ink">primera visita por 25&nbsp;€</span> y crearemos
-                tu cuenta automáticamente.
+                Reserva tu videollamada con un endocrino. Tu{" "}
+                <span className="font-medium text-ink">primera visita es gratis</span> y crearemos
+                tu cuenta automáticamente al confirmar.
               </p>
 
               {slots === null ? (
@@ -1196,7 +1197,7 @@ export function QuizModal() {
               )}
 
               {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-              {paying && <p className="mt-4 text-center text-sm text-ink-mute">Redirigiendo al pago seguro…</p>}
+              {paying && <p className="mt-4 text-center text-sm text-ink-mute">Confirmando tu reserva…</p>}
 
               <button
                 type="button"

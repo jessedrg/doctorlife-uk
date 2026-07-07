@@ -104,7 +104,7 @@ export function BlogConversionPopup({
             <div className="absolute bottom-4 left-5">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-sage px-3 py-[5px] text-[11.5px] font-semibold uppercase tracking-[.1em] text-ink">
                 <Stethoscope aria-hidden className="h-3.5 w-3.5" />
-                Primera visita 25 €
+                Primera visita gratis
               </span>
             </div>
           </div>
@@ -136,7 +136,7 @@ export function BlogConversionPopup({
               Reservar mi primera visita
             </QuizTrigger>
             <p className="mt-2.5 text-center text-[12px] text-paper/55">
-              25 € descontables del tratamiento · Sin compromiso
+              Primera visita gratis · Sin compromiso
             </p>
           </div>
         </div>

@@ -5,11 +5,11 @@ import { analytics } from "@/lib/analytics";
 
 /**
  * Bloque de conversión reutilizable dentro de los posts del blog.
- * Empuja al lector a empezar el tratamiento con DoctorLife (primera visita 25 €).
+ * Empuja al lector a empezar el tratamiento con DoctorLife (primera visita gratis).
  */
 export function BlogFunnel({
   title = "Empieza tu tratamiento con un endocrino colegiado",
-  subtitle = "Primera visita por 25 € (descontables). Después, una sola suscripción de 100 €/mes con chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. Sin permanencia.",
+  subtitle = "Primera visita gratis. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes) con chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. Sin permanencia.",
   image = "/hero/woman.png",
   imageAlt = "Paciente de DoctorLife sonriendo",
 }: {
@@ -23,7 +23,7 @@ export function BlogFunnel({
       <div className="flex flex-col-reverse md:grid md:grid-cols-[1.2fr_1fr]">
         <div className="p-8 sm:p-10">
           <span className="inline-block rounded-full bg-sage px-[13px] py-[5px] text-xs font-semibold text-ink">
-            Primera visita 25 €
+            Primera visita gratis
           </span>
           <h3 className="mt-5 text-balance text-[clamp(24px,3vw,32px)] font-light leading-[1.1]">
             {title}
