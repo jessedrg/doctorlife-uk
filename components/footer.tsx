@@ -29,7 +29,7 @@ export function Footer() {
               Plataforma que conecta pacientes con médicos colegiados independientes para el seguimiento del peso con tratamiento GLP‑1.
             </p>
             <QuizTrigger className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink">
-              Empieza por 25 €
+              Primera consulta gratis
               <span className="text-[13px]">↗</span>
             </QuizTrigger>
             <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
