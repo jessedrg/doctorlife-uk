@@ -835,6 +835,11 @@ export function QuizModal() {
                 onClick={() => {
                   // Métrica: fase de contraindicaciones completada
                   analytics.formPhaseContraindications(contraindications);
+                  if (verdict.status === "blocked") {
+                    analytics.formPhaseResult("blocked", verdict.reasons[0] ?? "No elegible");
+                  } else {
+                    analytics.formPhaseResult("eligible", undefined);
+                  }
                   setPhase(verdict.status === "blocked" ? "blocked" : "result");
                 }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
@@ -1233,7 +1238,11 @@ export function QuizModal() {
                         key={s.startUtc}
                         type="button"
                         disabled={paying}
-                        onClick={() => payForSlot(s.startUtc)}
+                        onClick={() => {
+                          // Métrica: cita seleccionada
+                          analytics.formPhaseSlot(s.startUtc);
+                          payForSlot(s.startUtc);
+                        }}
                         className="rounded-xl border border-ink/12 py-2.5 text-[14.5px] font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[.04] disabled:opacity-50"
                       >
                         {s.label}
