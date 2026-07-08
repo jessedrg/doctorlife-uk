@@ -172,10 +172,11 @@ export function QuizModal() {
 
   const isFemale = sex === "female";
   const stageIndex = FLOW.indexOf(phase === "submitting" ? "details" : phase);
+  // Dentro de la fase de preguntas, la barra avanza por cada respuesta para dar momentum.
+  const effectiveIndex =
+    phase === "questions" ? step / Math.max(total, 1) : stageIndex < 0 ? 1 : stageIndex;
   const progress =
-    phase === "blocked"
-      ? 100
-      : Math.round(((stageIndex < 0 ? 1 : stageIndex) / (FLOW.length - 1)) * 100);
+    phase === "blocked" ? 100 : Math.round((effectiveIndex / (FLOW.length - 1)) * 100);
 
   const bmiCategory = (b: number) =>
     b < 18.5
@@ -229,22 +230,40 @@ export function QuizModal() {
   };
 
   // Construye el payload clínico común para guardar el lead.
-  const leadPayload = () => ({
-    name,
-    email,
-    goal: "Perder peso",
-    glp1Experience: answers[0],
-    formatPreference: "Pluma semanal",
-    timeline: estTimeline || undefined,
-    plan: plan || undefined,
-    heightCm: h > 0 ? h : null,
-    weightKg: w > 0 ? w : null,
-    age: ageNum || null,
-    sex: sex || null,
-    pregnancy: pregnancy || null,
-    comorbidities,
-    contraindications,
-  });
+  const leadPayload = () => {
+    // Mapea las respuestas del cuestionario por su clave semántica.
+    const byKey: Record<string, string | undefined> = {};
+    steps.forEach((s, i) => {
+      if (s.key) byKey[s.key] = answers[i];
+    });
+    // Resume el objetivo y la motivación en el campo `goal` para la notificación.
+    const goalSummary =
+      [
+        byKey.goal && `Perder ${byKey.goal.toLowerCase()}`,
+        byKey.why && `Motivo: ${byKey.why.toLowerCase()}`,
+        byKey.tried && `Ha probado: ${byKey.tried.toLowerCase()}`,
+        byKey.frustration && `Frustración: ${byKey.frustration.toLowerCase()}`,
+      ]
+        .filter(Boolean)
+        .join(" · ") || "Perder peso";
+
+    return {
+      name,
+      email,
+      goal: goalSummary,
+      glp1Experience: byKey.glp1Experience ?? answers[0],
+      formatPreference: "Pluma semanal",
+      timeline: estTimeline || undefined,
+      plan: plan || undefined,
+      heightCm: h > 0 ? h : null,
+      weightKg: w > 0 ? w : null,
+      age: ageNum || null,
+      sex: sex || null,
+      pregnancy: pregnancy || null,
+      comorbidities,
+      contraindications,
+    };
+  };
 
   const submit = async () => {
     setError(null);
@@ -372,9 +391,14 @@ export function QuizModal() {
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">
                 Paso {step + 1} de {total}
               </div>
-              <h3 className="mb-[22px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[10px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
                 {steps[step].q}
               </h3>
+              {steps[step].sub && (
+                <p className="mb-[22px] text-[15px] leading-relaxed text-ink-soft text-pretty">
+                  {steps[step].sub}
+                </p>
+              )}
               <div className="flex flex-col gap-[11px]">
                 {steps[step].opts.map((opt) => {
                   const selected = answers[step] === opt;
