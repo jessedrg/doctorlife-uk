@@ -110,7 +110,18 @@ export type QuizStep = { key: string; q: string; sub?: string; opts: string[] };
    El orden crea micro‑compromisos crecientes y momentum. */
 export const quizSteps: QuizStep[] = [
   {
-    key: "goal",
+    key: "objective",
+    q: "¿Cuál es tu objetivo principal?",
+    sub: "Da el primer paso. En 2 minutos sabrás si el tratamiento GLP‑1 es para ti.",
+    opts: [
+      "Perder peso y no recuperarlo",
+      "Controlar el hambre y los antojos",
+      "Mejorar mi salud y mi energía",
+      "Sentirme mejor con mi cuerpo",
+    ],
+  },
+  {
+    key: "amount",
     q: "¿Cuánto peso te gustaría perder?",
     sub: "No hay respuesta incorrecta. Solo queremos entender tu punto de partida.",
     opts: ["Menos de 5 kg", "Entre 5 y 10 kg", "Entre 10 y 20 kg", "Más de 20 kg"],

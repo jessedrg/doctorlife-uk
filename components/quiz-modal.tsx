@@ -239,7 +239,8 @@ export function QuizModal() {
     // Resume el objetivo y la motivación en el campo `goal` para la notificación.
     const goalSummary =
       [
-        byKey.goal && `Perder ${byKey.goal.toLowerCase()}`,
+        byKey.objective && `Objetivo: ${byKey.objective.toLowerCase()}`,
+        byKey.amount && `Meta: ${byKey.amount.toLowerCase()}`,
         byKey.why && `Motivo: ${byKey.why.toLowerCase()}`,
         byKey.tried && `Ha probado: ${byKey.tried.toLowerCase()}`,
         byKey.frustration && `Frustración: ${byKey.frustration.toLowerCase()}`,
