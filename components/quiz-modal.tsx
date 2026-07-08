@@ -502,10 +502,12 @@ export function QuizModal() {
                       <button
                         key={o.id}
                         type="button"
-                        onClick={() => {
-                          setSex(o.id);
-                          if (o.id !== "female") setPregnancy("");
-                        }}
+                onClick={() => {
+                  // Métrica: plan seleccionado
+                  analytics.formPhasePlan(p.id);
+                  setPlan(p.id);
+                  setPhase("details");
+                }}
                         aria-pressed={selected}
                         className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[14px] text-left text-[15.5px] transition-all duration-150 ${
                           selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
@@ -568,6 +570,8 @@ export function QuizModal() {
                     return;
                   }
                   setError(null);
+                  // Métrica: fase de perfil completada
+                  analytics.formPhaseProfile(ageNum || null, sex || null, pregnancy || null);
                   setPhase("measures");
                 }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
@@ -668,6 +672,8 @@ export function QuizModal() {
                     return;
                   }
                   setError(null);
+                  // Métrica: fase de medidas completada
+                  analytics.formPhaseMeasures(h > 0 ? h : null, w > 0 ? w : null, bmi || null);
                   setPhase("comorbidities");
                 }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
@@ -719,7 +725,11 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => setPhase("contraindications")}
+                onClick={() => {
+                  // Métrica: fase de comorbilidades completada
+                  analytics.formPhaseComorbidities(comorbidities);
+                  setPhase("contraindications");
+                }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Continuar
@@ -822,7 +832,16 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => setPhase("plan")}
+                onClick={() => {
+                  // Métrica: fase de contraindicaciones completada
+                  analytics.formPhaseContraindications(contraindications);
+                  if (verdict.status === "blocked") {
+                    analytics.formPhaseResult("blocked", verdict.reasons[0] ?? "No elegible");
+                  } else {
+                    analytics.formPhaseResult("eligible", undefined);
+                  }
+                  setPhase(verdict.status === "blocked" ? "blocked" : "result");
+                }}
                 className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Continuar
@@ -957,6 +976,8 @@ export function QuizModal() {
                         disabled={p.comingSoon}
                         onClick={() => {
                           if (p.comingSoon) return;
+                          // Métrica: plan seleccionado
+                          analytics.formPhasePlan(p.name);
                           setPlan(p.name);
                           setError(null);
                         }}
@@ -1217,7 +1238,11 @@ export function QuizModal() {
                         key={s.startUtc}
                         type="button"
                         disabled={paying}
-                        onClick={() => payForSlot(s.startUtc)}
+                        onClick={() => {
+                          // Métrica: cita seleccionada
+                          analytics.formPhaseSlot(s.startUtc);
+                          payForSlot(s.startUtc);
+                        }}
                         className="rounded-xl border border-ink/12 py-2.5 text-[14.5px] font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[.04] disabled:opacity-50"
                       >
                         {s.label}

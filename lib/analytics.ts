@@ -106,6 +106,78 @@ export const analytics = {
     });
   },
 
+  /** El usuario completó la fase de PROFILE (edad, sexo, embarazo). */
+  formPhaseProfile(age: number | null, sex: string | null, pregnancy: string | null) {
+    track("form_phase_profile", {
+      age: age ?? null,
+      sex: sex ?? null,
+      pregnancy: pregnancy ?? null,
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario completó la fase de MEASURES (altura, peso, IMC). */
+  formPhaseMeasures(heightCm: number | null, weightKg: number | null, bmi: number | null) {
+    track("form_phase_measures", {
+      height_cm: heightCm ?? null,
+      weight_kg: weightKg ?? null,
+      bmi: bmi?.toFixed(1) ?? null,
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario seleccionó comorbilidades (condiciones de salud). */
+  formPhaseComorbidities(selectedComorbidities: string[]) {
+    track("form_phase_comorbidities", {
+      comorbidities_count: selectedComorbidities.length,
+      comorbidities: selectedComorbidities.join(","),
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario completó la fase de CONTRAINDICATIONS (verificación de seguridad). */
+  formPhaseContraindications(contraindications: string[]) {
+    track("form_phase_contraindications", {
+      contraindications_count: contraindications.length,
+      contraindications: contraindications.join(","),
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario vio el resultado de eligibilidad (eligible o blocked). */
+  formPhaseResult(eligibility: "eligible" | "blocked", reason?: string) {
+    track("form_phase_result", {
+      eligibility,
+      reason: reason ?? null,
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario eligió un plan de tratamiento. */
+  formPhasePlan(selectedPlan: string) {
+    track("form_phase_plan", {
+      plan: selectedPlan,
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario ingresó email y nombre en detalles. */
+  formPhaseDetails(email: string, name: string) {
+    track("form_phase_details", {
+      email,
+      name,
+      path: currentPath(),
+    });
+  },
+
+  /** El usuario eligió una cita. */
+  formPhaseSlot(slotDateTime: string) {
+    track("form_phase_slot", {
+      slot: slotDateTime,
+      path: currentPath(),
+    });
+  },
+
   /** El usuario hizo clic en el botón de WhatsApp. */
   whatsappClicked(source: "button" | "tooltip" | "sticky_bar") {
     track("whatsapp_clicked", { source, path: currentPath() });
