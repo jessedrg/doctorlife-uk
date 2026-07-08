@@ -134,6 +134,10 @@ export function QuizModal() {
   }, [open, initialPlan, mainPlan]);
 
   const close = () => {
+    // Solo registramos abandono si el usuario estaba en medio del formulario.
+    if (phase !== "blocked") {
+      analytics.formAbandoned(phase, phase === "questions" ? step : undefined);
+    }
     closeQuiz();
     setTimeout(reset, 200);
   };
@@ -207,6 +211,8 @@ export function QuizModal() {
     const next = [...answers];
     next[step] = opt;
     setAnswers(next);
+    // Métrica: registra la respuesta y el paso para el funnel de abandono.
+    analytics.quizQuestion(step, steps[step].key ?? `step_${step}`, opt, total);
     setTimeout(() => {
       if (step < total - 1) setStep(step + 1);
       else setPhase("profile");
