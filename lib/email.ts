@@ -100,7 +100,7 @@ async function send(to: string, subject: string, html: string) {
   return { id: data?.id }
 }
 
-/** Credenciales de acceso tras el pago de la primera visita (25 €). */
+/** Credenciales de acceso tras reservar la primera visita (gratis). */
 export async function sendCredentialsEmail(opts: { to: string; name: string; tempPassword: string }) {
   const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"

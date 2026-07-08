@@ -139,13 +139,13 @@ export default function Page() {
           <div className="flex flex-col items-start gap-5 rounded-[28px] bg-espresso px-10 py-10 md:flex-row md:items-center md:justify-between">
             <div>
               <span className="inline-block rounded-full bg-sage/20 px-3 py-1 text-xs font-semibold uppercase tracking-[.12em] text-sage">
-                Primera visita 25 €
+                Primera visita gratis
               </span>
               <h2 className="mt-3 font-display text-[1.8rem] font-bold leading-tight text-paper text-balance">
                 ¿List@ para empezar con un plan real?
               </h2>
               <p className="mt-2 max-w-md text-[15px] leading-relaxed text-paper/65">
-                Reserva tu primera visita médica por 25 € (descontables del tratamiento) y recibe un plan de adelgazamiento diseñado para ti.
+                Reserva tu primera visita médica gratis y recibe un plan de adelgazamiento diseñado para ti.
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3">

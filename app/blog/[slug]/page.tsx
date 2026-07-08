@@ -293,7 +293,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </section>
 
-            <BlogFunnel title="¿List@ para empezar?" subtitle="Reserva tu primera visita por 25 € (descontables del tratamiento) y empieza con un plan diseñado en torno a ti." image="/testimonials/daniel.png" imageAlt="Daniel, paciente de DoctorLife, sonriendo" />
+            <BlogFunnel title="¿List@ para empezar?" subtitle="Reserva tu primera visita gratis y empieza con un plan diseñado en torno a ti." image="/testimonials/daniel.png" imageAlt="Daniel, paciente de DoctorLife, sonriendo" />
 
             <p className="mt-8 rounded-[16px] bg-cream/50 px-5 py-4 text-[13px] leading-relaxed text-ink-mute">
               Este contenido es informativo y no sustituye el consejo médico. Los tratamientos GLP‑1 requieren

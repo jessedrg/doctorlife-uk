@@ -7,7 +7,7 @@ const PATH = "/consulta-peso-maxmax";
 export const metadata: Metadata = {
   title: "Adelgaza con tratamiento médico e inyección indolora | DoctorLife",
   description:
-    "Programa de control de peso con inyección indolora, supervisado por endocrinos colegiados 100% online. Resultados reales. Primera visita 25 €.",
+    "Programa de control de peso con inyección indolora, supervisado por endocrinos colegiados 100% online. Resultados reales. Primera visita gratis.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };

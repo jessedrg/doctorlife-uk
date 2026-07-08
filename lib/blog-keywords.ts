@@ -1013,7 +1013,7 @@ function comprarAmazon(): Draft {
       },
       {
         q: "¿Cómo consigo Mounjaro o Wegovy legalmente?",
-        a: "Con una valoración médica que, si procede, emita la receta, y recogiéndolo en farmacia. En DoctorLife ese proceso es online: primera visita 25 €, descontables del tratamiento.",
+        a: "Con una valoración médica que, si procede, emita la receta, y recogiéndolo en farmacia. En DoctorLife ese proceso es online: primera visita gratis, sin compromiso.",
       },
     ],
   };
