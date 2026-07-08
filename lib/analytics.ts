@@ -78,6 +78,34 @@ export const analytics = {
     track("blog_to_home", { target, from: currentPath() });
   },
 
+  /**
+   * El usuario respondió una pregunta del quiz.
+   * `stepIndex` es 0-based; `key` es el identificador semántico del paso.
+   * Permite construir un funnel de abandono pregunta a pregunta.
+   */
+  quizQuestion(stepIndex: number, key: string, answer: string, totalSteps: number) {
+    track("quiz_question_answered", {
+      step_index: stepIndex,
+      step_key: key,
+      step_label: `${stepIndex + 1}/${totalSteps}`,
+      answer,
+      path: currentPath(),
+    });
+  },
+
+  /**
+   * El usuario cerró el modal antes de completar el formulario.
+   * `phase` indica en qué fase estaba (questions, profile, measures, etc.).
+   * `stepIndex` solo es relevante cuando phase === "questions".
+   */
+  formAbandoned(phase: string, stepIndex?: number) {
+    track("form_abandoned", {
+      phase,
+      step_index: stepIndex ?? null,
+      path: currentPath(),
+    });
+  },
+
   /** El usuario hizo clic en el botón de WhatsApp. */
   whatsappClicked(source: "button" | "tooltip" | "sticky_bar") {
     track("whatsapp_clicked", { source, path: currentPath() });
