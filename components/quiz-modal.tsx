@@ -18,7 +18,7 @@ import { analytics } from "@/lib/analytics";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const WA_QUIZ_URL = `https://wa.me/34711267223?text=${encodeURIComponent(
-  "Hola, me gustaría empezar mi plan con DoctorLife.",
+  "Me gustaría recibir más información sobre el tratamiento con GLP-1.",
 )}`;
 
 type Phase =

@@ -13,7 +13,7 @@ const INCLUYE = [
 
 const PHONE = "711267223";
 const WA_URL = `https://wa.me/34${PHONE}?text=${encodeURIComponent(
-  "Hola, quiero empezar mi tratamiento para perder peso con DoctorLife.",
+  "Me gustaría recibir más información sobre el tratamiento con GLP-1.",
 )}`;
 
 function openWhatsApp(source: string) {

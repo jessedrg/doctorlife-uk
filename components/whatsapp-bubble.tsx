@@ -5,7 +5,7 @@ import { analytics } from "@/lib/analytics";
 
 const PHONE = "711267223";
 const WA_URL = `https://wa.me/34${PHONE}?text=${encodeURIComponent(
-  "Hola, me gustaría empezar mi plan con DoctorLife."
+  "Me gustaría recibir más información sobre el tratamiento con GLP-1."
 )}`;
 
 const MESSAGES = [
