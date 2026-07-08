@@ -98,19 +98,78 @@ export const metrics: Metric[] = [
   { value: 4.9, suffix: "★", label: "valoración media" },
 ];
 
-export type QuizStep = { q: string; opts: string[] };
+export type QuizStep = { key: string; q: string; sub?: string; opts: string[] };
 
+/* ── Cuestionario orientado a pérdida de peso con GLP‑1 ──
+   Secuencia psicológica de conversión:
+   1) Aspiración (objetivo) → primer clic fácil, visualiza el resultado.
+   2) Empatía → quita la culpa ("no es culpa tuya, es biología").
+   3) Dolor emocional → conecta con lo que de verdad le importa.
+   4) Conciencia de la solución → introduce el GLP‑1 como la respuesta.
+   5) Compromiso ("por qué ahora") → refuerza la motivación antes de pedir datos.
+   El orden crea micro‑compromisos crecientes y momentum. */
 export const quizSteps: QuizStep[] = [
-  { q: "¿Has usado un GLP‑1 antes?", opts: ["Ahora mismo lo uso", "En el pasado", "Nunca"] },
-];
-
-/* ── Variante neutra para campañas (Google Ads): sin nombrar fármacos ── */
-export const adsQuizSteps: QuizStep[] = [
   {
+    key: "objective",
     q: "¿Cuál es tu objetivo principal?",
-    opts: ["Cuidar mi peso", "Mejorar mi salud metabólica", "Mantener mi peso actual"],
+    sub: "Da el primer paso. En 2 minutos sabrás si el tratamiento GLP‑1 es para ti.",
+    opts: [
+      "Perder peso y no recuperarlo",
+      "Controlar el hambre y los antojos",
+      "Mejorar mi salud y mi energía",
+      "Sentirme mejor con mi cuerpo",
+    ],
+  },
+  {
+    key: "amount",
+    q: "¿Cuánto peso te gustaría perder?",
+    sub: "No hay respuesta incorrecta. Solo queremos entender tu punto de partida.",
+    opts: ["Menos de 5 kg", "Entre 5 y 10 kg", "Entre 10 y 20 kg", "Más de 20 kg"],
+  },
+  {
+    key: "tried",
+    q: "¿Qué has intentado antes sin conseguir mantenerlo?",
+    sub: "Si el peso siempre vuelve, no es culpa tuya: es tu biología defendiéndose.",
+    opts: [
+      "Dietas y contar calorías",
+      "Ejercicio a tope",
+      "Ayuno intermitente",
+      "Un poco de todo… y siempre vuelve",
+    ],
+  },
+  {
+    key: "frustration",
+    q: "¿Qué es lo que más te pesa hoy?",
+    sub: "Elige lo que más te suene ahora mismo.",
+    opts: [
+      "El hambre y los antojos constantes",
+      "Recuperar lo que tanto me costó perder",
+      "No sentirme bien conmigo mismo/a",
+      "Cómo está afectando a mi salud",
+    ],
+  },
+  {
+    key: "glp1Experience",
+    q: "¿Has probado un tratamiento GLP‑1 como la semaglutida?",
+    sub: "Es la medicación que está cambiando la pérdida de peso con seguimiento médico real.",
+    opts: ["Lo estoy usando ahora", "Lo usé en el pasado", "No, pero me interesa", "No sé qué es"],
+  },
+  {
+    key: "why",
+    q: "¿Por qué quieres dar el paso ahora?",
+    sub: "Tenerlo claro es la mitad del camino.",
+    opts: [
+      "Por mi salud y mi futuro",
+      "Quiero volver a sentirme yo",
+      "Tengo un momento importante cerca",
+      "Estoy cansado/a de intentarlo solo/a",
+    ],
   },
 ];
+
+/* Todos los funnels (incluidas las campañas) usan el mismo cuestionario,
+   mencionando el GLP‑1 abiertamente. */
+export const adsQuizSteps: QuizStep[] = quizSteps;
 
 export const adsProducts: Product[] = [
   {
