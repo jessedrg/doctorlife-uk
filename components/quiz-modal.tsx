@@ -22,7 +22,6 @@ const WA_QUIZ_URL = `https://wa.me/34711267223?text=${encodeURIComponent(
 )}`;
 
 type Phase =
-  | "intro"
   | "questions"
   | "profile"
   | "measures"
@@ -38,7 +37,6 @@ type Phase =
 
 // Orden lineal de fases para la barra de progreso (la rama "blocked" sale del flujo).
 const FLOW: Phase[] = [
-  "intro",
   "questions",
   "profile",
   "measures",
@@ -69,7 +67,7 @@ export function QuizModal() {
   const sa = (text: string) => (isAds ? sanitizeAds(text) : text);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-  const [phase, setPhase] = useState<Phase>("intro");
+  const [phase, setPhase] = useState<Phase>("questions");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [height, setHeight] = useState("");
@@ -130,7 +128,7 @@ export function QuizModal() {
   }, [slots]);
   useEffect(() => {
     if (open) {
-      setPhase("intro");
+      setPhase("questions");
       setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
       analytics.formOpened(initialPlan ?? undefined);
     }
@@ -235,8 +233,7 @@ export function QuizModal() {
     else if (phase === "profile") {
       setPhase("questions");
       setStep(total - 1);
-    } else if (phase === "questions" && step === 0) setPhase("intro");
-    else if (step > 0) setStep(step - 1);
+    }     else if (step > 0) setStep(step - 1);
   };
 
   // Construye el payload clínico común para guardar el lead.
@@ -395,60 +392,6 @@ export function QuizModal() {
               ✕
             </button>
           </div>
-
-          {/* INTRO — presentación del tratamiento GLP-1 */}
-          {phase === "intro" && (
-            <div className="quiz-fade">
-              {/* Pastillas de marcas conocidas */}
-              <div className="mb-5 flex flex-wrap gap-2">
-                {["Mounjaro", "Ozempic", "Wegovy"].map((brand) => (
-                  <span
-                    key={brand}
-                    className="rounded-full border border-ink/15 bg-warm px-3 py-1 text-[12.5px] font-medium text-ink-soft"
-                  >
-                    {brand}
-                  </span>
-                ))}
-              </div>
-
-              <h3 className="text-[24px] font-light leading-[1.15] tracking-[-.02em] sm:text-[30px]">
-                Tratamiento <span className="whitespace-nowrap">GLP-1</span> con inyección semanal
-              </h3>
-              <p className="mt-3 text-[15.5px] leading-relaxed text-ink-soft text-pretty">
-                Los GLP-1 (semaglutida, tirzepatida) son el tratamiento médico más eficaz actualmente para la
-                pérdida de peso. Se administran con una pequeña inyección una vez a la semana y están recetados
-                por endocrinólogos colegiados.
-              </p>
-
-              {/* Tres puntos clave — fáciles de leer en móvil */}
-              <div className="mt-5 flex flex-col gap-3">
-                {[
-                  { icon: "📉", title: "Pérdida de peso clínica", desc: "Entre el 10–20% del peso corporal en estudios clínicos." },
-                  { icon: "🩺", title: "Recetado por tu médico", desc: "Un endocrino revisa tu historial y ajusta la dosis contigo." },
-                  { icon: "💉", title: "Inyección semanal sencilla", desc: "Pluma de insulina, indolora, se hace en casa en segundos." },
-                ].map(({ icon, title, desc }) => (
-                  <div key={title} className="flex items-start gap-3 rounded-2xl border border-ink/10 bg-warm px-4 py-3.5">
-                    <span className="text-[22px] leading-none">{icon}</span>
-                    <span className="flex flex-col">
-                      <span className="text-[14.5px] font-semibold text-ink">{title}</span>
-                      <span className="mt-0.5 text-[13.5px] leading-snug text-ink-soft">{desc}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setPhase("questions")}
-                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
-              >
-                Comprobar si soy candidato
-              </button>
-              <p className="mt-3 text-center text-[13px] text-ink-mute">
-                Valoración gratuita · Sin compromiso · 2 minutos
-              </p>
-            </div>
-          )}
 
           {/* QUESTIONS (experiencia GLP-1) */}
           {phase === "questions" && (
