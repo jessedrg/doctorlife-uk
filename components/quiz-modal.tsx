@@ -130,6 +130,7 @@ export function QuizModal() {
   }, [slots]);
   useEffect(() => {
     if (open) {
+      setPhase("intro");
       setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
       analytics.formOpened(initialPlan ?? undefined);
     }
