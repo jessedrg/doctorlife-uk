@@ -1024,10 +1024,7 @@ export function QuizModal() {
                       >
                         <span className="flex min-w-0 flex-col">
                           <span className="text-[16px] font-semibold text-ink">{p.name}</span>
-                          {/* Precio suavizado — quitar protagonismo al número */}
-                          <span className="mt-0.5 text-[13px] text-ink-mute">
-                            Primer mes 60&nbsp;€ · después {p.price}
-                          </span>
+                          <span className="mt-0.5 text-[13px] text-ink-mute">Consulta gratuita incluida</span>
                         </span>
                         <span
                           className={`flex h-[28px] w-[28px] flex-shrink-0 items-center justify-center rounded-full border-2 text-sm transition-colors ${
@@ -1050,6 +1047,9 @@ export function QuizModal() {
 
                       <div className="grid transition-all duration-300 ease-out" style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}>
                         <div className="overflow-hidden">
+                          <div className="mx-5 mb-3 mt-2 rounded-xl bg-ink/5 px-4 py-2.5 text-[13px] text-ink-soft">
+                            Primer mes <span className="font-semibold text-ink">60&nbsp;€</span> · después <span className="font-semibold text-ink">{p.price}</span> · cancela cuando quieras
+                          </div>
                           <ul className="flex flex-col gap-2 px-5 pb-4 pt-1">
                             {p.features.map((f) => (
                               <li key={f} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-soft">
