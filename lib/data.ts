@@ -20,16 +20,18 @@ export type Product = {
    tratamiento con GLP‑1. El resto de servicios llegarán «Próximamente». */
 export const products: Product[] = [
   {
-    name: "Tratamiento GLP‑1",
+    name: "Plan de seguimiento médico con GLP-1",
     subtitle: "Todo lo que necesitas para adelgazar con seguimiento médico real, en una sola cuota.",
     price: "100€/mes + IVA",
     tag: "Suscripción",
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Chat directo con endocrino colegiado en la plataforma",
-      "Receta de tratamiento GLP‑1 si el médico lo considera necesario",
+      "Primera consulta gratuita con endocrino colegiado",
+      "Receta online de GLP-1 (Mounjaro, Ozempic o Wegovy) para comprar en tu farmacia",
       "Seguimiento continuo y ajustes de dosis desde la app",
+      "Chat directo con tu médico cuando lo necesites",
+      "Analítica y revisión de historial clínico incluida",
       "Sin permanencia: cancela cuando quieras",
     ],
   },
@@ -173,7 +175,7 @@ export const adsQuizSteps: QuizStep[] = quizSteps;
 
 export const adsProducts: Product[] = [
   {
-    name: "Plan de seguimiento médico",
+    name: "Plan de seguimiento médico con GLP-1",
     subtitle:
       "Todo lo que necesitas para cuidar tu peso con seguimiento médico real, en una sola cuota.",
     price: "100€/mes + IVA",
@@ -181,9 +183,11 @@ export const adsProducts: Product[] = [
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Chat directo con médico colegiado en la plataforma",
-      "Valoración médica personalizada de tu caso",
-      "Seguimiento continuo desde la app",
+      "Primera consulta gratuita con médico colegiado",
+      "Receta online de GLP-1 (Mounjaro, Ozempic o Wegovy) para comprar en tu farmacia",
+      "Seguimiento continuo y ajustes de dosis desde la app",
+      "Chat directo con tu médico cuando lo necesites",
+      "Analítica y revisión de historial clínico incluida",
       "Sin permanencia: cancela cuando quieras",
     ],
   },

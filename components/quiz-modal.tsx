@@ -128,6 +128,7 @@ export function QuizModal() {
   }, [slots]);
   useEffect(() => {
     if (open) {
+      setPhase("questions");
       setPlan(initialPlan && initialPlan === mainPlan.name ? initialPlan : mainPlan.name);
       analytics.formOpened(initialPlan ?? undefined);
     }
@@ -232,7 +233,7 @@ export function QuizModal() {
     else if (phase === "profile") {
       setPhase("questions");
       setStep(total - 1);
-    } else if (step > 0) setStep(step - 1);
+    }     else if (step > 0) setStep(step - 1);
   };
 
   // Construye el payload clínico común para guardar el lead.
@@ -890,21 +891,12 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => {
-                  // Métrica: fase de contraindicaciones completada
-                  analytics.formPhaseContraindications(contraindications);
-                  if (verdict.status === "blocked") {
-                    analytics.formPhaseResult("blocked", verdict.reasons[0] ?? "No elegible");
-                  } else {
-                    analytics.formPhaseResult("eligible", undefined);
-                  }
-                  setPhase(verdict.status === "blocked" ? "blocked" : "result");
-                }}
+                onClick={() => setPhase("plan")}
                 className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
-              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
+              <button type="button" onClick={back} className="mt-3 w-full py-2 text-[15px] text-ink-mute hover:text-ink">
                 ← Atrás
               </button>
             </div>
@@ -987,81 +979,57 @@ export function QuizModal() {
           {/* PLAN SELECTION */}
           {phase === "plan" && (
             <div className="quiz-fade">
-              <div className="text-[13px] uppercase tracking-[.14em] text-clay">Tu plan</div>
-              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
-                Elige tu plan
-              </h3>
-              <p className="mb-4 text-[15.5px] leading-relaxed text-ink-soft">
-                Tu plan de seguimiento con endocrino. Pronto añadiremos más planes.
-              </p>
-
-              <div className="mb-5 flex items-start gap-3 rounded-2xl border border-sage/50 bg-sage/15 px-4 py-3.5">
-                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-sage text-[12px] font-bold text-ink">
-                  0€
-                </span>
-                {isAds ? (
-                  <p className="text-[13.5px] leading-snug text-ink-soft">
-                    <span className="font-semibold text-ink">Tu primera valoración es gratis.</span> Si decides
-                    continuar, lo gestionas con la suscripción mensual. Oferta de lanzamiento: primer mes
-                    60&nbsp;€ (después, 100&nbsp;€/mes + IVA). Cancela cuando quieras.
-                  </p>
-                ) : (
-                  <p className="text-[13.5px] leading-snug text-ink-soft">
-                    <span className="font-semibold text-ink">Tu primera visita es gratis.</span> Si tu médico te
-                    receta tratamiento, lo desbloqueas con la suscripción mensual. Oferta de lanzamiento: primer
-                    mes 60&nbsp;€ (después, 100&nbsp;€/mes + IVA). Cancela cuando quieras.
-                  </p>
-                )}
+              {/* Hero: la visita gratis como protagonista */}
+              <div className="mb-6 rounded-2xl bg-sage/20 px-5 py-5">
+                <div className="mb-1 text-[12px] font-semibold uppercase tracking-[.14em] text-olive">
+                  Sin coste inicial
+                </div>
+                <h3 className="text-[22px] font-semibold leading-tight text-ink sm:text-[26px]">
+                  {isAds ? "Tu primera valoración es gratis" : "Tu primera visita con el médico es gratis"}
+                </h3>
+                <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">
+                  {isAds
+                    ? "Habla con un endocrino especializado sin pagar nada hoy. Solo continúas si tú quieres."
+                    : "Habla hoy con un endocrino sin pagar nada. Si te recetan tratamiento y decides continuar, entonces pagas."}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {["Sin tarjeta ahora", "Cancela cuando quieras", "Médico colegiado"].map((t) => (
+                    <span key={t} className="rounded-full bg-white/70 px-3 py-1 text-[12.5px] font-medium text-ink">
+                      ✓ {t}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-col gap-[11px]">
-                {productList.map((p) => {
+              {/* Solo los planes activos — ocultar próximamente para no distraer */}
+              <div className="flex flex-col gap-[10px]">
+                {productList.filter((p) => !p.comingSoon).map((p) => {
                   const selected = plan === p.name;
                   const expanded = expandedPlan === p.name;
                   return (
                     <div
                       key={p.name}
-                      className={`overflow-hidden rounded-2xl border transition-all duration-150 ${
-                        p.comingSoon
-                          ? "border-ink/10 bg-warm/60 opacity-70"
-                          : selected
-                            ? "border-sage bg-sage/25"
-                            : "border-ink/15 bg-warm"
+                      className={`overflow-hidden rounded-2xl border-2 transition-all duration-150 ${
+                        selected ? "border-sage bg-sage/20" : "border-ink/15 bg-warm"
                       }`}
                     >
                       <button
                         type="button"
-                        disabled={p.comingSoon}
                         onClick={() => {
-                          if (p.comingSoon) return;
-                          // Métrica: plan seleccionado
                           analytics.formPhasePlan(p.name);
                           setPlan(p.name);
                           setError(null);
                         }}
                         aria-pressed={selected}
-                        className="flex w-full items-center justify-between gap-3 px-4 py-[14px] text-left disabled:cursor-not-allowed sm:px-5"
+                        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
                       >
                         <span className="flex min-w-0 flex-col">
-                          <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                            <span className="text-[15.5px] font-medium text-ink sm:text-[16.5px]">{p.name}</span>
-                            <span
-                              className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[.08em] ${
-                                p.comingSoon ? "bg-ink/10 text-ink-soft" : "bg-sage text-ink"
-                              }`}
-                            >
-                              {p.tag}
-                            </span>
-                          </span>
-                          <span className="mt-0.5 text-[13.5px] text-ink-mute">{p.price}</span>
+                          <span className="text-[16px] font-semibold text-ink">{p.name}</span>
+                          <span className="mt-0.5 text-[13px] text-ink-mute">Consulta gratuita incluida</span>
                         </span>
                         <span
-                          className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
-                            p.comingSoon
-                              ? "border border-dashed border-ink/20 text-transparent"
-                              : selected
-                                ? "bg-sage text-ink"
-                                : "border border-ink/20 text-transparent"
+                          className={`flex h-[28px] w-[28px] flex-shrink-0 items-center justify-center rounded-full border-2 text-sm transition-colors ${
+                            selected ? "border-olive bg-olive text-paper" : "border-ink/20 text-transparent"
                           }`}
                         >
                           ✓
@@ -1072,28 +1040,21 @@ export function QuizModal() {
                         type="button"
                         onClick={() => setExpandedPlan(expanded ? null : p.name)}
                         aria-expanded={expanded}
-                        className="flex w-full items-center justify-between gap-2 border-t border-ink/10 px-4 py-2.5 text-left text-[13px] font-medium text-clay transition-colors hover:bg-cream/60 sm:px-5"
+                        className="flex w-full items-center justify-between gap-2 border-t border-ink/10 px-5 py-2.5 text-left text-[13px] font-medium text-clay transition-colors hover:bg-cream/60"
                       >
                         {expanded ? "Ocultar detalles" : "Ver qué incluye"}
-                        <span
-                          className={`text-[11px] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
-                          aria-hidden
-                        >
-                          ▼
-                        </span>
+                        <span className={`text-[11px] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} aria-hidden>▼</span>
                       </button>
 
-                      <div
-                        className="grid transition-all duration-300 ease-out"
-                        style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}
-                      >
+                      <div className="grid transition-all duration-300 ease-out" style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}>
                         <div className="overflow-hidden">
-                          <ul className="flex flex-col gap-2 px-4 pb-4 pt-1 sm:px-5">
+                          <div className="mx-5 mb-3 mt-2 rounded-xl bg-ink/5 px-4 py-2.5 text-[13px] text-ink-soft">
+                            Primer mes <span className="font-semibold text-ink">60&nbsp;€</span> · después <span className="font-semibold text-ink">{p.price}</span> · cancela cuando quieras
+                          </div>
+                          <ul className="flex flex-col gap-2 px-5 pb-4 pt-1">
                             {p.features.map((f) => (
                               <li key={f} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-soft">
-                                <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-sage/40 text-[10px] text-ink">
-                                  ✓
-                                </span>
+                                <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-sage/40 text-[10px] text-ink">✓</span>
                                 <span>{f}</span>
                               </li>
                             ))}
