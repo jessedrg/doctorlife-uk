@@ -963,7 +963,7 @@ export function QuizModal() {
                     placeholder="Tu correo electrónico (opcional)"
                     type="email"
                     autoComplete="email"
-                    className={`rounded-[14px] border bg-warm px-[18px] py-4 text-[15.5px] text-ink outline-none transition-colors focus:border-amber ${
+                    className={`rounded-[14px] border bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber ${
                       error ? "border-clay" : "border-ink/15"
                     }`}
                   />
@@ -1166,10 +1166,10 @@ export function QuizModal() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Tu nombre (opcional)"
-                  autoComplete="name"
-                  disabled={phase === "submitting"}
-                  className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[15.5px] text-ink outline-none transition-colors focus:border-amber disabled:opacity-60"
+                    placeholder="Tu nombre (opcional)"
+                    autoComplete="name"
+                    disabled={phase === "submitting"}
+                    className="rounded-[14px] border border-ink/15 bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber disabled:opacity-60"
                 />
                 <input
                   ref={emailRef}
@@ -1182,11 +1182,11 @@ export function QuizModal() {
                   placeholder="Correo electrónico"
                   type="email"
                   autoComplete="email"
-                  disabled={phase === "submitting"}
-                  aria-invalid={!!error}
-                  className={`rounded-[14px] border bg-warm px-[18px] py-4 text-[15.5px] text-ink outline-none transition-colors focus:border-amber disabled:opacity-60 ${
-                    error ? "border-clay" : "border-ink/15"
-                  }`}
+                    disabled={phase === "submitting"}
+                    aria-invalid={!!error}
+                    className={`rounded-[14px] border bg-warm px-[18px] py-4 text-[16px] text-ink outline-none transition-colors focus:border-amber disabled:opacity-60 ${
+                      error ? "border-clay" : "border-ink/15"
+                    }`}
                 />
                 {error && <p className="text-[13.5px] text-clay">{error}</p>}
                 <button
