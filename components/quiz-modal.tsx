@@ -890,21 +890,12 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => {
-                  // Métrica: fase de contraindicaciones completada
-                  analytics.formPhaseContraindications(contraindications);
-                  if (verdict.status === "blocked") {
-                    analytics.formPhaseResult("blocked", verdict.reasons[0] ?? "No elegible");
-                  } else {
-                    analytics.formPhaseResult("eligible", undefined);
-                  }
-                  setPhase(verdict.status === "blocked" ? "blocked" : "result");
-                }}
+                onClick={() => setPhase("plan")}
                 className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
-              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
+              <button type="button" onClick={back} className="mt-3 w-full py-2 text-[15px] text-ink-mute hover:text-ink">
                 ← Atrás
               </button>
             </div>
