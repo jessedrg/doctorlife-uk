@@ -692,7 +692,7 @@ export function QuizModal() {
                 ¿Tienes alguna de estas condiciones?
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
-                Marca todas las que apliquen. Si no tienes ninguna, continúa sin seleccionar nada.
+                Marca todas las que apliquen. Si no tienes ninguna, pulsa la opción de abajo.
               </p>
 
               <div className="flex flex-col gap-[9px]">
@@ -719,6 +719,32 @@ export function QuizModal() {
                     </button>
                   );
                 })}
+
+                {/* Opción explícita de "ninguna" — clara y siempre visible */}
+                {(() => {
+                  const noneSelected = comorbidities.length === 0;
+                  return (
+                    <button
+                      type="button"
+                      onClick={() => setComorbidities([])}
+                      aria-pressed={noneSelected}
+                      className={`mt-1 flex items-center justify-between gap-3 rounded-2xl border-2 px-[20px] py-[15px] text-left text-[15px] font-medium transition-all duration-150 ${
+                        noneSelected
+                          ? "border-olive bg-olive/15 text-ink"
+                          : "border-dashed border-ink/25 bg-warm text-ink-soft hover:border-olive"
+                      }`}
+                    >
+                      No tengo ninguna de estas condiciones
+                      <span
+                        className={`flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full border text-[11px] ${
+                          noneSelected ? "border-olive bg-olive text-paper" : "border-ink/25 text-transparent"
+                        }`}
+                      >
+                        ✓
+                      </span>
+                    </button>
+                  );
+                })()}
               </div>
 
               <button
@@ -746,7 +772,7 @@ export function QuizModal() {
                 Antecedentes médicos importantes
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
-                Marca lo que corresponda. Es clave para tu seguridad; si no tienes ninguno, continúa.
+                Marca lo que corresponda. Es clave para tu seguridad; si no tienes ninguno, pulsa la opción de abajo.
               </p>
 
               <div className="flex flex-col gap-[9px]">
@@ -773,6 +799,32 @@ export function QuizModal() {
                     </button>
                   );
                 })}
+
+                {/* Opción explícita de "ninguno" — clara y siempre visible */}
+                {(() => {
+                  const noneSelected = contraindications.length === 0;
+                  return (
+                    <button
+                      type="button"
+                      onClick={() => setContraindications([])}
+                      aria-pressed={noneSelected}
+                      className={`mt-1 flex items-center justify-between gap-3 rounded-2xl border-2 px-[20px] py-[15px] text-left text-[15px] font-medium transition-all duration-150 ${
+                        noneSelected
+                          ? "border-olive bg-olive/15 text-ink"
+                          : "border-dashed border-ink/25 bg-warm text-ink-soft hover:border-olive"
+                      }`}
+                    >
+                      No tengo ninguno de estos antecedentes
+                      <span
+                        className={`flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full border text-[11px] ${
+                          noneSelected ? "border-olive bg-olive text-paper" : "border-ink/25 text-transparent"
+                        }`}
+                      >
+                        ✓
+                      </span>
+                    </button>
+                  );
+                })()}
               </div>
 
               <button
