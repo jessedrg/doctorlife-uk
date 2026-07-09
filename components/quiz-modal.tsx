@@ -411,8 +411,8 @@ export function QuizModal() {
                 ))}
               </div>
 
-              <h3 className="text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
-                Tratamiento GLP-1 con inyección semanal
+              <h3 className="text-[24px] font-light leading-[1.15] tracking-[-.02em] sm:text-[30px]">
+                Tratamiento <span className="whitespace-nowrap">GLP-1</span> con inyección semanal
               </h3>
               <p className="mt-3 text-[15.5px] leading-relaxed text-ink-soft text-pretty">
                 Los GLP-1 (semaglutida, tirzepatida) son el tratamiento médico más eficaz actualmente para la
