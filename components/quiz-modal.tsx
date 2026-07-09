@@ -377,16 +377,16 @@ export function QuizModal() {
           />
         </div>
 
-        <div className="overflow-y-auto overscroll-contain px-5 pb-7 pt-6 sm:px-9 sm:pb-9 sm:pt-8">
-          <div aria-hidden className="mx-auto mb-4 h-1 w-10 rounded-full bg-ink/15 sm:hidden" />
+        <div className="overflow-y-auto overscroll-contain px-6 pb-8 pt-5 sm:px-9 sm:pb-10 sm:pt-8">
+          <div aria-hidden className="mx-auto mb-5 h-1 w-12 rounded-full bg-ink/15 sm:hidden" />
           {/* Header */}
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-7 flex items-center justify-between">
             <BrandLogo markSize={26} textSize={18} textClassName="text-ink" />
             <button
               type="button"
               onClick={close}
               aria-label="Cerrar"
-              className="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-ink/15 text-base text-ink transition-colors hover:bg-warm"
+              className="flex h-[44px] w-[44px] items-center justify-center rounded-full border border-ink/15 text-base text-ink transition-colors hover:bg-warm active:bg-warm"
             >
               ✕
             </button>
@@ -398,15 +398,15 @@ export function QuizModal() {
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">
                 Paso {step + 1} de {total}
               </div>
-              <h3 className="mb-[10px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[10px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 {steps[step].q}
               </h3>
               {steps[step].sub && (
-                <p className="mb-[22px] text-[15px] leading-relaxed text-ink-soft text-pretty">
+                <p className="mb-5 text-[15px] leading-relaxed text-ink-soft text-pretty">
                   {steps[step].sub}
                 </p>
               )}
-              <div className="flex flex-col gap-[11px]">
+              <div className="flex flex-col gap-3">
                 {steps[step].opts.map((opt) => {
                   const selected = answers[step] === opt;
                   return (
@@ -415,7 +415,7 @@ export function QuizModal() {
                       type="button"
                       onClick={() => choose(opt)}
                       aria-pressed={selected}
-                      className={`group flex items-center justify-between gap-[14px] rounded-2xl border px-[22px] py-[17px] text-left text-[16.5px] transition-all duration-150 ${
+                      className={`group flex min-h-[56px] items-center justify-between gap-[14px] rounded-2xl border px-5 py-4 text-left text-[16px] transition-all duration-150 active:scale-[.98] ${
                         selected
                           ? "border-sage bg-sage/25 text-ink"
                           : "border-ink/15 bg-warm text-ink hover:border-amber hover:bg-cream"
@@ -423,7 +423,7 @@ export function QuizModal() {
                     >
                       <span>{opt}</span>
                       <span
-                        className={`flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
+                        className={`flex h-[28px] w-[28px] flex-shrink-0 items-center justify-center rounded-full text-sm transition-colors ${
                           selected ? "bg-sage text-ink" : "text-amber group-hover:bg-amber/10"
                         }`}
                       >
@@ -469,7 +469,7 @@ export function QuizModal() {
           {phase === "profile" && (
             <div className="quiz-fade">
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">Sobre ti</div>
-              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 Cuéntanos un poco más
               </h3>
               <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
@@ -489,9 +489,9 @@ export function QuizModal() {
                 />
               </label>
 
-              <div className="mt-4">
-                <span className="text-[13px] font-medium text-ink-soft">Sexo biológico</span>
-                <div className="mt-2 flex flex-col gap-[9px]">
+              <div className="mt-5">
+                <span className="text-[14px] font-medium text-ink-soft">Sexo biológico</span>
+                <div className="mt-2.5 flex flex-col gap-3">
                   {[
                     { id: "female", label: "Mujer" },
                     { id: "male", label: "Hombre" },
@@ -507,12 +507,12 @@ export function QuizModal() {
                           setError(null);
                         }}
                         aria-pressed={selected}
-                        className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[14px] text-left text-[15.5px] transition-all duration-150 ${
+                        className={`flex min-h-[52px] items-center justify-between gap-3 rounded-2xl border px-5 py-[15px] text-left text-[16px] transition-all duration-150 active:scale-[.98] ${
                           selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                         }`}
                       >
                         {o.label}
-                        <span className={`text-sm ${selected ? "text-ink" : "text-transparent"}`}>✓</span>
+                        <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-full text-sm ${selected ? "bg-sage text-ink" : "text-transparent"}`}>✓</span>
                       </button>
                     );
                   })}
@@ -520,11 +520,11 @@ export function QuizModal() {
               </div>
 
               {isFemale && (
-                <div className="mt-4">
-                  <span className="text-[13px] font-medium text-ink-soft">
-                    ¿Estás embarazada, en periodo de lactancia o buscando un embarazo?
+                <div className="mt-5">
+                  <span className="text-[14px] font-medium leading-snug text-ink-soft">
+                    ¿Estás embarazada, en lactancia o buscando un embarazo?
                   </span>
-                  <div className="mt-2 flex flex-col gap-[9px]">
+                  <div className="mt-2.5 flex flex-col gap-3">
                     {[
                       { id: "no", label: "No" },
                       { id: "yes", label: "Sí, actualmente" },
@@ -537,12 +537,12 @@ export function QuizModal() {
                           type="button"
                           onClick={() => setPregnancy(o.id)}
                           aria-pressed={selected}
-                          className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[14px] text-left text-[15.5px] transition-all duration-150 ${
+                          className={`flex min-h-[52px] items-center justify-between gap-3 rounded-2xl border px-5 py-[15px] text-left text-[16px] transition-all duration-150 active:scale-[.98] ${
                             selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                           }`}
                         >
                           {o.label}
-                          <span className={`text-sm ${selected ? "text-ink" : "text-transparent"}`}>✓</span>
+                          <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-full text-sm ${selected ? "bg-sage text-ink" : "text-transparent"}`}>✓</span>
                         </button>
                       );
                     })}
@@ -572,11 +572,11 @@ export function QuizModal() {
                   analytics.formPhaseProfile(ageNum || null, sex || null, pregnancy || null);
                   setPhase("measures");
                 }}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
-              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
+              <button type="button" onClick={back} className="mt-3 w-full py-2 text-[15px] text-ink-mute hover:text-ink">
                 ← Atrás
               </button>
             </div>
@@ -586,7 +586,7 @@ export function QuizModal() {
           {phase === "measures" && (
             <div className="quiz-fade">
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">Tus medidas</div>
-              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 Tu objetivo, sin arriesgar tu salud
               </h3>
               <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
@@ -674,7 +674,7 @@ export function QuizModal() {
                   analytics.formPhaseMeasures(h > 0 ? h : null, w > 0 ? w : null, bmi || null);
                   setPhase("comorbidities");
                 }}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
@@ -688,7 +688,7 @@ export function QuizModal() {
           {phase === "comorbidities" && (
             <div className="quiz-fade">
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">Tu salud</div>
-              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 ¿Tienes alguna de estas condiciones?
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
@@ -734,7 +734,7 @@ export function QuizModal() {
                       type="button"
                       onClick={() => toggle(comorbidities, setComorbidities, c.id)}
                       aria-pressed={selected}
-                      className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[13px] text-left text-[15px] transition-all duration-150 ${
+                      className={`flex min-h-[52px] items-center justify-between gap-3 rounded-2xl border px-5 py-[14px] text-left text-[16px] transition-all duration-150 active:scale-[.98] ${
                         selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                       }`}
                     >
@@ -758,7 +758,7 @@ export function QuizModal() {
                   analytics.formPhaseComorbidities(comorbidities);
                   setPhase("contraindications");
                 }}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
@@ -772,7 +772,7 @@ export function QuizModal() {
           {phase === "contraindications" && (
             <div className="quiz-fade">
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">Seguridad</div>
-              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 Antecedentes médicos importantes
               </h3>
               <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
@@ -818,7 +818,7 @@ export function QuizModal() {
                       type="button"
                       onClick={() => toggle(contraindications, setContraindications, c.id)}
                       aria-pressed={selected}
-                      className={`flex items-start justify-between gap-3 rounded-2xl border px-[20px] py-[13px] text-left text-[14.5px] leading-snug transition-all duration-150 ${
+                      className={`flex min-h-[52px] items-start justify-between gap-3 rounded-2xl border px-5 py-[14px] text-left text-[15.5px] leading-snug transition-all duration-150 active:scale-[.98] ${
                         selected ? "border-clay/60 bg-clay/12 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
                       }`}
                     >
@@ -838,7 +838,7 @@ export function QuizModal() {
               <button
                 type="button"
                 onClick={() => setPhase(verdict.status === "blocked" ? "blocked" : "result")}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Ver mi resultado
               </button>
@@ -900,7 +900,7 @@ export function QuizModal() {
                   }
                   setPhase(verdict.status === "blocked" ? "blocked" : "result");
                 }}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
@@ -988,7 +988,7 @@ export function QuizModal() {
           {phase === "plan" && (
             <div className="quiz-fade">
               <div className="text-[13px] uppercase tracking-[.14em] text-clay">Tu plan</div>
-              <h3 className="mb-[6px] mt-2 text-[27px] font-light leading-[1.12] tracking-[-.02em] text-balance sm:text-[30px]">
+              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
                 Elige tu plan
               </h3>
               <p className="mb-4 text-[15.5px] leading-relaxed text-ink-soft">
@@ -1117,7 +1117,7 @@ export function QuizModal() {
                   setError(null);
                   setPhase("details");
                 }}
-                className="mt-5 w-full rounded-[14px] bg-ink py-4 text-base font-semibold text-paper transition-opacity hover:opacity-90"
+                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Continuar
               </button>
