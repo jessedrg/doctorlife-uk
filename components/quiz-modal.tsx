@@ -502,12 +502,10 @@ export function QuizModal() {
                       <button
                         key={o.id}
                         type="button"
-                onClick={() => {
-                  // Métrica: plan seleccionado
-                  analytics.formPhasePlan(p.id);
-                  setPlan(p.id);
-                  setPhase("details");
-                }}
+                        onClick={() => {
+                          setSex(o.id);
+                          setError(null);
+                        }}
                         aria-pressed={selected}
                         className={`flex items-center justify-between gap-3 rounded-2xl border px-[20px] py-[14px] text-left text-[15.5px] transition-all duration-150 ${
                           selected ? "border-sage bg-sage/25 text-ink" : "border-ink/15 bg-warm text-ink hover:border-amber"
