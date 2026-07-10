@@ -173,6 +173,11 @@ export function QuizModal() {
     [ageNum, h, w, pregnancy, comorbidities, contraindications],
   );
 
+  // Estado usado SOLO para presentar el resultado: no bloqueamos el flujo, así
+  // que un veredicto "blocked" se muestra como "requiere valoración médica".
+  const displayStatus: "eligible" | "review" =
+    verdict.status === "eligible" ? "eligible" : "review";
+
   if (!open) return null;
 
   const isFemale = sex === "female";
@@ -287,12 +292,9 @@ export function QuizModal() {
       setPhase("details");
       return;
     }
-    // El servidor manda: si re-evaluó como bloqueado, vamos a la rama de bloqueo.
-    if (res.eligibility === "blocked") {
-      setPhase("blocked");
-      setBlockedSaved(true);
-      return;
-    }
+    // No bloqueamos por elegibilidad: el usuario siempre puede completar el
+    // formulario y reservar. La decisión clínica final la toma el médico en
+    // consulta (se muestra como "requiere valoración médica", no como bloqueo).
     setPhase("slot");
     analytics.formStep("slot");
     try {
@@ -838,7 +840,7 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => setPhase(verdict.status === "blocked" ? "blocked" : "result")}
+                onClick={() => setPhase("result")}
                 className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Ver mi resultado
@@ -854,13 +856,13 @@ export function QuizModal() {
             <div className="quiz-fade">
               <div className="text-center">
                 <span
-                  className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[13px] font-medium ${verdictMeta[verdict.status].chip}`}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[13px] font-medium ${verdictMeta[displayStatus].chip}`}
                 >
-                  {verdictMeta[verdict.status].label}
+                  {verdictMeta[displayStatus].label}
                 </span>
               </div>
               <h3 className="mb-3 mt-4 text-center text-[26px] font-light leading-[1.14] tracking-[-.02em] text-balance sm:text-[29px]">
-                {verdict.status === "eligible"
+                {displayStatus === "eligible"
                   ? isAds
                     ? "Buenas noticias: podemos ayudarte"
                     : "Buenas noticias: encajas en el tratamiento"
@@ -873,10 +875,10 @@ export function QuizModal() {
                     <li key={i} className="flex items-start gap-2.5 text-[14px] leading-snug text-ink-soft">
                       <span
                         className={`mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full text-[10px] ${
-                          verdict.status === "eligible" ? "bg-olive/30 text-ink" : "bg-amber/30 text-ink"
-                        }`}
-                      >
-                        {verdict.status === "eligible" ? "✓" : "!"}
+                        displayStatus === "eligible" ? "bg-olive/30 text-ink" : "bg-amber/30 text-ink"
+                      }`}
+                    >
+                      {displayStatus === "eligible" ? "✓" : "!"}
                       </span>
                       <span>{sa(r)}</span>
                     </li>
