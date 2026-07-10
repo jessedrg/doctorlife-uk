@@ -11,7 +11,7 @@ import { TrustBox } from "@/components/trustbox";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { posts, getPost, getRelated, seoTitle, seoDescription, drugInfo, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
-import { drugSchema, breadcrumbSchema } from "@/lib/seo";
+import { breadcrumbSchema } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const revalidate = 86400; // 24h ISR — se regenera en background sin bloquear el build
@@ -169,7 +169,15 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     reviewedBy: reviewer,
     lastReviewed: post.updated,
     publisher,
-    about: { "@type": "MedicalEntity", name: post.category },
+    about: [
+      { "@type": "MedicalEntity", name: post.category },
+      // El fármaco se referencia como entidad médica (informativa), NO como
+      // Drug/Product: evita que Google lo evalúe como "Fragmento de producto"
+      // y exija offers/review/aggregateRating (no vendemos el medicamento).
+      ...(drugInfo(post)
+        ? [{ "@type": "MedicalEntity", name: drugInfo(post)!.name }]
+        : []),
+    ],
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
@@ -188,17 +196,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       acceptedAnswer: { "@type": "Answer", text: f.a },
     })),
   };
-
-  // Ficha Drug para posts sobre un fármaco concreto (medicamento con receta).
-  const drug = drugInfo(post);
-  const drugLd = drug
-    ? drugSchema({
-        name: drug.name,
-        nonProprietaryName: drug.inn,
-        description: post.metaDescription,
-        url,
-      })
-    : null;
 
   return (
     <QuizProvider>
@@ -326,9 +323,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-          {drugLd && (
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(drugLd) }} />
-          )}
     </QuizProvider>
   );
 }
