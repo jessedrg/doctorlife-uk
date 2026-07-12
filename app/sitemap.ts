@@ -72,7 +72,16 @@ export async function generateSitemaps(): Promise<Array<{ id: number }>> {
   return Array.from({ length: sitemapShardCount() }, (_, i) => ({ id: i }));
 }
 
-export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
-  const start = Number(id) * SITEMAP_CHUNK;
+export default async function sitemap({
+  id,
+}: {
+  // En Next.js 16 el `id` del shard llega como Promise<string> y DEBE
+  // resolverse con await. Tratarlo como número (Number(id)) daba NaN y
+  // producía shards con el <urlset> vacío en producción.
+  id: Promise<string> | string | number;
+}): Promise<MetadataRoute.Sitemap> {
+  const resolved = await id;
+  const index = Number(resolved);
+  const start = (Number.isFinite(index) ? index : 0) * SITEMAP_CHUNK;
   return allRoutes().slice(start, start + SITEMAP_CHUNK);
 }
