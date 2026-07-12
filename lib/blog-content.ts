@@ -9,7 +9,7 @@
    ─────────────────────────────────────────────────────────── */
 
 import type { Post, Section, Faq, Block } from "./blog";
-import { buildProvincePosts } from "./blog-provinces";
+import { buildProvincePosts, buildGeoHubPosts } from "./blog-provinces";
 import { buildKeywordPosts } from "./blog-keywords";
 import {
   getCityFacts,
@@ -840,7 +840,7 @@ const MECH_DIAB = [
   "El mecanismo de {Drug} se basa en imitar la hormona GLP‑1: mejora el control glucémico tras las comidas y reduce la sensación de hambre. Su indicación aprobada es la diabetes tipo 2; para el control del peso existen fármacos específicos que el médico puede valorar en {City}.",
 ];
 
-/* ── efectos secundarios ── */
+/* ���─ efectos secundarios ── */
 const SIDE_INTRO = [
   "Como todo análogo del GLP‑1, {Drug} puede provocar efectos secundarios, sobre todo digestivos, al inicio del tratamiento y tras cada subida de dosis. La mayoría son leves y desaparecen cuando el cuerpo se adapta; un escalado lento de la dosis ayuda a minimizarlos.",
   "Los efectos adversos de {Drug} suelen ser leves y transitorios. Aparecen con más frecuencia en las primeras semanas y al aumentar la dosis, y tienden a remitir a medida que el organismo se acostumbra al tratamiento.",
@@ -5519,6 +5519,16 @@ export function generatePosts(existing: Set<string>): Post[] {
 
   // 12) guías por provincia (las 50 de España) con datos reales únicos
   for (const post of buildProvincePosts(index)) {
+    index++;
+    if (seen.has(post.slug)) continue;
+    out.push(post);
+    seen.add(post.slug);
+  }
+
+  // 12b) RED DE HUBS GEO por intención × (provincia + comunidad autónoma).
+  //      Captan las búsquedas geolocalizadas de alta intención sin escribir
+  //      municipio ("clínica ozempic", "comprar wegovy", "endocrino glp1").
+  for (const post of buildGeoHubPosts(index)) {
     index++;
     if (seen.has(post.slug)) continue;
     out.push(post);

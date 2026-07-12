@@ -497,3 +497,374 @@ function buildProvincePost(p: Province, index: number): Post {
 export function buildProvincePosts(startIndex: number): Post[] {
   return PROVINCES.map((p, i) => buildProvincePost(p, startIndex + i));
 }
+
+/* ═══════════════════════════════════════════════════════════
+   RED DE HUBS GEO POR INTENCIÓN (provincia + comunidad autónoma)
+
+   Objetivo: rankear en búsquedas geolocalizadas de alta intención
+   ("clínica ozempic", "comprar wegovy", "endocrino glp1") donde el
+   usuario NO escribe el municipio pero Google filtra por su zona.
+   En vez de una URL por pueblo, creamos HUBS por provincia y por
+   comunidad que mencionan sus municipios de forma natural → captan
+   la relevancia de decenas de localidades sin thin content.
+
+   Slugs con infijo -provincia- / -comunidad- para no colisionar con
+   las páginas de ciudad existentes.
+   ═══════════════════════════════════════════════════════════ */
+type GeoUnit = {
+  kind: "provincia" | "comunidad";
+  name: string;
+  slug: string;
+  capital: string;
+  capitalSlug?: string;
+  community: string;
+  pop: number;
+  cities: string[];
+  health: string;
+  obesity: number;
+};
+
+function communitySlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/* Agrega las provincias en sus 17 comunidades autónomas (datos derivados
+   de PROVINCES para mantener coherencia: población sumada, capitales como
+   ciudades representativas). */
+function buildCommunityUnits(): GeoUnit[] {
+  const map = new Map<string, Province[]>();
+  for (const p of PROVINCES) {
+    const arr = map.get(p.community) ?? [];
+    arr.push(p);
+    map.set(p.community, arr);
+  }
+  const units: GeoUnit[] = [];
+  for (const [community, provs] of map) {
+    const ccaa = CCAA[community] ?? { obesity: 16, health: "el servicio de salud autonómico" };
+    const sorted = [...provs].sort((a, b) => b.pop - a.pop);
+    const main = sorted[0];
+    const cities = sorted.slice(0, 6).map((p) => p.capital);
+    units.push({
+      kind: "comunidad",
+      name: community,
+      slug: communitySlug(community),
+      capital: main.capital,
+      capitalSlug: main.capitalSlug,
+      community,
+      pop: provs.reduce((n, p) => n + p.pop, 0),
+      cities,
+      health: ccaa.health,
+      obesity: ccaa.obesity,
+    });
+  }
+  return units;
+}
+
+function provinceUnit(p: Province): GeoUnit {
+  const ccaa = CCAA[p.community] ?? { obesity: 16, health: "el servicio de salud autonómico" };
+  return {
+    kind: "provincia",
+    name: p.name,
+    slug: p.slug,
+    capital: p.capital,
+    capitalSlug: p.capitalSlug,
+    community: p.community,
+    pop: p.pop,
+    cities: p.cities,
+    health: ccaa.health,
+    obesity: ccaa.obesity,
+  };
+}
+
+/* Etiqueta geográfica natural: "la provincia de Málaga" / "Andalucía". */
+function geoLabel(g: GeoUnit): string {
+  return g.kind === "provincia" ? `la provincia de ${g.name}` : g.name;
+}
+function geoShort(g: GeoUnit): string {
+  return g.name;
+}
+
+/* ── Intenciones de los hubs (alta intención de compra/servicio) ── */
+type HubIntent = {
+  key: string; // prefijo de slug
+  drug?: { name: string; inn: string };
+  category: string;
+  keyword: (g: GeoUnit) => string;
+  h1: (g: GeoUnit) => string;
+  metaTitle: (g: GeoUnit) => string;
+  metaDescription: (g: GeoUnit) => string;
+  title: (g: GeoUnit) => string;
+  excerpt: (g: GeoUnit) => string;
+  lead: string[]; // pools de intro específicos de la intención
+};
+
+const HUB_INTENTS: HubIntent[] = [
+  {
+    key: "comprar-ozempic",
+    drug: { name: "Ozempic", inn: "semaglutida" },
+    category: "Ozempic",
+    keyword: (g) => `comprar ozempic ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Comprar Ozempic en ${geoShort(g)}: receta online y precio`,
+    metaTitle: (g) => `Comprar Ozempic en ${geoShort(g)} | Receta Médica Online`,
+    metaDescription: (g) =>
+      `Cómo comprar Ozempic (semaglutida) en ${geoLabel(g)} de forma legal: valoración de un médico colegiado online, receta electrónica válida en tu farmacia y precio orientativo. Primera visita gratis.`,
+    title: (g) => `Comprar Ozempic en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Guía para comprar Ozempic con receta en ${geoLabel(g)}: cómo conseguir la prescripción online, precio en farmacia y cobertura en ${g.capital} y toda la zona.`,
+    lead: [
+      "Comprar Ozempic (semaglutida) en {geo} requiere receta médica: es un medicamento con prescripción obligatoria en toda España. La forma legal y segura de conseguirlo es con una valoración médica previa, y en {BRAND} la hacemos online para toda {short}.",
+      "En {geo} cada vez más personas buscan cómo comprar Ozempic para controlar su peso o su diabetes. La clave es hacerlo bien: sin receta es ilegal y arriesgado. Con {BRAND}, un médico colegiado valora tu caso por videoconsulta y, si procede, emite la receta electrónica.",
+      "Ozempic no se vende sin receta en ninguna farmacia de {geo}. Para comprarlo de forma segura necesitas una prescripción médica; en {BRAND} la valoración se realiza online y la receta electrónica es válida en cualquier farmacia de {short}.",
+    ],
+  },
+  {
+    key: "comprar-wegovy",
+    drug: { name: "Wegovy", inn: "semaglutida 2,4 mg" },
+    category: "Wegovy",
+    keyword: (g) => `comprar wegovy ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Comprar Wegovy en ${geoShort(g)}: receta online y precio`,
+    metaTitle: (g) => `Comprar Wegovy en ${geoShort(g)} | Receta Médica Online`,
+    metaDescription: (g) =>
+      `Comprar Wegovy (semaglutida 2,4 mg) en ${geoLabel(g)} con receta: valoración médica online, receta electrónica para tu farmacia y precio orientativo. Primera visita gratis con médico colegiado.`,
+    title: (g) => `Comprar Wegovy en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Cómo comprar Wegovy con receta en ${geoLabel(g)}: prescripción online, precio por dosis y cobertura médica en ${g.capital} y comarcas.`,
+    lead: [
+      "Wegovy (semaglutida 2,4 mg) es el GLP‑1 aprobado específicamente para la pérdida de peso, y en {geo} solo se puede comprar con receta. En {BRAND} un médico valora tu caso online y, si está indicado, te lo prescribe con receta electrónica válida en toda {short}.",
+      "Para comprar Wegovy en {geo} necesitas prescripción médica: no se dispensa sin receta. Con {BRAND} accedes a una valoración por videoconsulta desde cualquier municipio de {short} y, si procede, a la receta y el seguimiento desde la app.",
+      "En {geo}, comprar Wegovy de forma legal pasa siempre por una consulta médica. {BRAND} atiende online a toda {short}: valoración de un endocrino colegiado, receta electrónica si el tratamiento es adecuado y acompañamiento en el escalado de dosis.",
+    ],
+  },
+  {
+    key: "comprar-mounjaro",
+    drug: { name: "Mounjaro", inn: "tirzepatida" },
+    category: "Mounjaro",
+    keyword: (g) => `comprar mounjaro ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Comprar Mounjaro en ${geoShort(g)}: receta online y precio`,
+    metaTitle: (g) => `Comprar Mounjaro en ${geoShort(g)} | Receta Online`,
+    metaDescription: (g) =>
+      `Comprar Mounjaro (tirzepatida) en ${geoLabel(g)} con receta médica: valoración online con médico colegiado, receta electrónica para tu farmacia y precio orientativo. Primera visita gratis.`,
+    title: (g) => `Comprar Mounjaro en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Cómo comprar Mounjaro con receta en ${geoLabel(g)}: prescripción online, precio en farmacia y cobertura en ${g.capital} y toda la zona.`,
+    lead: [
+      "Mounjaro (tirzepatida) es uno de los tratamientos GLP‑1 más potentes y, como el resto, en {geo} exige receta. En {BRAND} un médico colegiado valora tu caso online y, si es adecuado, lo prescribe con receta electrónica válida en cualquier farmacia de {short}.",
+      "Comprar Mounjaro en {geo} sin receta no es posible ni seguro. La vía correcta es una valoración médica: {BRAND} la realiza por videoconsulta para toda {short} y, si procede, emite la receta y hace el seguimiento del tratamiento.",
+      "En {geo}, Mounjaro se compra únicamente con prescripción médica. Con {BRAND} tienes la valoración online, la receta electrónica si el fármaco encaja en tu caso y el acompañamiento en cada ajuste de dosis, sin desplazarte a {capital}.",
+    ],
+  },
+  {
+    key: "precio-glp1",
+    category: "Adelgazar",
+    keyword: (g) => `precio tratamiento glp1 ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Precio del tratamiento GLP‑1 en ${geoShort(g)}: Wegovy, Mounjaro y Ozempic`,
+    metaTitle: (g) => `Precio GLP‑1 en ${geoShort(g)}: Wegovy, Mounjaro, Ozempic`,
+    metaDescription: (g) =>
+      `Precios orientativos de los tratamientos GLP‑1 (Wegovy, Mounjaro, Ozempic, Saxenda) en ${geoLabel(g)}, cómo conseguir la receta y qué incluye el seguimiento médico. Primera visita gratis.`,
+    title: (g) => `Precio del tratamiento GLP‑1 en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Cuánto cuesta un tratamiento GLP‑1 para adelgazar en ${geoLabel(g)}: precios por fármaco y dosis, receta online y cobertura en ${g.capital} y comarcas.`,
+    lead: [
+      "El precio de los tratamientos GLP‑1 en {geo} es el mismo que en el resto de España: depende del fármaco y de la dosis, no del municipio. Lo que marca la diferencia real es el acompañamiento médico que incluye el tratamiento.",
+      "En {geo}, el coste de Wegovy, Mounjaro u Ozempic lo fija la farmacia según la dosis, no la ciudad. Aquí tienes los precios orientativos y qué debe incluir un tratamiento serio para que el dinero esté bien invertido.",
+      "¿Cuánto cuesta adelgazar con GLP‑1 en {geo}? El precio del fármaco es solo una parte; la valoración, el escalado de dosis y el seguimiento son lo que evita empezar y parar. En {BRAND} la primera visita es gratis.",
+    ],
+  },
+  {
+    key: "clinica-glp1",
+    category: "Adelgazar",
+    keyword: (g) => `clinica glp1 ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Clínica GLP‑1 para adelgazar en ${geoShort(g)}: valoración online`,
+    metaTitle: (g) => `Clínica GLP‑1 en ${geoShort(g)} | Tratamiento para Adelgazar`,
+    metaDescription: (g) =>
+      `Clínica de tratamiento GLP‑1 para adelgazar en ${geoLabel(g)}: valoración online con médico colegiado, receta electrónica y seguimiento desde la app. Cobertura en ${geoLabel(g)}. Primera visita gratis.`,
+    title: (g) => `Clínica GLP‑1 para adelgazar en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Tratamiento médico GLP‑1 para adelgazar en ${geoLabel(g)} con valoración online, receta y seguimiento. Cobertura en ${g.capital} y toda la zona.`,
+    lead: [
+      "Buscar una clínica GLP‑1 para adelgazar en {geo} ya no significa desplazarte ni esperar semanas. {BRAND} funciona como una clínica online que atiende toda {short}: valoración de un médico colegiado, plan de tratamiento y seguimiento desde la app.",
+      "En {geo}, una clínica de adelgazamiento con GLP‑1 debe ofrecer lo esencial: valoración médica seria, prescripción si procede y seguimiento. {BRAND} lo hace 100 % online para todos los municipios de {short}, sin listas de espera.",
+      "{BRAND} es la alternativa online a una clínica de adelgazamiento en {geo}: un endocrino colegiado valora tu caso, define el tratamiento GLP‑1 si es adecuado y te acompaña en cada ajuste, vivas en {capital} o en cualquier localidad de {short}.",
+    ],
+  },
+  {
+    key: "endocrino-online",
+    category: "Adelgazar",
+    keyword: (g) => `endocrino online ${geoShort(g).toLowerCase()}`,
+    h1: (g) => `Endocrino online en ${geoShort(g)}: cita rápida y tratamiento del peso`,
+    metaTitle: (g) => `Endocrino Online en ${geoShort(g)} | Cita Rápida sin Esperas`,
+    metaDescription: (g) =>
+      `Endocrino online en ${geoLabel(g)} sin listas de espera: valoración por videoconsulta, tratamiento GLP‑1 si procede y receta electrónica válida en tu farmacia. Primera visita gratis.`,
+    title: (g) => `Endocrino online en ${geoShort(g)}`,
+    excerpt: (g) =>
+      `Cómo tener un endocrino online en ${geoLabel(g)} sin esperas: videoconsulta, tratamiento del peso y receta. Cobertura en ${g.capital} y comarcas.`,
+    lead: [
+      "Conseguir cita con endocrino en {geo} por la vía pública puede tardar semanas o meses. Con {BRAND} accedes a un médico colegiado online desde cualquier punto de {short}, con valoración rápida y receta electrónica si el tratamiento está indicado.",
+      "Un endocrino online en {geo} te evita listas de espera y desplazamientos a {capital}. {BRAND} atiende por videoconsulta a toda {short}: valoración del peso, tratamiento GLP‑1 si procede y seguimiento continuo desde la app.",
+      "En {geo}, la endocrinología online resuelve el principal problema: el tiempo. Frente a las esperas de {health}, {BRAND} ofrece valoración ágil con médico colegiado y, si es adecuado, prescripción y seguimiento del tratamiento del peso.",
+    ],
+  },
+];
+
+/* Construye un hub (intención × unidad geográfica) con contenido único. */
+function buildGeoHubPost(intent: HubIntent, g: GeoUnit, index: number): Post {
+  const slug = `${intent.key}-${g.kind}-${g.slug}`;
+  const vars: Record<string, string> = {
+    BRAND,
+    geo: geoLabel(g),
+    short: geoShort(g),
+    capital: g.capital,
+    community: g.community,
+    health: g.health,
+    Name: g.name,
+  };
+
+  const sections: Section[] = [];
+
+  // 1) Intro específica de la intención
+  sections.push({
+    h2: tpl(`${intent.h1(g)}`.replace(/:.*$/, ""), vars),
+    blocks: [
+      { type: "p", text: tpl(pick(intent.lead, slug), vars) },
+      {
+        type: "p",
+        text: tpl(
+          "Vivas en {capital} o en cualquier otra localidad de {geo}, el proceso es el mismo: una consulta online con un médico colegiado, sin desplazamientos y sin listas de espera. Damos cobertura a toda la zona.",
+          vars,
+        ),
+      },
+    ],
+  });
+
+  // 2) Precios (tabla real compartida)
+  sections.push({
+    h2: tpl("Precios de los tratamientos GLP‑1 en {short}", vars),
+    blocks: [
+      { type: "p", text: tpl(pick(PRICE_P, slug), vars) },
+      pricingTable(),
+      { type: "p", text: tpl(pick(PRICE_P2, slug + "b"), vars) },
+      { type: "quote", text: PRICE_NOTE },
+    ],
+  });
+
+  // 3) Cómo conseguir la receta / empezar
+  sections.push({
+    h2: tpl("Cómo empezar en {geo} paso a paso", vars),
+    blocks: [
+      {
+        type: "list",
+        items: [
+          tpl("Reservas tu primera visita online gratis desde cualquier punto de {geo}.", vars),
+          "Completas tu historial clínico y tus objetivos desde la app, sin desplazarte.",
+          "Un médico colegiado valora tu caso y, si procede, define el tratamiento y la dosis de inicio.",
+          tpl("Recibes la receta electrónica, válida en cualquier farmacia de {short}.", vars),
+          "Haces el seguimiento y los ajustes de dosis desde la app, sin nuevas esperas.",
+        ],
+      },
+      { type: "p", text: tpl(SERVICE_CTA, vars) },
+    ],
+  });
+
+  // 4) Cobertura de municipios (capta relevancia local sin URL por pueblo)
+  const cityList = listToText(g.cities);
+  sections.push({
+    h2: tpl("Cobertura en {geo}", vars),
+    blocks: [
+      {
+        type: "p",
+        text: tpl(
+          `Atendemos a pacientes de toda ${geoLabel(g)}: ${g.capital}${g.cities.length ? `, ${cityList}` : ""} y el resto de municipios, incluidas las zonas rurales. Al ser una consulta online, no importa lo lejos que estés de un gran hospital: la valoración, la receta y el seguimiento son igual de accesibles.`,
+          vars,
+        ),
+      },
+      {
+        type: "p",
+        text: tpl(
+          "{geo} forma parte de {community}, cuya prevalencia orientativa de obesidad adulta ronda el {obesity} %. Frente a las esperas del sistema público ({health}), la vía online permite empezar con rapidez cuando el tratamiento está indicado.",
+          { ...vars, obesity: String(g.obesity) },
+        ),
+      },
+      glp1Links(),
+    ],
+  });
+
+  // 5) Seguridad
+  sections.push({
+    h2: "Seguridad y acompañamiento médico",
+    blocks: [
+      { type: "p", text: tpl(pick(SAFETY_P, slug + "s"), vars) },
+      {
+        type: "p",
+        text: "Estos fármacos no son para todo el mundo: existen contraindicaciones (embarazo, antecedentes de pancreatitis, ciertos problemas tiroideos) que el médico revisa siempre antes de prescribir. Por eso la valoración profesional es imprescindible.",
+      },
+    ],
+  });
+
+  const faqs: Faq[] = [
+    {
+      q: tpl(`¿Se puede comprar ${intent.drug?.name ?? "un GLP‑1"} sin receta en {short}?`, vars),
+      a: `No. En toda España, incluida ${geoLabel(g)}, estos fármacos requieren receta médica. Comprarlos sin prescripción es ilegal y peligroso; siempre debe haber una valoración médica previa.`,
+    },
+    {
+      q: tpl("¿Atendéis toda {geo}?", vars),
+      a: tpl(
+        `Sí. Al ser una consulta online, atendemos ${g.capital} y el resto de municipios (${cityList} y muchos más), incluidas las zonas rurales. La receta electrónica es válida en cualquier farmacia.`,
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Cuánto tarda frente a la lista de espera pública en {short}?", vars),
+      a: tpl(
+        "Por la vía online de {BRAND}, la valoración se realiza en poco tiempo, frente a las semanas o meses que puede tardar la cita de endocrinología en {health}.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Tengo que desplazarme a {capital}?", vars),
+      a: "No. Toda la valoración, la prescripción y el seguimiento son online. Solo acudes a tu farmacia habitual a recoger el tratamiento.",
+    },
+    {
+      q: "¿Qué fármaco GLP‑1 es mejor para mí?",
+      a: "No existe un 'mejor' universal: depende de tu objetivo, tu historial y tu tolerancia. Por eso la elección debe ser siempre médica e individual, nunca basada en lo que le funcionó a otra persona.",
+    },
+  ];
+
+  return {
+    slug,
+    title: intent.title(g),
+    h1: intent.h1(g),
+    metaTitle: intent.metaTitle(g),
+    metaDescription: intent.metaDescription(g),
+    excerpt: intent.excerpt(g),
+    category: intent.category,
+    keyword: intent.keyword(g),
+    readMins: 8 + (hash(slug) % 4),
+    date: isoDate(index),
+    updated: "2026-06-22",
+    cover: COVERS[hash(slug) % COVERS.length],
+    coverAlt: `${intent.title(g)} — tratamiento médico GLP‑1 con ${BRAND}`,
+    sections,
+    faqs,
+  };
+}
+
+/* ── API pública: red completa de hubs geo (provincia + comunidad) ── */
+export function buildGeoHubPosts(startIndex: number): Post[] {
+  const units: GeoUnit[] = [
+    ...PROVINCES.map(provinceUnit),
+    ...buildCommunityUnits(),
+  ];
+  const out: Post[] = [];
+  let i = startIndex;
+  for (const intent of HUB_INTENTS) {
+    for (const g of units) {
+      out.push(buildGeoHubPost(intent, g, i++));
+    }
+  }
+  return out;
+}

@@ -8,6 +8,7 @@ import { BlogFunnel } from "@/components/blog-funnel";
 import { BlogInternalLinks } from "@/components/blog-internal-links";
 import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { TrustBox } from "@/components/trustbox";
+import { GeoGreeting } from "@/components/geo-greeting";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { posts, getPost, getRelated, seoTitle, seoDescription, drugInfo, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
@@ -236,6 +237,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </div>
             <TrustBox theme="light" alignment="left" className="mt-5" />
+            <GeoGreeting className="mt-5" />
           </article>
 
           <div className="mx-auto max-w-[760px] px-5 lg:max-w-[820px] 2xl:max-w-[900px]">
