@@ -33,6 +33,10 @@ export type Post = {
   cover: string;
   coverAlt: string;
   featured?: boolean;
+  /** Ubicación objetivo de la página (ciudad/provincia/comunidad). Si está
+   *  presente, el saludo local usa este lugar en vez de la geo por IP, para
+   *  no contradecir el contenido (p. ej. página de Valladolid → "Valladolid"). */
+  place?: string;
   sections: Section[];
   faqs: Faq[];
 };
@@ -69,6 +73,7 @@ const manualPosts: Post[] = [
     cover: "/hero/woman.png",
     coverAlt: "Paciente sonriente tras empezar su tratamiento con Wegovy en Barcelona",
     featured: true,
+    place: "Barcelona",
     sections: [
       {
         h2: "¿Se puede comprar Wegovy en Barcelona?",
@@ -194,6 +199,7 @@ const manualPosts: Post[] = [
     cover: "/products/maren-pen.png",
     coverAlt: "Pluma de tirzepatida (Mounjaro) para tratamiento de pérdida de peso",
     featured: true,
+    place: "Barcelona",
     sections: [
       {
         h2: "¿Qué es Mounjaro y por qué es tan eficaz?",
@@ -5714,7 +5720,7 @@ function detectCity(post: Post): string | null {
   if (/\d/.test(city)) return null; // evita "24h", años, etc.
   if (city.length > 40) return null; // evita frases largas mal detectadas
   // Debe empezar por mayúscula (nombre propio)
-  if (!/^[A-ZÁÉÍÓÚÑ]/.test(city)) return null;
+  if (!/^[A-ZÁ��ÍÓÚÑ]/.test(city)) return null;
   return city;
 }
 

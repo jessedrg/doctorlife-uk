@@ -237,7 +237,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </div>
             <TrustBox theme="light" alignment="left" className="mt-5" />
-            <GeoGreeting className="mt-5" />
+            <GeoGreeting place={post.place} className="mt-5" />
           </article>
 
           <div className="mx-auto max-w-[760px] px-5 lg:max-w-[820px] 2xl:max-w-[900px]">
