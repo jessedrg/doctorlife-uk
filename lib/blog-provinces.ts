@@ -261,7 +261,7 @@ const ENDO_P = [
 ];
 
 const SAFETY_P = [
-  "Estos fármacos son seguros y eficaces cuando se usan bajo supervisi��n médica, empezando por dosis bajas que se aumentan poco a poco. Los efectos secundarios más comunes son digestivos (náuseas, digestiones lentas), suelen ser leves y se gestionan ajustando la pauta. Comprar la pluma sin receta ni seguimiento es ilegal y peligroso.",
+  "Estos fármacos son seguros y eficaces cuando se usan bajo supervisi����n médica, empezando por dosis bajas que se aumentan poco a poco. Los efectos secundarios más comunes son digestivos (náuseas, digestiones lentas), suelen ser leves y se gestionan ajustando la pauta. Comprar la pluma sin receta ni seguimiento es ilegal y peligroso.",
   "La seguridad depende del seguimiento. Bien indicados y con un escalado de dosis progresivo, los GLP‑1 tienen un buen perfil; los efectos digestivos iniciales suelen remitir. Lo arriesgado es automedicarse o comprar por canales no autorizados, algo que en {Name} —como en toda España— es ilegal.",
   "Usados con criterio médico, estos tratamientos son seguros: la clave está en ajustar la dosis poco a poco y vigilar la tolerancia. Los efectos secundarios habituales son leves y temporales. Lo que nunca debe hacerse es comprarlos sin receta ni control profesional.",
 ];
@@ -474,7 +474,7 @@ function buildProvincePost(p: Province, index: number): Post {
     h1: tpl("Adelgazar con GLP‑1 en la provincia de {Name}: precios, receta y cómo empezar", vars),
     metaTitle: tpl("Tratamiento para adelgazar en {Name}: Wegovy, Mounjaro y Ozempic | DoctorLife", vars),
     metaDescription: tpl(
-      "Cómo empezar un tratamiento GLP‑1 para adelgazar en la provincia de {Name}: precios de Wegovy, Mounjaro y Ozempic, cómo conseguir la receta, endocrino online y cobertura en {capital} y toda la provincia. Primera visita gratis.",
+      "Cómo empezar un tratamiento GLP‑1 para adelgazar en la provincia de {Name}: precios de Wegovy, Mounjaro y Ozempic, cómo conseguir la receta, endocrino online y cobertura en {capital} y toda la provincia. ¡Primera consulta gratis!",
       vars,
     ),
     excerpt: tpl(
@@ -613,7 +613,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Comprar Ozempic en ${geoShort(g)}: receta online y precio`,
     metaTitle: (g) => `Comprar Ozempic en ${geoShort(g)} | Receta Médica Online`,
     metaDescription: (g) =>
-      `Cómo comprar Ozempic (semaglutida) en ${geoLabel(g)} de forma legal: valoración de un médico colegiado online, receta electrónica válida en tu farmacia y precio orientativo. Primera visita gratis.`,
+      `Cómo comprar Ozempic (semaglutida) en ${geoLabel(g)} de forma legal: valoración de un médico colegiado online, receta electrónica válida en tu farmacia y precio orientativo. ¡Primera consulta gratis!`,
     title: (g) => `Comprar Ozempic en ${geoShort(g)}`,
     excerpt: (g) =>
       `Guía para comprar Ozempic con receta en ${geoLabel(g)}: cómo conseguir la prescripción online, precio en farmacia y cobertura en ${g.capital} y toda la zona.`,
@@ -631,7 +631,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Comprar Wegovy en ${geoShort(g)}: receta online y precio`,
     metaTitle: (g) => `Comprar Wegovy en ${geoShort(g)} | Receta Médica Online`,
     metaDescription: (g) =>
-      `Comprar Wegovy (semaglutida 2,4 mg) en ${geoLabel(g)} con receta: valoración médica online, receta electrónica para tu farmacia y precio orientativo. Primera visita gratis con médico colegiado.`,
+      `Comprar Wegovy (semaglutida 2,4 mg) en ${geoLabel(g)} con receta: valoración médica online, receta electrónica para tu farmacia y precio orientativo. ¡Primera consulta gratis con médico colegiado!`,
     title: (g) => `Comprar Wegovy en ${geoShort(g)}`,
     excerpt: (g) =>
       `Cómo comprar Wegovy con receta en ${geoLabel(g)}: prescripción online, precio por dosis y cobertura médica en ${g.capital} y comarcas.`,
@@ -649,7 +649,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Comprar Mounjaro en ${geoShort(g)}: receta online y precio`,
     metaTitle: (g) => `Comprar Mounjaro en ${geoShort(g)} | Receta Online`,
     metaDescription: (g) =>
-      `Comprar Mounjaro (tirzepatida) en ${geoLabel(g)} con receta médica: valoración online con médico colegiado, receta electrónica para tu farmacia y precio orientativo. Primera visita gratis.`,
+      `Comprar Mounjaro (tirzepatida) en ${geoLabel(g)} con receta médica: valoración online con médico colegiado, receta electrónica para tu farmacia y precio orientativo. ¡Primera consulta gratis!`,
     title: (g) => `Comprar Mounjaro en ${geoShort(g)}`,
     excerpt: (g) =>
       `Cómo comprar Mounjaro con receta en ${geoLabel(g)}: prescripción online, precio en farmacia y cobertura en ${g.capital} y toda la zona.`,
@@ -666,7 +666,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Precio del tratamiento GLP‑1 en ${geoShort(g)}: Wegovy, Mounjaro y Ozempic`,
     metaTitle: (g) => `Precio GLP‑1 en ${geoShort(g)}: Wegovy, Mounjaro, Ozempic`,
     metaDescription: (g) =>
-      `Precios orientativos de los tratamientos GLP‑1 (Wegovy, Mounjaro, Ozempic, Saxenda) en ${geoLabel(g)}, cómo conseguir la receta y qué incluye el seguimiento médico. Primera visita gratis.`,
+      `Precios orientativos de los tratamientos GLP‑1 (Wegovy, Mounjaro, Ozempic, Saxenda) en ${geoLabel(g)}, cómo conseguir la receta y qué incluye el seguimiento médico. ¡Primera consulta gratis!`,
     title: (g) => `Precio del tratamiento GLP‑1 en ${geoShort(g)}`,
     excerpt: (g) =>
       `Cuánto cuesta un tratamiento GLP‑1 para adelgazar en ${geoLabel(g)}: precios por fármaco y dosis, receta online y cobertura en ${g.capital} y comarcas.`,
@@ -683,7 +683,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Clínica GLP‑1 para adelgazar en ${geoShort(g)}: valoración online`,
     metaTitle: (g) => `Clínica GLP‑1 en ${geoShort(g)} | Tratamiento para Adelgazar`,
     metaDescription: (g) =>
-      `Clínica de tratamiento GLP‑1 para adelgazar en ${geoLabel(g)}: valoración online con médico colegiado, receta electrónica y seguimiento desde la app. Cobertura en ${geoLabel(g)}. Primera visita gratis.`,
+      `Clínica de tratamiento GLP‑1 para adelgazar en ${geoLabel(g)}: valoración online con médico colegiado, receta electrónica y seguimiento desde la app. Cobertura en ${geoLabel(g)}. ¡Primera consulta gratis!`,
     title: (g) => `Clínica GLP‑1 para adelgazar en ${geoShort(g)}`,
     excerpt: (g) =>
       `Tratamiento médico GLP‑1 para adelgazar en ${geoLabel(g)} con valoración online, receta y seguimiento. Cobertura en ${g.capital} y toda la zona.`,
@@ -700,7 +700,7 @@ const HUB_INTENTS: HubIntent[] = [
     h1: (g) => `Endocrino online en ${geoShort(g)}: cita rápida y tratamiento del peso`,
     metaTitle: (g) => `Endocrino Online en ${geoShort(g)} | Cita Rápida sin Esperas`,
     metaDescription: (g) =>
-      `Endocrino online en ${geoLabel(g)} sin listas de espera: valoración por videoconsulta, tratamiento GLP‑1 si procede y receta electrónica válida en tu farmacia. Primera visita gratis.`,
+      `Endocrino online en ${geoLabel(g)} sin listas de espera: valoración por videoconsulta, tratamiento GLP‑1 si procede y receta electrónica válida en tu farmacia. ¡Primera consulta gratis!`,
     title: (g) => `Endocrino online en ${geoShort(g)}`,
     excerpt: (g) =>
       `Cómo tener un endocrino online en ${geoLabel(g)} sin esperas: videoconsulta, tratamiento del peso y receta. Cobertura en ${g.capital} y comarcas.`,
