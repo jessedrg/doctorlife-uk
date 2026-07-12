@@ -5366,6 +5366,13 @@ const PRICE_DRUG_KEYS = new Set([
   "zepbound",
 ]);
 
+/* Marca la ubicación objetivo de una página de ciudad, para que el saludo
+   local (GeoGreeting) muestre la ciudad DEL ARTÍCULO y no la IP del visitante. */
+function withPlace(post: Post, place: string): Post {
+  post.place = place;
+  return post;
+}
+
 export function generatePosts(existing: Set<string>): Post[] {
   const out: Post[] = [];
   const seen = new Set<string>(existing);
@@ -5377,7 +5384,7 @@ export function generatePosts(existing: Set<string>): Post[] {
       const slug = `comprar-${drug.key}-${city.slug}`;
       if (seen.has(slug)) continue;
       const hasPrice = PRICE_DRUG_KEYS.has(drug.key);
-      out.push(buildBuyPost(drug, city, index++, hasPrice));
+      out.push(withPlace(buildBuyPost(drug, city, index++, hasPrice), city.name));
       seen.add(slug);
     }
   }
@@ -5387,7 +5394,7 @@ export function generatePosts(existing: Set<string>): Post[] {
     for (const city of CITIES) {
       const slug = `precio-${drug.key}-${city.slug}`;
       if (seen.has(slug)) continue;
-      out.push(buildPricePost(drug, city, index++));
+      out.push(withPlace(buildPricePost(drug, city, index++), city.name));
       seen.add(slug);
     }
   }
@@ -5398,7 +5405,7 @@ export function generatePosts(existing: Set<string>): Post[] {
     for (const city of CITIES) {
       const slug = `${drug.key}-${city.slug}`;
       if (seen.has(slug)) continue;
-      out.push(buildDrugCityPost(drug, city, index++));
+      out.push(withPlace(buildDrugCityPost(drug, city, index++), city.name));
       seen.add(slug);
     }
   }
@@ -5410,7 +5417,7 @@ export function generatePosts(existing: Set<string>): Post[] {
     for (const city of CITIES) {
       const slug = `receta-${drug.key}-online-${city.slug}`;
       if (seen.has(slug)) continue;
-      out.push(buildRxCityPost(drug, city, index++));
+      out.push(withPlace(buildRxCityPost(drug, city, index++), city.name));
       seen.add(slug);
     }
   }
@@ -5501,7 +5508,7 @@ export function generatePosts(existing: Set<string>): Post[] {
     for (const city of CITIES) {
       const slug = cluster.slug(city);
       if (seen.has(slug)) continue;
-      out.push(buildLocalServicePost(cluster, city, index++));
+      out.push(withPlace(buildLocalServicePost(cluster, city, index++), city.name));
       seen.add(slug);
     }
   }
@@ -5512,7 +5519,7 @@ export function generatePosts(existing: Set<string>): Post[] {
     for (const city of CITIES) {
       const slug = `clinica-tratamiento-${target.key}-${city.slug}`;
       if (seen.has(slug)) continue;
-      out.push(buildDrugClinicPost(target, city, index++));
+      out.push(withPlace(buildDrugClinicPost(target, city, index++), city.name));
       seen.add(slug);
     }
   }

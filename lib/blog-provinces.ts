@@ -261,7 +261,7 @@ const ENDO_P = [
 ];
 
 const SAFETY_P = [
-  "Estos fármacos son seguros y eficaces cuando se usan bajo supervisión médica, empezando por dosis bajas que se aumentan poco a poco. Los efectos secundarios más comunes son digestivos (náuseas, digestiones lentas), suelen ser leves y se gestionan ajustando la pauta. Comprar la pluma sin receta ni seguimiento es ilegal y peligroso.",
+  "Estos fármacos son seguros y eficaces cuando se usan bajo supervisi��n médica, empezando por dosis bajas que se aumentan poco a poco. Los efectos secundarios más comunes son digestivos (náuseas, digestiones lentas), suelen ser leves y se gestionan ajustando la pauta. Comprar la pluma sin receta ni seguimiento es ilegal y peligroso.",
   "La seguridad depende del seguimiento. Bien indicados y con un escalado de dosis progresivo, los GLP‑1 tienen un buen perfil; los efectos digestivos iniciales suelen remitir. Lo arriesgado es automedicarse o comprar por canales no autorizados, algo que en {Name} —como en toda España— es ilegal.",
   "Usados con criterio médico, estos tratamientos son seguros: la clave está en ajustar la dosis poco a poco y vigilar la tolerancia. Los efectos secundarios habituales son leves y temporales. Lo que nunca debe hacerse es comprarlos sin receta ni control profesional.",
 ];
@@ -488,6 +488,7 @@ function buildProvincePost(p: Province, index: number): Post {
     updated: "2026-06-21",
     cover,
     coverAlt: tpl("Tratamiento médico para adelgazar con GLP‑1 en la provincia de {Name}", vars),
+    place: `la provincia de ${p.name}`,
     sections,
     faqs,
   };
@@ -848,6 +849,7 @@ function buildGeoHubPost(intent: HubIntent, g: GeoUnit, index: number): Post {
     updated: "2026-06-22",
     cover: COVERS[hash(slug) % COVERS.length],
     coverAlt: `${intent.title(g)} — tratamiento médico GLP‑1 con ${BRAND}`,
+    place: geoLabel(g),
     sections,
     faqs,
   };
