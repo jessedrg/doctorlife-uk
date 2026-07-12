@@ -15,6 +15,7 @@ import {
   getCityFacts,
   healthServiceFor,
   formatCityPop,
+  EXTRA_CITIES,
 } from "./blog-city-facts";
 
 const BRAND = "DoctorLife";
@@ -42,7 +43,7 @@ function isoDate(offset: number): string {
 
 /* ── ciudades de España ── */
 export type City = { name: string; slug: string; prep?: string };
-export const CITIES: City[] = [
+const CITIES_BASE: City[] = [
   { name: "Madrid", slug: "madrid" },
   { name: "Barcelona", slug: "barcelona" },
   { name: "Valencia", slug: "valencia" },
@@ -531,6 +532,19 @@ export const CITIES: City[] = [
   // Galicia
   { name: "O Porriño", slug: "porrino" },
 ];
+
+/* CITIES = base + municipios adicionales (provincia-conscientes), deduplicados
+   por slug para no generar URLs repetidas ni canibalizar. */
+export const CITIES: City[] = (() => {
+  const seen = new Set(CITIES_BASE.map((c) => c.slug));
+  const merged = [...CITIES_BASE];
+  for (const c of EXTRA_CITIES) {
+    if (seen.has(c.slug)) continue;
+    seen.add(c.slug);
+    merged.push(c);
+  }
+  return merged;
+})();
 
 /* ── fármacos ── */
 type Drug = {
