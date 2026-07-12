@@ -579,3 +579,311 @@ export function formatCityPop(n: number): string {
   }
   return `unos ${Math.round(n / 1000)}.000 habitantes`;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ESCALADO POR PROVINCIA
+   Permite añadir cientos de municipios SIN escribir una ficha a
+   mano por cada uno: cada municipio hereda la comunidad, el
+   servicio público de salud y el hospital de referencia REALES de
+   su provincia. El contenido resultante sigue siendo único por
+   ciudad (nombre, provincia, comunidad, hospital y servicio de
+   salud varían) → no cae en el fallback genérico ni en thin content.
+   ═══════════════════════════════════════════════════════════ */
+export const PROVINCE_META: Record<string, { community: string; hospital: string }> = {
+  "A Coruña": { community: "Galicia", hospital: "Complexo Hospitalario Universitario de A Coruña (CHUAC)" },
+  Lugo: { community: "Galicia", hospital: "Hospital Universitario Lucus Augusti" },
+  Ourense: { community: "Galicia", hospital: "Complexo Hospitalario Universitario de Ourense" },
+  Pontevedra: { community: "Galicia", hospital: "Hospital Álvaro Cunqueiro (Vigo)" },
+  Asturias: { community: "Principado de Asturias", hospital: "Hospital Universitario Central de Asturias (HUCA)" },
+  Cantabria: { community: "Cantabria", hospital: "Hospital Universitario Marqués de Valdecilla" },
+  Vizcaya: { community: "País Vasco", hospital: "Hospital Universitario de Cruces" },
+  Guipúzcoa: { community: "País Vasco", hospital: "Hospital Universitario Donostia" },
+  Álava: { community: "País Vasco", hospital: "Hospital Universitario de Álava (Txagorritxu)" },
+  Navarra: { community: "Comunidad Foral de Navarra", hospital: "Hospital Universitario de Navarra" },
+  "La Rioja": { community: "La Rioja", hospital: "Hospital Universitario San Pedro" },
+  Huesca: { community: "Aragón", hospital: "Hospital Universitario San Jorge" },
+  Zaragoza: { community: "Aragón", hospital: "Hospital Universitario Miguel Servet" },
+  Teruel: { community: "Aragón", hospital: "Hospital Obispo Polanco" },
+  Barcelona: { community: "Cataluña", hospital: "Hospital Clínic de Barcelona" },
+  Tarragona: { community: "Cataluña", hospital: "Hospital Universitari Joan XXIII" },
+  Lleida: { community: "Cataluña", hospital: "Hospital Universitari Arnau de Vilanova" },
+  Girona: { community: "Cataluña", hospital: "Hospital Universitari Doctor Josep Trueta" },
+  Castellón: { community: "Comunidad Valenciana", hospital: "Hospital General Universitario de Castellón" },
+  Valencia: { community: "Comunidad Valenciana", hospital: "Hospital Universitari i Politècnic La Fe" },
+  Alicante: { community: "Comunidad Valenciana", hospital: "Hospital General Universitario Dr. Balmis" },
+  Murcia: { community: "Región de Murcia", hospital: "Hospital Clínico Universitario Virgen de la Arrixaca" },
+  Almería: { community: "Andalucía", hospital: "Hospital Universitario Torrecárdenas" },
+  Granada: { community: "Andalucía", hospital: "Hospital Universitario Virgen de las Nieves" },
+  Málaga: { community: "Andalucía", hospital: "Hospital Regional Universitario de Málaga" },
+  Jaén: { community: "Andalucía", hospital: "Complejo Hospitalario de Jaén" },
+  Córdoba: { community: "Andalucía", hospital: "Hospital Universitario Reina Sofía" },
+  Sevilla: { community: "Andalucía", hospital: "Hospital Universitario Virgen del Rocío" },
+  Huelva: { community: "Andalucía", hospital: "Hospital Juan Ramón Jiménez" },
+  Cádiz: { community: "Andalucía", hospital: "Hospital Universitario Puerta del Mar" },
+  Badajoz: { community: "Extremadura", hospital: "Hospital Universitario de Badajoz" },
+  Cáceres: { community: "Extremadura", hospital: "Hospital Universitario de Cáceres" },
+  Toledo: { community: "Castilla-La Mancha", hospital: "Hospital Universitario de Toledo" },
+  "Ciudad Real": { community: "Castilla-La Mancha", hospital: "Hospital General Universitario de Ciudad Real" },
+  Cuenca: { community: "Castilla-La Mancha", hospital: "Hospital Virgen de la Luz" },
+  Guadalajara: { community: "Castilla-La Mancha", hospital: "Hospital Universitario de Guadalajara" },
+  Albacete: { community: "Castilla-La Mancha", hospital: "Complejo Hospitalario Universitario de Albacete" },
+  Madrid: { community: "Comunidad de Madrid", hospital: "Hospital Universitario La Paz" },
+  Ávila: { community: "Castilla y León", hospital: "Complejo Asistencial de Ávila" },
+  Burgos: { community: "Castilla y León", hospital: "Hospital Universitario de Burgos" },
+  León: { community: "Castilla y León", hospital: "Complejo Asistencial Universitario de León" },
+  Palencia: { community: "Castilla y León", hospital: "Hospital Río Carrión" },
+  Salamanca: { community: "Castilla y León", hospital: "Hospital Universitario de Salamanca" },
+  Segovia: { community: "Castilla y León", hospital: "Hospital General de Segovia" },
+  Soria: { community: "Castilla y León", hospital: "Hospital Santa Bárbara" },
+  Valladolid: { community: "Castilla y León", hospital: "Hospital Clínico Universitario de Valladolid" },
+  Zamora: { community: "Castilla y León", hospital: "Complejo Asistencial de Zamora" },
+  "Las Palmas": { community: "Canarias", hospital: "Hospital Universitario de Gran Canaria Doctor Negrín" },
+  "Santa Cruz de Tenerife": { community: "Canarias", hospital: "Hospital Universitario Nuestra Señora de Candelaria" },
+  "Islas Baleares": { community: "Islas Baleares", hospital: "Hospital Universitario Son Espases" },
+};
+
+function traitForProvince(province: string, pop: number): string {
+  const size =
+    pop >= 100000
+      ? "una de las ciudades más pobladas"
+      : pop >= 40000
+        ? "un municipio de tamaño medio"
+        : pop >= 15000
+          ? "un municipio"
+          : "una localidad";
+  return `${size} de la provincia de ${province}`;
+}
+
+/* Municipios adicionales: [nombre, slug, provincia, población aprox.] */
+const EXTRA_MUNICIPALITIES: [string, string, string, number][] = [
+  // Andalucía
+  ["Dos Hermanas", "dos-hermanas", "Sevilla", 135000],
+  ["Alcalá de Guadaíra", "alcala-de-guadaira", "Sevilla", 76000],
+  ["Utrera", "utrera", "Sevilla", 53000],
+  ["Mairena del Aljarafe", "mairena-del-aljarafe", "Sevilla", 49000],
+  ["Écija", "ecija", "Sevilla", 40000],
+  ["Marbella", "marbella", "Málaga", 150000],
+  ["Mijas", "mijas", "Málaga", 92000],
+  ["Vélez-Málaga", "velez-malaga", "Málaga", 84000],
+  ["Fuengirola", "fuengirola", "Málaga", 83000],
+  ["Torremolinos", "torremolinos", "Málaga", 70000],
+  ["Estepona", "estepona", "Málaga", 73000],
+  ["Benalmádena", "benalmadena", "Málaga", 70000],
+  ["Antequera", "antequera", "Málaga", 41000],
+  ["Roquetas de Mar", "roquetas-de-mar", "Almería", 100000],
+  ["El Ejido", "el-ejido", "Almería", 84000],
+  ["Níjar", "nijar", "Almería", 31000],
+  ["Adra", "adra", "Almería", 25000],
+  ["Vícar", "vicar", "Almería", 27000],
+  ["Jerez de la Frontera", "jerez-de-la-frontera", "Cádiz", 213000],
+  ["Algeciras", "algeciras", "Cádiz", 123000],
+  ["San Fernando", "san-fernando", "Cádiz", 95000],
+  ["El Puerto de Santa María", "el-puerto-de-santa-maria", "Cádiz", 89000],
+  ["Chiclana de la Frontera", "chiclana-de-la-frontera", "Cádiz", 89000],
+  ["Sanlúcar de Barrameda", "sanlucar-de-barrameda", "Cádiz", 70000],
+  ["La Línea de la Concepción", "la-linea-de-la-concepcion", "Cádiz", 63000],
+  ["Puerto Real", "puerto-real", "Cádiz", 42000],
+  ["Motril", "motril", "Granada", 60000],
+  ["Almuñécar", "almunecar", "Granada", 26000],
+  ["Baza", "baza", "Granada", 20000],
+  ["Linares", "linares", "Jaén", 57000],
+  ["Andújar", "andujar", "Jaén", 36000],
+  ["Úbeda", "ubeda", "Jaén", 34000],
+  ["Martos", "martos", "Jaén", 24000],
+  ["Lucena", "lucena", "Córdoba", 42000],
+  ["Puente Genil", "puente-genil", "Córdoba", 30000],
+  ["Montilla", "montilla", "Córdoba", 23000],
+  ["Dos Hermanas", "dos-hermanas", "Sevilla", 135000],
+  ["Huércal-Overa", "huercal-overa", "Almería", 19000],
+
+  // Cataluña
+  ["Mataró", "mataro", "Barcelona", 129000],
+  ["Santa Coloma de Gramenet", "santa-coloma-de-gramenet", "Barcelona", 120000],
+  ["Cornellà de Llobregat", "cornella-de-llobregat", "Barcelona", 89000],
+  ["Sant Cugat del Vallès", "sant-cugat-del-valles", "Barcelona", 92000],
+  ["Sant Boi de Llobregat", "sant-boi-de-llobregat", "Barcelona", 84000],
+  ["Manresa", "manresa", "Barcelona", 78000],
+  ["Rubí", "rubi", "Barcelona", 78000],
+  ["Vilanova i la Geltrú", "vilanova-i-la-geltru", "Barcelona", 67000],
+  ["Viladecans", "viladecans", "Barcelona", 67000],
+  ["El Prat de Llobregat", "el-prat-de-llobregat", "Barcelona", 65000],
+  ["Castelldefels", "castelldefels", "Barcelona", 68000],
+  ["Granollers", "granollers", "Barcelona", 62000],
+  ["Cerdanyola del Vallès", "cerdanyola-del-valles", "Barcelona", 58000],
+  ["Mollet del Vallès", "mollet-del-valles", "Barcelona", 51000],
+  ["Reus", "reus", "Tarragona", 107000],
+  ["Tarragona", "tarragona", "Tarragona", 135000],
+  ["El Vendrell", "el-vendrell", "Tarragona", 37000],
+  ["Cambrils", "cambrils", "Tarragona", 34000],
+  ["Lleida", "lleida", "Lleida", 140000],
+  ["Girona", "girona", "Girona", 103000],
+  ["Figueres", "figueres", "Girona", 47000],
+  ["Blanes", "blanes", "Girona", 39000],
+  ["Lloret de Mar", "lloret-de-mar", "Girona", 41000],
+  ["Olot", "olot", "Girona", 36000],
+  ["Salt", "salt", "Girona", 32000],
+
+  // Comunidad Valenciana
+  ["Torrevieja", "torrevieja", "Alicante", 84000],
+  ["Orihuela", "orihuela", "Alicante", 78000],
+  ["Torrent", "torrent", "Valencia", 86000],
+  ["Gandía", "gandia", "Valencia", 75000],
+  ["Paterna", "paterna", "Valencia", 70000],
+  ["Sagunto", "sagunto", "Valencia", 66000],
+  ["Alcoy", "alcoy", "Alicante", 59000],
+  ["San Vicente del Raspeig", "san-vicente-del-raspeig", "Alicante", 59000],
+  ["Benidorm", "benidorm", "Alicante", 70000],
+  ["Elda", "elda", "Alicante", 52000],
+  ["Alzira", "alzira", "Valencia", 45000],
+  ["Mislata", "mislata", "Valencia", 44000],
+  ["Villena", "villena", "Alicante", 34000],
+  ["Dénia", "denia", "Alicante", 45000],
+  ["Petrer", "petrer", "Alicante", 35000],
+  ["Castellón de la Plana", "castellon-de-la-plana", "Castellón", 175000],
+  ["Vila-real", "vila-real", "Castellón", 51000],
+  ["Burriana", "burriana", "Castellón", 35000],
+  ["Vinaròs", "vinaros", "Castellón", 29000],
+
+  // Comunidad de Madrid
+  ["Alcalá de Henares", "alcala-de-henares", "Madrid", 196000],
+  ["Fuenlabrada", "fuenlabrada", "Madrid", 193000],
+  ["Leganés", "leganes", "Madrid", 190000],
+  ["Getafe", "getafe", "Madrid", 185000],
+  ["Alcorcón", "alcorcon", "Madrid", 170000],
+  ["Torrejón de Ardoz", "torrejon-de-ardoz", "Madrid", 135000],
+  ["Parla", "parla", "Madrid", 130000],
+  ["Alcobendas", "alcobendas", "Madrid", 118000],
+  ["Las Rozas de Madrid", "las-rozas", "Madrid", 96000],
+  ["San Sebastián de los Reyes", "san-sebastian-de-los-reyes", "Madrid", 90000],
+  ["Pozuelo de Alarcón", "pozuelo-de-alarcon", "Madrid", 87000],
+  ["Coslada", "coslada", "Madrid", 82000],
+  ["Rivas-Vaciamadrid", "rivas-vaciamadrid", "Madrid", 97000],
+  ["Valdemoro", "valdemoro", "Madrid", 78000],
+  ["Majadahonda", "majadahonda", "Madrid", 72000],
+  ["Collado Villalba", "collado-villalba", "Madrid", 63000],
+  ["Aranjuez", "aranjuez", "Madrid", 60000],
+  ["Arganda del Rey", "arganda-del-rey", "Madrid", 56000],
+  ["Boadilla del Monte", "boadilla-del-monte", "Madrid", 60000],
+  ["Pinto", "pinto", "Madrid", 53000],
+  ["Colmenar Viejo", "colmenar-viejo", "Madrid", 51000],
+  ["Tres Cantos", "tres-cantos", "Madrid", 47000],
+
+  // Galicia
+  ["Santiago de Compostela", "santiago-de-compostela", "A Coruña", 98000],
+  ["Ferrol", "ferrol", "A Coruña", 64000],
+  ["Narón", "naron", "A Coruña", 40000],
+  ["Lugo", "lugo", "Lugo", 98000],
+  ["Ourense", "ourense", "Ourense", 105000],
+  ["Pontevedra", "pontevedra", "Pontevedra", 83000],
+  ["Vilagarcía de Arousa", "vilagarcia-de-arousa", "Pontevedra", 37000],
+  ["Redondela", "redondela", "Pontevedra", 29000],
+  ["Carballo", "carballo", "A Coruña", 31000],
+
+  // País Vasco
+  ["Barakaldo", "barakaldo", "Vizcaya", 100000],
+  ["Getxo", "getxo", "Vizcaya", 78000],
+  ["Portugalete", "portugalete", "Vizcaya", 46000],
+  ["Santurtzi", "santurtzi", "Vizcaya", 46000],
+  ["Basauri", "basauri", "Vizcaya", 40000],
+  ["Donostia-San Sebastián", "donostia-san-sebastian", "Guipúzcoa", 188000],
+  ["Irun", "irun", "Guipúzcoa", 62000],
+  ["Errenteria", "errenteria", "Guipúzcoa", 39000],
+  ["Eibar", "eibar", "Guipúzcoa", 27000],
+
+  // Aragón
+  ["Huesca", "huesca", "Huesca", 53000],
+  ["Teruel", "teruel", "Teruel", 36000],
+  ["Calatayud", "calatayud", "Zaragoza", 20000],
+  ["Utebo", "utebo", "Zaragoza", 20000],
+
+  // Castilla y León
+  ["Burgos", "burgos", "Burgos", 175000],
+  ["Salamanca", "salamanca", "Salamanca", 143000],
+  ["León", "leon", "León", 122000],
+  ["Palencia", "palencia", "Palencia", 78000],
+  ["Ponferrada", "ponferrada", "León", 64000],
+  ["Zamora", "zamora", "Zamora", 60000],
+  ["Ávila", "avila", "Ávila", 58000],
+  ["Segovia", "segovia", "Segovia", 52000],
+  ["Soria", "soria", "Soria", 40000],
+  ["Miranda de Ebro", "miranda-de-ebro", "Burgos", 35000],
+  ["Aranda de Duero", "aranda-de-duero", "Burgos", 33000],
+
+  // Castilla-La Mancha
+  ["Albacete", "albacete", "Albacete", 173000],
+  ["Guadalajara", "guadalajara", "Guadalajara", 89000],
+  ["Toledo", "toledo", "Toledo", 85000],
+  ["Talavera de la Reina", "talavera-de-la-reina", "Toledo", 83000],
+  ["Ciudad Real", "ciudad-real", "Ciudad Real", 75000],
+  ["Puertollano", "puertollano", "Ciudad Real", 47000],
+  ["Cuenca", "cuenca", "Cuenca", 54000],
+  ["Hellín", "hellin", "Albacete", 30000],
+
+  // Extremadura
+  ["Badajoz", "badajoz", "Badajoz", 150000],
+  ["Cáceres", "caceres", "Cáceres", 96000],
+  ["Mérida", "merida", "Badajoz", 60000],
+  ["Don Benito", "don-benito", "Badajoz", 37000],
+  ["Plasencia", "plasencia", "Cáceres", 40000],
+  ["Almendralejo", "almendralejo", "Badajoz", 34000],
+
+  // Región de Murcia
+  ["Lorca", "lorca", "Murcia", 96000],
+  ["Molina de Segura", "molina-de-segura", "Murcia", 74000],
+  ["Alcantarilla", "alcantarilla", "Murcia", 42000],
+  ["Cieza", "cieza", "Murcia", 35000],
+  ["Águilas", "aguilas", "Murcia", 35000],
+  ["Yecla", "yecla", "Murcia", 34000],
+  ["Totana", "totana", "Murcia", 32000],
+  ["San Javier", "san-javier", "Murcia", 33000],
+
+  // Asturias / Cantabria / Navarra / La Rioja
+  ["Avilés", "aviles", "Asturias", 78000],
+  ["Siero", "siero", "Asturias", 52000],
+  ["Langreo", "langreo", "Asturias", 39000],
+  ["Santander", "santander", "Cantabria", 172000],
+  ["Torrelavega", "torrelavega", "Cantabria", 51000],
+  ["Castro-Urdiales", "castro-urdiales", "Cantabria", 32000],
+  ["Pamplona", "pamplona", "Navarra", 203000],
+  ["Tudela", "tudela", "Navarra", 37000],
+  ["Barañáin", "baranain", "Navarra", 20000],
+  ["Logroño", "logrono", "La Rioja", 151000],
+  ["Calahorra", "calahorra", "La Rioja", 24000],
+
+  // Canarias / Baleares
+  ["Telde", "telde", "Las Palmas", 102000],
+  ["Santa Lucía de Tirajana", "santa-lucia-de-tirajana", "Las Palmas", 74000],
+  ["Arona", "arona", "Santa Cruz de Tenerife", 82000],
+  ["San Cristóbal de La Laguna", "la-laguna", "Santa Cruz de Tenerife", 158000],
+  ["Arrecife", "arrecife", "Las Palmas", 65000],
+  ["Adeje", "adeje", "Santa Cruz de Tenerife", 48000],
+  ["Ibiza", "ibiza", "Islas Baleares", 50000],
+  ["Manacor", "manacor", "Islas Baleares", 44000],
+  ["Calvià", "calvia", "Islas Baleares", 52000],
+];
+
+/* Fusiona los municipios adicionales en CITY_FACTS (solo si no existen ya). */
+for (const [, slug, province, pop] of EXTRA_MUNICIPALITIES) {
+  if (CITY_FACTS[slug]) continue;
+  const meta = PROVINCE_META[province];
+  if (!meta) continue;
+  CITY_FACTS[slug] = {
+    community: meta.community,
+    province,
+    pop,
+    hospital: meta.hospital,
+    trait: traitForProvince(province, pop),
+  };
+}
+
+/* Ciudades adicionales para concatenar en CITIES (deduplicadas por slug). */
+export const EXTRA_CITIES: { name: string; slug: string }[] = (() => {
+  const seen = new Set<string>();
+  const out: { name: string; slug: string }[] = [];
+  for (const [name, slug] of EXTRA_MUNICIPALITIES) {
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    out.push({ name, slug });
+  }
+  return out;
+})();
