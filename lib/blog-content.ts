@@ -1021,7 +1021,7 @@ function buildBuyPost(drug: Drug, city: City, index: number, hasPrice: boolean):
     h1: tpl("Comprar {Drug} en {City}: precio, receta y cómo empezar", vars),
     metaTitle: tpl("Comprar {Drug} en {City}: Receta Online con Médico en 24h", vars),
     metaDescription: tpl(
-      "Consigue {Drug} en {City} con una cita médica online: receta electrónica en 24h, sin listas de espera ni desplazamientos. Médicos colegiados y seguimiento real. 1ª visita gratis.",
+      "Consigue {Drug} en {City} con una cita médica online: receta electrónica en 24h, sin listas de espera ni desplazamientos. Médicos colegiados y seguimiento real. ¡Primera consulta gratis!",
       vars,
     ),
     excerpt: tpl(
@@ -1145,7 +1145,7 @@ function buildPricePost(drug: Drug, city: City, index: number): Post {
     h1: tpl("Precio de {Drug} en {City}: cuánto cuesta y cómo conseguirlo con receta", vars),
     metaTitle: tpl("{Drug} Precio en {City} 2026 | Receta Online con Médico", vars),
     metaDescription: tpl(
-      "Precio de {Drug} en {City} por dosis y cómo conseguirlo legal: cita médica online y receta electrónica sin esperas. Médicos colegiados y seguimiento incluido. 1ª visita gratis.",
+      "Precio de {Drug} en {City} por dosis y cómo conseguirlo legal: cita médica online y receta electrónica sin esperas. Médicos colegiados y seguimiento incluido. ¡Primera consulta gratis!",
       vars,
     ),
     excerpt: tpl(
@@ -1252,7 +1252,7 @@ function buildDrugCityPost(drug: Drug, city: City, index: number): Post {
     h1: tpl("{Drug} en {City}: dónde conseguirlo, precio y disponibilidad", vars),
     metaTitle: tpl("{Drug} en {City} | Cita y Receta Online sin Esperas", vars),
     metaDescription: tpl(
-      "{Drug} en {City}: consíguelo con receta a través de una cita médica online, sin listas de espera. Precio por dosis, disponibilidad y seguimiento real. 1ª visita gratis.",
+      "{Drug} en {City}: consíguelo con receta a través de una cita médica online, sin listas de espera. Precio por dosis, disponibilidad y seguimiento real. ¡Primera consulta gratis!",
       vars,
     ),
     excerpt: tpl(
@@ -1358,7 +1358,7 @@ function buildRxCityPost(drug: Drug, city: City, index: number): Post {
     h1: tpl("Receta de {Drug} online en {City}: requisitos, precio y pasos", vars),
     metaTitle: tpl("Receta {Drug} Online en {City} | Médico Colegiado Hoy", vars),
     metaDescription: tpl(
-      "Consigue la receta de {Drug} online en {City} con valoración de un médico colegiado, hoy mismo y sin listas de espera. Receta electrónica válida en tu farmacia. 1ª visita gratis.",
+      "Consigue la receta de {Drug} online en {City} con valoración de un médico colegiado, hoy mismo y sin listas de espera. Receta electrónica válida en tu farmacia. ¡Primera consulta gratis!",
       vars,
     ),
     excerpt: tpl(
@@ -3487,7 +3487,7 @@ function buildRxOnlinePost(drug: Drug, index: number): Post {
       h1: tpl("Receta de {Drug} online: cómo conseguirla legalmente", vars),
       metaTitle: tpl("Receta de {Drug} Online en 24h con Médico Colegiado", vars),
       metaDescription: tpl(
-        "Consigue tu receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica en 24h y seguimiento. Sin esperas. 1ª visita gratis.",
+        "Consigue tu receta de {Drug} online de forma legal: videoconsulta con médico colegiado, receta electrónica en 24h y seguimiento. Sin esperas. ¡Primera consulta gratis!",
         vars,
       ),
       excerpt: tpl(
@@ -3518,7 +3518,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Endocrino online: consulta de endocrinología por videollamada",
         metaTitle: "Endocrino online: consulta de endocrinología sin esperas | DoctorLife",
         metaDescription:
-          "Consulta con un endocrino online colegiado para peso, diabetes y tiroides. Videoconsulta, receta electrónica si procede y seguimiento. Primera visita gratis.",
+          "Consulta con un endocrino online colegiado para peso, diabetes y tiroides. Videoconsulta, receta electrónica si procede y seguimiento. ¡Primera consulta gratis!",
         excerpt:
           "Cómo funciona una consulta de endocrinología online: para qué sirve, qué puede recetar el médico y cómo empezar sin listas de espera.",
         category: CAT_GUIDE,
@@ -3596,7 +3596,7 @@ function buildServicePosts(startIndex: number): Post[] {
         h1: "Clínica para adelgazar online: cómo elegir y qué esperar",
         metaTitle: "Clínica para adelgazar online: cómo funciona y cuál elegir | DoctorLife",
         metaDescription:
-          "Qué es una clínica para adelgazar online, cómo funciona el tratamiento médico del peso con GLP‑1 y cómo elegir un servicio serio y legal. Primera visita gratis.",
+          "Qué es una clínica para adelgazar online, cómo funciona el tratamiento médico del peso con GLP‑1 y cómo elegir un servicio serio y legal. ¡Primera consulta gratis!",
         excerpt:
           "Qué ofrece una clínica para adelgazar online, cómo distinguir una seria de una dudosa y cómo es el tratamiento médico del peso paso a paso.",
         category: CAT_SLIM,
@@ -4075,7 +4075,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
         h1: "Adelgazar con diabetes tipo 2: tratamiento y opciones",
         metaTitle: "Adelgazar con diabetes tipo 2: opciones médicas reales | DoctorLife",
         metaDescription:
-          "Cómo adelgazar con diabetes tipo 2 de forma segura: por qué importa, qué papel juegan los GLP‑1 y cómo abordarlo con seguimiento médico. Primera visita gratis.",
+          "Cómo adelgazar con diabetes tipo 2 de forma segura: por qué importa, qué papel juegan los GLP‑1 y cómo abordarlo con seguimiento médico. ¡Primera consulta gratis!",
         excerpt:
           "Perder peso con diabetes tipo 2 mejora el control de la enfermedad. Te explicamos las opciones médicas y cómo abordarlo con seguridad.",
         category: CAT_SLIM,
@@ -4139,7 +4139,7 @@ function buildFunnelPosts(startIndex: number): Post[] {
         h1: "Adelgazar en la menopausia: por qué cuesta más y qué ayuda",
         metaTitle: "Adelgazar en la menopausia: por qué cuesta y qué funciona | DoctorLife",
         metaDescription:
-          "Por qué se gana peso en la menopausia y cómo adelgazar de forma realista: hábitos, cuándo ayuda un tratamiento médico GLP‑1 y seguimiento. Primera visita gratis.",
+          "Por qué se gana peso en la menopausia y cómo adelgazar de forma realista: hábitos, cuándo ayuda un tratamiento médico GLP‑1 y seguimiento. ¡Primera consulta gratis!",
         excerpt:
           "En la menopausia cuesta más perder peso por los cambios hormonales. Te explicamos qué funciona y cuándo un tratamiento médico puede ayudar.",
         category: CAT_SLIM,
@@ -4273,7 +4273,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Clínica para adelgazar en ${c.name}: tratamiento médico online | DoctorLife`,
     metaDescription: (c) =>
-      `Clínica para adelgazar en ${c.name} con endocrino colegiado: valoración online, tratamiento GLP‑1 si procede y seguimiento. Primera visita gratis, sin esperas.`,
+      `Clínica para adelgazar en ${c.name} con endocrino colegiado: valoración online, tratamiento GLP‑1 si procede y seguimiento. ¡Primera consulta gratis, sin esperas!`,
     excerpt: (c) =>
       `Cómo funciona una clínica para adelgazar en ${c.name}: valoración médica, tratamiento del peso con GLP‑1 cuando está indicado y seguimiento, todo online.`,
     cover: getAlt("wegovy").cover,
@@ -4332,7 +4332,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Endocrino en ${c.name}: consulta online sin esperas | DoctorLife`,
     metaDescription: (c) =>
-      `Consulta con un endocrino en ${c.name} de forma online: valoración de peso, diabetes y tiroides, receta electrónica si procede y seguimiento. Primera visita gratis.`,
+      `Consulta con un endocrino en ${c.name} de forma online: valoración de peso, diabetes y tiroides, receta electrónica si procede y seguimiento. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Cómo acceder a un endocrino en ${c.name} sin listas de espera: consulta online, para qué sirve, qué puede recetar y cómo empezar.`,
     cover: getAlt("ozempic").cover,
@@ -4450,7 +4450,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Médico para adelgazar en ${c.name}: consulta online | DoctorLife`,
     metaDescription: (c) =>
-      `Habla con un médico para adelgazar en ${c.name} sin esperas: valoración online, tratamiento GLP‑1 si está indicado y seguimiento. Primera visita gratis.`,
+      `Habla con un médico para adelgazar en ${c.name} sin esperas: valoración online, tratamiento GLP‑1 si está indicado y seguimiento. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Cómo encontrar un médico para adelgazar en ${c.name}: qué hace, cuándo receta GLP‑1 y cómo empezar con consulta y seguimiento online.`,
     cover: getAlt("wegovy").cover,
@@ -4509,7 +4509,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Inyección para adelgazar en ${c.name}: cómo conseguirla | DoctorLife`,
     metaDescription: (c) =>
-      `Inyección para adelgazar en ${c.name}: qué son los GLP‑1 (Wegovy, Mounjaro), cuándo se indican y cómo conseguirlas con receta y seguimiento. Primera visita gratis.`,
+      `Inyección para adelgazar en ${c.name}: qué son los GLP‑1 (Wegovy, Mounjaro), cuándo se indican y cómo conseguirlas con receta y seguimiento. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Qué es la inyección para adelgazar en ${c.name}, cómo funciona, cuánto cuesta y cómo conseguirla de forma segura con valoración médica.`,
     cover: getAlt("mounjaro").cover,
@@ -4568,7 +4568,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Medicamento para adelgazar en ${c.name}: opciones reales | DoctorLife`,
     metaDescription: (c) =>
-      `Qué medicamentos para adelgazar existen en ${c.name}, cuáles funcionan de verdad y cómo conseguirlos con receta y seguimiento médico. Primera visita gratis.`,
+      `Qué medicamentos para adelgazar existen en ${c.name}, cuáles funcionan de verdad y cómo conseguirlos con receta y seguimiento médico. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Guía de medicamentos para adelgazar en ${c.name}: cuáles tienen evidencia, cuándo se recetan y cómo empezar con valoración médica online.`,
     cover: getAlt("ozempic").cover,
@@ -4627,7 +4627,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Pastillas para adelgazar en ${c.name}: qué funciona | DoctorLife`,
     metaDescription: (c) =>
-      `Pastillas para adelgazar en ${c.name}: cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. Primera visita gratis.`,
+      `Pastillas para adelgazar en ${c.name}: cuáles tienen evidencia, cuáles evitar y qué alternativas médicas funcionan mejor. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `La verdad sobre las pastillas para adelgazar en ${c.name}: qué funciona, qué es marketing y qué tratamientos médicos son más eficaces.`,
     cover: getAlt("saxenda").cover,
@@ -4686,7 +4686,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Bajar de peso en ${c.name}: plan médico que funciona | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo bajar de peso en ${c.name} con apoyo médico real: valoración online, tratamiento GLP‑1 si está indicado y seguimiento para no recuperar. Primera visita gratis.`,
+      `Cómo bajar de peso en ${c.name} con apoyo médico real: valoración online, tratamiento GLP‑1 si está indicado y seguimiento para no recuperar. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Cómo bajar de peso en ${c.name} de forma sostenible: por qué fallan las dietas, cuándo ayuda el tratamiento médico y cómo empezar online.`,
     cover: getAlt("wegovy").cover,
@@ -4745,7 +4745,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Tratamiento de la obesidad en ${c.name}: abordaje médico | DoctorLife`,
     metaDescription: (c) =>
-      `Tratamiento médico de la obesidad en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. Primera visita gratis.`,
+      `Tratamiento médico de la obesidad en ${c.name}: valoración por endocrino, fármacos GLP‑1 cuando están indicados y seguimiento. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Cómo se trata la obesidad hoy en ${c.name}: enfoque médico, papel de los GLP‑1 y cómo acceder a valoración y seguimiento online.`,
     cover: getAlt("mounjaro").cover,
@@ -4863,7 +4863,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar inyección para adelgazar en ${c.name} (legal) | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. Primera visita gratis.`,
+      `Cómo comprar una inyección para adelgazar en ${c.name} de forma legal: qué son los GLP‑1, por qué necesitan receta y cómo conseguirla online. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Guía para comprar una inyección para adelgazar en ${c.name} sin riesgos: qué pedir, por qué hace falta receta y cómo empezar con seguimiento médico.`,
     cover: getAlt("mounjaro").cover,
@@ -4922,7 +4922,7 @@ const LOCAL_CLUSTERS: LocalCluster[] = [
     metaTitle: (c) =>
       `Comprar tratamiento para adelgazar en ${c.name} | DoctorLife`,
     metaDescription: (c) =>
-      `Cómo contratar un tratamiento médico para adelgazar en ${c.name}: valoración online, fármacos GLP‑1 si están indicados y seguimiento. Primera visita gratis.`,
+      `Cómo contratar un tratamiento médico para adelgazar en ${c.name}: valoración online, fármacos GLP‑1 si están indicados y seguimiento. ¡Primera consulta gratis!`,
     excerpt: (c) =>
       `Qué tratamientos para adelgazar puedes contratar en ${c.name}, cuáles funcionan de verdad y cómo empezar con valoración médica online.`,
     cover: getAlt("wegovy").cover,
@@ -5220,7 +5220,7 @@ const CLINIC_WHY_GLP1 =
 const CLINIC_BENEFITS: string[] = [
   "Sin listas de espera: valoraci��n médica en poco tiempo, no en meses.",
   "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
-  "Primera visita gratis, sin compromiso.",
+  "¡Primera consulta gratis, sin compromiso!",
   "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
   "Sin permanencia: continúas solo mientras quieras.",
 ];
@@ -5331,11 +5331,11 @@ function buildDrugClinicPost(target: ClinicTarget, city: City, index: number): P
       h1: tpl(`Clínica de tratamiento con ${metaDrug} en {City}: consulta y receta online`, vars),
       metaTitle: tpl(`Clínica de tratamiento con ${metaDrug} en {City} | DoctorLife`, vars),
       metaDescription: tpl(
-        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. 1ª visita gratis.`,
+        `Trátate con ${metaDrug} en {City} sin listas de espera: valoración médica online, receta si procede y seguimiento con médicos colegiados. ¡Primera consulta gratis!`,
         vars,
       ),
       excerpt: tpl(
-        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. Primera visita gratis.`,
+        `Cómo tratarte con ${metaDrug} en {City} a través de una clínica online: valoración médica, receta si procede y seguimiento. ¡Primera consulta gratis!`,
         vars,
       ),
       category: target.generic ? "Adelgazar" : drug.category,

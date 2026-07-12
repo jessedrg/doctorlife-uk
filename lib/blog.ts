@@ -62,7 +62,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Barcelona: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Barcelona (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Guía para comprar Wegovy en Barcelona con receta médica: precios reales, cómo conseguir la prescripción y empezar con seguimiento médico. Primera visita gratis.",
+      "Guía para comprar Wegovy en Barcelona con receta médica: precios reales, cómo conseguir la prescripción y empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Todo lo que necesitas para comprar Wegovy en Barcelona de forma legal y segura: precio, receta médica y cómo empezar con acompañamiento clínico.",
     category: "Wegovy",
@@ -188,7 +188,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Barcelona: guía completa",
     metaTitle: "Comprar Mounjaro en Barcelona (2026): Precio, Receta y Resultados",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Barcelona con receta: precio, diferencias con Wegovy, resultados y cómo empezar con seguimiento médico. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Barcelona con receta: precio, diferencias con Wegovy, resultados y cómo empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Mounjaro (tirzepatida) es uno de los GLP‑1 más eficaces para perder peso. Te explicamos precio, receta y cómo empezar en Barcelona.",
     category: "Mounjaro",
@@ -321,7 +321,7 @@ const manualPosts: Post[] = [
     h1: "Wegovy precio en España: cuánto cuesta y cómo conseguirlo",
     metaTitle: "Wegovy Precio España 2026: Cuánto Cuesta por Dosis y Cómo Conseguirlo",
     metaDescription:
-      "Precio de Wegovy en España por dosis (0,25 a 2,4 mg), qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
+      "Precio de Wegovy en España por dosis (0,25 a 2,4 mg), qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Cuánto cuesta realmente Wegovy en España, dosis a dosis, y qué incluye un tratamiento completo con seguimiento médico.",
     category: "Precios",
@@ -426,7 +426,7 @@ const manualPosts: Post[] = [
     h1: "Ozempic vs Wegovy vs Mounjaro: cuál elegir para perder peso",
     metaTitle: "Ozempic vs Wegovy vs Mounjaro: Diferencias y Cuál Elegir (2026)",
     metaDescription:
-      "Comparativa clara de Ozempic, Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis y cuál te conviene. Primera visita gratis.",
+      "Comparativa clara de Ozempic, Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis y cuál te conviene. ¡Primera consulta gratis!",
     excerpt:
       "Ozempic, Wegovy y Mounjaro se confunden a menudo. Te explicamos las diferencias reales y cuál tiene sentido según tu caso.",
     category: "Comparativas",
@@ -529,7 +529,7 @@ const manualPosts: Post[] = [
     h1: "Cómo conseguir receta de Wegovy online en España",
     metaTitle: "Receta de Wegovy Online en España: Cómo Conseguirla de Forma Legal",
     metaDescription:
-      "Cómo conseguir una receta de Wegovy online en España de forma legal y segura, con valoración médica real. Primera visita gratis, seguimiento por app.",
+      "Cómo conseguir una receta de Wegovy online en España de forma legal y segura, con valoración médica real. ¡Primera consulta gratis, seguimiento por app!",
     excerpt:
       "Conseguir receta de Wegovy online es posible y legal si hay una valoración médica real detrás. Te explicamos cómo funciona.",
     category: "Receta",
@@ -625,7 +625,7 @@ const manualPosts: Post[] = [
     h1: "Mounjaro precio en España: cuánto cuesta la tirzepatida",
     metaTitle: "Mounjaro Precio España 2026: Cuánto Cuesta la Tirzepatida por Dosis",
     metaDescription:
-      "Precio de Mounjaro (tirzepatida) en España por dosis, qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
+      "Precio de Mounjaro (tirzepatida) en España por dosis, qué incluye el tratamiento y cómo empezar con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Cuánto cuesta Mounjaro en España según la dosis y qué incluye un tratamiento completo con acompañamiento médico.",
     category: "Precios",
@@ -718,7 +718,7 @@ const manualPosts: Post[] = [
     h1: "Semaglutida: qué es y cómo comprarla con receta en España",
     metaTitle: "Comprar Semaglutida con Receta en España: Guía Segura (2026)",
     metaDescription:
-      "Qué es la semaglutida (Ozempic, Wegovy, Rybelsus), para qué sirve y cómo comprarla con receta de forma legal en España. Primera visita gratis.",
+      "Qué es la semaglutida (Ozempic, Wegovy, Rybelsus), para qué sirve y cómo comprarla con receta de forma legal en España. ¡Primera consulta gratis!",
     excerpt:
       "La semaglutida está detrás de Ozempic, Wegovy y Rybelsus. Te explicamos qué es y cómo comprarla con receta de forma segura.",
     category: "Semaglutida",
@@ -822,7 +822,7 @@ const manualPosts: Post[] = [
     h1: "Tirzepatida para adelgazar: resultados, dosis y cómo empezar",
     metaTitle: "Tirzepatida para Adelgazar: Resultados, Dosis y Precio (2026)",
     metaDescription:
-      "Cómo funciona la tirzepatida (Mounjaro) para adelgazar: resultados reales, dosis, efectos secundarios y cómo empezar con seguimiento médico. Primera visita gratis.",
+      "Cómo funciona la tirzepatida (Mounjaro) para adelgazar: resultados reales, dosis, efectos secundarios y cómo empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "La tirzepatida es uno de los tratamientos más eficaces para perder peso. Resultados, dosis y cómo empezar de forma segura.",
     category: "Mounjaro",
@@ -1525,7 +1525,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Madrid: precio, receta y cómo empezar con seguimiento",
     metaTitle: "Comprar Ozempic en Madrid (2026): Precio, Receta y Clínica Online",
     metaDescription:
-      "Cómo comprar Ozempic en Madrid de forma legal: precio en farmacia, cómo conseguir la receta médica y empezar con seguimiento online. Primera visita gratis.",
+      "Cómo comprar Ozempic en Madrid de forma legal: precio en farmacia, cómo conseguir la receta médica y empezar con seguimiento online. ¡Primera consulta gratis!",
     excerpt:
       "Guía para comprar Ozempic en Madrid con receta: precios reales, farmacias, desabastecimiento y cómo empezar con acompañamiento médico desde cualquier distrito.",
     category: "Ozempic",
@@ -1652,7 +1652,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro en Valencia: precio, receta y seguimiento médico",
     metaTitle: "Comprar Mounjaro en Valencia (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Guía para comprar Mounjaro (tirzepatida) en Valencia con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
+      "Guía para comprar Mounjaro (tirzepatida) en Valencia con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro en Valencia de forma legal y segura: precio de la tirzepatida, receta médica, disponibilidad y cómo empezar con acompañamiento clínico.",
     category: "Mounjaro",
@@ -1771,7 +1771,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Sevilla: precio, receta y cómo empezar con seguimiento",
     metaTitle: "Comprar Wegovy en Sevilla (2026): Precio, Receta y Clínica Online",
     metaDescription:
-      "Cómo comprar Wegovy en Sevilla con receta médica: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
+      "Cómo comprar Wegovy en Sevilla con receta médica: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Sevilla de forma legal y segura: precio de la semaglutida 2,4 mg, receta médica, desabastecimiento y cómo empezar con acompañamiento clínico.",
     category: "Wegovy",
@@ -1891,7 +1891,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida en Getafe: precio, receta y seguimiento médico online",
     metaTitle: "Comprar Tirzepatida en Getafe (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Getafe con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. Primera visita gratis.",
+      "Cómo comprar tirzepatida (Mounjaro) en Getafe con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento online. ¡Primera consulta gratis!",
     excerpt:
       "Comprar tirzepatida en Getafe de forma legal y segura: precio de Mounjaro, receta médica y cómo empezar con acompañamiento clínico desde el área metropolitana de Madrid.",
     category: "Mounjaro",
@@ -2010,7 +2010,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro online en España: cómo hacerlo legal, seguro y con receta",
     metaTitle: "Comprar Mounjaro Online en España (2026): Receta, Precio y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) online en España de forma legal: receta médica electrónica, precio por dosis y seguimiento. Primera visita gratis, sin esperas.",
+      "Cómo comprar Mounjaro (tirzepatida) online en España de forma legal: receta médica electrónica, precio por dosis y seguimiento. ¡Primera consulta gratis, sin esperas!",
     excerpt:
       "Comprar Mounjaro online en España paso a paso: cómo conseguir la receta de tirzepatida sin desplazarte, precio real y por qué el seguimiento médico marca la diferencia.",
     category: "Mounjaro",
@@ -2120,7 +2120,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy online en España: receta, precio y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy Online en España (2026): Receta, Precio y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Wegovy (semaglutida 2,4 mg) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis.",
+      "Cómo comprar Wegovy (semaglutida 2,4 mg) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy online en España de forma legal: cómo conseguir la receta de semaglutida 2,4 mg sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Wegovy",
@@ -2232,7 +2232,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida online en España: receta, precio y seguimiento médico",
     metaTitle: "Comprar Tirzepatida Online en España (2026): Receta, Precio y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis, sin esperas.",
+      "Cómo comprar tirzepatida (Mounjaro) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. ¡Primera consulta gratis, sin esperas!",
     excerpt:
       "Comprar tirzepatida online en España de forma legal y segura: cómo conseguir la receta de Mounjaro sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Mounjaro",
@@ -2338,7 +2338,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Madrid: precio, receta y cómo empezar hoy",
     metaTitle: "Comprar Wegovy en Madrid (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Madrid de forma legal y segura: precio por dosis, cómo conseguir la receta sin lista de espera y empezar con seguimiento médico. Primera visita gratis.",
+      "Cómo comprar Wegovy en Madrid de forma legal y segura: precio por dosis, cómo conseguir la receta sin lista de espera y empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Madrid con receta médica y sin esperas: precio real por dosis, cómo conseguir la prescripción online y empezar con seguimiento clínico de verdad.",
     category: "Wegovy",
@@ -2446,7 +2446,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Madrid: precio, receta y resultados",
     metaTitle: "Comprar Mounjaro en Madrid (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Madrid con receta: precio por dosis, diferencias con Wegovy y cómo empezar con seguimiento médico sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Madrid con receta: precio por dosis, diferencias con Wegovy y cómo empezar con seguimiento médico sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Mounjaro (tirzepatida) es uno de los GLP‑1 más eficaces para perder peso. Te explicamos cómo comprarlo en Madrid con receta, su precio y cómo empezar con seguimiento médico.",
     category: "Mounjaro",
@@ -2556,7 +2556,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Barcelona: precio, receta y qué debes saber",
     metaTitle: "Comprar Ozempic en Barcelona (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Barcelona con receta: precio, por qué es un fármaco para la diabetes y qué alternativa usar si tu objetivo es perder peso. Primera visita gratis.",
+      "Cómo comprar Ozempic en Barcelona con receta: precio, por qué es un fármaco para la diabetes y qué alternativa usar si tu objetivo es perder peso. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Ozempic en Barcelona con receta médica: precio real, por qué Ozempic está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -2660,7 +2660,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Valencia: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Valencia (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Valencia con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita gratis.",
+      "Cómo comprar Wegovy en Valencia con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Valencia de forma legal y segura: precio por dosis, cómo conseguir la receta online sin lista de espera y empezar con acompañamiento médico real.",
     category: "Wegovy",
@@ -2754,7 +2754,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Sevilla: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Sevilla (2026): Precio, Receta y Resultados",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Sevilla con receta: precio por dosis, resultados esperables y cómo empezar con seguimiento médico sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Sevilla con receta: precio por dosis, resultados esperables y cómo empezar con seguimiento médico sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Sevilla con receta médica: precio por dosis, qué resultados esperar y cómo empezar con seguimiento médico y receta electrónica.",
     category: "Mounjaro",
@@ -2841,7 +2841,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Málaga: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Málaga (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Málaga con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Málaga con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Málaga de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -2935,7 +2935,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Bilbao: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Bilbao (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Bilbao con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Bilbao con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Bilbao con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -3027,7 +3027,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Valencia: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Valencia (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Valencia con receta: precio, por qué es un fármaco para diabetes y qué alternativa elegir si quieres perder peso. Primera visita gratis.",
+      "Cómo comprar Ozempic en Valencia con receta: precio, por qué es un fármaco para diabetes y qué alternativa elegir si quieres perder peso. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Ozempic en Valencia con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -3117,7 +3117,7 @@ const manualPosts: Post[] = [
     h1: "Comprar semaglutida online en España: receta, precio y seguimiento médico",
     metaTitle: "Comprar Semaglutida Online en España (2026): Receta y Precio",
     metaDescription:
-      "Cómo comprar semaglutida (Wegovy/Ozempic) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. Primera visita gratis, sin esperas.",
+      "Cómo comprar semaglutida (Wegovy/Ozempic) online en España de forma legal: receta electrónica, precio por dosis y seguimiento médico. ¡Primera consulta gratis, sin esperas!",
     excerpt:
       "Comprar semaglutida online en España de forma legal: cómo conseguir la receta de Wegovy u Ozempic sin desplazarte, precio real y seguimiento médico paso a paso.",
     category: "Wegovy",
@@ -3211,7 +3211,7 @@ const manualPosts: Post[] = [
     h1: "Wegovy vs Mounjaro: cuál elegir para perder peso en 2026",
     metaTitle: "Wegovy vs Mounjaro: Diferencias, Eficacia y Cuál Elegir (2026)",
     metaDescription:
-      "Comparativa clara de Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis, precio y cuál te conviene. Primera visita gratis.",
+      "Comparativa clara de Wegovy y Mounjaro para perder peso: principio activo, eficacia, dosis, precio y cuál te conviene. ¡Primera consulta gratis!",
     excerpt:
       "Wegovy y Mounjaro son los dos GLP‑1 más usados para adelgazar. Te explicamos las diferencias reales en eficacia, dosis y precio, y cuál tiene sentido según tu caso.",
     category: "Comparativas",
@@ -3304,7 +3304,7 @@ const manualPosts: Post[] = [
     h1: "Saxenda precio en España: cuánto cuesta y cómo conseguirlo con receta",
     metaTitle: "Saxenda Precio España 2026: Cuánto Cuesta y Cómo Conseguirlo",
     metaDescription:
-      "Precio de Saxenda (liraglutida) en España, cómo se usa, diferencias con Wegovy y Mounjaro y cómo empezar con receta y seguimiento médico. Primera visita gratis.",
+      "Precio de Saxenda (liraglutida) en España, cómo se usa, diferencias con Wegovy y Mounjaro y cómo empezar con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Cuánto cuesta Saxenda (liraglutida) en España, cómo se administra y en qué se diferencia de Wegovy y Mounjaro, con receta y seguimiento médico real.",
     category: "Precios",
@@ -3395,14 +3395,14 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 33 ───────────────────────────────────────────── */
+  /* 33 ────────────────���──────────────────────────── */
   {
     slug: "clinica-perdida-peso-madrid",
     title: "Clínica de pérdida de peso en Madrid",
     h1: "Clínica de pérdida de peso en Madrid: tratamiento médico con GLP‑1",
     metaTitle: "Clínica de Pérdida de Peso en Madrid (2026): Tratamiento Médico GLP‑1",
     metaDescription:
-      "Cómo elegir una clínica de pérdida de peso en Madrid con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita gratis.",
+      "Cómo elegir una clínica de pérdida de peso en Madrid con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. ¡Primera consulta gratis!",
     excerpt:
       "Qué buscar en una clínica de pérdida de peso en Madrid: médicos colegiados, tratamiento GLP‑1 con receta, seguimiento real y precios transparentes, también online.",
     category: "Clínica",
@@ -3499,7 +3499,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida en Madrid: precio, receta y cómo empezar",
     metaTitle: "Comprar Tirzepatida en Madrid (2026): Precio, Receta y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Madrid con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita gratis.",
+      "Cómo comprar tirzepatida (Mounjaro) en Madrid con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar tirzepatida (Mounjaro) en Madrid con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -3592,7 +3592,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Sevilla: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Sevilla (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qu�� alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
+      "Cómo comprar Ozempic en Sevilla con receta: precio, por qué está indicado para la diabetes y qu�� alternativa elegir si tu objetivo es perder peso. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Ozempic en Sevilla con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -3682,7 +3682,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Zaragoza: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Zaragoza (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Wegovy en Zaragoza con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Zaragoza con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Zaragoza de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -3776,7 +3776,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Granada: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Granada (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Granada con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Granada con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Granada con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -3868,7 +3868,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Palma de Mallorca: precio, receta y cómo empezar",
     metaTitle: "Comprar Wegovy en Palma (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Palma de Mallorca con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Palma de Mallorca con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Palma de Mallorca de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -3962,7 +3962,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Córdoba: precio, receta y cómo empezar hoy",
     metaTitle: "Comprar Wegovy en Córdoba (2026): Precio, Receta y Sin Esperas",
     metaDescription:
-      "Cómo comprar Wegovy en Córdoba con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. Primera visita gratis.",
+      "Cómo comprar Wegovy en Córdoba con receta médica: precio por dosis, cómo conseguir la prescripción online sin esperas y empezar con seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Córdoba de forma legal y segura: precio por dosis, cómo conseguir la receta online sin lista de espera y empezar con acompañamiento médico real.",
     category: "Wegovy",
@@ -4056,7 +4056,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Las Palmas: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Las Palmas (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Las Palmas con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Las Palmas con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Las Palmas de Gran Canaria con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico.",
     category: "Mounjaro",
@@ -4148,7 +4148,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Málaga: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Málaga (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Málaga con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
+      "Cómo comprar Ozempic en Málaga con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Ozempic en Málaga con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -4238,7 +4238,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Murcia: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Murcia (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Murcia con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Murcia con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Murcia de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4332,7 +4332,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Bilbao: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Bilbao (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Bilbao con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Bilbao con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Bilbao de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4426,7 +4426,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Ozempic en Zaragoza: precio, receta y alternativas para el peso",
     metaTitle: "Comprar Ozempic en Zaragoza (2026): Precio, Receta y Alternativas",
     metaDescription:
-      "Cómo comprar Ozempic en Zaragoza con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. Primera visita gratis.",
+      "Cómo comprar Ozempic en Zaragoza con receta: precio, por qué está indicado para la diabetes y qué alternativa elegir si tu objetivo es perder peso. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Ozempic en Zaragoza con receta médica: precio real, por qué está indicado para la diabetes y qué tratamiento es mejor si tu objetivo es adelgazar.",
     category: "Ozempic",
@@ -4516,7 +4516,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Saxenda (liraglutida) en España: precio, receta y cómo empezar",
     metaTitle: "Comprar Saxenda en España (2026): Precio, Receta y Cómo Empezar",
     metaDescription:
-      "Cómo comprar Saxenda (liraglutida) en España con receta: precio, cómo se usa y alternativas semanales como Wegovy y Mounjaro. Primera visita gratis, sin esperas.",
+      "Cómo comprar Saxenda (liraglutida) en España con receta: precio, cómo se usa y alternativas semanales como Wegovy y Mounjaro. ¡Primera consulta gratis, sin esperas!",
     excerpt:
       "Comprar Saxenda (liraglutida) en España con receta médica: precio, cómo se administra a diario y cuándo conviene una alternativa semanal como Wegovy o Mounjaro.",
     category: "Precios",
@@ -4605,7 +4605,7 @@ const manualPosts: Post[] = [
     h1: "Comprar tirzepatida (Mounjaro) en Barcelona: precio, receta y cómo empezar",
     metaTitle: "Comprar Tirzepatida en Barcelona (2026): Precio, Receta y Guía",
     metaDescription:
-      "Cómo comprar tirzepatida (Mounjaro) en Barcelona con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. Primera visita gratis.",
+      "Cómo comprar tirzepatida (Mounjaro) en Barcelona con receta: precio por dosis, cómo conseguir la prescripción y empezar con seguimiento médico sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar tirzepatida (Mounjaro) en Barcelona con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -4698,7 +4698,7 @@ const manualPosts: Post[] = [
     h1: "Clínica de pérdida de peso en Barcelona: tratamiento médico con GLP‑1",
     metaTitle: "Clínica de Pérdida de Peso en Barcelona (2026): Tratamiento GLP‑1",
     metaDescription:
-      "Cómo elegir una clínica de pérdida de peso en Barcelona con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. Primera visita gratis.",
+      "Cómo elegir una clínica de pérdida de peso en Barcelona con tratamiento médico real: GLP‑1 (Wegovy, Mounjaro), seguimiento y precios claros. ¡Primera consulta gratis!",
     excerpt:
       "Qué buscar en una clínica de pérdida de peso en Barcelona: médicos colegiados, tratamiento GLP‑1 con receta, seguimiento real y precios transparentes, también online.",
     category: "Clínica",
@@ -4795,7 +4795,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Alicante: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Alicante (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Wegovy en Alicante con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Alicante con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Alicante de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -4889,7 +4889,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Málaga: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Málaga (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Málaga con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Málaga con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Málaga con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -5072,7 +5072,7 @@ const manualPosts: Post[] = [
     h1: "Precio de Ozempic en Valencia: cuánto cuesta y cómo conseguirlo con receta",
     metaTitle: "Precio de Ozempic en Valencia (2026): Cuánto Cuesta con Receta",
     metaDescription:
-      "Precio de Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo con receta y seguimiento médico. Primera visita gratis.",
+      "Precio de Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Cuánto cuesta Ozempic en Valencia por dosis, qué cubre la financiación para diabetes y cómo conseguirlo de forma legal con receta y seguimiento médico.",
     category: "Precios",
@@ -5154,7 +5154,7 @@ const manualPosts: Post[] = [
     h1: "Comprar GLP‑1 online en España: opciones, receta y precios",
     metaTitle: "Comprar GLP-1 Online en España (2026): Opciones, Receta y Precios",
     metaDescription:
-      "Guía para comprar medicamentos GLP‑1 online en España de forma legal: Wegovy, Mounjaro, Ozempic y Saxenda, con receta electrónica y seguimiento médico. Primera visita gratis.",
+      "Guía para comprar medicamentos GLP‑1 online en España de forma legal: Wegovy, Mounjaro, Ozempic y Saxenda, con receta electrónica y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Qué medicamentos GLP‑1 puedes conseguir online en España (Wegovy, Mounjaro, Ozempic, Saxenda), cómo funciona la receta electrónica y cuánto cuesta cada opción.",
     category: "Wegovy",
@@ -5242,7 +5242,7 @@ const manualPosts: Post[] = [
     h1: "¿Wegovy está financiado por la Seguridad Social en España?",
     metaTitle: "¿Wegovy Financiado por la Seguridad Social? (España 2026)",
     metaDescription:
-      "Resolvemos si Wegovy está financiado por la Seguridad Social en España, cuánto cuesta de forma privada y cómo conseguirlo con receta y seguimiento médico. Primera visita gratis.",
+      "Resolvemos si Wegovy está financiado por la Seguridad Social en España, cuánto cuesta de forma privada y cómo conseguirlo con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "¿Cubre la Seguridad Social el Wegovy? Te explicamos la situación de la financiación en España, el coste privado real y cómo conseguirlo de forma legal con receta médica.",
     category: "Wegovy",
@@ -5330,7 +5330,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Wegovy en Vigo: precio, receta y cómo empezar sin esperas",
     metaTitle: "Comprar Wegovy en Vigo (2026): Precio, Receta y Seguimiento Médico",
     metaDescription:
-      "Cómo comprar Wegovy en Vigo con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. Primera visita gratis.",
+      "Cómo comprar Wegovy en Vigo con receta médica: precio por dosis, cómo conseguir la prescripción online y empezar con seguimiento médico real. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Wegovy en Vigo de forma legal: precio por dosis, cómo conseguir la receta electrónica sin desplazarte y empezar con seguimiento médico continuo.",
     category: "Wegovy",
@@ -5424,7 +5424,7 @@ const manualPosts: Post[] = [
     h1: "Comprar Mounjaro (tirzepatida) en Zaragoza: precio, receta y cómo empezar",
     metaTitle: "Comprar Mounjaro en Zaragoza (2026): Precio, Receta y Seguimiento",
     metaDescription:
-      "Cómo comprar Mounjaro (tirzepatida) en Zaragoza con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. Primera visita gratis.",
+      "Cómo comprar Mounjaro (tirzepatida) en Zaragoza con receta: precio por dosis y cómo empezar con seguimiento médico y receta electrónica sin esperas. ¡Primera consulta gratis!",
     excerpt:
       "Comprar Mounjaro (tirzepatida) en Zaragoza con receta médica: precio por dosis, cómo conseguir la receta electrónica y empezar con seguimiento médico continuo.",
     category: "Mounjaro",
@@ -5516,7 +5516,7 @@ const manualPosts: Post[] = [
     h1: "Inyección para adelgazar: qué es, precio en España y cómo conseguirla",
     metaTitle: "Inyección para Adelgazar: Precio en España y Cómo Conseguirla (2026)",
     metaDescription:
-      "Qué inyecciones para adelgazar existen en España (Wegovy, Mounjaro, Saxenda), cuánto cuestan por dosis y cómo conseguirlas con receta y seguimiento médico. Primera visita gratis.",
+      "Qué inyecciones para adelgazar existen en España (Wegovy, Mounjaro, Saxenda), cuánto cuestan por dosis y cómo conseguirlas con receta y seguimiento médico. ¡Primera consulta gratis!",
     excerpt:
       "Las inyecciones para adelgazar (GLP‑1) son lo más eficaz hoy. Te explicamos cuáles existen en España, su precio por dosis y cómo conseguirlas de forma legal con receta.",
     category: "Precios",
