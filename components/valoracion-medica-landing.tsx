@@ -30,6 +30,8 @@ export type ValoracionConfig = {
   hideReviews?: boolean;
   /** Muestra un distintivo de tratamiento médico GLP-1 en el hero */
   showGlpBadge?: boolean;
+  /** Texto del distintivo GLP-1 del hero (por defecto "Tratamiento médico GLP-1, si el médico lo considera adecuado") */
+  glpBadgeText?: string;
   /** Oculta todos los botones de formulario/valoración (hero, precio, CTA final y sticky) */
   hideCta?: boolean;
 };
@@ -194,7 +196,8 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                   <span className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-4 py-2 text-[13.5px] font-medium text-paper ring-1 ring-sage/30">
                     <Pill aria-hidden className="h-4 w-4 flex-shrink-0 text-sage" />
                     <span className="text-pretty">
-                      Tratamiento médico GLP-1, si el médico lo considera adecuado
+                      {config.glpBadgeText ??
+                        "Tratamiento médico GLP-1, si el médico lo considera adecuado"}
                     </span>
                   </span>
                 </div>

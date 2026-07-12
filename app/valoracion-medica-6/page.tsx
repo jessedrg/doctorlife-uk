@@ -10,10 +10,12 @@ const PATH = "/valoracion-medica-6";
 const config: ValoracionConfig = {
   path: PATH,
   planPrefix: "ads-valoracion-6",
-  hideReviews: true,
-  showGlpBadge: false,
-  // Botones de formulario ocultos temporalmente; se añadirán tras la aprobación.
-  hideCta: true,
+  // Versión completa: reseñas, distintivo GLP-1 inyectable y botones de formulario activos.
+  hideReviews: false,
+  showGlpBadge: true,
+  glpBadgeText:
+    "Tratamiento médico GLP-1 inyectable, si el médico lo considera adecuado",
+  hideCta: false,
 };
 
 export const metadata: Metadata = {
