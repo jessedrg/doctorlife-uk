@@ -30,6 +30,8 @@ export type ValoracionConfig = {
   hideReviews?: boolean;
   /** Muestra un distintivo de tratamiento médico GLP-1 en el hero */
   showGlpBadge?: boolean;
+  /** Oculta todos los botones de formulario/valoración (hero, precio, CTA final y sticky) */
+  hideCta?: boolean;
 };
 
 const heroPoints = [
@@ -210,17 +212,19 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 </span>
               </div>
 
-              <div className="mt-8 flex flex-col items-center gap-3 lg:items-start">
-                <QuizTrigger
-                  plan={`${planPrefix}-hero`}
-                  className="w-full max-w-[360px] rounded-full bg-sage px-8 py-[16px] text-[16px] font-bold text-espresso"
-                >
-                  Empezar mi valoración gratuita
-                </QuizTrigger>
-                <span className="text-[13px] text-paper/70">
-                  Primera valoración gratis · sin compromiso
-                </span>
-              </div>
+              {!config.hideCta && (
+                <div className="mt-8 flex flex-col items-center gap-3 lg:items-start">
+                  <QuizTrigger
+                    plan={`${planPrefix}-hero`}
+                    className="w-full max-w-[360px] rounded-full bg-sage px-8 py-[16px] text-[16px] font-bold text-espresso"
+                  >
+                    Empezar mi valoración gratuita
+                  </QuizTrigger>
+                  <span className="text-[13px] text-paper/70">
+                    Primera valoración gratis · sin compromiso
+                  </span>
+                </div>
+              )}
 
               <ul className="mx-auto mt-10 grid max-w-[640px] grid-cols-1 gap-3 sm:grid-cols-2 lg:mx-0">
                 {heroPoints.map(({ icon: Icon, label }) => (
@@ -329,16 +333,20 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                   <span className="font-semibold">100 €/mes</span>
                 </li>
               </ul>
-              <QuizTrigger
-                plan={`${planPrefix}-precio`}
-                className="mt-6 block w-full rounded-full bg-ink px-8 py-[15px] text-center text-[16px] font-bold text-paper"
-              >
-                Empezar valoración gratuita
-              </QuizTrigger>
-              <p className="mt-3 flex items-center justify-center gap-2 text-center text-[12.5px] text-ink-mute">
-                <CalendarCheck aria-hidden className="h-4 w-4 text-olive" />
-                Sin permanencia · cancela cuando quieras
-              </p>
+              {!config.hideCta && (
+                <>
+                  <QuizTrigger
+                    plan={`${planPrefix}-precio`}
+                    className="mt-6 block w-full rounded-full bg-ink px-8 py-[15px] text-center text-[16px] font-bold text-paper"
+                  >
+                    Empezar valoración gratuita
+                  </QuizTrigger>
+                  <p className="mt-3 flex items-center justify-center gap-2 text-center text-[12.5px] text-ink-mute">
+                    <CalendarCheck aria-hidden className="h-4 w-4 text-olive" />
+                    Sin permanencia · cancela cuando quieras
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </section>
@@ -478,12 +486,14 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               Tu primera valoración con un médico colegiado es gratuita y sin
               compromiso. Empieza cuando quieras, desde donde quieras.
             </p>
-            <QuizTrigger
-              plan={`${planPrefix}-cta-final`}
-              className="mt-8 inline-block rounded-full bg-sage px-10 py-[16px] text-[16px] font-bold text-espresso"
-            >
-              Empezar mi valoración gratuita
-            </QuizTrigger>
+            {!config.hideCta && (
+              <QuizTrigger
+                plan={`${planPrefix}-cta-final`}
+                className="mt-8 inline-block rounded-full bg-sage px-10 py-[16px] text-[16px] font-bold text-espresso"
+              >
+                Empezar mi valoración gratuita
+              </QuizTrigger>
+            )}
           </div>
         </section>
 
@@ -514,7 +524,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </div>
         </footer>
 
-        <StickyValoracionCTA planPrefix={planPrefix} />
+        {!config.hideCta && <StickyValoracionCTA planPrefix={planPrefix} />}
       </main>
     </QuizProvider>
   );
