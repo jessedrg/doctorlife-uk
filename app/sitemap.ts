@@ -1,10 +1,18 @@
 import type { MetadataRoute } from "next";
-import { posts, SITE_URL as BLOG_SITE_URL } from "@/lib/blog";
+import { posts } from "@/lib/blog";
 import { articles, authors, SITE_URL, PILLAR } from "@/lib/articles";
 
-export const revalidate = 86400; // regenerar el sitemap una vez al día, no en cada build
+export const revalidate = 86400; // regenerar cada shard una vez al día
 
-export default function sitemap(): MetadataRoute.Sitemap {
+/* ───────────────────────────────────────────────────────────
+   Sitemap SHARDEADO (Google impone 50.000 URLs por archivo).
+   Con el catálogo pSEO creciendo hacia 50k+ páginas, dividimos
+   en trozos de 10.000 URLs: /sitemap/0.xml, /sitemap/1.xml, …
+   robots.ts declara todos los shards para su descubrimiento.
+   ─────────────────────────────────────────────────────────── */
+export const SITEMAP_CHUNK = 10000;
+
+function allRoutes(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -34,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // Cluster editorial: pillar + 8 articles
+  // Cluster editorial: pillar + articles
   const articleRoutes: MetadataRoute.Sitemap = articles.map((a) => ({
     url: `${SITE_URL}/${a.slug}`,
     lastModified: new Date(a.dateModified),
@@ -51,4 +59,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [...staticRoutes, ...blogRoutes, ...articleRoutes, ...authorRoutes];
+}
+
+/** Número total de shards según el catálogo actual. */
+export function sitemapShardCount(): number {
+  // 12 estáticas + posts + articles + authors (aprox. barata de calcular)
+  const total = 12 + posts.length + articles.length + authors.length;
+  return Math.max(1, Math.ceil(total / SITEMAP_CHUNK));
+}
+
+export async function generateSitemaps(): Promise<Array<{ id: number }>> {
+  return Array.from({ length: sitemapShardCount() }, (_, i) => ({ id: i }));
+}
+
+export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
+  const start = Number(id) * SITEMAP_CHUNK;
+  return allRoutes().slice(start, start + SITEMAP_CHUNK);
 }
