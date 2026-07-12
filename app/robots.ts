@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { SITE_URL } from "@/lib/blog";
-import { sitemapShardCount } from "./sitemap";
 
 const PRODUCTION_HOST = "doctorlife.io";
 
@@ -43,12 +42,8 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
         disallow: ["/medico", "/admin", "/portal", "/api", "/sign-in", "/sign-up"],
       },
     ],
-    // Con el sitemap shardeado (generateSitemaps), Next sirve cada trozo en
-    // /sitemap/0.xml, /sitemap/1.xml, … NO existe un /sitemap.xml índice, así
-    // que declaramos todos los shards para que Google los descubra.
-    sitemap: Array.from(
-      { length: sitemapShardCount() },
-      (_, i) => `${SITE_URL}/sitemap/${i}.xml`,
-    ),
+    // Un único índice de sitemaps que Google expande solo a sus hijos
+    // (/sitemaps/paginas.xml, /sitemaps/articulos.xml, /sitemaps/blog-1.xml, …).
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
