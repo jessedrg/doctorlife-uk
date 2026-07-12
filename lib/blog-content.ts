@@ -571,6 +571,21 @@ const SAXENDA_ROWS: string[][] = [
   ["Caja de plumas", "Tratamiento diario", "130–200 €/caja"],
   ["Coste mensual", "Dosis de mantenimiento (3,0 mg/día)", "200–300 €/mes"],
 ];
+const RYBELSUS_ROWS: string[][] = [
+  ["3 mg", "Inicio (30 días)", "120–140 €"],
+  ["7 mg", "Mantenimiento", "130–160 €"],
+  ["14 mg", "Mantenimiento (dosis alta)", "160–190 €"],
+];
+const TRULICITY_ROWS: string[][] = [
+  ["0,75 mg", "Inicio", "110–130 €"],
+  ["1,5 mg", "Mantenimiento", "110–140 €"],
+  ["3 mg", "Escalado", "130–160 €"],
+  ["4,5 mg", "Dosis máxima", "150–180 €"],
+];
+const VICTOZA_ROWS: string[][] = [
+  ["1,2 mg/día", "Mantenimiento estándar", "120–150 €/mes"],
+  ["1,8 mg/día", "Dosis máxima", "150–190 €/mes"],
+];
 
 const DRUGS: Drug[] = [
   {
@@ -663,6 +678,66 @@ const DRUGS: Drug[] = [
     pillarPrice: "wegovy-precio-espana",
     compare: "ozempic-vs-wegovy-vs-mounjaro",
   },
+  {
+    key: "rybelsus",
+    name: "Rybelsus",
+    inn: "semaglutida oral",
+    category: "Rybelsus",
+    kind: "diabetes",
+    frequency: "un comprimido diario en ayunas",
+    cover: "/products/maren-oral.png",
+    rows: RYBELSUS_ROWS,
+    priceLow: "120 €",
+    priceHigh: "190 €",
+    pillarBuy: "comprar-semaglutida-online",
+    pillarPrice: "wegovy-precio-espana",
+    compare: "ozempic-vs-wegovy-vs-mounjaro",
+  },
+  {
+    key: "trulicity",
+    name: "Trulicity",
+    inn: "dulaglutida",
+    category: "Trulicity",
+    kind: "diabetes",
+    frequency: "una inyección semanal",
+    cover: "/products/maren-pen.png",
+    rows: TRULICITY_ROWS,
+    priceLow: "110 €",
+    priceHigh: "180 €",
+    pillarBuy: "comprar-ozempic-online",
+    pillarPrice: "ozempic-precio-espana",
+    compare: "ozempic-vs-wegovy-vs-mounjaro",
+  },
+  {
+    key: "victoza",
+    name: "Victoza",
+    inn: "liraglutida",
+    category: "Victoza",
+    kind: "diabetes",
+    frequency: "una inyección diaria",
+    cover: "/products/maren-daily.png",
+    rows: VICTOZA_ROWS,
+    priceLow: "120 €",
+    priceHigh: "190 €",
+    pillarBuy: "comprar-saxenda-espana",
+    pillarPrice: "saxenda-precio-espana",
+    compare: "ozempic-vs-saxenda",
+  },
+  {
+    key: "zepbound",
+    name: "Zepbound",
+    inn: "tirzepatida",
+    category: "Mounjaro",
+    kind: "weight",
+    frequency: "una inyección semanal",
+    cover: "/products/maren-pen.png",
+    rows: MOUNJARO_ROWS,
+    priceLow: "200 €",
+    priceHigh: "350 €",
+    pillarBuy: "comprar-tirzepatida-online",
+    pillarPrice: "mounjaro-precio-espana",
+    compare: "wegovy-vs-mounjaro",
+  },
 ];
 
 /* ── variantes de contenido ── */
@@ -736,7 +811,7 @@ const BENEFIT_DIAB_TITLES = [
   "Alternativas a {Drug} si tu objetivo es adelgazar",
 ];
 const BENEFIT_DIAB_P = [
-  "Aunque mucha gente busca {Drug} para adelgazar, su indicación aprobada es la diabetes tipo 2. Para el control del peso existen opciones específicamente aprobadas —Wegovy (semaglutida) y Mounjaro (tirzepatida)— que el médico puede valorar en tu consulta desde {City}.",
+  "Aunque mucha gente busca {Drug} para adelgazar, su indicación aprobada es la diabetes tipo 2. Para el control del peso existen opciones específicamente aprobadas ��Wegovy (semaglutida) y Mounjaro (tirzepatida)— que el médico puede valorar en tu consulta desde {City}.",
   "Usar {Drug} fuera de indicación, sin control médico, no es la vía recomendable. Lo correcto es que un médico valore tu caso y elija entre las opciones disponibles la más adecuada para ti, ya sea para diabetes o para el control del peso.",
 ];
 
@@ -1177,6 +1252,112 @@ function buildDrugCityPost(drug: Drug, city: City, index: number): Post {
     updated: "2026-06-18",
     cover: drug.cover,
     coverAlt: tpl("Pluma de {Drug} disponible en una farmacia de {City}", vars),
+    sections,
+    faqs,
+  };
+}
+
+/* ── cluster "receta {drug} online {city}" (alta intención: conseguir la receta) ── */
+const RXCITY_INTRO = [
+  "Para conseguir la receta de {Drug} ({inn}) en {City} no necesitas esperar semanas a una cita presencial: la consulta médica online de {BRAND} permite que un médico colegiado valore tu caso el mismo día y, si el tratamiento está indicado, emita la receta electrónica válida en cualquier farmacia de {City}.",
+  "¿Buscas receta de {Drug} online en {City}? El proceso es más sencillo de lo que parece: una videoconsulta con un médico colegiado, una valoración clínica seria (historial, medicación actual, objetivos) y, si procede, la receta electrónica de {Drug} lista para usar en tu farmacia de {City}.",
+  "La receta de {Drug} ({inn}) es obligatoria en España, también en {City}. La buena noticia: no hace falta lista de espera. Con {BRAND} la valoración médica se hace online, el médico revisa si {Drug} encaja en tu caso y emite la receta electrónica en el momento si es adecuado.",
+  "En {City} puedes conseguir la receta de {Drug} sin desplazamientos: la consulta online de {BRAND} conecta con médicos colegiados que valoran tu caso, resuelven tus dudas sobre {inn} y, si está indicado, prescriben con receta electrónica que funciona en todas las farmacias de {City}.",
+];
+const RXCITY_REQUIREMENTS = [
+  "El médico valorará tu IMC, historial clínico, medicación actual y objetivos. {Drug} no se prescribe a cualquier persona: hay criterios clínicos claros y contraindicaciones (embarazo, antecedentes de pancreatitis, ciertos problemas tiroideos) que el médico revisa contigo antes de emitir la receta.",
+  "No todas las personas son candidatas a {Drug}. En la consulta se revisan criterios como el IMC, las comorbilidades (hipertensión, prediabetes, apnea del sueño), la medicación actual y las contraindicaciones. Si {Drug} no procede, el médico te propondrá la alternativa adecuada.",
+  "Para prescribir {Drug} el médico necesita una foto clínica completa: peso y altura, enfermedades previas, medicación habitual y objetivos realistas. La consulta online de {BRAND} recoge todo esto de forma estructurada para que la decisión sea segura.",
+];
+const RXCITY_VALIDITY = [
+  "La receta electrónica emitida online es válida en cualquier farmacia de {City} y del resto de España: funciona igual que la de tu centro de salud. Solo tienes que dar tu DNI o el código de la receta en el mostrador.",
+  "Una vez emitida, la receta electrónica de {Drug} se puede usar en la farmacia que prefieras de {City}. Si tu farmacia no tiene stock de tu dosis, puede pedirla o puedes retirarla en otra; la receta no caduca por cambiar de establecimiento.",
+  "La receta electrónica privada es plenamente legal y funciona en todas las farmacias de {City}. La diferencia con la pública es quién financia el medicamento: los GLP‑1 para pérdida de peso no los cubre la Seguridad Social, por lo que el precio de farmacia es el mismo por ambas vías.",
+];
+function buildRxCityPost(drug: Drug, city: City, index: number): Post {
+  const slug = `receta-${drug.key}-online-${city.slug}`;
+  const vars = {
+    Drug: cap(drug.name),
+    drug: drug.name,
+    inn: drug.inn,
+    City: city.name,
+    BRAND,
+    frequency: drug.frequency,
+  };
+  const mech = drug.kind === "weight" ? MECH_WEIGHT : MECH_DIAB;
+  const steps = pick(STEPS, slug + "steps").map((s) => tpl(s, vars));
+
+  const sections: Section[] = [
+    {
+      h2: tpl("Receta de {Drug} online en {City}: cómo funciona", vars),
+      blocks: [
+        { type: "p", text: tpl(pick(RXCITY_INTRO, slug + "intro"), vars) },
+        { type: "p", text: tpl(pick(RXCITY_VALIDITY, slug + "valid"), vars) },
+      ],
+    },
+    localContextSection(city, slug),
+    {
+      h2: tpl("Requisitos para que te receten {Drug}", vars),
+      blocks: [
+        { type: "p", text: tpl(pick(RXCITY_REQUIREMENTS, slug + "req"), vars) },
+        { type: "p", text: tpl(pick(mech, slug + "mech"), vars) },
+      ],
+    },
+    {
+      h2: tpl("Cuánto cuesta {Drug} con receta en {City}", vars),
+      blocks: [priceTable(drug, city), { type: "quote", text: PRICE_NOTE }],
+    },
+    {
+      h2: tpl("Conseguir la receta de {Drug} en {City} paso a paso", vars),
+      blocks: [{ type: "list", items: steps }, buyLinks(drug, city, true)],
+    },
+  ];
+
+  const faqs: Faq[] = [
+    {
+      q: tpl("¿Es legal conseguir la receta de {Drug} online en {City}?", vars),
+      a: tpl(
+        "Sí, siempre que la emita un médico colegiado tras una valoración real. La receta electrónica privada es válida en todas las farmacias de {City}. Lo ilegal es comprar {Drug} sin receta en webs que no exigen consulta médica.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Cuánto tarda la receta de {Drug} online?", vars),
+      a: tpl(
+        "Con {BRAND}, la valoración médica puede hacerse el mismo día. Si el médico considera indicado {Drug}, la receta electrónica se emite en la misma consulta y puedes retirar el medicamento en tu farmacia de {City} de inmediato.",
+        vars,
+      ),
+    },
+    {
+      q: tpl("¿Me pueden negar la receta de {Drug}?", vars),
+      a: tpl(
+        "Sí. Si el médico detecta contraindicaciones o considera que {Drug} no es adecuado para tu caso, no lo prescribirá y te propondrá alternativas. Es la garantía de que el tratamiento es seguro.",
+        vars,
+      ),
+    },
+    localFaqs(city)[hash(slug) % 3],
+  ];
+
+  return {
+    slug,
+    title: tpl("Receta de {Drug} online en {City}", vars),
+    h1: tpl("Receta de {Drug} online en {City}: requisitos, precio y pasos", vars),
+    metaTitle: tpl("Receta {Drug} Online en {City} | Médico Colegiado Hoy", vars),
+    metaDescription: tpl(
+      "Consigue la receta de {Drug} online en {City} con valoración de un médico colegiado, hoy mismo y sin listas de espera. Receta electrónica válida en tu farmacia. 1ª visita gratis.",
+      vars,
+    ),
+    excerpt: tpl(
+      "Cómo conseguir la receta de {Drug} online en {City}: requisitos clínicos, validez de la receta electrónica, precio en farmacia y pasos para empezar hoy con valoración médica.",
+      vars,
+    ),
+    category: drug.category,
+    keyword: `receta ${drug.name.toLowerCase()} online ${city.name.toLowerCase()}`,
+    readMins: 5 + (hash(slug) % 4),
+    date: isoDate(index),
+    updated: "2026-06-18",
+    cover: drug.cover,
+    coverAlt: tpl("Receta electrónica de {Drug} emitida online en {City}", vars),
     sections,
     faqs,
   };
@@ -3548,7 +3729,7 @@ function buildStockPost(drug: Drug, index: number): Post {
             tpl("Pregunta en varias farmacias: el stock de {Drug} varía mucho de un día a otro.", vars),
             "Tu farmacia puede consultar la disponibilidad con la distribuidora.",
             tpl("Habla con tu médico: puede valorar una alternativa equivalente si {Drug} no está disponible.", vars),
-            "Desconfía de las webs que «siempre tienen stock» sin receta: es producto ilegal y peligroso.",
+            "Desconf��a de las webs que «siempre tienen stock» sin receta: es producto ilegal y peligroso.",
           ],
         },
         { type: "p", text: tpl(SERVICE_CTA, vars) },
@@ -5023,7 +5204,7 @@ const CLINIC_WHY_GLP1 =
   "«GLP‑1» es la familia de fármacos (semaglutida en Wegovy y Ozempic, tirzepatida en Mounjaro) que imita una hormona intestinal que regula el apetito y la saciedad. Reduce el «ruido alimentario», estabiliza el azúcar en sangre y prolonga la sensación de plenitud, de modo que comes menos sin la ansiedad de las dietas restrictivas. No es un quemagrasas: es un tratamiento médico que necesita valoración y seguimiento.";
 
 const CLINIC_BENEFITS: string[] = [
-  "Sin listas de espera: valoración médica en poco tiempo, no en meses.",
+  "Sin listas de espera: valoraci��n médica en poco tiempo, no en meses.",
   "Médicos colegiados y receta electrónica válida en cualquier farmacia de {City}.",
   "Primera visita gratis, sin compromiso.",
   "Seguimiento y ajustes de dosis desde la app, sin nuevas esperas.",
@@ -5165,6 +5346,10 @@ const PRICE_DRUG_KEYS = new Set([
   "saxenda",
   "semaglutida",
   "tirzepatida",
+  "rybelsus",
+  "trulicity",
+  "victoza",
+  "zepbound",
 ]);
 
 export function generatePosts(existing: Set<string>): Post[] {
@@ -5200,6 +5385,18 @@ export function generatePosts(existing: Set<string>): Post[] {
       const slug = `${drug.key}-${city.slug}`;
       if (seen.has(slug)) continue;
       out.push(buildDrugCityPost(drug, city, index++));
+      seen.add(slug);
+    }
+  }
+
+  // 2c) "receta {drug} online en {city}": intención de conseguir la receta.
+  //     No canibaliza el cluster nacional "receta-{key}-online" (slug distinto,
+  //     keyword con geo) ni comprar/precio (intención distinta).
+  for (const drug of DRUGS.filter((d) => PRICE_DRUG_KEYS.has(d.key))) {
+    for (const city of CITIES) {
+      const slug = `receta-${drug.key}-online-${city.slug}`;
+      if (seen.has(slug)) continue;
+      out.push(buildRxCityPost(drug, city, index++));
       seen.add(slug);
     }
   }
