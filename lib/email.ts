@@ -347,6 +347,7 @@ const LEAD_FROM = "DoctorLife <leads@doctorlife.io>"
 type LeadEmailData = {
   name?: string | null
   email: string
+  phone?: string | null
   goal?: string | null
   glp1Experience?: string | null
   formatPreference?: string | null
@@ -376,6 +377,7 @@ export async function sendLeadNotification(lead: LeadEmailData): Promise<SendRes
   const rows = [
     leadRow("Nombre", lead.name),
     leadRow("Email", lead.email),
+    leadRow("Teléfono", lead.phone),
     leadRow("Objetivo", lead.goal),
     leadRow("Experiencia GLP-1", lead.glp1Experience),
     leadRow("Formato preferido", lead.formatPreference),
