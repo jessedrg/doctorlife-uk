@@ -260,8 +260,178 @@ function buildMunicipioPost(m: Muni, index: number, slug: string): Post {
   };
 }
 
+/* ───────────────────────────────────────────────────────────
+   Cluster de MÁXIMA INTENCIÓN: "clínica {fármaco} {municipio}"
+   (clinica-ozempic-x, clinica-wegovy-x, clinica-mounjaro-x).
+   Estas queries no estaban cubiertas por ningún otro cluster.
+   ─────────────────────────────────────────────────────────── */
+
+type ClinicDrug = {
+  name: string;
+  slug: string;
+  active: string;
+  dose: string;
+  price: string;
+  note: string;
+};
+
+const CLINIC_DRUGS: ClinicDrug[] = [
+  {
+    name: "Ozempic",
+    slug: "ozempic",
+    active: "semaglutida",
+    dose: "inyección semanal (0,25 → 1 mg)",
+    price: "120–170 €/mes",
+    note: "Indicado para diabetes tipo 2; en obesidad los médicos valoran alternativas con indicación específica como Wegovy.",
+  },
+  {
+    name: "Wegovy",
+    slug: "wegovy",
+    active: "semaglutida 2,4 mg",
+    dose: "inyección semanal con escalado en 5 pasos",
+    price: "200–300 €/mes",
+    note: "Es el GLP‑1 con indicación específica para pérdida de peso: el candidato habitual si tu objetivo es adelgazar.",
+  },
+  {
+    name: "Mounjaro",
+    slug: "mounjaro",
+    active: "tirzepatida",
+    dose: "inyección semanal (2,5 → 15 mg)",
+    price: "200–350 €/mes",
+    note: "Doble agonista GIP/GLP‑1, el de mayor pérdida de peso media en ensayos clínicos (hasta ~20%).",
+  },
+];
+
+function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: SizeKey): Section[] {
+  const health = HEALTH[m.com] ?? "el servicio autonómico de salud";
+  const pop = fmt(m.pop);
+  const small = size === "pueblo" || size === "villa";
+
+  const s1: Section = {
+    h2: `Clínica ${d.name} en ${dName}: cómo empezar con valoración médica`,
+    blocks: [
+      {
+        type: "p",
+        text: small
+          ? `Si buscas una clínica que trabaje con ${d.name} en ${dName} (${m.prov}, ${pop} habitantes), lo más probable es que no encuentres consulta especializada sin desplazarte: los municipios de este tamaño rara vez cuentan con unidad de obesidad. La solución práctica es la vía online de ${BRAND}: videoconsulta con endocrino colegiado, y si ${d.name} es adecuado para ti, receta electrónica válida en tu farmacia de ${dName} o de toda la provincia.`
+          : `En ${dName} (${m.prov}, ${pop} habitantes) hay consultas privadas, pero pocas especializadas en tratamiento con ${d.name} (${d.active}) y las agendas van llenas. Con ${BRAND} no dependes de esperas: videoconsulta con endocrino colegiado y, si procede, receta electrónica de ${d.name} que puedes retirar en cualquier farmacia de la ciudad.`,
+      },
+      {
+        type: "p",
+        text: pick(
+          [
+            `${d.name} exige receta médica en España: ninguna web que lo ofrezca "sin receta" a vecinos de ${dName} es legal ni segura. ${d.note}`,
+            `Recuerda: ${d.name} (${d.active}) solo se dispensa con prescripción. ${d.note} La valoración médica —online o presencial— es siempre el primer paso en ${dName}.`,
+          ],
+          d.slug + m.name + m.prov,
+        ),
+      },
+    ],
+  };
+
+  const s2: Section = {
+    h2: `${d.name} en ${dName}: pauta, precio y farmacias`,
+    blocks: [
+      {
+        type: "table",
+        caption: `Datos clave de ${d.name} para pacientes de ${dName} (${m.prov})`,
+        head: ["Dato", "Detalle"],
+        rows: [
+          ["Principio activo", d.active],
+          ["Pauta", d.dose],
+          ["Precio orientativo", `${d.price} en farmacias de ${m.prov}`],
+          ["Receta", "Obligatoria (electrónica privada válida en toda España)"],
+          ["Primera consulta", `Gratis con ${BRAND}`],
+        ],
+      },
+      {
+        type: "p",
+        text: `El precio de ${d.name} es prácticamente el mismo en las farmacias de ${dName} que en el resto de España. Si tu farmacia no lo tiene en stock, puede encargarlo y recibirlo normalmente en 24–48 h.`,
+      },
+    ],
+  };
+
+  const s3: Section = {
+    h2: pick(
+      [
+        `Cómo conseguir ${d.name} desde ${dName} paso a paso`,
+        `Empezar con ${d.name} viviendo en ${dName}: el proceso`,
+      ],
+      d.slug + m.name + "s3",
+    ),
+    blocks: [
+      {
+        type: "list",
+        items: [
+          `Reserva la primera consulta gratis online: sin desplazamientos ni volante de ${health}.`,
+          `Videoconsulta con endocrino colegiado: historial, IMC, medicación actual y objetivos.`,
+          `Si ${d.name} es adecuado (o una alternativa mejor para tu caso), receta electrónica al momento.`,
+          `Retiras el medicamento en tu farmacia de ${dName} y sigues el escalado de dosis con la app.`,
+        ],
+      },
+      {
+        type: "p",
+        text: small
+          ? `Para un municipio como ${dName}, la telemedicina elimina la barrera real: la distancia. Todo el tratamiento —valoración, receta, seguimiento y ajustes— se hace sin salir del pueblo.`
+          : `El seguimiento continuo por app (efectos secundarios, adherencia, ajuste de dosis) marca la diferencia frente a comprar el fármaco y usarlo sin control médico.`,
+      },
+    ],
+  };
+
+  return [s1, s2, s3];
+}
+
+function buildDrugMuniFaqs(d: ClinicDrug, m: Muni, dName: string): Faq[] {
+  return [
+    {
+      q: `¿Hay alguna clínica de ${d.name} en ${dName}?`,
+      a: `No necesitas una clínica física en ${dName}: la valoración para ${d.name} puede hacerse por videoconsulta con un endocrino colegiado de ${BRAND}, con receta electrónica válida en cualquier farmacia de ${m.prov}. La primera consulta es gratis.`,
+    },
+    {
+      q: `¿Cuánto cuesta ${d.name} en ${dName}?`,
+      a: `${d.name} (${d.active}) cuesta ${d.price} orientativos en farmacia, igual que en el resto de España. La consulta de valoración en ${BRAND} es gratuita.`,
+    },
+    {
+      q: `¿Puedo conseguir ${d.name} sin receta en ${dName}?`,
+      a: `No. ${d.name} exige prescripción médica en España. Cualquier web que ofrezca envío sin receta a ${dName} opera al margen de la ley y supone un riesgo real para tu salud.`,
+    },
+    {
+      q: `¿La receta online vale en las farmacias de ${m.prov}?`,
+      a: `Sí. La receta electrónica privada de un médico colegiado español es válida en todas las farmacias de España, incluidas las de ${dName} y la provincia de ${m.prov}.`,
+    },
+  ];
+}
+
+function buildDrugMuniPost(d: ClinicDrug, m: Muni, index: number, slug: string): Post {
+  const dName = displayName(m.name);
+  const size = sizeOf(m.pop);
+  return {
+    slug,
+    title: `Clínica ${d.name} en ${dName}`,
+    h1: `Clínica ${d.name} en ${dName}: valoración médica online y receta`,
+    metaTitle: `Clínica ${d.name} en ${dName} (${m.prov}): Médico Online y Receta`,
+    metaDescription: `¿Buscas clínica de ${d.name} en ${dName}? Endocrino colegiado por videoconsulta, receta electrónica válida en ${m.prov} y seguimiento por app. ¡Primera consulta gratis!`,
+    excerpt: `Cómo empezar con ${d.name} (${d.active}) desde ${dName}: valoración con endocrino online, receta electrónica y seguimiento clínico sin desplazamientos.`,
+    category: "Clínica",
+    keyword: `clinica ${d.slug} ${dName.toLowerCase()}`,
+    readMins: 5 + (hash(slug) % 3),
+    date: isoDate(index),
+    updated: "2026-07-01",
+    cover: COVERS[hash(slug) % COVERS.length],
+    coverAlt: `Clínica online de ${d.name} (${d.active}) para ${dName} (${m.prov})`,
+    place: dName,
+    sections: buildDrugMuniSections(d, m, dName, size),
+    faqs: buildDrugMuniFaqs(d, m, dName),
+  };
+}
+
 /** Prefijo de slug del cluster (usado también por el sitemap segmentado). */
 export const MUNICIPIO_SLUG_PREFIX = "clinica-perdida-de-peso-";
+
+/** Prefijos del cluster clínica×fármaco×municipio (para el sitemap). */
+export const MUNICIPIO_DRUG_SLUG_PREFIXES = CLINIC_DRUGS.map(
+  (d) => `clinica-${d.slug}-`,
+);
 
 export function generateMunicipioPosts(existing: Set<string>): Post[] {
   const out: Post[] = [];
@@ -279,6 +449,17 @@ export function generateMunicipioPosts(existing: Set<string>): Post[] {
     }
     seen.add(slug);
     out.push(buildMunicipioPost(m, index++, slug));
+
+    // Cluster de máxima intención: clínica {fármaco} {municipio}
+    for (const d of CLINIC_DRUGS) {
+      let dSlug = `clinica-${d.slug}-${base}`;
+      if (seen.has(dSlug)) {
+        dSlug = `clinica-${d.slug}-${base}-${slugify(m.prov)}`;
+        if (seen.has(dSlug)) continue;
+      }
+      seen.add(dSlug);
+      out.push(buildDrugMuniPost(d, m, index++, dSlug));
+    }
   }
   return out;
 }

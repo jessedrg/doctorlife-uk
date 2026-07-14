@@ -1,6 +1,9 @@
 import { posts, SITE_URL } from "@/lib/blog";
 import { articles, authors, PILLAR } from "@/lib/articles";
-import { MUNICIPIO_SLUG_PREFIX } from "@/lib/blog-municipios";
+import {
+  MUNICIPIO_SLUG_PREFIX,
+  MUNICIPIO_DRUG_SLUG_PREFIXES,
+} from "@/lib/blog-municipios";
 
 /* ───────────────────────────────────────────────────────────
    Datos del sitemap, compartidos por el índice y por cada
@@ -90,31 +93,32 @@ export function getSitemapSegments(): SitemapSegment[] {
     { name: "articulos", urls: articleUrls(now) },
   ];
 
-  // El cluster de clínica por municipio va en su propio segmento
-  // (municipios-1, municipios-2, …) para monitorizarlo aparte en GSC.
+  // Cada cluster grande va en su propio segmento para monitorizarlo
+  // aparte en GSC: municipios-N (clínica pérdida de peso por municipio)
+  // y clinica-farmacos-N (clínica ozempic/wegovy/mounjaro por municipio).
   const blog: SitemapUrl[] = [];
   const municipios: SitemapUrl[] = [];
+  const clinicaFarmacos: SitemapUrl[] = [];
   for (const p of posts) {
-    (p.slug.startsWith(MUNICIPIO_SLUG_PREFIX) ? municipios : blog).push(toUrl(p));
+    if (p.slug.startsWith(MUNICIPIO_SLUG_PREFIX)) municipios.push(toUrl(p));
+    else if (MUNICIPIO_DRUG_SLUG_PREFIXES.some((pre) => p.slug.startsWith(pre)))
+      clinicaFarmacos.push(toUrl(p));
+    else blog.push(toUrl(p));
   }
 
-  // Blog troceado en bloques de 10.000 → blog-1, blog-2, …
-  const blogChunks = Math.max(1, Math.ceil(blog.length / SITEMAP_CHUNK));
-  for (let i = 0; i < blogChunks; i++) {
-    segments.push({
-      name: `blog-${i + 1}`,
-      urls: blog.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
-    });
-  }
+  const addChunks = (name: string, urls: SitemapUrl[], min = 0) => {
+    const chunks = Math.max(min, Math.ceil(urls.length / SITEMAP_CHUNK));
+    for (let i = 0; i < chunks; i++) {
+      segments.push({
+        name: `${name}-${i + 1}`,
+        urls: urls.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
+      });
+    }
+  };
 
-  // Municipios troceados igual → municipios-1, municipios-2, …
-  const muniChunks = Math.ceil(municipios.length / SITEMAP_CHUNK);
-  for (let i = 0; i < muniChunks; i++) {
-    segments.push({
-      name: `municipios-${i + 1}`,
-      urls: municipios.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
-    });
-  }
+  addChunks("blog", blog, 1); // blog-1, blog-2, …
+  addChunks("municipios", municipios); // municipios-1, …
+  addChunks("clinica-farmacos", clinicaFarmacos); // clinica-farmacos-1, …
 
   return segments;
 }
