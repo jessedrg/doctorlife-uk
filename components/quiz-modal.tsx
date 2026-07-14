@@ -36,14 +36,13 @@ type Phase =
   | "done";
 
 // Orden lineal de fases para la barra de progreso (la rama "blocked" sale del flujo).
+// Flujo CORTO: perfil+medidas van juntas, comorbilidades+contraindicaciones van
+// juntas y la pantalla de plan se elimina (solo hay un plan y va preseleccionado).
 const FLOW: Phase[] = [
   "questions",
   "profile",
-  "measures",
   "comorbidities",
-  "contraindications",
   "result",
-  "plan",
   "details",
   "slot",
   "done",
@@ -85,7 +84,6 @@ export function QuizModal() {
   const [comorbidities, setComorbidities] = useState<string[]>([]);
   const [contraindications, setContraindications] = useState<string[]>([]);
   const [plan, setPlan] = useState<string | null>(null);
-  const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [slots, setSlots] = useState<PooledSlot[] | null>(null);
   const [activeDate, setActiveDate] = useState<string | null>(null);
@@ -235,17 +233,14 @@ export function QuizModal() {
   const back = () => {
     setError(null);
     if (phase === "slot") setPhase("details");
-    else if (phase === "details") setPhase("plan");
-    else if (phase === "plan") setPhase("result");
-    else if (phase === "result") setPhase("contraindications");
-    else if (phase === "blocked") setPhase("contraindications");
-    else if (phase === "contraindications") setPhase("comorbidities");
-    else if (phase === "comorbidities") setPhase("measures");
-    else if (phase === "measures") setPhase("profile");
+    else if (phase === "details") setPhase("result");
+    else if (phase === "result") setPhase("comorbidities");
+    else if (phase === "blocked") setPhase("comorbidities");
+    else if (phase === "comorbidities") setPhase("profile");
     else if (phase === "profile") {
       setPhase("questions");
       setStep(total - 1);
-    }     else if (step > 0) setStep(step - 1);
+    } else if (step > 0) setStep(step - 1);
   };
 
   // Construye el payload clínico común para guardar el lead.
@@ -560,50 +555,8 @@ export function QuizModal() {
                 </div>
               )}
 
-              {error && <p className="mt-3 text-[13.5px] text-clay">{error}</p>}
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (!ageNum) {
-                    setError("Introduce tu edad para continuar.");
-                    return;
-                  }
-                  if (!sex) {
-                    setError("Selecciona una opción para continuar.");
-                    return;
-                  }
-                  if (isFemale && !pregnancy) {
-                    setError("Responde la última pregunta para continuar.");
-                    return;
-                  }
-                  setError(null);
-                  // Métrica: fase de perfil completada
-                  analytics.formPhaseProfile(ageNum || null, sex || null, pregnancy || null);
-                  setPhase("measures");
-                }}
-                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
-              >
-                Continuar
-              </button>
-              <button type="button" onClick={back} className="mt-3 w-full py-2 text-[15px] text-ink-mute hover:text-ink">
-                ← Atrás
-              </button>
-            </div>
-          )}
-
-          {/* MEASURES (altura, peso → IMC + tiempo) */}
-          {phase === "measures" && (
-            <div className="quiz-fade">
-              <div className="text-[13px] uppercase tracking-[.14em] text-clay">Tus medidas</div>
-              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
-                Tu objetivo, sin arriesgar tu salud
-              </h3>
-              <p className="mb-6 text-[15.5px] leading-relaxed text-ink-soft">
-                Con tu altura y peso calculamos tu IMC y cuánto tardarías en llegar a un peso saludable a un ritmo seguro.
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
+              {/* Medidas fusionadas en la misma pantalla (antes eran una fase aparte) */}
+              <div className="mt-5 grid grid-cols-2 gap-3">
                 <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
                   Altura (cm)
                   <input
@@ -675,12 +628,25 @@ export function QuizModal() {
               <button
                 type="button"
                 onClick={() => {
+                  if (!ageNum) {
+                    setError("Introduce tu edad para continuar.");
+                    return;
+                  }
+                  if (!sex) {
+                    setError("Selecciona tu sexo para continuar.");
+                    return;
+                  }
+                  if (isFemale && !pregnancy) {
+                    setError("Responde la pregunta sobre embarazo para continuar.");
+                    return;
+                  }
                   if (!(h > 0 && w > 0)) {
                     setError("Introduce tu altura y peso para continuar.");
                     return;
                   }
                   setError(null);
-                  // Métrica: fase de medidas completada
+                  // Métricas: perfil y medidas completados en una sola pantalla
+                  analytics.formPhaseProfile(ageNum || null, sex || null, pregnancy || null);
                   analytics.formPhaseMeasures(h > 0 ? h : null, w > 0 ? w : null, bmi || null);
                   setPhase("comorbidities");
                 }}
@@ -761,33 +727,13 @@ export function QuizModal() {
                 })}
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  // Métrica: fase de comorbilidades completada
-                  analytics.formPhaseComorbidities(comorbidities);
-                  setPhase("contraindications");
-                }}
-                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
-              >
-                Continuar
-              </button>
-              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
-                ← Atrás
-              </button>
-            </div>
-          )}
-
-          {/* CONTRAINDICATIONS */}
-          {phase === "contraindications" && (
-            <div className="quiz-fade">
-              <div className="text-[13px] uppercase tracking-[.14em] text-clay">Seguridad</div>
-              <h3 className="mb-[6px] mt-2 text-[24px] font-light leading-[1.15] tracking-[-.02em] text-balance sm:text-[30px]">
-                Antecedentes médicos importantes
-              </h3>
-              <p className="mb-5 text-[15.5px] leading-relaxed text-ink-soft">
-                Si no tienes ninguno, pulsa el botón verde y continúa. Si tienes alguno, márcalo.
-              </p>
+              {/* Antecedentes médicos fusionados en la misma pantalla (antes fase aparte) */}
+              <div className="mb-2 mt-7">
+                <div className="text-[13px] uppercase tracking-[.14em] text-clay">Seguridad</div>
+                <h4 className="mt-1 text-[19px] font-light leading-[1.2] tracking-[-.01em] text-balance sm:text-[22px]">
+                  ¿Y alguno de estos antecedentes?
+                </h4>
+              </div>
 
               <div className="flex flex-col gap-[9px]">
                 {/* Opción "ninguno" ARRIBA, grande y visible: es lo primero que ve el usuario */}
@@ -847,7 +793,11 @@ export function QuizModal() {
 
               <button
                 type="button"
-                onClick={() => setPhase("result")}
+                onClick={() => {
+                  // Métrica: fase de salud (comorbilidades + antecedentes) completada
+                  analytics.formPhaseComorbidities(comorbidities);
+                  setPhase("result");
+                }}
                 className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
                 Ver mi resultado
@@ -898,12 +848,20 @@ export function QuizModal() {
                 médico colegiado durante la consulta, tras revisar tu historia clínica completa.
               </p>
 
+              {/* Directo a datos: el plan único ya va preseleccionado, sin pantalla extra */}
+              <div className="mt-5 rounded-2xl bg-sage/20 px-5 py-4">
+                <p className="text-[14.5px] leading-relaxed text-ink">
+                  <span className="font-semibold">Tu primera visita con el médico es gratis.</span>{" "}
+                  Sin tarjeta ahora y cancelas cuando quieras.
+                </p>
+              </div>
+
               <button
                 type="button"
-                onClick={() => setPhase("plan")}
-                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
+                onClick={() => setPhase("details")}
+                className="mt-5 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
               >
-                Continuar
+                Reservar mi visita gratis
               </button>
               <button type="button" onClick={back} className="mt-3 w-full py-2 text-[15px] text-ink-mute hover:text-ink">
                 ← Atrás
@@ -981,118 +939,6 @@ export function QuizModal() {
 
               <button type="button" onClick={close} className="mt-4 text-sm text-ink-mute hover:text-ink">
                 Cerrar
-              </button>
-            </div>
-          )}
-
-          {/* PLAN SELECTION */}
-          {phase === "plan" && (
-            <div className="quiz-fade">
-              {/* Hero: la visita gratis como protagonista */}
-              <div className="mb-6 rounded-2xl bg-sage/20 px-5 py-5">
-                <div className="mb-1 text-[12px] font-semibold uppercase tracking-[.14em] text-olive">
-                  Sin coste inicial
-                </div>
-                <h3 className="text-[22px] font-semibold leading-tight text-ink sm:text-[26px]">
-                  {isAds ? "Tu primera valoración es gratis" : "Tu primera visita con el médico es gratis"}
-                </h3>
-                <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">
-                  {isAds
-                    ? "Habla con un endocrino especializado sin pagar nada hoy. Solo continúas si tú quieres."
-                    : "Habla hoy con un endocrino sin pagar nada. Si te recetan tratamiento y decides continuar, entonces pagas."}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {["Sin tarjeta ahora", "Cancela cuando quieras", "Médico colegiado"].map((t) => (
-                    <span key={t} className="rounded-full bg-white/70 px-3 py-1 text-[12.5px] font-medium text-ink">
-                      ✓ {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Solo los planes activos — ocultar próximamente para no distraer */}
-              <div className="flex flex-col gap-[10px]">
-                {productList.filter((p) => !p.comingSoon).map((p) => {
-                  const selected = plan === p.name;
-                  const expanded = expandedPlan === p.name;
-                  return (
-                    <div
-                      key={p.name}
-                      className={`overflow-hidden rounded-2xl border-2 transition-all duration-150 ${
-                        selected ? "border-sage bg-sage/20" : "border-ink/15 bg-warm"
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          analytics.formPhasePlan(p.name);
-                          setPlan(p.name);
-                          setError(null);
-                        }}
-                        aria-pressed={selected}
-                        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
-                      >
-                        <span className="flex min-w-0 flex-col">
-                          <span className="text-[16px] font-semibold text-ink">{p.name}</span>
-                          <span className="mt-0.5 text-[13px] text-ink-mute">Consulta gratuita incluida</span>
-                        </span>
-                        <span
-                          className={`flex h-[28px] w-[28px] flex-shrink-0 items-center justify-center rounded-full border-2 text-sm transition-colors ${
-                            selected ? "border-olive bg-olive text-paper" : "border-ink/20 text-transparent"
-                          }`}
-                        >
-                          ✓
-                        </span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setExpandedPlan(expanded ? null : p.name)}
-                        aria-expanded={expanded}
-                        className="flex w-full items-center justify-between gap-2 border-t border-ink/10 px-5 py-2.5 text-left text-[13px] font-medium text-clay transition-colors hover:bg-cream/60"
-                      >
-                        {expanded ? "Ocultar detalles" : "Ver qué incluye"}
-                        <span className={`text-[11px] transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} aria-hidden>▼</span>
-                      </button>
-
-                      <div className="grid transition-all duration-300 ease-out" style={{ gridTemplateRows: expanded ? "1fr" : "0fr" }}>
-                        <div className="overflow-hidden">
-                          <div className="mx-5 mb-3 mt-2 rounded-xl bg-ink/5 px-4 py-2.5 text-[13px] text-ink-soft">
-                            Primer mes <span className="font-semibold text-ink">60&nbsp;€</span> · después <span className="font-semibold text-ink">{p.price}</span> · cancela cuando quieras
-                          </div>
-                          <ul className="flex flex-col gap-2 px-5 pb-4 pt-1">
-                            {p.features.map((f) => (
-                              <li key={f} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-ink-soft">
-                                <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-sage/40 text-[10px] text-ink">✓</span>
-                                <span>{f}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {error && <p className="mt-3 text-[13.5px] text-clay">{error}</p>}
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (!plan) {
-                    setError("Selecciona un plan para continuar.");
-                    return;
-                  }
-                  setError(null);
-                  setPhase("details");
-                }}
-                className="mt-6 w-full rounded-[14px] bg-ink py-[18px] text-[16px] font-semibold text-paper transition-opacity hover:opacity-90 active:opacity-80"
-              >
-                Continuar
-              </button>
-              <button type="button" onClick={back} className="mt-3 text-sm text-ink-mute hover:text-ink">
-                ← Atrás
               </button>
             </div>
           )}
