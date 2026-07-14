@@ -1,5 +1,9 @@
 import { posts, SITE_URL } from "@/lib/blog";
 import { articles, authors, PILLAR } from "@/lib/articles";
+import {
+  MUNICIPIO_SLUG_PREFIX,
+  MUNICIPIO_DRUG_SLUG_PREFIXES,
+} from "@/lib/blog-municipios";
 
 /* ───────────────────────────────────────────────────────────
    Datos del sitemap, compartidos por el índice y por cada
@@ -72,13 +76,13 @@ function articleUrls(now: Date): SitemapUrl[] {
   return [...editorial, ...authorPages];
 }
 
-function blogUrls(): SitemapUrl[] {
-  return posts.map((p) => ({
+function toUrl(p: { slug: string; updated: string }): SitemapUrl {
+  return {
     url: `${SITE_URL}/blog/${p.slug}`,
     lastModified: new Date(p.updated),
     changeFrequency: "monthly",
     priority: 0.8,
-  }));
+  };
 }
 
 /** Construye la lista de segmentos con nombre semántico. */
@@ -89,15 +93,32 @@ export function getSitemapSegments(): SitemapSegment[] {
     { name: "articulos", urls: articleUrls(now) },
   ];
 
-  // Blog troceado en bloques de 10.000 → blog-1, blog-2, …
-  const blog = blogUrls();
-  const blogChunks = Math.max(1, Math.ceil(blog.length / SITEMAP_CHUNK));
-  for (let i = 0; i < blogChunks; i++) {
-    segments.push({
-      name: `blog-${i + 1}`,
-      urls: blog.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
-    });
+  // Cada cluster grande va en su propio segmento para monitorizarlo
+  // aparte en GSC: municipios-N (clínica pérdida de peso por municipio)
+  // y clinica-farmacos-N (clínica ozempic/wegovy/mounjaro por municipio).
+  const blog: SitemapUrl[] = [];
+  const municipios: SitemapUrl[] = [];
+  const clinicaFarmacos: SitemapUrl[] = [];
+  for (const p of posts) {
+    if (p.slug.startsWith(MUNICIPIO_SLUG_PREFIX)) municipios.push(toUrl(p));
+    else if (MUNICIPIO_DRUG_SLUG_PREFIXES.some((pre) => p.slug.startsWith(pre)))
+      clinicaFarmacos.push(toUrl(p));
+    else blog.push(toUrl(p));
   }
+
+  const addChunks = (name: string, urls: SitemapUrl[], min = 0) => {
+    const chunks = Math.max(min, Math.ceil(urls.length / SITEMAP_CHUNK));
+    for (let i = 0; i < chunks; i++) {
+      segments.push({
+        name: `${name}-${i + 1}`,
+        urls: urls.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
+      });
+    }
+  };
+
+  addChunks("blog", blog, 1); // blog-1, blog-2, …
+  addChunks("municipios", municipios); // municipios-1, …
+  addChunks("clinica-farmacos", clinicaFarmacos); // clinica-farmacos-1, …
 
   return segments;
 }

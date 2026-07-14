@@ -5,6 +5,7 @@
    ─────────────────────────────────────────────────────────── */
 
 import { generatePosts } from "./blog-content";
+import { generateMunicipioPosts } from "./blog-municipios";
 
 export type InlineLink = { label: string; href: string };
 
@@ -1001,7 +1002,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 10 ─────────────────────────────────────────�����── */
+  /* 10 ─────���───────────────────────────────────�����── */
   {
     slug: "plan-perder-peso-glp1",
     title: "Plan para perder peso con GLP‑1",
@@ -2476,7 +2477,7 @@ const manualPosts: Post[] = [
         blocks: [
           {
             type: "p",
-            text: "El precio de la pluma depende de la dosis y oscila de forma orientativa entre 200 € y 350 € al mes. Igual que Wegovy, requiere receta y no debe comprarse por canales no autorizados.",
+            text: "El precio de la pluma depende de la dosis y oscila de forma orientativa entre 200 ��� y 350 € al mes. Igual que Wegovy, requiere receta y no debe comprarse por canales no autorizados.",
           },
           {
             type: "table",
@@ -3267,7 +3268,7 @@ const manualPosts: Post[] = [
           },
           {
             type: "links",
-            title: "Sigue informándote",
+            title: "Sigue inform��ndote",
             items: [
               { label: "Ozempic vs Wegovy vs Mounjaro: comparativa completa", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
               { label: "Tirzepatida para adelgazar", href: "/blog/tirzepatida-para-adelgazar" },
@@ -3955,7 +3956,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 39 ───────────────────────────────────────────── */
+  /* 39 ───────────────��───────────────────────────── */
   {
     slug: "comprar-wegovy-cordoba",
     title: "Comprar Wegovy en Córdoba",
@@ -4509,7 +4510,7 @@ const manualPosts: Post[] = [
     ],
   },
 
-  /* 45 ───────────────────────────────────────────── */
+  /* 45 ────────────────────────────────────────��──── */
   {
     slug: "comprar-saxenda-espana",
     title: "Comprar Saxenda en España",
@@ -5602,11 +5603,17 @@ const manualPosts: Post[] = [
   },
 ];
 
-/* Posts manuales + cientos de guías generadas (comprar/precio por ciudad)
-   que actúan como funnel hacia la consulta médica de DoctorLife. */
-export const posts: Post[] = [
+/* Posts manuales + miles de guías generadas (comprar/precio por ciudad,
+   hubs por provincia/comunidad y clínica por municipio) que actúan como
+   funnel hacia la consulta médica de DoctorLife. */
+const basePosts: Post[] = [
   ...manualPosts,
   ...generatePosts(new Set(manualPosts.map((p) => p.slug))),
+];
+
+export const posts: Post[] = [
+  ...basePosts,
+  ...generateMunicipioPosts(new Set(basePosts.map((p) => p.slug))),
 ];
 
 export function getPost(slug: string): Post | undefined {
