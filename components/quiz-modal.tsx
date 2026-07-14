@@ -62,7 +62,14 @@ function sanitizeAds(text: string) {
 export function QuizModal() {
   const { open, initialPlan, closeQuiz, variant } = useQuiz();
   const isAds = variant === "ads";
-  const steps = isAds ? adsQuizSteps : quizSteps;
+  // Formulario CORTO: de las 6 preguntas de marketing solo mantenemos la que
+  // tiene valor clínico real (experiencia previa con GLP-1). El resto de
+  // pantallas se fusionan para minimizar el abandono.
+  const allSteps = isAds ? adsQuizSteps : quizSteps;
+  const steps = useMemo(() => {
+    const clinical = allSteps.filter((s) => s.key === "glp1Experience");
+    return clinical.length > 0 ? clinical : allSteps.slice(0, 1);
+  }, [allSteps]);
   const productList = isAds ? adsProducts : products;
   const sa = (text: string) => (isAds ? sanitizeAds(text) : text);
   const [step, setStep] = useState(0);
