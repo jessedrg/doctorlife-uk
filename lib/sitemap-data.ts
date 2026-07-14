@@ -1,5 +1,6 @@
 import { posts, SITE_URL } from "@/lib/blog";
 import { articles, authors, PILLAR } from "@/lib/articles";
+import { MUNICIPIO_SLUG_PREFIX } from "@/lib/blog-municipios";
 
 /* ───────────────────────────────────────────────────────────
    Datos del sitemap, compartidos por el índice y por cada
@@ -72,13 +73,13 @@ function articleUrls(now: Date): SitemapUrl[] {
   return [...editorial, ...authorPages];
 }
 
-function blogUrls(): SitemapUrl[] {
-  return posts.map((p) => ({
+function toUrl(p: { slug: string; updated: string }): SitemapUrl {
+  return {
     url: `${SITE_URL}/blog/${p.slug}`,
     lastModified: new Date(p.updated),
     changeFrequency: "monthly",
     priority: 0.8,
-  }));
+  };
 }
 
 /** Construye la lista de segmentos con nombre semántico. */
@@ -89,13 +90,29 @@ export function getSitemapSegments(): SitemapSegment[] {
     { name: "articulos", urls: articleUrls(now) },
   ];
 
+  // El cluster de clínica por municipio va en su propio segmento
+  // (municipios-1, municipios-2, …) para monitorizarlo aparte en GSC.
+  const blog: SitemapUrl[] = [];
+  const municipios: SitemapUrl[] = [];
+  for (const p of posts) {
+    (p.slug.startsWith(MUNICIPIO_SLUG_PREFIX) ? municipios : blog).push(toUrl(p));
+  }
+
   // Blog troceado en bloques de 10.000 → blog-1, blog-2, …
-  const blog = blogUrls();
   const blogChunks = Math.max(1, Math.ceil(blog.length / SITEMAP_CHUNK));
   for (let i = 0; i < blogChunks; i++) {
     segments.push({
       name: `blog-${i + 1}`,
       urls: blog.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
+    });
+  }
+
+  // Municipios troceados igual → municipios-1, municipios-2, …
+  const muniChunks = Math.ceil(municipios.length / SITEMAP_CHUNK);
+  for (let i = 0; i < muniChunks; i++) {
+    segments.push({
+      name: `municipios-${i + 1}`,
+      urls: municipios.slice(i * SITEMAP_CHUNK, (i + 1) * SITEMAP_CHUNK),
     });
   }
 
