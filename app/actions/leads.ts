@@ -7,6 +7,7 @@ import { sendLeadNotification } from "@/lib/email"
 export type LeadInput = {
   name?: string
   email: string
+  phone?: string
   goal?: string
   glp1Experience?: string
   formatPreference?: string
@@ -37,6 +38,7 @@ export async function saveLead(input: LeadInput): Promise<SaveLeadResult> {
   const leadData = {
     name: input.name?.trim() || null,
     email,
+    phone: input.phone?.trim() || null,
     goal: input.goal || null,
     glp1Experience: input.glp1Experience || null,
     formatPreference: input.formatPreference || null,

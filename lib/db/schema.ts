@@ -278,6 +278,7 @@ export const leads = pgTable("leads", {
   id: serial("id").primaryKey(),
   name: text("name"),
   email: text("email").notNull(),
+  phone: text("phone"),
   goal: text("goal"),
   glp1Experience: text("glp1_experience"),
   formatPreference: text("format_preference"),
