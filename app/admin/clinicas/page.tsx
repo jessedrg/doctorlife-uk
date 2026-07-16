@@ -4,6 +4,7 @@ import { AdminDoctorToggle } from "@/components/admin-doctor-toggle"
 import { AdminDoctorDevToggle } from "@/components/admin-doctor-dev-toggle"
 import { AdminCreateDoctor } from "@/components/admin-create-doctor"
 import { AdminClinicStatus } from "@/components/admin-clinic-status"
+import { AdminDeleteClinic } from "@/components/admin-delete-clinic"
 
 export const metadata = { title: "Clínicas — DoctorLife" }
 
@@ -62,6 +63,9 @@ export default async function AdminClinicsPage() {
                   <span>Entorno de pruebas</span>
                   <AdminDoctorDevToggle doctorId={c.id} initial={c.isDevOnly} />
                 </label>
+                <div className="ml-auto">
+                  <AdminDeleteClinic doctorId={c.id} clinicName={c.name} />
+                </div>
               </div>
             </div>
           ))}
