@@ -87,10 +87,13 @@ export function generateSlots(opts: {
   slotMinutes: number
   timeZone: string
   takenStartUtc?: Set<string>
+  /** Intervalos ocupados (p. ej. eventos del Google Calendar del médico). */
+  busy?: Array<{ start: Date; end: Date }>
   now?: Date
 }): Slot[] {
   const { rules, exceptions, range, slotMinutes, timeZone } = opts
   const taken = opts.takenStartUtc ?? new Set<string>()
+  const busy = opts.busy ?? []
   const now = opts.now ?? new Date()
   if (rules.length === 0 || slotMinutes <= 0) return []
 
@@ -128,8 +131,14 @@ export function generateSlots(opts: {
         const iso = startUtc.toISOString()
         if (taken.has(iso)) continue
         if (seen.has(iso)) continue
-        seen.add(iso)
         const endUtc = new Date(startUtc.getTime() + slotMinutes * 60_000)
+        // Descartar si el hueco [startUtc, endUtc) se solapa con un evento
+        // ocupado del calendario externo del médico.
+        const overlapsBusy = busy.some(
+          (b) => startUtc.getTime() < b.end.getTime() && endUtc.getTime() > b.start.getTime(),
+        )
+        if (overlapsBusy) continue
+        seen.add(iso)
         slots.push({
           startUtc: iso,
           endUtc: endUtc.toISOString(),
