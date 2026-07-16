@@ -16,7 +16,7 @@ import {
   type Product,
 } from "@/lib/catalog"
 import { sendPlanOfferEmail } from "@/lib/email"
-import { getClinic, clinicDataComplete } from "@/lib/clinic"
+import { clinicDataComplete } from "@/lib/clinic"
 import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -71,8 +71,17 @@ export async function sendPlanOffer(input: {
 
     // La clínica debe poder cobrar: datos de centro sanitario completos y
     // Stripe habilitado. Si no, no tiene sentido enviar un plan impagable.
-    const clinic = await getClinic()
-    if (!clinicDataComplete(clinic) || !clinic.stripeAccountId || !clinic.chargesEnabled) {
+    const [myProfile] = await db
+      .select()
+      .from(doctorProfiles)
+      .where(eq(doctorProfiles.userId, me.id))
+      .limit(1)
+    if (
+      !myProfile ||
+      !clinicDataComplete(myProfile) ||
+      !myProfile.stripeAccountId ||
+      !myProfile.chargesEnabled
+    ) {
       return {
         ok: false,
         error:
@@ -152,7 +161,7 @@ export async function sendPlanOffer(input: {
       // La notificación in-app es best-effort; el correo es el canal principal.
     }
 
-    revalidatePath("/medico/pacientes")
+    revalidatePath("/clinica/pacientes")
     return { ok: true }
   } catch (e) {
     console.log("[v0] sendPlanOffer error:", e instanceof Error ? e.message : e)

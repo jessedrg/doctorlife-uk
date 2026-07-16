@@ -33,7 +33,7 @@ export function GoogleCalendarConnect({ status }: { status: GoogleConnectionStat
     try {
       await authClient.linkSocial({
         provider: "google",
-        callbackURL: "/medico/cuenta?google=conectado",
+        callbackURL: "/clinica/cuenta?google=conectado",
       })
       // linkSocial redirige al consentimiento de Google; si vuelve sin redirigir
       // refrescamos el estado por si ya quedó enlazado.

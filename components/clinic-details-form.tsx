@@ -5,7 +5,8 @@ import { updateClinicDetails, type ClinicStatus } from "@/app/actions/clinic"
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 
 const FIELD_LABELS: Record<string, string> = {
-  name: "Razón social",
+  clinicName: "Nombre de la clínica",
+  name: "Nombre de la clínica",
   taxId: "CIF/NIF",
   addressLine: "Dirección",
   city: "Municipio",
@@ -103,7 +104,7 @@ export function ClinicDetailsForm({ status }: { status: ClinicStatus }) {
       )}
 
       <form onSubmit={onSubmit} className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label="Razón social *" value={values.name} onChange={set("name")} required />
+        <Field label="Nombre de la clínica *" value={values.name} onChange={set("name")} required />
         <Field label="CIF/NIF *" value={values.taxId} onChange={set("taxId")} required />
 
         <Field

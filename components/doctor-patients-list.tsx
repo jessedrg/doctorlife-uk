@@ -54,7 +54,7 @@ export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) 
           icon={Users}
           title="Aún no tienes pacientes"
           description="Cuando un paciente reserve una consulta contigo, aparecerá aquí con su estado de tratamiento, su historial de citas y accesos rápidos al chat y a las recetas."
-          action={{ href: "/medico/disponibilidad", label: "Revisar mi disponibilidad" }}
+          action={{ href: "/clinica/disponibilidad", label: "Revisar mi disponibilidad" }}
         />
       </div>
     )
@@ -142,14 +142,14 @@ export function DoctorPatientsList({ patients }: { patients: DoctorPatient[] }) 
 
                 <div className="mt-auto flex gap-2">
                   <Link
-                    href="/medico/chat"
+                    href="/clinica/chat"
                     className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-ink py-2 text-[13px] font-medium text-paper transition-opacity hover:opacity-90"
                   >
                     <MessageCircle className="size-4" aria-hidden />
                     Chat
                   </Link>
                   <Link
-                    href="/medico/recetas"
+                    href="/clinica/recetas"
                     className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-ink/15 py-2 text-[13px] font-medium text-ink transition-colors hover:bg-ink/5"
                   >
                     <FileText className="size-4" aria-hidden />

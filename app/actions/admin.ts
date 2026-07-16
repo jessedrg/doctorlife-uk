@@ -68,7 +68,7 @@ export async function createDoctor(input: {
 
   await sendDoctorWelcomeEmail({ to: email, name, tempPassword })
 
-  revalidatePath("/admin/medicos")
+  revalidatePath("/admin/clinicas")
   revalidatePath("/admin")
   return { ok: true }
 }
@@ -282,7 +282,7 @@ export async function setDoctorDevOnly(doctorId: string, isDevOnly: boolean) {
     .update(doctorProfiles)
     .set({ isDevOnly, updatedAt: new Date() })
     .where(eq(doctorProfiles.userId, doctorId))
-  revalidatePath("/admin/medicos")
+  revalidatePath("/admin/clinicas")
   return { ok: true }
 }
 
@@ -293,6 +293,6 @@ export async function setDoctorAccepting(doctorId: string, accepting: boolean) {
     .update(doctorProfiles)
     .set({ acceptingPatients: accepting, updatedAt: new Date() })
     .where(eq(doctorProfiles.userId, doctorId))
-  revalidatePath("/admin/medicos")
+  revalidatePath("/admin/clinicas")
   return { ok: true }
 }

@@ -39,7 +39,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
           "Meta-ExternalAgent",
         ],
         allow: "/",
-        disallow: ["/medico", "/admin", "/portal", "/api", "/sign-in", "/sign-up"],
+        disallow: ["/clinica", "/admin", "/portal", "/api", "/sign-in", "/sign-up"],
       },
     ],
     // Un único índice de sitemaps que Google expande solo a sus hijos

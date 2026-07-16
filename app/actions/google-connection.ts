@@ -34,6 +34,6 @@ export async function disconnectGoogle(): Promise<{ ok: true }> {
   await db
     .delete(account)
     .where(and(eq(account.userId, doctor.id), eq(account.providerId, "google")))
-  revalidatePath("/medico/cuenta")
+  revalidatePath("/clinica/cuenta")
   return { ok: true }
 }

@@ -91,6 +91,27 @@ export const doctorProfiles = pgTable("doctor_profiles", {
    * Se rellena automáticamente al crear el médico según el dominio de la petición.
    */
   isDevOnly: boolean("isDevOnly").notNull().default(false),
+  /* --- Datos fiscales y sanitarios de la clínica (gestionados por la propia clínica) --- */
+  /** Nombre comercial de la clínica (puede diferir del nombre del profesional). */
+  clinicName: text("clinicName"),
+  /** NIF / CIF fiscal. */
+  taxId: text("taxId"),
+  /** Email de facturación. */
+  billingEmail: text("billingEmail"),
+  /** Teléfono de facturación. */
+  billingPhone: text("billingPhone"),
+  /** Dirección fiscal. */
+  addressLine: text("addressLine"),
+  city: text("city"),
+  province: text("province"),
+  postalCode: text("postalCode"),
+  /** Director médico responsable. */
+  medicalDirectorName: text("medicalDirectorName"),
+  medicalDirectorLicense: text("medicalDirectorLicense"),
+  /** Nº de registro sanitario del centro. */
+  healthRegistryNumber: text("healthRegistryNumber"),
+  /** Contacto de protección de datos (RGPD). */
+  dataProtectionContact: text("dataProtectionContact"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 })

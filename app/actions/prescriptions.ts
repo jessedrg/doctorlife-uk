@@ -118,7 +118,7 @@ export async function issuePrescription(input: {
     console.log("[v0] prescription email/notification error:", e instanceof Error ? e.message : e)
   }
 
-  revalidatePath("/medico/recetas")
+  revalidatePath("/clinica/recetas")
   revalidatePath("/portal/recetas")
   return { ok: true }
 }

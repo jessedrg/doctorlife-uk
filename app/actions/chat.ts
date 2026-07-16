@@ -137,7 +137,7 @@ export async function setConversationStatus(
     .set({ doctorStatus: status })
     .where(eq(conversations.id, conversationId))
 
-  revalidatePath("/medico/chat")
+  revalidatePath("/clinica/chat")
   return { ok: true as const, status }
 }
 
@@ -211,7 +211,7 @@ export async function sendMessage(conversationId: number, body: string) {
     .where(eq(conversations.id, conversationId))
 
   revalidatePath("/portal/chat")
-  revalidatePath("/medico/chat")
+  revalidatePath("/clinica/chat")
 
   // ── Notificación por email al destinatario ──────────────────────────────
   // Se lanza de forma fire-and-forget (sin await) para no bloquear la
@@ -344,7 +344,7 @@ export async function createInstantCall(conversationId: number) {
     .where(eq(conversations.id, conversationId))
 
   revalidatePath("/portal/chat")
-  revalidatePath("/medico/chat")
+  revalidatePath("/clinica/chat")
 
   return {
     ok: true as const,

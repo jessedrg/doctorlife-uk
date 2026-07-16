@@ -1,37 +1,23 @@
 import "server-only"
 
 import { db } from "@/lib/db"
-import { clinics, type Clinic } from "@/lib/db/schema"
-import { asc, eq } from "drizzle-orm"
+import { doctorProfiles, type DoctorProfile } from "@/lib/db/schema"
+import { eq } from "drizzle-orm"
 
 /**
- * La clínica es el comerciante de liquidación de todo acto médico. Modelo de
- * una sola fila: siempre operamos sobre la primera (y única) fila de `clinics`.
- * Si aún no existe, la creamos con valores por defecto (opcionalmente sembrando
- * la cuenta Connect desde `CLINIC_STRIPE_ACCOUNT_ID`).
+ * En DoctorLife cada CLÍNICA es una cuenta de tipo médico (`doctor_profiles`):
+ * es el comerciante de liquidación de sus propios actos médicos en Stripe
+ * Connect y gestiona sus propios datos fiscales/sanitarios. No hay una cuenta
+ * central de clínica: cada clínica cobra en su propia cuenta Connect.
  */
-export async function getClinic(): Promise<Clinic> {
-  const [row] = await db.select().from(clinics).orderBy(asc(clinics.id)).limit(1)
-  if (row) return row
-
-  const seededAccount = process.env.CLINIC_STRIPE_ACCOUNT_ID || null
-  const [created] = await db
-    .insert(clinics)
-    .values({
-      name: "DoctorLife Clínica",
-      stripeAccountId: seededAccount,
-    })
-    .returning()
-  return created
-}
 
 /**
- * Campos obligatorios que la clínica debe rellenar para poder OPERAR y facturar
- * como centro sanitario. Se usan tanto para el bloqueo de cobros como para
- * indicar en el panel qué falta.
+ * Campos fiscales y sanitarios obligatorios que la clínica debe rellenar para
+ * poder OPERAR y facturar como centro sanitario. Se usan tanto para el bloqueo
+ * de cobros como para indicar en el panel qué falta.
  */
 export const REQUIRED_CLINIC_FIELDS = [
-  "name",
+  "clinicName",
   "taxId",
   "addressLine",
   "city",
@@ -42,58 +28,46 @@ export const REQUIRED_CLINIC_FIELDS = [
   "medicalDirectorLicense",
   "billingEmail",
   "dataProtectionContact",
-] as const satisfies readonly (keyof Clinic)[]
+] as const satisfies readonly (keyof DoctorProfile)[]
 
 /** Devuelve la lista de campos obligatorios que faltan por rellenar. */
-export function missingClinicFields(clinic: Clinic): (keyof Clinic)[] {
+export function missingClinicFields(profile: DoctorProfile): (keyof DoctorProfile)[] {
   return REQUIRED_CLINIC_FIELDS.filter((f) => {
-    const v = clinic[f]
+    const v = profile[f]
     return v == null || String(v).trim() === ""
   })
 }
 
 /** ¿Están completos todos los datos obligatorios para operar/facturar? */
-export function clinicDataComplete(clinic: Clinic): boolean {
-  return missingClinicFields(clinic).length === 0
+export function clinicDataComplete(profile: DoctorProfile): boolean {
+  return missingClinicFields(profile).length === 0
 }
 
 export type ClinicChargeContext = {
-  /** Cuenta Connect de la clínica. */
+  /** Cuenta Connect de la clínica (médico). */
   accountId: string
-  /** Puede aceptar cargos (onboarding completo). */
+  /** Puede aceptar cargos (onboarding completo + datos completos). */
   ready: boolean
 }
 
 /**
- * Contexto para enrutar un cargo a la clínica. Devuelve `null` si NO se puede
- * cobrar todavía, y en ese caso NO se debe cobrar (evita que el dinero caiga en
- * la plataforma como merchant of record). Requiere las tres condiciones:
- *  1. Cuenta Connect creada.
+ * Contexto para enrutar un cargo a la clínica del médico indicado. Devuelve
+ * `null` si NO se puede cobrar todavía, y en ese caso NO se debe cobrar (evita
+ * que el dinero caiga en la plataforma como merchant of record). Requiere:
+ *  1. Cuenta Connect creada (`stripeAccountId`).
  *  2. Stripe habilitado para cargos (`chargesEnabled`).
  *  3. Datos obligatorios de centro sanitario completos.
  */
-export async function getClinicChargeContext(): Promise<ClinicChargeContext | null> {
-  const clinic = await getClinic()
-  if (!clinic.stripeAccountId || !clinic.chargesEnabled) return null
-  if (!clinicDataComplete(clinic)) return null
-  return { accountId: clinic.stripeAccountId, ready: true }
-}
-
-/** Actualiza la cuenta Connect de la clínica (id de cuenta). */
-export async function setClinicStripeAccount(clinicId: number, accountId: string): Promise<void> {
-  await db
-    .update(clinics)
-    .set({ stripeAccountId: accountId, updatedAt: new Date() })
-    .where(eq(clinics.id, clinicId))
-}
-
-/** Sincroniza los flags de onboarding de la clínica. */
-export async function setClinicStatus(
-  clinicId: number,
-  status: { chargesEnabled: boolean; payoutsEnabled: boolean; stripeOnboarded: boolean },
-): Promise<void> {
-  await db
-    .update(clinics)
-    .set({ ...status, updatedAt: new Date() })
-    .where(eq(clinics.id, clinicId))
+export async function getDoctorChargeContext(
+  doctorId: string,
+): Promise<ClinicChargeContext | null> {
+  const [profile] = await db
+    .select()
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, doctorId))
+    .limit(1)
+  if (!profile) return null
+  if (!profile.stripeAccountId || !profile.chargesEnabled) return null
+  if (!clinicDataComplete(profile)) return null
+  return { accountId: profile.stripeAccountId, ready: true }
 }

@@ -93,8 +93,8 @@ export async function updateDoctorProfile(input: {
     .set({ name: fullName, updatedAt: new Date() })
     .where(eq(userTable.id, user.id))
 
-  revalidatePath("/medico")
-  revalidatePath("/medico/cuenta")
+  revalidatePath("/clinica")
+  revalidatePath("/clinica/cuenta")
   return { ok: true as const }
 }
 
@@ -124,8 +124,8 @@ export async function uploadDoctorAvatar(formData: FormData) {
     .set({ image: blob.url, updatedAt: new Date() })
     .where(eq(userTable.id, me.id))
 
-  revalidatePath("/medico/cuenta")
-  revalidatePath("/medico/chat")
+  revalidatePath("/clinica/cuenta")
+  revalidatePath("/clinica/chat")
   return { ok: true as const, url: blob.url }
 }
 
@@ -233,8 +233,8 @@ export async function startStripeOnboarding(): Promise<
     const baseUrl = await getRequestBaseUrl()
     const link = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `${baseUrl}/medico/pagos?refresh=1`,
-      return_url: `${baseUrl}/medico/pagos?done=1`,
+      refresh_url: `${baseUrl}/clinica/pagos?refresh=1`,
+      return_url: `${baseUrl}/clinica/pagos?done=1`,
       type: "account_onboarding",
     })
 
@@ -369,8 +369,8 @@ export async function refreshStripeStatus() {
     .where(eq(doctorProfiles.userId, user.id))
     .returning()
 
-  revalidatePath("/medico")
-  revalidatePath("/medico/pagos")
+  revalidatePath("/clinica")
+  revalidatePath("/clinica/pagos")
   return updated
 }
 
@@ -800,7 +800,7 @@ export async function addDoctorNote(input: {
       body,
       visibility: input.visibility === "shared" ? "shared" : "internal",
     })
-    revalidatePath("/medico/pacientes")
+    revalidatePath("/clinica/pacientes")
     return { ok: true }
   } catch (err) {
     console.log("[v0] addDoctorNote error:", err instanceof Error ? err.message : err)
@@ -817,7 +817,7 @@ export async function deleteDoctorNote(
     await db
       .delete(doctorNotes)
       .where(and(eq(doctorNotes.id, noteId), eq(doctorNotes.doctorId, me.id)))
-    revalidatePath("/medico/pacientes")
+    revalidatePath("/clinica/pacientes")
     return { ok: true }
   } catch (err) {
     console.log("[v0] deleteDoctorNote error:", err instanceof Error ? err.message : err)

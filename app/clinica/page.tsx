@@ -35,7 +35,7 @@ export default async function MedicoHome() {
             Tienes {capacity.activeCount}/{capacity.maxPatients} pacientes activos. No apareces disponible para nuevas suscripciones.
           </p>
           <Link
-            href="/medico/cuenta"
+            href="/clinica/cuenta"
             className="shrink-0 rounded-full border border-clay/40 px-3 py-1.5 text-[12.5px] font-medium text-clay no-underline hover:bg-clay/10 transition-colors"
           >
             Ajustar
@@ -49,7 +49,7 @@ export default async function MedicoHome() {
             Tienes {capacity.activeCount}/{capacity.maxPatients} pacientes activos.
           </p>
           <Link
-            href="/medico/cuenta"
+            href="/clinica/cuenta"
             className="shrink-0 rounded-full border border-ink/20 px-3 py-1.5 text-[12.5px] font-medium text-ink no-underline hover:bg-ink/5 transition-colors"
           >
             Ajustar

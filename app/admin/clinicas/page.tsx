@@ -4,19 +4,20 @@ import { AdminDoctorToggle } from "@/components/admin-doctor-toggle"
 import { AdminDoctorDevToggle } from "@/components/admin-doctor-dev-toggle"
 import { AdminCreateDoctor } from "@/components/admin-create-doctor"
 
-export const metadata = { title: "Médicos — DoctorLife" }
+export const metadata = { title: "Clínicas — DoctorLife" }
 
-export default async function AdminDoctorsPage() {
+export default async function AdminClinicsPage() {
   await requireRole("admin")
   const doctors = await listDoctors()
 
   return (
     <div>
       <h1 className="text-[30px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-        Médicos ({doctors.length})
+        Clínicas ({doctors.length})
       </h1>
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Gestiona los médicos de la plataforma y su estado de cobros.
+        Invita a las clínicas de la plataforma y consulta su estado de cobros. Cada clínica
+        gestiona su propio Stripe y sus datos fiscales desde su portal.
       </p>
 
       <div className="mt-6 max-w-[680px]">

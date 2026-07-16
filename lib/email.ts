@@ -325,7 +325,7 @@ export async function sendNewMessageEmail(opts: {
   const firstName = opts.recipientName.split(" ")[0] || "hola"
   const chatUrl =
     opts.recipientRole === "doctor"
-      ? `${getCanonicalBaseUrl()}/medico/chat`
+      ? `${getCanonicalBaseUrl()}/clinica/chat`
       : `${getCanonicalBaseUrl()}/portal/chat`
 
   const previewText =
