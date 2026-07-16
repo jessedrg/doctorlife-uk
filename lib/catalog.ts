@@ -7,7 +7,9 @@
  * de Stripe y aplica automáticamente el enrutado a la clínica + la comisión de
  * plataforma. No hace falta tocar la lógica de pagos.
  *
- * Los precios se guardan en céntimos (EUR) e incluyen IVA.
+ * Los precios se guardan en céntimos (EUR). La asistencia sanitaria prestada
+ * por profesionales médicos está exenta de IVA (art. 20 Ley del IVA), por lo
+ * que el precio mostrado es el total final, sin impuestos añadidos.
  */
 
 import type Stripe from "stripe"
@@ -25,7 +27,7 @@ export interface Product {
   description: string
   /** Modelo de cobro. */
   model: PricingModel
-  /** Precio recurrente / unitario con IVA incluido (céntimos). */
+  /** Precio recurrente / unitario (céntimos). Sin IVA (servicio médico exento). */
   priceCents: number
   /** Divisa ISO (por defecto EUR). */
   currency: string
@@ -33,6 +35,11 @@ export interface Product {
   active: boolean
   /** Bullets opcionales para UI. */
   features?: string[]
+  /**
+   * Meses de acceso al tratamiento que concede un pago único (pack / one_time).
+   * En suscripciones no aplica (el acceso se mantiene mientras esté activa).
+   */
+  accessMonths?: number
 
   /* ── Suscripción ── */
   /** Periodicidad del cobro recurrente. */
@@ -52,43 +59,56 @@ export interface Product {
    ──────────────────────────────────────────────────────────── */
 export const CATALOG: Product[] = [
   {
-    id: "seguimiento-endocrino",
-    name: "Seguimiento con endocrino",
+    id: "seguimiento-mensual",
+    name: "Suscripción mensual",
     description:
-      "Suscripción mensual con seguimiento médico. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes).",
+      "Seguimiento médico continuo, receta cuando proceda y una consulta por llamada al mes. Sin permanencia, cancela cuando quieras.",
     model: "subscription",
-    priceCents: 10000, // 100 € IVA incl.
+    priceCents: 13900, // 139 €/mes
     currency: "eur",
     active: true,
     interval: "month",
-    firstPeriodCents: 6000, // 60 € el primer mes
     features: [
-      "Videoconsultas con tu endocrino",
+      "Seguimiento médico continuo con tu médico",
       "Receta electrónica cuando proceda",
-      "Seguimiento y ajuste por la app",
+      "Una consulta por llamada al mes",
+      "Sin permanencia: cancela cuando quieras",
     ],
   },
-  // Ejemplos listos para activar en el futuro (active: false → no se ofrecen aún):
-  // {
-  //   id: "pack-3-consultas",
-  //   name: "Pack 3 consultas",
-  //   description: "Tres videoconsultas de seguimiento para usar cuando quieras.",
-  //   model: "pack",
-  //   priceCents: 6000,
-  //   currency: "eur",
-  //   active: false,
-  //   quantity: 3,
-  //   expiresInDays: 365,
-  // },
-  // {
-  //   id: "consulta-puntual",
-  //   name: "Consulta puntual",
-  //   description: "Una videoconsulta médica sin suscripción.",
-  //   model: "one_time",
-  //   priceCents: 2500,
-  //   currency: "eur",
-  //   active: false,
-  // },
+  {
+    id: "pack-5-meses",
+    name: "Pack 5 meses",
+    description:
+      "Programa completo de 5 meses en un único pago. La mejor relación calidad-precio para comprometerte con tu objetivo.",
+    model: "one_time",
+    priceCents: 44900, // 449 € pago único
+    currency: "eur",
+    active: true,
+    accessMonths: 5,
+    features: [
+      "5 meses de seguimiento médico",
+      "Receta electrónica cuando proceda",
+      "Consulta por llamada mensual incluida",
+      "Precio cerrado: te sale mucho más barato",
+    ],
+  },
+  {
+    id: "nutricionista-glp1",
+    name: "Nutricionista + GLP1",
+    description:
+      "Programa de 5 meses con seguimiento médico y acompañamiento de nutricionista, en un único pago.",
+    model: "one_time",
+    priceCents: 64900, // 649 € pago único
+    currency: "eur",
+    active: true,
+    accessMonths: 5,
+    features: [
+      "5 meses de seguimiento médico",
+      "Acompañamiento de nutricionista",
+      "Receta electrónica cuando proceda",
+      "Consulta por llamada mensual incluida",
+    ],
+  },
 ]
 
 /* ── Helpers de lectura ── */
@@ -107,6 +127,24 @@ export function activeSubscriptions(): Product[] {
 
 export function activePacks(): Product[] {
   return activeProducts().filter((p) => p.model === "pack")
+}
+
+/** Pagos únicos activos (packs cerrados y programas de un solo pago). */
+export function activeOneTime(): Product[] {
+  return activeProducts().filter((p) => p.model === "one_time" || p.model === "pack")
+}
+
+/**
+ * Todos los planes que se pueden ofrecer a un paciente (suscripción + pagos
+ * únicos), ordenados: primero la suscripción recurrente y luego los packs.
+ */
+export function activeSellablePlans(): Product[] {
+  return [...activeSubscriptions(), ...activeOneTime()]
+}
+
+/** Suscripción principal (primera suscripción activa del catálogo). */
+export function mainSubscription(): Product | undefined {
+  return activeSubscriptions()[0]
 }
 
 /** Descuento del primer periodo de una suscripción (céntimos), o 0. */

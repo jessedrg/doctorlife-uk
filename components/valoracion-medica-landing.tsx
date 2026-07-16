@@ -120,7 +120,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta?",
-    a: "La primera valoración es gratuita. Si decides continuar, el seguimiento cuesta 100 €/mes, con el primer mes a 60 €. Sin permanencia: puedes cancelar cuando quieras.",
+    a: "La primera valoración es gratuita. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Puedes cancelar la suscripción cuando quieras.",
   },
   {
     q: "¿Qué pasa después de la valoración?",
@@ -328,12 +328,16 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </p>
               <ul className="mt-4 flex flex-col gap-2.5 text-[15px] text-ink">
                 <li className="flex items-center justify-between border-b border-ink/10 pb-2.5">
-                  <span>Primer mes</span>
-                  <span className="font-semibold">60 €</span>
+                  <span>Suscripción mensual</span>
+                  <span className="font-semibold">139 €/mes</span>
+                </li>
+                <li className="flex items-center justify-between border-b border-ink/10 pb-2.5">
+                  <span>Pack 5 meses</span>
+                  <span className="font-semibold">449 €</span>
                 </li>
                 <li className="flex items-center justify-between">
-                  <span>Meses siguientes</span>
-                  <span className="font-semibold">100 €/mes</span>
+                  <span>Nutricionista + GLP1</span>
+                  <span className="font-semibold">649 €</span>
                 </li>
               </ul>
               {!config.hideCta && (

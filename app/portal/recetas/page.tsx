@@ -1,5 +1,10 @@
 import { getMyPrescriptions } from "@/app/actions/prescriptions"
-import { getMySubscription, getPatientStatus, syncSubscriptionBySession } from "@/app/actions/subscription"
+import {
+  getMySubscription,
+  getPatientStatus,
+  syncSubscriptionBySession,
+  activateOneTimeAccessBySession,
+} from "@/app/actions/subscription"
 import { requireRole } from "@/lib/session"
 import { PrescriptionList } from "@/components/prescription-list"
 import { hasPendingVerification } from "@/app/actions/verification"
@@ -14,8 +19,15 @@ export default async function RecetasPage({
   const { session_id } = await searchParams
 
   if (session_id) {
+    // Ambas son idempotentes y solo actúan sobre el modo que corresponde
+    // (suscripción o pago único). Si falla, el webhook lo resolverá.
     try {
       await syncSubscriptionBySession(session_id)
+    } catch {
+      /* el webhook lo resolverá */
+    }
+    try {
+      await activateOneTimeAccessBySession(session_id)
     } catch {
       /* el webhook lo resolverá */
     }

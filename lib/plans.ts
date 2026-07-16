@@ -6,37 +6,32 @@
  * expone el plan principal en el formato `PlanInfo` que ya consumía la app, para
  * no romper las llamadas existentes.
  *
- * La primera visita sigue siendo GRATIS (0 €). El primer mes de suscripción
- * aplica la oferta del catálogo (`firstPeriodCents`).
+ * La primera visita (valoración) es GRATIS (0 €) y funciona como gancho. La
+ * suscripción no tiene oferta de primer mes: el precio es plano desde el inicio.
+ * Los servicios médicos están exentos de IVA (art. 20 Ley del IVA).
  */
-import { getProduct, firstPeriodDiscountCents, type Product } from "./catalog"
+import { getProduct, mainSubscription, type Product } from "./catalog"
 
-/** Producto principal (suscripción de seguimiento). */
+/** Producto principal (suscripción de seguimiento mensual). */
 const MAIN_PRODUCT: Product =
-  getProduct("seguimiento-endocrino") ??
+  mainSubscription() ??
+  getProduct("seguimiento-mensual") ??
   ({
-    id: "seguimiento-endocrino",
-    name: "Seguimiento con endocrino",
+    id: "seguimiento-mensual",
+    name: "Suscripción mensual",
     description: "Suscripción mensual con seguimiento médico.",
     model: "subscription",
-    priceCents: 10000,
+    priceCents: 13900,
     currency: "eur",
     active: true,
     interval: "month",
-    firstPeriodCents: 6000,
   } satisfies Product)
 
-/** Precio mensual total con IVA incluido (céntimos). */
-export const SUBSCRIPTION_PRICE_CENTS = MAIN_PRODUCT.priceCents   // 100 €
+/** Precio mensual (céntimos). Sin IVA (servicio médico exento). */
+export const SUBSCRIPTION_PRICE_CENTS = MAIN_PRODUCT.priceCents   // 139 €
 
-/** Pago único de la primera visita (céntimos). Ahora es GRATIS. */
+/** Pago único de la primera visita (céntimos). Es GRATIS. */
 export const FIRST_VISIT_CENTS = 0               // 0 € (gratis)
-
-/** Precio promocional del primer mes de suscripción (céntimos). */
-export const FIRST_MONTH_CENTS = MAIN_PRODUCT.firstPeriodCents ?? SUBSCRIPTION_PRICE_CENTS
-
-/** Descuento aplicado al primer mes vía cupón (100 € − 60 € = 40 €). */
-export const FIRST_MONTH_DISCOUNT_CENTS = firstPeriodDiscountCents(MAIN_PRODUCT)  // 40 €
 
 /** Id del producto principal en el catálogo (para el checkout). */
 export const MAIN_PRODUCT_ID = MAIN_PRODUCT.id
@@ -46,18 +41,10 @@ export const FIRST_VISIT_LABEL = "gratis"
 
 export interface PlanInfo {
   name: string
-  /** Precio mensual total con IVA incluido (céntimos). */
+  /** Precio mensual (céntimos). Sin IVA. */
   priceCents: number
-  /** Primer mes con la oferta de lanzamiento (céntimos). */
-  firstMonthCents: number
-  /** Total formateado, p. ej. "100,00 €/mes". */
+  /** Total formateado, p. ej. "139,00 €/mes". */
   totalLabel: string
-  /** Primer mes formateado, p. ej. "60,00 € el primer mes". */
-  firstMonthLabel: string
-  /** Precio sin IVA para mostrar en facturación (céntimos). */
-  basePriceCents: number
-  /** IVA en céntimos. */
-  ivaCents: number
 }
 
 function eur(cents: number): string {
@@ -65,17 +52,10 @@ function eur(cents: number): string {
 }
 
 function buildMainPlan(): PlanInfo {
-  // IVA invertido: precio con IVA = base × 1.21  →  base = precio / 1.21
-  const basePriceCents = Math.round(SUBSCRIPTION_PRICE_CENTS / 1.21)
-  const ivaCents = SUBSCRIPTION_PRICE_CENTS - basePriceCents
   return {
     name: MAIN_PRODUCT.name,
     priceCents: SUBSCRIPTION_PRICE_CENTS,
-    firstMonthCents: FIRST_MONTH_CENTS,
     totalLabel: `${eur(SUBSCRIPTION_PRICE_CENTS)}/mes`,
-    firstMonthLabel: `${eur(FIRST_MONTH_CENTS)} el primer mes`,
-    basePriceCents,
-    ivaCents,
   }
 }
 

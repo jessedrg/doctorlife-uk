@@ -247,6 +247,78 @@ export async function syncSubscriptionBySession(sessionId: string): Promise<void
   await applySubscriptionState(rowId, sub, session.customer as string | null)
 }
 
+/**
+ * Activa el acceso de un plan de PAGO ÚNICO (pack 5 meses, nutricionista+GLP1)
+ * a partir de la sesión de Checkout. Concede acceso durante `accessMonths` meses
+ * (5 por defecto) sin renovación automática. Idempotente: si ya está activo, no
+ * hace nada.
+ */
+export async function activateOneTimeAccessBySession(sessionId: string): Promise<void> {
+  const session = await stripe.checkout.sessions.retrieve(sessionId)
+  if (session.mode !== "payment") return
+  const rowId = Number(session.metadata?.subscriptionRowId)
+  if (!rowId || session.payment_status !== "paid") return
+
+  const [row] = await db
+    .select({
+      id: subscriptions.id,
+      status: subscriptions.status,
+      patientId: subscriptions.patientId,
+      doctorId: subscriptions.doctorId,
+    })
+    .from(subscriptions)
+    .where(eq(subscriptions.id, rowId))
+    .limit(1)
+  if (!row) return
+  // Ya activado (idempotencia).
+  if (["active", "trialing", "past_due"].includes(row.status)) return
+
+  const product = session.metadata?.productId ? getProduct(session.metadata.productId) : undefined
+  const months = product?.accessMonths ?? 5
+  const end = new Date()
+  end.setMonth(end.getMonth() + months)
+
+  await db
+    .update(subscriptions)
+    .set({
+      status: "active",
+      // Pago único: no renueva automáticamente; el acceso caduca al final.
+      cancelAtPeriodEnd: true,
+      currentPeriodEnd: end,
+      stripeCustomerId: (session.customer as string | null) ?? undefined,
+      updatedAt: new Date(),
+    })
+    .where(eq(subscriptions.id, rowId))
+
+  // Cerramos la oferta de plan que la clínica hubiera enviado.
+  await db
+    .update(planOffers)
+    .set({ status: "paid", paidAt: new Date() })
+    .where(and(eq(planOffers.patientId, row.patientId), eq(planOffers.status, "sent")))
+
+  // Aviso de activación al médico.
+  if (row.doctorId) {
+    const [patient] = await db
+      .select({ name: userTable.name })
+      .from(userTable)
+      .where(eq(userTable.id, row.patientId))
+      .limit(1)
+    const patientName = patient?.name || "Un paciente"
+    try {
+      await createNotification({
+        userId: row.doctorId,
+        type: "subscription_activated",
+        title: `${patientName} activó su plan`,
+        body: `${patientName} ha activado el plan "${product?.name ?? "tratamiento"}" (${months} meses de acceso).`,
+        href: "/medico/pacientes",
+      })
+    } catch (e) {
+      console.log("[v0] one-time activation notify failed:", e instanceof Error ? e.message : e)
+    }
+  }
+  revalidatePath("/portal")
+}
+
 /** Aplica el estado de una suscripción de Stripe a nuestra fila. */
 export async function applySubscriptionState(
   rowId: number,

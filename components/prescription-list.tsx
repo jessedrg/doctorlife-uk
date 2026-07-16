@@ -155,12 +155,11 @@ export function PrescriptionList({
               <p className="font-semibold text-ink">Tu receta está lista</p>
               <p className="mt-1 text-sm leading-relaxed text-ink-soft">
                 Tu médico ha preparado tu tratamiento. Para verlo y descargar el PDF, activa tu
-                suscripción mensual. Incluye endocrino asignado, videollamada mensual y chat en
-                vivo. Oferta de lanzamiento: el primer mes pagas {MAIN_PLAN.firstMonthLabel};
-                después, {MAIN_PLAN.totalLabel}. Cancela cuando quieras.
+                suscripción mensual. Incluye seguimiento con tu médico, una consulta por llamada al
+                mes y chat en vivo, por {MAIN_PLAN.totalLabel}. Sin permanencia: cancela cuando quieras.
               </p>
               <div className="mt-3">
-                <UnlockPrescriptionsButton priceLabel={MAIN_PLAN.firstMonthLabel} />
+                <UnlockPrescriptionsButton priceLabel={MAIN_PLAN.totalLabel} />
               </div>
             </div>
           </div>

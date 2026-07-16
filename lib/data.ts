@@ -8,6 +8,8 @@ export type Product = {
   name: string;
   subtitle: string;
   price: string;
+  /** Texto tras el precio, p. ej. "/mes" o "· pago único · 5 meses". */
+  priceSuffix?: string;
   tag: string;
   img: string;
   features: string[];
@@ -16,62 +18,55 @@ export type Product = {
   comingSoon?: boolean;
 };
 
-/* Una única suscripción real (100 €/mes) con todo lo necesario para el
-   tratamiento con GLP‑1. El resto de servicios llegarán «Próximamente». */
+/* Tres planes reales. La primera valoración es gratuita (gancho) y luego el
+   paciente elige: suscripción mensual, pack de 5 meses o nutricionista+GLP1.
+   Servicios médicos exentos de IVA: los precios son finales. */
 export const products: Product[] = [
   {
-    name: "Plan de seguimiento médico con GLP-1",
-    subtitle: "Todo lo que necesitas para adelgazar con seguimiento médico real, en una sola cuota.",
-    price: "100€/mes + IVA",
+    name: "Suscripción mensual",
+    subtitle: "Seguimiento médico continuo, receta y una consulta por llamada al mes. Sin permanencia.",
+    price: "139€",
+    priceSuffix: "/mes",
     tag: "Suscripción",
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Primera consulta gratuita con endocrino colegiado",
-      "Receta online de GLP-1 (Mounjaro, Ozempic o Wegovy) para comprar en tu farmacia",
-      "Seguimiento continuo y ajustes de dosis desde la app",
-      "Chat directo con tu médico cuando lo necesites",
-      "Analítica y revisión de historial clínico incluida",
+      "Primera valoración gratuita",
+      "Seguimiento médico continuo con tu médico",
+      "Receta de GLP-1 (Mounjaro, Ozempic o Wegovy) cuando proceda",
+      "Una consulta por llamada al mes",
+      "Chat directo con tu médico desde la app",
       "Sin permanencia: cancela cuando quieras",
     ],
   },
   {
-    name: "Nutrición personalizada",
-    subtitle: "Plan de alimentación diseñado por tu nutricionista para potenciar el GLP‑1.",
-    price: "Próximamente",
-    tag: "Próximamente",
+    name: "Pack 5 meses",
+    subtitle: "El programa completo en un único pago. La mejor relación calidad-precio para comprometerte.",
+    price: "449€",
+    priceSuffix: "· pago único · 5 meses",
+    tag: "Pack ahorro",
     img: "/products/maren-daily.png",
-    comingSoon: true,
     features: [
-      "Nutricionista asignado a tu caso",
-      "Plan de comidas adaptado a tu tratamiento",
-      "Seguimiento de hábitos desde la app",
+      "5 meses de seguimiento médico",
+      "Receta de GLP-1 cuando proceda",
+      "Una consulta por llamada al mes",
+      "Chat directo con tu médico desde la app",
+      "Precio cerrado: te sale mucho más barato",
     ],
   },
   {
-    name: "Entrenamiento guiado",
-    subtitle: "Rutinas adaptadas para preservar músculo y mantener tus resultados.",
-    price: "Próximamente",
-    tag: "Próximamente",
+    name: "Nutricionista + GLP1",
+    subtitle: "Programa de 5 meses con seguimiento médico y acompañamiento de nutricionista.",
+    price: "649€",
+    priceSuffix: "· pago único · 5 meses",
+    tag: "Programa completo",
     img: "/products/maren-hd.png",
-    comingSoon: true,
     features: [
-      "Plan de entrenamiento personalizado",
-      "Enfoque en preservar masa muscular",
-      "Progresión y registro desde la app",
-    ],
-  },
-  {
-    name: "Longevidad y hormonas",
-    subtitle: "Salud metabólica y hormonal al máximo nivel para el largo plazo.",
-    price: "Próximamente",
-    tag: "Próximamente",
-    img: "/products/maren-balance.png",
-    comingSoon: true,
-    features: [
-      "Analíticas avanzadas de biomarcadores",
-      "Optimización hormonal personalizada",
-      "Plan de longevidad y prevención",
+      "5 meses de seguimiento médico",
+      "Acompañamiento de nutricionista",
+      "Receta de GLP-1 cuando proceda",
+      "Una consulta por llamada al mes",
+      "Chat directo con tu equipo desde la app",
     ],
   },
 ];
@@ -175,19 +170,20 @@ export const adsQuizSteps: QuizStep[] = quizSteps;
 
 export const adsProducts: Product[] = [
   {
-    name: "Plan de seguimiento médico con GLP-1",
+    name: "Suscripción mensual",
     subtitle:
-      "Todo lo que necesitas para cuidar tu peso con seguimiento médico real, en una sola cuota.",
-    price: "100€/mes + IVA",
+      "Todo lo que necesitas para cuidar tu peso con seguimiento médico real. Primera valoración gratuita.",
+    price: "139€",
+    priceSuffix: "/mes",
     tag: "Suscripción",
     img: "/products/maren-pen.png",
     featured: true,
     features: [
-      "Primera consulta gratuita con médico colegiado",
+      "Primera valoración gratuita con médico colegiado",
       "Receta online de GLP-1 (Mounjaro, Ozempic o Wegovy) para comprar en tu farmacia",
       "Seguimiento continuo y ajustes de dosis desde la app",
       "Chat directo con tu médico cuando lo necesites",
-      "Analítica y revisión de historial clínico incluida",
+      "Una consulta por llamada al mes incluida",
       "Sin permanencia: cancela cuando quieras",
     ],
   },

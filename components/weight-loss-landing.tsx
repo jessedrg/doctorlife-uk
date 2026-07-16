@@ -88,7 +88,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta?",
-    a: "La primera visita es gratis. Oferta de lanzamiento: el primer mes 60 € y, después, una única suscripción de 100 €/mes que incluye seguimiento por chat con tu médico y ajuste del plan. Sin permanencia.",
+    a: "La primera valoración es gratis. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Incluye seguimiento por chat con tu médico y ajuste del plan.",
   },
   {
     q: "¿Necesito acudir presencialmente?",
@@ -291,10 +291,10 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   Empieza gratis y decide con calma
                 </h2>
                 <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  La primera visita es gratis. Si decides continuar, oferta de
-                  lanzamiento: el primer mes 60 € y, después, una única suscripción
-                  de 100 €/mes que cubre el seguimiento con tu médico y el ajuste de
-                  tu plan. Sin permanencia y sin sorpresas.
+                  La primera valoración es gratis. Si decides continuar, eliges tu
+                  plan: 139 €/mes sin permanencia, pack de 5 meses por 449 € o
+                  nutricionista + GLP1 por 649 €. Cubre el seguimiento con tu médico
+                  y el ajuste de tu plan. Sin sorpresas.
                 </p>
                 <ul className="mt-6 flex flex-col gap-2.5 text-[15px] text-ink">
                   {[
@@ -324,12 +324,12 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                 </p>
                 <div className="my-6 h-px bg-paper/15" />
                 <p className="text-[14px] text-paper/70">
-                  Si continúas · oferta de lanzamiento
+                  Si continúas · elige tu plan
                 </p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[32px] font-light leading-none">60 €</span>
+                  <span className="text-[32px] font-light leading-none">139 €</span>
                   <span className="mb-1 text-[14px] text-paper/70">
-                    primer mes, luego 100 €/mes
+                    /mes · o pack 5 meses 449 €
                   </span>
                 </p>
                 <QuizTrigger

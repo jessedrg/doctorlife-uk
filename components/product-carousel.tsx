@@ -51,8 +51,9 @@ export function ProductCarousel() {
             <span className="font-serif italic text-sage">gratis</span>
           </div>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
-            Después, una suscripción de 100 €/mes sin permanencia si decides
-            empezar. Todo tu seguimiento se gestiona desde la app interna de DoctorLife.
+            Después, si decides empezar, eliges tu plan: suscripción de 139 €/mes
+            sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por
+            649 €. Todo tu seguimiento se gestiona desde la app de DoctorLife.
           </p>
         </div>
         <QuizTrigger className="shrink-0 whitespace-nowrap rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
@@ -62,7 +63,7 @@ export function ProductCarousel() {
 
       <div className="mb-6 flex items-end justify-between">
         <div className="text-[clamp(22px,2.4vw,30px)] font-light">
-          Una suscripción, <span className="font-serif italic">todo incluido</span>
+          Elige tu plan, <span className="font-serif italic">todo incluido</span>
         </div>
         <div className="flex gap-[10px]">
           <button type="button" onClick={prev} aria-label="Anterior" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
@@ -106,8 +107,8 @@ export function ProductCarousel() {
               </div>
             ) : (
               <div className="flex items-baseline gap-1">
-                <span className="text-[28px] font-light text-sage">{p.price.split("/")[0]}</span>
-                <span className="text-sm text-paper/55">/mes</span>
+                <span className="text-[28px] font-light text-sage">{p.price}</span>
+                <span className="text-sm text-paper/55">{p.priceSuffix ?? "/mes"}</span>
               </div>
             )}
 
@@ -148,11 +149,12 @@ export function ProductCarousel() {
       </div>
 
       <p className="mx-auto mt-[22px] max-w-[80ch] text-center text-xs text-paper/50">
-        *La primera visita médica es <span className="font-semibold text-paper/80">gratis</span>. Si decides
-        continuar, oferta de lanzamiento: <span className="font-semibold text-paper/80">primer mes 60&nbsp;€</span> (después,
-        <span className="font-semibold text-paper/80">100&nbsp;€/mes</span> sin permanencia)
-        e incluye chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. La medicación solo
-        está disponible si es prescrita tras una consulta médica y requiere una membresía DoctorLife activa.
+        *La primera valoración médica es <span className="font-semibold text-paper/80">gratis</span>. Si decides
+        continuar, eliges tu plan: <span className="font-semibold text-paper/80">139&nbsp;€/mes</span> sin permanencia,
+        <span className="font-semibold text-paper/80"> pack de 5 meses por 449&nbsp;€</span> o
+        <span className="font-semibold text-paper/80"> nutricionista + GLP1 por 649&nbsp;€</span>. Incluye chat con tu
+        médico, la receta de GLP‑1 si es necesaria y el seguimiento. Servicios médicos exentos de IVA. La medicación
+        solo está disponible si es prescrita tras una consulta médica y requiere una membresía DoctorLife activa.
       </p>
     </div>
   );

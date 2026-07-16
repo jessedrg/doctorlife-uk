@@ -8,6 +8,7 @@ import {
   findSubscriptionRowByStripeId,
   handleInvoicePaidForSubscription,
   syncSubscriptionBySession,
+  activateOneTimeAccessBySession,
 } from "@/app/actions/subscription"
 
 /**
@@ -46,6 +47,9 @@ export async function POST(req: Request) {
           await provisionFromSession(session.id)
         } else if (session.mode === "subscription") {
           await syncSubscriptionBySession(session.id)
+        } else if (session.metadata?.subscriptionRowId) {
+          // Plan de pago único (pack 5 meses, nutricionista+GLP1): concede acceso.
+          await activateOneTimeAccessBySession(session.id)
         } else {
           const appointmentId = Number(session.metadata?.appointmentId)
           if (appointmentId && session.payment_status === "paid") {
