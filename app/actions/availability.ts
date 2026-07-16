@@ -46,7 +46,7 @@ export async function saveWeeklyRules(rules: WeeklyRule[]) {
   }
 
   await scheduling.setWeeklyRules(userId, rules)
-  revalidatePath("/medico/disponibilidad")
+  revalidatePath("/clinica/disponibilidad")
   return { ok: true }
 }
 
@@ -58,7 +58,7 @@ export async function updateScheduleSettings(input: { slotMinutes: number; timez
     .update(doctorProfiles)
     .set({ slotMinutes: slot, timezone: input.timezone, updatedAt: new Date() })
     .where(eq(doctorProfiles.userId, userId))
-  revalidatePath("/medico/disponibilidad")
+  revalidatePath("/clinica/disponibilidad")
   return { ok: true }
 }
 
@@ -66,14 +66,14 @@ export async function addBlockedDate(date: string) {
   const userId = await requireDoctorId()
   const existing = await scheduling.getExceptions(userId)
   if (!existing.includes(date)) await scheduling.addException(userId, date)
-  revalidatePath("/medico/disponibilidad")
+  revalidatePath("/clinica/disponibilidad")
   return { ok: true }
 }
 
 export async function removeBlockedDate(date: string) {
   const userId = await requireDoctorId()
   await scheduling.removeException(userId, date)
-  revalidatePath("/medico/disponibilidad")
+  revalidatePath("/clinica/disponibilidad")
   return { ok: true }
 }
 

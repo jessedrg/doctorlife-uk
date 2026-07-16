@@ -31,9 +31,10 @@ export function AdminCreateDoctor() {
 
   return (
     <form onSubmit={handleSubmit} className="rounded-[20px] border border-ink/10 bg-cream p-5">
-      <h2 className="text-[16px] font-medium text-ink">Crear médico</h2>
+      <h2 className="text-[16px] font-medium text-ink">Invitar clínica</h2>
       <p className="mt-1 text-[13.5px] leading-relaxed text-ink-soft">
-        Crea la cuenta de un médico. Recibirá por email su usuario y una contraseña temporal que podrá cambiar.
+        Crea la cuenta de una clínica. Recibirá por email su usuario y una contraseña temporal que
+        podrá cambiar. Después conectará su propio Stripe y sus datos fiscales desde su portal.
       </p>
       <div className="mt-4 flex flex-col gap-2.5">
         <div className="flex flex-col gap-2.5 sm:flex-row">
@@ -41,7 +42,7 @@ export function AdminCreateDoctor() {
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Nombre completo"
+            placeholder="Nombre de la clínica o del profesional"
             className="flex-1 rounded-full border border-ink/15 bg-paper px-4 py-2.5 text-[14px] text-ink outline-none placeholder:text-ink-mute focus:border-ink/35"
           />
           <input
@@ -49,7 +50,7 @@ export function AdminCreateDoctor() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="medico@ejemplo.com"
+            placeholder="clinica@ejemplo.com"
             className="flex-1 rounded-full border border-ink/15 bg-paper px-4 py-2.5 text-[14px] text-ink outline-none placeholder:text-ink-mute focus:border-ink/35"
           />
         </div>
@@ -65,7 +66,7 @@ export function AdminCreateDoctor() {
             disabled={pending}
             className="rounded-full bg-ink px-5 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            {pending ? "Creando…" : "Crear médico"}
+            {pending ? "Creando…" : "Invitar clínica"}
           </button>
         </div>
       </div>

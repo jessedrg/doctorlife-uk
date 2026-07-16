@@ -1,23 +1,38 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { clinics, appointments, subscriptions } from "@/lib/db/schema"
+import { doctorProfiles } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
-import { stripe, PLATFORM_FEE_PERCENT, isStripeConfigured } from "@/lib/stripe"
-import {
-  getClinic,
-  setClinicStatus,
-  missingClinicFields,
-  clinicDataComplete,
-} from "@/lib/clinic"
+import { stripe } from "@/lib/stripe"
+import { missingClinicFields, clinicDataComplete } from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 
-async function requireAdmin() {
+/**
+ * Acciones de gestión de la PROPIA clínica (cuenta de tipo médico). Cada clínica
+ * es su comerciante de liquidación en Stripe Connect y gestiona sus datos
+ * fiscales/sanitarios desde su portal. Scope: el médico autenticado.
+ */
+async function requireDoctor() {
   const user = await getSessionUser()
-  if (!user || user.role !== "admin") throw new Error("Unauthorized")
+  if (!user || user.role !== "doctor") throw new Error("Unauthorized")
   return user
+}
+
+/** Devuelve el perfil de la clínica del médico, creándolo en blanco si no existe. */
+async function getMyProfile(userId: string, name: string) {
+  const [existing] = await db
+    .select()
+    .from(doctorProfiles)
+    .where(eq(doctorProfiles.userId, userId))
+    .limit(1)
+  if (existing) return existing
+  const [created] = await db
+    .insert(doctorProfiles)
+    .values({ userId, fullName: name })
+    .returning()
+  return created
 }
 
 export type ClinicStatus = {
@@ -46,33 +61,33 @@ export type ClinicStatus = {
   ready: boolean
 }
 
-/** Estado actual de la clínica para el panel de admin. */
+/** Estado actual de la clínica del médico para su portal. */
 export async function getClinicStatus(): Promise<ClinicStatus> {
-  await requireAdmin()
-  const c = await getClinic()
-  const missing = missingClinicFields(c)
+  const me = await requireDoctor()
+  const p = await getMyProfile(me.id, me.name)
+  const missing = missingClinicFields(p)
   const complete = missing.length === 0
   return {
-    id: c.id,
-    name: c.name,
-    taxId: c.taxId,
-    addressLine: c.addressLine,
-    city: c.city,
-    postalCode: c.postalCode,
-    province: c.province,
-    healthRegistryNumber: c.healthRegistryNumber,
-    medicalDirectorName: c.medicalDirectorName,
-    medicalDirectorLicense: c.medicalDirectorLicense,
-    billingEmail: c.billingEmail,
-    billingPhone: c.billingPhone,
-    dataProtectionContact: c.dataProtectionContact,
-    stripeAccountId: c.stripeAccountId,
-    stripeOnboarded: c.stripeOnboarded,
-    chargesEnabled: c.chargesEnabled,
-    payoutsEnabled: c.payoutsEnabled,
+    id: p.id,
+    name: p.clinicName ?? "",
+    taxId: p.taxId,
+    addressLine: p.addressLine,
+    city: p.city,
+    postalCode: p.postalCode,
+    province: p.province,
+    healthRegistryNumber: p.healthRegistryNumber,
+    medicalDirectorName: p.medicalDirectorName,
+    medicalDirectorLicense: p.medicalDirectorLicense,
+    billingEmail: p.billingEmail,
+    billingPhone: p.billingPhone,
+    dataProtectionContact: p.dataProtectionContact,
+    stripeAccountId: p.stripeAccountId,
+    stripeOnboarded: p.stripeOnboarded,
+    chargesEnabled: p.chargesEnabled,
+    payoutsEnabled: p.payoutsEnabled,
     dataComplete: complete,
     missingFields: missing as string[],
-    ready: Boolean(c.stripeAccountId && c.chargesEnabled && complete),
+    ready: Boolean(p.stripeAccountId && p.chargesEnabled && complete),
   }
 }
 
@@ -91,14 +106,14 @@ export async function updateClinicDetails(input: {
   billingPhone?: string
   dataProtectionContact?: string
 }): Promise<{ ok: true; dataComplete: boolean } | { error: string }> {
-  await requireAdmin()
-  const c = await getClinic()
+  const me = await requireDoctor()
+  const p = await getMyProfile(me.id, me.name)
   const clean = (v?: string) => {
     const t = v?.trim()
     return t ? t : null
   }
   const updated = {
-    name: input.name?.trim() || c.name,
+    clinicName: clean(input.name),
     taxId: clean(input.taxId),
     addressLine: clean(input.addressLine),
     city: clean(input.city),
@@ -112,11 +127,11 @@ export async function updateClinicDetails(input: {
     dataProtectionContact: clean(input.dataProtectionContact),
   }
   await db
-    .update(clinics)
+    .update(doctorProfiles)
     .set({ ...updated, updatedAt: new Date() })
-    .where(eq(clinics.id, c.id))
-  revalidatePath("/admin/clinica")
-  return { ok: true, dataComplete: clinicDataComplete({ ...c, ...updated }) }
+    .where(eq(doctorProfiles.userId, me.id))
+  revalidatePath("/clinica/pagos")
+  return { ok: true, dataComplete: clinicDataComplete({ ...p, ...updated }) }
 }
 
 /**
@@ -127,17 +142,17 @@ export async function updateClinicDetails(input: {
 export async function startClinicStripeOnboarding(): Promise<
   { url: string } | { error: string }
 > {
-  const admin = await requireAdmin()
-  const clinic = await getClinic()
+  const me = await requireDoctor()
+  const profile = await getMyProfile(me.id, me.name)
 
   try {
-    let accountId = clinic.stripeAccountId
+    let accountId = profile.stripeAccountId
 
     if (!accountId) {
       const account = await stripe.accounts.create({
         type: "express",
         country: "ES",
-        email: admin.email,
+        email: me.email,
         business_type: "company",
         capabilities: {
           card_payments: { requested: true },
@@ -145,22 +160,22 @@ export async function startClinicStripeOnboarding(): Promise<
         },
         business_profile: {
           mcc: "8062", // hospitals / clínicas
-          name: clinic.name,
+          name: profile.clinicName || profile.fullName,
         },
-        metadata: { clinicId: String(clinic.id) },
+        metadata: { userId: me.id },
       })
       accountId = account.id
       await db
-        .update(clinics)
+        .update(doctorProfiles)
         .set({ stripeAccountId: accountId, updatedAt: new Date() })
-        .where(eq(clinics.id, clinic.id))
+        .where(eq(doctorProfiles.userId, me.id))
     }
 
     const baseUrl = await getRequestBaseUrl()
     const link = await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `${baseUrl}/admin/clinica?refresh=1`,
-      return_url: `${baseUrl}/admin/clinica?done=1`,
+      refresh_url: `${baseUrl}/clinica/pagos?refresh=1`,
+      return_url: `${baseUrl}/clinica/pagos?done=1`,
       type: "account_onboarding",
     })
     return { url: link.url }
@@ -180,139 +195,24 @@ export async function startClinicStripeOnboarding(): Promise<
 export async function refreshClinicStripeStatus(): Promise<
   { ok: true } | { error: string }
 > {
-  await requireAdmin()
-  const clinic = await getClinic()
-  if (!clinic.stripeAccountId) return { error: "La clínica no tiene cuenta de Stripe." }
+  const me = await requireDoctor()
+  const profile = await getMyProfile(me.id, me.name)
+  if (!profile.stripeAccountId) return { error: "La clínica no tiene cuenta de Stripe." }
 
   try {
-    const acct = await stripe.accounts.retrieve(clinic.stripeAccountId)
-    await setClinicStatus(clinic.id, {
-      chargesEnabled: Boolean(acct.charges_enabled),
-      payoutsEnabled: Boolean(acct.payouts_enabled),
-      stripeOnboarded: Boolean(acct.details_submitted),
-    })
-    revalidatePath("/admin/clinica")
+    const acct = await stripe.accounts.retrieve(profile.stripeAccountId)
+    await db
+      .update(doctorProfiles)
+      .set({
+        chargesEnabled: Boolean(acct.charges_enabled),
+        payoutsEnabled: Boolean(acct.payouts_enabled),
+        stripeOnboarded: Boolean(acct.details_submitted),
+        updatedAt: new Date(),
+      })
+      .where(eq(doctorProfiles.userId, me.id))
+    revalidatePath("/clinica/pagos")
     return { ok: true }
   } catch (e) {
     return { error: e instanceof Error ? e.message : "No se pudo comprobar el estado." }
-  }
-}
-
-export type FeePeriod = {
-  label: string
-  feeCents: number
-  count: number
-}
-
-export type PlatformFeeTracking = {
-  available: boolean
-  /** Comisión tecnológica total cobrada por DoctorLife (céntimos). */
-  totalFeeCents: number
-  /** Importe bruto liquidado en la clínica (céntimos). */
-  grossToClinicCents: number
-  /** Nº de cobros con comisión. */
-  count: number
-  feePercent: number
-  currency: string
-  /** Últimas comisiones agrupadas por mes. */
-  months: FeePeriod[]
-  /** Contexto de negocio desde la BD. */
-  activeSubscriptions: number
-  paidAppointments: number
-}
-
-/**
- * Tracking de la comisión tecnológica de DoctorLife.
- *
- * Cada cobro de la clínica lleva un `application_fee` que Stripe abona
- * automáticamente a la plataforma. Aquí sumamos esas comisiones (lo que la
- * clínica nos paga por el servicio tecnológico) y mostramos el bruto liquidado
- * en la clínica, para tener la foto completa de cuánto nos corresponde.
- */
-export async function getPlatformFeeTracking(limit = 100): Promise<PlatformFeeTracking> {
-  await requireAdmin()
-
-  const [subsCountRow] = await db
-    .select({ n: subscriptions.id })
-    .from(subscriptions)
-    .where(eq(subscriptions.status, "active"))
-    .limit(1)
-    .catch(() => [{ n: 0 }] as unknown as { n: number }[])
-
-  // Conteos de negocio (best-effort).
-  let activeSubscriptions = 0
-  let paidAppointments = 0
-  try {
-    const subs = await db
-      .select({ id: subscriptions.id })
-      .from(subscriptions)
-      .where(eq(subscriptions.status, "active"))
-    activeSubscriptions = subs.length
-    const appts = await db
-      .select({ id: appointments.id })
-      .from(appointments)
-      .where(eq(appointments.status, "confirmed"))
-    paidAppointments = appts.length
-  } catch {
-    // ignore
-  }
-  void subsCountRow
-
-  const empty: PlatformFeeTracking = {
-    available: false,
-    totalFeeCents: 0,
-    grossToClinicCents: 0,
-    count: 0,
-    feePercent: PLATFORM_FEE_PERCENT,
-    currency: "eur",
-    months: [],
-    activeSubscriptions,
-    paidAppointments,
-  }
-
-  if (!isStripeConfigured) return empty
-
-  try {
-    const fees = await stripe.applicationFees.list({ limit })
-    if (!fees.data.length) return { ...empty, available: true }
-
-    let totalFeeCents = 0
-    let grossCents = 0
-    const byMonth = new Map<string, { fee: number; count: number }>()
-
-    for (const f of fees.data) {
-      totalFeeCents += f.amount
-      // El bruto del cargo asociado (importe que fue a la clínica antes de fee).
-      const chargeAmount =
-        typeof f.charge === "object" && f.charge ? (f.charge.amount ?? 0) : 0
-      grossCents += chargeAmount
-      const d = new Date(f.created * 1000)
-      const key = d.toLocaleDateString("es-ES", { month: "long", year: "numeric" })
-      const cur = byMonth.get(key) ?? { fee: 0, count: 0 }
-      cur.fee += f.amount
-      cur.count += 1
-      byMonth.set(key, cur)
-    }
-
-    const months: FeePeriod[] = [...byMonth.entries()].map(([label, v]) => ({
-      label,
-      feeCents: v.fee,
-      count: v.count,
-    }))
-
-    return {
-      available: true,
-      totalFeeCents,
-      grossToClinicCents: grossCents,
-      count: fees.data.length,
-      feePercent: PLATFORM_FEE_PERCENT,
-      currency: fees.data[0]?.currency ?? "eur",
-      months,
-      activeSubscriptions,
-      paidAppointments,
-    }
-  } catch (e) {
-    console.log("[v0] application fees fetch failed:", e instanceof Error ? e.message : e)
-    return empty
   }
 }

@@ -2,7 +2,7 @@ import "server-only"
 
 import type Stripe from "stripe"
 import { stripe, PLATFORM_FEE_PERCENT, platformFeeCents } from "@/lib/stripe"
-import { getClinicChargeContext } from "@/lib/clinic"
+import { getDoctorChargeContext } from "@/lib/clinic"
 import {
   type Product,
   stripeMode,
@@ -13,6 +13,8 @@ import {
 export interface BuildCheckoutInput {
   product: Product
   customerEmail: string
+  /** Médico/clínica que cobra este acto (su cuenta Connect es el destino). */
+  doctorId: string
   successUrl: string
   cancelUrl: string
   /** Metadata extra que se adjunta a la sesión (y al PI/suscripción). */
@@ -33,10 +35,10 @@ export interface BuildCheckoutInput {
 export async function buildClinicCheckoutSession(
   input: BuildCheckoutInput,
 ): Promise<{ url: string } | { error: string }> {
-  const { product, customerEmail, successUrl, cancelUrl } = input
+  const { product, customerEmail, doctorId, successUrl, cancelUrl } = input
   const meta = input.metadata ?? {}
 
-  const clinic = await getClinicChargeContext()
+  const clinic = await getDoctorChargeContext(doctorId)
   if (!clinic) {
     return {
       error:

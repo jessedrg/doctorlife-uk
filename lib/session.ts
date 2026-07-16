@@ -51,7 +51,7 @@ export async function requireRole(allowed: Role | Role[]): Promise<SessionUser> 
 export function homePathForRole(role: Role): string {
   switch (role) {
     case "doctor":
-      return "/medico"
+      return "/clinica"
     case "admin":
       return "/admin"
     default:

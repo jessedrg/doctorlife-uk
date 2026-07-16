@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { appointments, user, doctorProfiles } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
 import { stripe, platformFeeCents } from "@/lib/stripe"
-import { getClinicChargeContext } from "@/lib/clinic"
+import { getDoctorChargeContext } from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { FIRST_VISIT_CENTS, FIRST_VISIT_LABEL } from "@/lib/plans"
 import { getPooledSlots } from "@/lib/scheduling/pool"
@@ -86,7 +86,7 @@ export async function startPublicCheckout(input: {
   // ── Fallback: primera visita con coste → cobro con Stripe Checkout ──
   // Compliance: el acto médico lo cobra y factura la CLÍNICA (destination charge
   // con `on_behalf_of`); DoctorLife retiene su comisión tecnológica.
-  const clinic = await getClinicChargeContext()
+  const clinic = await getDoctorChargeContext(slot.doctorId)
   const paymentIntentData: Record<string, unknown> = {}
   if (clinic) {
     paymentIntentData.on_behalf_of = clinic.accountId

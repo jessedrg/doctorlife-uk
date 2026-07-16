@@ -218,6 +218,7 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
     const result = await buildClinicCheckoutSession({
       product,
       customerEmail: patient.email,
+      doctorId,
       metadata: {
         subscriptionRowId: String(pending.id),
         patientId: patient.id,
@@ -310,7 +311,7 @@ export async function activateOneTimeAccessBySession(sessionId: string): Promise
         type: "subscription_activated",
         title: `${patientName} activó su plan`,
         body: `${patientName} ha activado el plan "${product?.name ?? "tratamiento"}" (${months} meses de acceso).`,
-        href: "/medico/pacientes",
+        href: "/clinica/pacientes",
       })
     } catch (e) {
       console.log("[v0] one-time activation notify failed:", e instanceof Error ? e.message : e)
@@ -444,7 +445,7 @@ export async function handleInvoicePaidForSubscription(invoice: {
       body: isActivation
         ? `${patientName} ha activado el tratamiento con seguimiento médico.`
         : `${patientName} ha renovado su suscripción mensual.`,
-      href: "/medico/pacientes",
+      href: "/clinica/pacientes",
     })
   } catch (e) {
     console.log("[v0] subscription activity notify failed:", e instanceof Error ? e.message : e)

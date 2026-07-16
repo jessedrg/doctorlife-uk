@@ -289,7 +289,7 @@ export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; t
   const loginUrl = `${getCanonicalBaseUrl()}/sign-in`
   const firstName = opts.name.split(" ")[0] || "hola"
   const body = `
-    ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado tu cuenta de médico. Desde tu panel podrás gestionar tu agenda, tus pacientes, el chat y las recetas.`)}
+    ${p(`Hola ${firstName}, el equipo de DoctorLife ha creado la cuenta de tu clínica. Desde tu panel podrás gestionar tu agenda, tus pacientes, el chat y las recetas, además de conectar tu Stripe y completar tus datos fiscales para poder cobrar.`)}
     ${dataBox([
       { label: "Usuario (tu email)", value: opts.to },
       { label: "Contraseña temporal", value: opts.tempPassword, mono: true },
@@ -299,8 +299,8 @@ export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; t
   `
   return send(
     opts.to,
-    "Tu acceso de médico en DoctorLife",
-    shell({ title: "Tu cuenta de médico está lista", body, preheader: "Gestiona tu agenda y pacientes." }),
+    "El acceso de tu clínica en DoctorLife",
+    shell({ title: "La cuenta de tu clínica está lista", body, preheader: "Gestiona tu agenda, pacientes y cobros." }),
   )
 }
 
@@ -325,7 +325,7 @@ export async function sendNewMessageEmail(opts: {
   const firstName = opts.recipientName.split(" ")[0] || "hola"
   const chatUrl =
     opts.recipientRole === "doctor"
-      ? `${getCanonicalBaseUrl()}/medico/chat`
+      ? `${getCanonicalBaseUrl()}/clinica/chat`
       : `${getCanonicalBaseUrl()}/portal/chat`
 
   const previewText =

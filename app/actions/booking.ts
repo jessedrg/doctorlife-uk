@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { appointments, doctorProfiles, subscriptions, user } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
 import { stripe, platformFeeCents } from "@/lib/stripe"
-import { getClinicChargeContext } from "@/lib/clinic"
+import { getDoctorChargeContext } from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { scheduling } from "@/lib/scheduling"
@@ -57,7 +57,7 @@ export async function createBookingCheckout(
 
   // Compliance: el acto médico lo cobra y factura la CLÍNICA. Sin clínica lista
   // no se puede cobrar (el dinero no debe caer en la plataforma).
-  const clinic = await getClinicChargeContext()
+  const clinic = await getDoctorChargeContext(slot.doctorId)
   if (!clinic) {
     return {
       error:
@@ -231,7 +231,7 @@ export async function createIncludedBooking(
 
   revalidatePath("/portal/citas")
   revalidatePath("/portal")
-  revalidatePath("/medico/citas")
+  revalidatePath("/clinica/citas")
   return { ok: true }
 }
 
@@ -299,7 +299,7 @@ export async function finalizeAppointment(
   }
 
   revalidatePath("/portal/citas")
-  revalidatePath("/medico/citas")
+  revalidatePath("/clinica/citas")
 }
 
 /** Citas del paciente autenticado, con el nombre del médico asignado. */
@@ -449,7 +449,7 @@ export async function cancelAppointmentAsDoctor(
     }
   }
 
-  revalidatePath("/medico/agenda")
+  revalidatePath("/clinica/agenda")
   revalidatePath("/portal/citas")
   revalidatePath("/portal")
   return { ok: true }
@@ -652,6 +652,6 @@ export async function rescheduleAppointment(
 
   revalidatePath("/portal/citas")
   revalidatePath("/portal")
-  revalidatePath("/medico/agenda")
+  revalidatePath("/clinica/agenda")
   return { ok: true, newId }
 }

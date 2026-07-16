@@ -105,7 +105,7 @@ export async function requestVerification(input: {
       }
     }
 
-    revalidatePath("/medico/pacientes")
+    revalidatePath("/clinica/pacientes")
     revalidatePath("/portal")
     return { ok: true }
   } catch (err) {
@@ -142,7 +142,7 @@ export async function reviewVerification(input: {
       })
       .where(eq(verificationRequests.id, input.id))
 
-    revalidatePath("/medico/pacientes")
+    revalidatePath("/clinica/pacientes")
     revalidatePath("/portal")
     return { ok: true }
   } catch (err) {

@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
     console.log("[v0] prescription email error:", e instanceof Error ? e.message : e)
   }
 
-  revalidatePath("/medico/recetas")
+  revalidatePath("/clinica/recetas")
   revalidatePath("/portal/recetas")
 
   return NextResponse.json({ ok: true })

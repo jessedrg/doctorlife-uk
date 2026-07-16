@@ -77,5 +77,5 @@ export async function markAllNotificationsRead(): Promise<void> {
     .update(notifications)
     .set({ readAt: new Date() })
     .where(and(eq(notifications.userId, me.id), isNull(notifications.readAt)))
-  revalidatePath("/medico")
+  revalidatePath("/clinica")
 }
