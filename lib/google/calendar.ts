@@ -19,6 +19,7 @@ const EVENTS_ENDPOINT =
   "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1&sendUpdates=all"
 const EVENT_ENDPOINT = (id: string) =>
   `https://www.googleapis.com/calendar/v3/calendars/primary/events/${encodeURIComponent(id)}?sendUpdates=all`
+const FREEBUSY_ENDPOINT = "https://www.googleapis.com/calendar/v3/freeBusy"
 
 export function isGoogleConfigured(): boolean {
   return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
@@ -191,5 +192,59 @@ export async function maybeCancelMeeting(doctorId: string, googleEventId: string
     }
   } catch (e) {
     console.log("[v0] maybeCancelMeeting error:", e instanceof Error ? e.message : e)
+  }
+}
+
+/** Intervalo ocupado [start, end) en instantes UTC. */
+export interface BusyInterval {
+  start: Date
+  end: Date
+}
+
+/**
+ * Consulta el free/busy del calendario principal del médico entre `from` y `to`
+ * usando la API freeBusy de Google (scope calendar.readonly). Devuelve los
+ * intervalos ocupados para que el generador de huecos los descarte.
+ *
+ * Degrada en silencio (array vacío) si Google no está configurado, el médico no
+ * ha conectado su cuenta, o la API falla: en ese caso simplemente no se aplica
+ * el filtro por calendario externo y la agenda nativa sigue funcionando.
+ */
+export async function getBusyIntervals(doctorId: string, from: Date, to: Date): Promise<BusyInterval[]> {
+  if (!isGoogleConfigured()) return []
+  try {
+    const row = await getGoogleAccount(doctorId)
+    if (!row) return []
+    const accessToken = await getValidAccessToken(row)
+    if (!accessToken) return []
+
+    const res = await fetch(FREEBUSY_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        timeMin: from.toISOString(),
+        timeMax: to.toISOString(),
+        items: [{ id: "primary" }],
+      }),
+    })
+
+    if (!res.ok) {
+      console.log("[v0] google freeBusy failed:", res.status, await res.text())
+      return []
+    }
+
+    const data = (await res.json()) as {
+      calendars?: Record<string, { busy?: Array<{ start?: string; end?: string }> }>
+    }
+    const busy = data.calendars?.primary?.busy ?? []
+    return busy
+      .filter((b) => b.start && b.end)
+      .map((b) => ({ start: new Date(b.start as string), end: new Date(b.end as string) }))
+  } catch (e) {
+    console.log("[v0] getBusyIntervals error:", e instanceof Error ? e.message : e)
+    return []
   }
 }

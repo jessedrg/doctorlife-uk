@@ -4,11 +4,14 @@ import { sendResetPasswordEmail } from "@/lib/email"
 
 /**
  * Scopes de Google que pide la clínica al conectar su cuenta.
- * Solo `calendar.events`: suficiente para crear/cancelar la cita con enlace de
- * Google Meet. La disponibilidad se gestiona en nuestra propia base de datos,
- * así que NO necesitamos leer el calendario del usuario (calendar.readonly).
+ * - `calendar.events`: crear/cancelar la cita con enlace de Google Meet.
+ * - `calendar.readonly`: consultar el free/busy del médico para no ofrecer
+ *   huecos que ya tiene ocupados en su propio Google Calendar.
  */
-const GOOGLE_CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
+const GOOGLE_CALENDAR_SCOPES = [
+  "https://www.googleapis.com/auth/calendar.events",
+  "https://www.googleapis.com/auth/calendar.readonly",
+]
 
 const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
 
