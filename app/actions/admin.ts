@@ -1,8 +1,9 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { user as userTable, doctorProfiles, appointments, leads, subscriptions, conversations, messages, session, account, notifications, prescriptions } from "@/lib/db/schema"
+import { user as userTable, doctorProfiles, doctorAvailability, appointments, leads, subscriptions, conversations, messages, session, account, notifications, prescriptions } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
+import { missingClinicFields } from "@/lib/clinic"
 import { count, desc, eq, inArray, notInArray, sql, sum } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
@@ -163,11 +164,81 @@ export async function listDoctors() {
       isDevOnly: doctorProfiles.isDevOnly,
       createdAt: userTable.createdAt,
     })
-    .from(userTable)
-    .leftJoin(doctorProfiles, eq(doctorProfiles.userId, userTable.id))
-    .where(eq(userTable.role, "doctor"))
-    .orderBy(userTable.createdAt)
-}
+  .from(userTable)
+  .leftJoin(doctorProfiles, eq(doctorProfiles.userId, userTable.id))
+  .where(eq(userTable.role, "doctor"))
+  .orderBy(userTable.createdAt)
+  }
+
+  /**
+   * Clínicas con el detalle de su progreso de activación y las franjas de
+   * disponibilidad que han marcado. Para el panel de admin.
+   */
+  export async function listClinicsWithStatus() {
+  await requireAdmin()
+
+  const rows = await db
+  .select({ user: userTable, profile: doctorProfiles })
+  .from(userTable)
+  .leftJoin(doctorProfiles, eq(doctorProfiles.userId, userTable.id))
+  .where(eq(userTable.role, "doctor"))
+  .orderBy(userTable.createdAt)
+
+  const rules = await db
+  .select({
+  userId: doctorAvailability.userId,
+  dayOfWeek: doctorAvailability.dayOfWeek,
+  startMinute: doctorAvailability.startMinute,
+  endMinute: doctorAvailability.endMinute,
+  })
+  .from(doctorAvailability)
+
+  const rulesByUser = new Map<string, { dayOfWeek: number; startMinute: number; endMinute: number }[]>()
+  for (const r of rules) {
+  const list = rulesByUser.get(r.userId) ?? []
+  list.push({ dayOfWeek: r.dayOfWeek, startMinute: r.startMinute, endMinute: r.endMinute })
+  rulesByUser.set(r.userId, list)
+  }
+
+  return rows.map(({ user: u, profile: p }) => {
+  const profileComplete = Boolean(p?.fullName?.trim() && p?.specialty?.trim() && p?.licenseNumber?.trim())
+  const missingFiscal = p ? missingClinicFields(p) : []
+  const fiscalComplete = Boolean(p) && missingFiscal.length === 0
+  const stripeReady = Boolean(p?.stripeAccountId && p?.chargesEnabled)
+  const availabilityRules = (rulesByUser.get(u.id) ?? []).sort(
+  (a, b) => a.dayOfWeek - b.dayOfWeek || a.startMinute - b.startMinute,
+  )
+  const availabilitySet = availabilityRules.length > 0
+
+  const steps = [
+  { key: "profile", done: profileComplete },
+  { key: "fiscal", done: fiscalComplete },
+  { key: "stripe", done: stripeReady },
+  { key: "availability", done: availabilitySet },
+  ]
+  const completed = steps.filter((s) => s.done).length
+
+  return {
+  id: u.id,
+  name: u.name,
+  email: u.email,
+  specialty: p?.specialty ?? null,
+  acceptingPatients: p?.acceptingPatients ?? false,
+  isDevOnly: p?.isDevOnly ?? false,
+  chargesEnabled: p?.chargesEnabled ?? false,
+  stripeOnboarded: p?.stripeOnboarded ?? false,
+  profileComplete,
+  fiscalComplete,
+  missingFiscalCount: missingFiscal.length,
+  stripeReady,
+  availabilitySet,
+  availabilityRules,
+  completedSteps: completed,
+  totalSteps: steps.length,
+  fullyActive: completed === steps.length,
+  }
+  })
+  }
 
 /** Pacientes con su número de citas. */
 export async function listPatients() {
