@@ -99,6 +99,28 @@ export type DoctorProfile = typeof doctorProfiles.$inferSelect
 export type NewDoctorProfile = typeof doctorProfiles.$inferInsert
 
 /**
+ * Clínica (entidad sanitaria) que es el comerciante de liquidación de todo acto
+ * médico en Stripe Connect. Modelo de una sola fila (fila única): la clínica
+ * cobra al paciente vía `on_behalf_of` + `transfer_data.destination` y DoctorLife
+ * retiene su comisión de servicio tecnológico (`application_fee`).
+ */
+export const clinics = pgTable("clinics", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().default("DoctorLife Clínica"),
+  /** CIF/NIF de la entidad sanitaria (para facturación). */
+  taxId: text("taxId"),
+  stripeAccountId: text("stripeAccountId"),
+  stripeOnboarded: boolean("stripeOnboarded").notNull().default(false),
+  chargesEnabled: boolean("chargesEnabled").notNull().default(false),
+  payoutsEnabled: boolean("payoutsEnabled").notNull().default(false),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+})
+
+export type Clinic = typeof clinics.$inferSelect
+export type NewClinic = typeof clinics.$inferInsert
+
+/**
  * Disponibilidad semanal recurrente del médico.
  * dayOfWeek: 0 = domingo … 6 = sábado. Minutos desde medianoche (hora local del médico).
  */

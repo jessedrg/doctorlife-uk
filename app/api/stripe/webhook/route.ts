@@ -6,7 +6,7 @@ import { provisionFromSession } from "@/app/actions/public-booking"
 import {
   applySubscriptionState,
   findSubscriptionRowByStripeId,
-  payoutDoctorForInvoice,
+  handleInvoicePaidForSubscription,
   syncSubscriptionBySession,
 } from "@/app/actions/subscription"
 
@@ -99,9 +99,10 @@ export async function POST(req: Request) {
               sub.customer as string,
             )
           }
-          // Reparto: 25 € fijos al médico asignado solo en renovaciones; el
-          // primer pago y "el resto" se quedan en la empresa.
-          await payoutDoctorForInvoice({
+          // El dinero ya se liquidó en la clínica (destination charge) con la
+          // comisión de DoctorLife retenida. Aquí solo lógica no monetaria:
+          // habilitar seguimiento en renovaciones y avisar al médico.
+          await handleInvoicePaidForSubscription({
             id: raw.id,
             subscription: subId,
             charge: raw.charge ?? null,

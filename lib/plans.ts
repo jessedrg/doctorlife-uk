@@ -1,27 +1,45 @@
 /**
- * Plan único de DoctorLife.
+ * Plan principal de DoctorLife.
  *
- * Precio mensual: 100 € IVA incluido.
- * La primera visita es GRATIS (0 €). Como oferta de lanzamiento de este mes, el
- * primer mes de suscripción cuesta 60 € (40 € de descuento); los meses
- * siguientes son 100 € completos.
+ * La definición vive ahora en el catálogo central (`lib/catalog.ts`), fuente de
+ * verdad de todos los productos (suscripciones, packs, pagos únicos). Este módulo
+ * expone el plan principal en el formato `PlanInfo` que ya consumía la app, para
+ * no romper las llamadas existentes.
  *
- * Reparto al médico:
- *  - Activación: 10 € (comisión por captación)
- *  - Renovación mensual: 35 € fijos
+ * La primera visita sigue siendo GRATIS (0 €). El primer mes de suscripción
+ * aplica la oferta del catálogo (`firstPeriodCents`).
  */
+import { getProduct, firstPeriodDiscountCents, type Product } from "./catalog"
+
+/** Producto principal (suscripción de seguimiento). */
+const MAIN_PRODUCT: Product =
+  getProduct("seguimiento-endocrino") ??
+  ({
+    id: "seguimiento-endocrino",
+    name: "Seguimiento con endocrino",
+    description: "Suscripción mensual con seguimiento médico.",
+    model: "subscription",
+    priceCents: 10000,
+    currency: "eur",
+    active: true,
+    interval: "month",
+    firstPeriodCents: 6000,
+  } satisfies Product)
 
 /** Precio mensual total con IVA incluido (céntimos). */
-export const SUBSCRIPTION_PRICE_CENTS = 10000   // 100 €
+export const SUBSCRIPTION_PRICE_CENTS = MAIN_PRODUCT.priceCents   // 100 €
 
 /** Pago único de la primera visita (céntimos). Ahora es GRATIS. */
 export const FIRST_VISIT_CENTS = 0               // 0 € (gratis)
 
 /** Precio promocional del primer mes de suscripción (céntimos). */
-export const FIRST_MONTH_CENTS = 6000            // 60 € (oferta de lanzamiento)
+export const FIRST_MONTH_CENTS = MAIN_PRODUCT.firstPeriodCents ?? SUBSCRIPTION_PRICE_CENTS
 
 /** Descuento aplicado al primer mes vía cupón (100 € − 60 € = 40 €). */
-export const FIRST_MONTH_DISCOUNT_CENTS = SUBSCRIPTION_PRICE_CENTS - FIRST_MONTH_CENTS  // 40 €
+export const FIRST_MONTH_DISCOUNT_CENTS = firstPeriodDiscountCents(MAIN_PRODUCT)  // 40 €
+
+/** Id del producto principal en el catálogo (para el checkout). */
+export const MAIN_PRODUCT_ID = MAIN_PRODUCT.id
 
 /** Etiqueta del pago de la primera visita. */
 export const FIRST_VISIT_LABEL = "gratis"
@@ -51,7 +69,7 @@ function buildMainPlan(): PlanInfo {
   const basePriceCents = Math.round(SUBSCRIPTION_PRICE_CENTS / 1.21)
   const ivaCents = SUBSCRIPTION_PRICE_CENTS - basePriceCents
   return {
-    name: "Seguimiento con endocrino",
+    name: MAIN_PRODUCT.name,
     priceCents: SUBSCRIPTION_PRICE_CENTS,
     firstMonthCents: FIRST_MONTH_CENTS,
     totalLabel: `${eur(SUBSCRIPTION_PRICE_CENTS)}/mes`,
