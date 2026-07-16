@@ -1,6 +1,7 @@
 import { requireRole } from "@/lib/session"
 import { getClinicStatus, getPlatformFeeTracking } from "@/app/actions/clinic"
 import { ClinicStripePanel } from "@/components/clinic-stripe-panel"
+import { ClinicDetailsForm } from "@/components/clinic-details-form"
 import { PLATFORM_FEE_PERCENT } from "@/lib/stripe"
 
 export const metadata = { title: "Clínica y cobros — DoctorLife" }
@@ -26,6 +27,10 @@ export default async function AdminClinicPage() {
 
       <div className="mt-6">
         <ClinicStripePanel status={status} />
+      </div>
+
+      <div className="mt-6">
+        <ClinicDetailsForm status={status} />
       </div>
 
       <h2 className="mt-9 text-[20px] font-light tracking-[-.01em] text-ink">
@@ -57,8 +62,12 @@ export default async function AdminClinicPage() {
 
       {!status.ready && (
         <p className="mt-5 rounded-xl bg-amber-50 px-4 py-3 text-[14px] leading-relaxed text-amber-900">
-          Mientras la cuenta de la clínica no esté activa, no se pueden procesar cobros de
-          pacientes. Completa el onboarding de Stripe arriba para empezar a facturar.
+          Los cobros están bloqueados hasta que la clínica esté lista.{" "}
+          {!status.dataComplete && !(status.stripeAccountId && status.chargesEnabled)
+            ? "Faltan los datos de la clínica y completar el alta en Stripe."
+            : !status.dataComplete
+              ? "Faltan datos obligatorios de la clínica (ver formulario arriba)."
+              : "Falta completar el alta en Stripe (ver panel arriba)."}
         </p>
       )}
 

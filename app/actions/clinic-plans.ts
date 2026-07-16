@@ -11,6 +11,7 @@ import {
 import { getSessionUser } from "@/lib/session"
 import { activeSubscriptions, getProduct, firstPeriodDiscountCents, type Product } from "@/lib/catalog"
 import { sendPlanOfferEmail } from "@/lib/email"
+import { getClinic, clinicDataComplete } from "@/lib/clinic"
 import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray, sql } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -71,6 +72,17 @@ export async function sendPlanOffer(input: {
   const me = await requireDoctor()
   try {
     await assertDoctorOwnsPatient(me.id, input.patientId)
+
+    // La clínica debe poder cobrar: datos de centro sanitario completos y
+    // Stripe habilitado. Si no, no tiene sentido enviar un plan impagable.
+    const clinic = await getClinic()
+    if (!clinicDataComplete(clinic) || !clinic.stripeAccountId || !clinic.chargesEnabled) {
+      return {
+        ok: false,
+        error:
+          "La clínica aún no puede cobrar. Completa los datos de facturación y el alta en Stripe antes de enviar planes.",
+      }
+    }
 
     const product = getProduct(input.productId)
     if (!product || !product.active || product.model !== "subscription") {

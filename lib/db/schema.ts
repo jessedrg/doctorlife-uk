@@ -106,9 +106,28 @@ export type NewDoctorProfile = typeof doctorProfiles.$inferInsert
  */
 export const clinics = pgTable("clinics", {
   id: serial("id").primaryKey(),
+  /** Razón social de la entidad sanitaria. */
   name: text("name").notNull().default("DoctorLife Clínica"),
   /** CIF/NIF de la entidad sanitaria (para facturación). */
   taxId: text("taxId"),
+  // ── Domicilio fiscal ──
+  addressLine: text("addressLine"),
+  city: text("city"),
+  postalCode: text("postalCode"),
+  province: text("province"),
+  // ── Datos de centro sanitario ──
+  /** Nº de registro sanitario / autorización del centro (p. ej. NICA). */
+  healthRegistryNumber: text("healthRegistryNumber"),
+  /** Director médico responsable del centro. */
+  medicalDirectorName: text("medicalDirectorName"),
+  /** Nº de colegiado del director médico. */
+  medicalDirectorLicense: text("medicalDirectorLicense"),
+  // ── Contacto de facturación y RGPD ──
+  billingEmail: text("billingEmail"),
+  billingPhone: text("billingPhone"),
+  /** Responsable de protección de datos (RGPD). */
+  dataProtectionContact: text("dataProtectionContact"),
+  // ── Stripe Connect ──
   stripeAccountId: text("stripeAccountId"),
   stripeOnboarded: boolean("stripeOnboarded").notNull().default(false),
   chargesEnabled: boolean("chargesEnabled").notNull().default(false),

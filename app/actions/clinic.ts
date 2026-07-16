@@ -4,7 +4,12 @@ import { db } from "@/lib/db"
 import { clinics, appointments, subscriptions } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
 import { stripe, PLATFORM_FEE_PERCENT, isStripeConfigured } from "@/lib/stripe"
-import { getClinic, setClinicStatus } from "@/lib/clinic"
+import {
+  getClinic,
+  setClinicStatus,
+  missingClinicFields,
+  clinicDataComplete,
+} from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -19,11 +24,25 @@ export type ClinicStatus = {
   id: number
   name: string
   taxId: string | null
+  addressLine: string | null
+  city: string | null
+  postalCode: string | null
+  province: string | null
+  healthRegistryNumber: string | null
+  medicalDirectorName: string | null
+  medicalDirectorLicense: string | null
+  billingEmail: string | null
+  billingPhone: string | null
+  dataProtectionContact: string | null
   stripeAccountId: string | null
   stripeOnboarded: boolean
   chargesEnabled: boolean
   payoutsEnabled: boolean
-  /** Puede cobrar actos médicos ahora mismo. */
+  /** Datos obligatorios de centro sanitario completos. */
+  dataComplete: boolean
+  /** Campos obligatorios que faltan por rellenar. */
+  missingFields: string[]
+  /** Puede cobrar actos médicos ahora mismo (Stripe listo + datos completos). */
   ready: boolean
 }
 
@@ -31,35 +50,73 @@ export type ClinicStatus = {
 export async function getClinicStatus(): Promise<ClinicStatus> {
   await requireAdmin()
   const c = await getClinic()
+  const missing = missingClinicFields(c)
+  const complete = missing.length === 0
   return {
     id: c.id,
     name: c.name,
     taxId: c.taxId,
+    addressLine: c.addressLine,
+    city: c.city,
+    postalCode: c.postalCode,
+    province: c.province,
+    healthRegistryNumber: c.healthRegistryNumber,
+    medicalDirectorName: c.medicalDirectorName,
+    medicalDirectorLicense: c.medicalDirectorLicense,
+    billingEmail: c.billingEmail,
+    billingPhone: c.billingPhone,
+    dataProtectionContact: c.dataProtectionContact,
     stripeAccountId: c.stripeAccountId,
     stripeOnboarded: c.stripeOnboarded,
     chargesEnabled: c.chargesEnabled,
     payoutsEnabled: c.payoutsEnabled,
-    ready: Boolean(c.stripeAccountId && c.chargesEnabled),
+    dataComplete: complete,
+    missingFields: missing as string[],
+    ready: Boolean(c.stripeAccountId && c.chargesEnabled && complete),
   }
 }
 
-/** Actualiza los datos fiscales de la clínica (nombre y CIF/NIF). */
+/** Actualiza todos los datos fiscales y sanitarios de la clínica. */
 export async function updateClinicDetails(input: {
   name?: string
   taxId?: string
-}): Promise<{ ok: true } | { error: string }> {
+  addressLine?: string
+  city?: string
+  postalCode?: string
+  province?: string
+  healthRegistryNumber?: string
+  medicalDirectorName?: string
+  medicalDirectorLicense?: string
+  billingEmail?: string
+  billingPhone?: string
+  dataProtectionContact?: string
+}): Promise<{ ok: true; dataComplete: boolean } | { error: string }> {
   await requireAdmin()
   const c = await getClinic()
+  const clean = (v?: string) => {
+    const t = v?.trim()
+    return t ? t : null
+  }
+  const updated = {
+    name: input.name?.trim() || c.name,
+    taxId: clean(input.taxId),
+    addressLine: clean(input.addressLine),
+    city: clean(input.city),
+    postalCode: clean(input.postalCode),
+    province: clean(input.province),
+    healthRegistryNumber: clean(input.healthRegistryNumber),
+    medicalDirectorName: clean(input.medicalDirectorName),
+    medicalDirectorLicense: clean(input.medicalDirectorLicense),
+    billingEmail: clean(input.billingEmail),
+    billingPhone: clean(input.billingPhone),
+    dataProtectionContact: clean(input.dataProtectionContact),
+  }
   await db
     .update(clinics)
-    .set({
-      name: input.name?.trim() || c.name,
-      taxId: input.taxId?.trim() || null,
-      updatedAt: new Date(),
-    })
+    .set({ ...updated, updatedAt: new Date() })
     .where(eq(clinics.id, c.id))
   revalidatePath("/admin/clinica")
-  return { ok: true }
+  return { ok: true, dataComplete: clinicDataComplete({ ...c, ...updated }) }
 }
 
 /**

@@ -25,6 +25,38 @@ export async function getClinic(): Promise<Clinic> {
   return created
 }
 
+/**
+ * Campos obligatorios que la clínica debe rellenar para poder OPERAR y facturar
+ * como centro sanitario. Se usan tanto para el bloqueo de cobros como para
+ * indicar en el panel qué falta.
+ */
+export const REQUIRED_CLINIC_FIELDS = [
+  "name",
+  "taxId",
+  "addressLine",
+  "city",
+  "postalCode",
+  "province",
+  "healthRegistryNumber",
+  "medicalDirectorName",
+  "medicalDirectorLicense",
+  "billingEmail",
+  "dataProtectionContact",
+] as const satisfies readonly (keyof Clinic)[]
+
+/** Devuelve la lista de campos obligatorios que faltan por rellenar. */
+export function missingClinicFields(clinic: Clinic): (keyof Clinic)[] {
+  return REQUIRED_CLINIC_FIELDS.filter((f) => {
+    const v = clinic[f]
+    return v == null || String(v).trim() === ""
+  })
+}
+
+/** ¿Están completos todos los datos obligatorios para operar/facturar? */
+export function clinicDataComplete(clinic: Clinic): boolean {
+  return missingClinicFields(clinic).length === 0
+}
+
 export type ClinicChargeContext = {
   /** Cuenta Connect de la clínica. */
   accountId: string
@@ -33,13 +65,17 @@ export type ClinicChargeContext = {
 }
 
 /**
- * Contexto para enrutar un cargo a la clínica. Devuelve `null` si la clínica no
- * tiene cuenta Connect o no puede cobrar todavía: en ese caso NO se debe cobrar
- * (evita que el dinero caiga en la plataforma como merchant of record).
+ * Contexto para enrutar un cargo a la clínica. Devuelve `null` si NO se puede
+ * cobrar todavía, y en ese caso NO se debe cobrar (evita que el dinero caiga en
+ * la plataforma como merchant of record). Requiere las tres condiciones:
+ *  1. Cuenta Connect creada.
+ *  2. Stripe habilitado para cargos (`chargesEnabled`).
+ *  3. Datos obligatorios de centro sanitario completos.
  */
 export async function getClinicChargeContext(): Promise<ClinicChargeContext | null> {
   const clinic = await getClinic()
   if (!clinic.stripeAccountId || !clinic.chargesEnabled) return null
+  if (!clinicDataComplete(clinic)) return null
   return { accountId: clinic.stripeAccountId, ready: true }
 }
 
