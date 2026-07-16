@@ -102,7 +102,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta?",
-    a: "La primera visita es gratis. Oferta de lanzamiento: el primer mes 60 € y, después, una única suscripción de 100 €/mes que incluye seguimiento por chat con tu médico y ajuste del plan. Sin permanencia.",
+    a: "La primera valoración es gratis. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Incluye seguimiento por chat con tu médico y ajuste del plan.",
   },
   {
     q: "¿Necesito acudir presencialmente?",
@@ -297,7 +297,7 @@ export default function LandingControlDePeso2() {
                   Empieza gratis y decide con calma
                 </h2>
                 <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  La primera visita es gratis. Si decides continuar, oferta de lanzamiento: el primer mes 60 € y, después, una suscripción de 100 €/mes que cubre el seguimiento
+                  La primera valoración es gratis. Si decides continuar, eliges tu plan desde 139 €/mes (o pack de 5 meses por 449 €) que cubre el seguimiento
                   con tu médico y el ajuste de tu plan. Sin permanencia y sin
                   sorpresas.
                 </p>
@@ -328,8 +328,8 @@ export default function LandingControlDePeso2() {
                 <div className="my-6 h-px bg-paper/15" />
                 <p className="text-[14px] text-paper/70">Si continúas · oferta de lanzamiento</p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[32px] font-light leading-none">60 €</span>
-                  <span className="mb-1 text-[14px] text-paper/70">primer mes, luego 100 €/mes</span>
+                  <span className="text-[32px] font-light leading-none">Gratis</span>
+                  <span className="mb-1 text-[14px] text-paper/70">primera valoración, luego desde 139 €/mes</span>
                 </p>
                 <QuizTrigger
                   plan="ads-control-peso-2-precio"

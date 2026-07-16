@@ -13,6 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { href: "/admin/medicos", label: "Médicos", icon: "medicos" },
         { href: "/admin/pacientes", label: "Pacientes", icon: "pacientes" },
         { href: "/admin/suscripciones", label: "Suscripciones", icon: "suscripciones" },
+        { href: "/admin/clinica", label: "Clínica y cobros", icon: "clinica" },
         { href: "/admin/leads", label: "Leads", icon: "leads" },
       ]}
     >

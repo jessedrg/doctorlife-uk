@@ -99,6 +99,47 @@ export type DoctorProfile = typeof doctorProfiles.$inferSelect
 export type NewDoctorProfile = typeof doctorProfiles.$inferInsert
 
 /**
+ * Clínica (entidad sanitaria) que es el comerciante de liquidación de todo acto
+ * médico en Stripe Connect. Modelo de una sola fila (fila única): la clínica
+ * cobra al paciente vía `on_behalf_of` + `transfer_data.destination` y DoctorLife
+ * retiene su comisión de servicio tecnológico (`application_fee`).
+ */
+export const clinics = pgTable("clinics", {
+  id: serial("id").primaryKey(),
+  /** Razón social de la entidad sanitaria. */
+  name: text("name").notNull().default("DoctorLife Clínica"),
+  /** CIF/NIF de la entidad sanitaria (para facturación). */
+  taxId: text("taxId"),
+  // ── Domicilio fiscal ──
+  addressLine: text("addressLine"),
+  city: text("city"),
+  postalCode: text("postalCode"),
+  province: text("province"),
+  // ── Datos de centro sanitario ──
+  /** Nº de registro sanitario / autorización del centro (p. ej. NICA). */
+  healthRegistryNumber: text("healthRegistryNumber"),
+  /** Director médico responsable del centro. */
+  medicalDirectorName: text("medicalDirectorName"),
+  /** Nº de colegiado del director médico. */
+  medicalDirectorLicense: text("medicalDirectorLicense"),
+  // ── Contacto de facturación y RGPD ──
+  billingEmail: text("billingEmail"),
+  billingPhone: text("billingPhone"),
+  /** Responsable de protección de datos (RGPD). */
+  dataProtectionContact: text("dataProtectionContact"),
+  // ── Stripe Connect ──
+  stripeAccountId: text("stripeAccountId"),
+  stripeOnboarded: boolean("stripeOnboarded").notNull().default(false),
+  chargesEnabled: boolean("chargesEnabled").notNull().default(false),
+  payoutsEnabled: boolean("payoutsEnabled").notNull().default(false),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+})
+
+export type Clinic = typeof clinics.$inferSelect
+export type NewClinic = typeof clinics.$inferInsert
+
+/**
  * Disponibilidad semanal recurrente del médico.
  * dayOfWeek: 0 = domingo … 6 = sábado. Minutos desde medianoche (hora local del médico).
  */
@@ -230,6 +271,28 @@ export const subscriptions = pgTable("subscriptions", {
 
 export type Subscription = typeof subscriptions.$inferSelect
 export type NewSubscription = typeof subscriptions.$inferInsert
+
+/**
+ * Oferta de plan que la clínica (médico) envía a un paciente por correo tras la
+ * primera consulta. El paciente la paga desde su portal y, al confirmarse el
+ * pago, se activa su suscripción. `productId` referencia el catálogo
+ * (`lib/catalog.ts`).
+ * status: 'sent' | 'paid' | 'cancelled'
+ */
+export const planOffers = pgTable("plan_offers", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  productId: text("productId").notNull(),
+  /** Nota opcional del médico que se incluye en el correo al paciente. */
+  note: text("note"),
+  status: text("status").notNull().default("sent"),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+  paidAt: timestamp("paidAt", { withTimezone: true }),
+})
+
+export type PlanOffer = typeof planOffers.$inferSelect
+export type NewPlanOffer = typeof planOffers.$inferInsert
 
 /**
  * Comisiones que la plataforma abona al médico por los pagos de suscripción.

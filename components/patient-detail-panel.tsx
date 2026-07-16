@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Lock, Eye, Trash2, Plus, ShieldCheck, FileCheck2, Clock3, X, Check, Pill } from "lucide-react"
+import { Lock, Eye, Trash2, Plus, ShieldCheck, FileCheck2, Clock3, X, Check, Pill, Send } from "lucide-react"
+import { SendPlanForm } from "@/components/send-plan-form"
 import {
   getPatientDetail,
   addDoctorNote,
@@ -265,6 +266,24 @@ export function PatientDetailPanel({ patientId }: { patientId: string }) {
             ))}
           </ul>
         )}
+      </section>
+
+      {/* Enviar plan / suscripción al paciente */}
+      <section className="rounded-[16px] border border-ink/10 bg-warm p-4 lg:col-span-2">
+        <div className="flex items-center gap-2">
+          <Send className="size-4 text-ink-mute" aria-hidden />
+          <h3 className="text-[13px] font-semibold uppercase tracking-[.05em] text-ink-mute">
+            Enviar plan al paciente
+          </h3>
+        </div>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">
+          Envía por correo el plan que acordasteis en la consulta. El paciente lo paga desde su
+          panel y, al confirmarse el pago, se activa automáticamente su tratamiento, su receta y el
+          seguimiento.
+        </p>
+        <div className="mt-3">
+          <SendPlanForm patientId={patientId} />
+        </div>
       </section>
 
       {/* Verificación adicional */}

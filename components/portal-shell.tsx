@@ -19,6 +19,7 @@ import {
   Inbox,
   LineChart,
   ShieldCheck,
+  Building2,
   Menu,
   X,
   Loader2,
@@ -42,6 +43,7 @@ export type NavIcon =
   | "leads"
   | "progreso"
   | "verificacion"
+  | "clinica"
 
 type NavItem = { href: string; label: string; icon: NavIcon }
 
@@ -61,6 +63,7 @@ const ICONS: Record<NavIcon, typeof Home> = {
   leads: Inbox,
   progreso: LineChart,
   verificacion: ShieldCheck,
+  clinica: Building2,
 }
 
 export function PortalShell({

@@ -6,6 +6,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { organizationSchema, breadcrumbSchema, SITE_URL, BRAND } from "@/lib/seo";
 import { experts } from "@/lib/data";
 import { BadgeCheck, Stethoscope, ShieldCheck, Users, HeartPulse, Clock } from "lucide-react";
+import { MedicalTeamSection } from "@/components/medical-team-section";
 
 export const metadata: Metadata = {
   title: `Sobre nosotros — Quiénes somos | ${BRAND}`,
@@ -163,42 +164,7 @@ export default function SobreNosotrosPage() {
           </section>
 
           {/* ── Equipo médico ── */}
-          <section className="mx-auto max-w-[860px] px-5 py-16">
-            <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-olive">
-              Equipo médico
-            </span>
-            <h2 className="mt-3 text-balance text-[clamp(22px,3vw,34px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-              Médicos colegiados que cuidan de ti
-            </h2>
-            <p className="mt-4 max-w-[60ch] text-[17px] leading-[1.7] text-ink-soft">
-              Cada médico de la plataforma ejerce de forma independiente y es
-              responsable clínico de su paciente. DoctorLife facilita la
-              infraestructura tecnológica y el cumplimiento normativo.
-            </p>
-            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {experts.map((e) => (
-                <a
-                  key={e.name}
-                  href="/autores"
-                  className="group flex items-center gap-4 rounded-[18px] border border-ink/10 bg-warm p-5 no-underline transition-shadow hover:shadow-[0_8px_24px_-8px_rgba(34,29,23,.2)]"
-                >
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-cream-2 text-[20px] font-medium text-ink-soft">
-                    {e.name.split(" ").slice(-1)[0][0]}
-                  </div>
-                  <div>
-                    <p className="text-[15px] font-medium text-ink">{e.name}</p>
-                    <p className="text-[13px] text-ink-mute">{e.spec}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <p className="mt-8 text-[14px] text-ink-mute">
-              ¿Eres médico y quieres incorporarte a la plataforma?{" "}
-              <a href={`mailto:hello@doctorlife.io`} className="text-olive underline-offset-2 hover:underline">
-                Escríbenos a hello@doctorlife.io
-              </a>
-            </p>
-          </section>
+          <MedicalTeamSection />
 
           {/* ── Contacto ── */}
           <section className="bg-espresso">

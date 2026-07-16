@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { CalendarClock, Clock, FileText, ShieldAlert, CheckCircle2 } from "lucide-react"
 import { startSubscriptionCheckout, cancelMySubscription } from "@/app/actions/subscription"
 import type { PatientStatus } from "@/app/actions/subscription"
+import type { MyPlanOffer } from "@/app/actions/clinic-plans"
 
 interface SubscriptionView {
   plan: string
@@ -33,10 +34,12 @@ export function SubscriptionCard({
   subscription,
   patientStatus,
   verificationPending = false,
+  offer = null,
 }: {
   subscription: SubscriptionView | null
   patientStatus: PatientStatus
   verificationPending?: boolean
+  offer?: MyPlanOffer | null
 }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -107,16 +110,53 @@ export function SubscriptionCard({
           <div className="mb-4 flex items-start gap-3 rounded-[14px] border border-sage/30 bg-sage/10 p-3.5">
             <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-sage" aria-hidden />
             <div>
-              <p className="text-[13.5px] font-medium text-ink">Tu plan de tratamiento ya está listo</p>
+              <p className="text-[13.5px] font-medium text-ink">
+                {offer
+                  ? `${offer.doctorName ? `Dr. ${offer.doctorName}` : "Tu médico"} te ha enviado tu plan`
+                  : "Tu plan de tratamiento ya está listo"}
+              </p>
               <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
-                Tu médico ha preparado tu receta. Activa la suscripción mensual para descargarla y
-                empezar el tratamiento.
+                {offer?.oneTime
+                  ? "Tu médico ha preparado tu receta. Realiza el pago del programa para descargarla y empezar el tratamiento."
+                  : "Tu médico ha preparado tu receta. Activa la suscripción mensual para descargarla y empezar el tratamiento."}
               </p>
             </div>
           </div>
+
+          {offer ? (
+            <div className="mb-4 rounded-[14px] border border-ink/10 bg-warm p-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <p className="text-[15px] font-medium text-ink">
+                  {offer.product.name}
+                  {offer.oneTime && (
+                    <span className="ml-2 rounded-full bg-ink/10 px-2 py-0.5 text-[11px] font-medium text-ink-soft align-middle">
+                      Pago único
+                    </span>
+                  )}
+                </p>
+                <p className="text-[14px] font-semibold text-ink">{offer.priceLabel}</p>
+              </div>
+              {offer.oneTime && offer.product.accessMonths ? (
+                <p className="mt-0.5 text-[12.5px] text-ink-mute">
+                  Un solo pago con {offer.product.accessMonths} meses de acceso al tratamiento.
+                </p>
+              ) : (
+                <p className="mt-0.5 text-[12.5px] text-ink-mute">
+                  Sin permanencia: cancela cuando quieras.
+                </p>
+              )}
+              {offer.note ? (
+                <p className="mt-2 border-t border-ink/10 pt-2 text-[13px] leading-relaxed text-ink-soft">
+                  <span className="font-medium text-ink">Nota de tu médico:</span> {offer.note}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+
           <p className="text-[14px] leading-relaxed text-ink-soft">
-            Incluye endocrino asignado, videollamada mensual de seguimiento y chat en vivo. Puedes
-            cancelar cuando quieras.
+            {offer?.oneTime
+              ? "Incluye seguimiento médico, receta cuando proceda y una consulta por llamada al mes durante todo el programa."
+              : "Incluye seguimiento con tu médico, una consulta por llamada al mes y chat en vivo. Puedes cancelar cuando quieras."}
           </p>
 
           {verificationPending ? (
@@ -143,7 +183,11 @@ export function SubscriptionCard({
               disabled={loading}
               className="mt-4 inline-flex rounded-full bg-ink px-4 py-2 text-[13.5px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {loading ? "Redirigiendo…" : "Activar suscripción — ver mi receta"}
+              {loading
+                ? "Redirigiendo…"
+                : offer?.oneTime
+                  ? "Pagar programa — ver mi receta"
+                  : "Activar suscripción — ver mi receta"}
             </button>
           )}
         </div>

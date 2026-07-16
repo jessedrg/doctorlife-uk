@@ -30,7 +30,7 @@ export function CTABlock({
         </h3>
         <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-paper/75">
           {subtitle ??
-            "Reserva tu primera visita gratis. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes) con chat con tu endocrino, receta de GLP‑1 si es necesaria y seguimiento. Sin permanencia."}
+            "Reserva tu primera valoración gratis. Si continúas, eliges tu plan: 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €, con chat con tu médico, receta de GLP‑1 si es necesaria y seguimiento."}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <QuizTrigger
@@ -66,7 +66,7 @@ export function CTABlock({
             </h2>
             <p className="mt-3 max-w-[46ch] text-[15px] leading-relaxed text-paper/75">
               {subtitle ??
-                "Reserva tu primera visita gratis. Oferta de lanzamiento: primer mes 60 €; después, una sola suscripción de 100 €/mes, sin permanencia."}
+                "Reserva tu primera valoración gratis. Si continúas, desde 139 €/mes sin permanencia, o pack de 5 meses por 449 €."}
             </p>
             <ul className="mt-6 flex flex-col gap-2.5 text-[14.5px] text-paper/85">
               <li className="flex items-center gap-2"><span aria-hidden className="text-sage">✓</span> Médicos colegiados de verdad</li>

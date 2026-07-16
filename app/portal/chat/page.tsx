@@ -50,12 +50,11 @@ export default async function PatientChatPage() {
               El chat en vivo con tu médico forma parte de tu suscripción.
             </p>
             <p className="mt-1.5 text-[14px] leading-relaxed text-ink-soft">
-              Activa tu tratamiento para escribir a tu endocrino siempre que lo necesites, entre citas
-              y sin esperas. El primer mes pagas {MAIN_PLAN.firstMonthLabel} (te descontamos los 25&nbsp;€
-              de tu primera visita); después, {MAIN_PLAN.totalLabel}.
+              Activa tu tratamiento para escribir a tu médico siempre que lo necesites, entre citas
+              y sin esperas, por {MAIN_PLAN.totalLabel}. Sin permanencia: cancela cuando quieras.
             </p>
             <div className="mt-4">
-              <UnlockPrescriptionsButton priceLabel={MAIN_PLAN.firstMonthLabel} />
+              <UnlockPrescriptionsButton priceLabel={MAIN_PLAN.totalLabel} />
             </div>
           </div>
         )}

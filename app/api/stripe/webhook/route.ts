@@ -6,8 +6,9 @@ import { provisionFromSession } from "@/app/actions/public-booking"
 import {
   applySubscriptionState,
   findSubscriptionRowByStripeId,
-  payoutDoctorForInvoice,
+  handleInvoicePaidForSubscription,
   syncSubscriptionBySession,
+  activateOneTimeAccessBySession,
 } from "@/app/actions/subscription"
 
 /**
@@ -46,6 +47,9 @@ export async function POST(req: Request) {
           await provisionFromSession(session.id)
         } else if (session.mode === "subscription") {
           await syncSubscriptionBySession(session.id)
+        } else if (session.metadata?.subscriptionRowId) {
+          // Plan de pago único (pack 5 meses, nutricionista+GLP1): concede acceso.
+          await activateOneTimeAccessBySession(session.id)
         } else {
           const appointmentId = Number(session.metadata?.appointmentId)
           if (appointmentId && session.payment_status === "paid") {
@@ -99,9 +103,10 @@ export async function POST(req: Request) {
               sub.customer as string,
             )
           }
-          // Reparto: 25 € fijos al médico asignado solo en renovaciones; el
-          // primer pago y "el resto" se quedan en la empresa.
-          await payoutDoctorForInvoice({
+          // El dinero ya se liquidó en la clínica (destination charge) con la
+          // comisión de DoctorLife retenida. Aquí solo lógica no monetaria:
+          // habilitar seguimiento en renovaciones y avisar al médico.
+          await handleInvoicePaidForSubscription({
             id: raw.id,
             subscription: subId,
             charge: raw.charge ?? null,

@@ -3,7 +3,8 @@
 import { db } from "@/lib/db"
 import { appointments, user, doctorProfiles } from "@/lib/db/schema"
 import { auth } from "@/lib/auth"
-import { stripe } from "@/lib/stripe"
+import { stripe, platformFeeCents } from "@/lib/stripe"
+import { getClinicChargeContext } from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { FIRST_VISIT_CENTS, FIRST_VISIT_LABEL } from "@/lib/plans"
 import { getPooledSlots } from "@/lib/scheduling/pool"
@@ -83,15 +84,14 @@ export async function startPublicCheckout(input: {
   }
 
   // ── Fallback: primera visita con coste → cobro con Stripe Checkout ──
-  const [doc] = await db
-    .select({ stripeAccountId: doctorProfiles.stripeAccountId, chargesEnabled: doctorProfiles.chargesEnabled })
-    .from(doctorProfiles)
-    .where(eq(doctorProfiles.userId, slot.doctorId))
-    .limit(1)
+  // Compliance: el acto médico lo cobra y factura la CLÍNICA (destination charge
+  // con `on_behalf_of`); DoctorLife retiene su comisión tecnológica.
+  const clinic = await getClinicChargeContext()
   const paymentIntentData: Record<string, unknown> = {}
-  if (doc?.stripeAccountId && doc.chargesEnabled) {
-    // Sin application_fee_amount => el médico recibe el importe completo.
-    paymentIntentData.transfer_data = { destination: doc.stripeAccountId }
+  if (clinic) {
+    paymentIntentData.on_behalf_of = clinic.accountId
+    paymentIntentData.transfer_data = { destination: clinic.accountId }
+    paymentIntentData.application_fee_amount = platformFeeCents(FIRST_VISIT_CENTS)
   }
 
   try {

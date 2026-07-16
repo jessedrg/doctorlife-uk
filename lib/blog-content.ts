@@ -2867,7 +2867,7 @@ function buildModifierPost(drug: Drug, mod: Modifier, index: number): Post {
         },
         {
           q: tpl("¿Puedo tomar una copa puntual con {Drug}?", vars),
-          a: "Con moderación suele ser tolerable, pero depende de cada persona. Coméntalo con tu médico, sobre todo al subir de dosis.",
+          a: "Con moderaci��n suele ser tolerable, pero depende de cada persona. Coméntalo con tu médico, sobre todo al subir de dosis.",
         },
         {
           q: "¿Cómo empiezo con DoctorLife?",
@@ -3575,7 +3575,7 @@ function buildServicePosts(startIndex: number): Post[] {
           },
           {
             q: "¿Es fiable la endocrinología online?",
-            a: "Sí, siempre que la realice un médico colegiado con valoración real. La telemedicina está reconocida y regulada en España.",
+            a: "Sí, siempre que la realice un médico colegiado con valoraci��n real. La telemedicina está reconocida y regulada en España.",
           },
           {
             q: "¿Cuánto cuesta la primera consulta?",
@@ -3643,7 +3643,7 @@ function buildServicePosts(startIndex: number): Post[] {
           },
           {
             q: "¿Cuánto cuesta empezar?",
-            a: "La primera visita es gratis. Después, una suscripción de 100 €/mes sin permanencia.",
+            a: "La primera valoración es gratis. Después eliges tu plan: 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €.",
           },
         ],
         cover: getAlt("wegovy").cover,

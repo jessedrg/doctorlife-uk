@@ -10,6 +10,7 @@ import { StickyCTA } from "@/components/editorial/sticky-cta";
 import { TrustBox } from "@/components/trustbox";
 import { GeoGreeting } from "@/components/geo-greeting";
 import { BeforeAfterCarousel } from "@/components/before-after-carousel";
+import { BlogDoctorCard } from "@/components/blog-doctor-card";
 import { posts, getPost, getRelated, seoTitle, seoDescription, drugInfo, SITE_URL, BRAND, MEDICAL_REVIEWER, type Block } from "@/lib/blog";
 import { getInternalLinks } from "@/lib/blog-internal-links";
 import { breadcrumbSchema } from "@/lib/seo";
@@ -270,6 +271,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <BeforeAfterCarousel variant="light" />
               </div>
             </section>
+
+            {/* Conoce a nuestro médico */}
+            <BlogDoctorCard />
 
             {/* FAQ */}
             <section>

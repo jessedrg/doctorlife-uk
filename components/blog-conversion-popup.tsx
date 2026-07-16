@@ -115,7 +115,7 @@ export function BlogConversionPopup({
               Tu plan de pérdida de peso, diseñado por médicos
             </h3>
             <p className="mt-2 text-[13.5px] leading-relaxed text-paper/70">
-              Sin protocolos genéricos. Una suscripción de 100 €/mes, sin permanencia.
+              Sin protocolos genéricos. Desde 139 €/mes sin permanencia, o pack de 5 meses por 449 €.
             </p>
 
             <ul className="mt-4 flex flex-col gap-2.5">

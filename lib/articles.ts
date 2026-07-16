@@ -27,7 +27,8 @@ export type Author = {
   slug: string;
   name: string;
   jobTitle: string;
-  colegiado: string; // número de colegiado + colegio
+  image?: string;
+  colegiado?: string; // número de colegiado + colegio, si se publica
   shortBio: string;
   bio: string[];
   experience: string[];
@@ -614,7 +615,7 @@ export const articles: Article[] = [
       {
         pregunta: "¿Cómo se reduce la grasa abdominal visceral?",
         respuesta:
-          "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo médico acelera los resultados.",
+          "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo m��dico acelera los resultados.",
       },
     ],
     sources: [S.oms, S.nice, S.seen],

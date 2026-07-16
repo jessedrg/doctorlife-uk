@@ -9,7 +9,7 @@ import { analytics } from "@/lib/analytics";
  */
 export function BlogFunnel({
   title = "Empieza tu tratamiento con un endocrino colegiado",
-  subtitle = "Primera visita gratis. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes) con chat con tu endocrino, la receta de GLP‑1 si es necesaria y el seguimiento. Sin permanencia.",
+  subtitle = "Primera valoración gratis. Si continúas, eliges tu plan: 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €, con chat con tu médico, la receta de GLP‑1 si es necesaria y el seguimiento.",
   image = "/hero/woman.png",
   imageAlt = "Paciente de DoctorLife sonriendo",
 }: {

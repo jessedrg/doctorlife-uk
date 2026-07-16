@@ -251,6 +251,39 @@ export async function sendPrescriptionReadyEmail(opts: {
   )
 }
 
+/**
+ * La clínica envía al paciente el plan/suscripción acordado tras la primera
+ * consulta. El paciente entra a su portal, paga y se le activa el tratamiento.
+ */
+export async function sendPlanOfferEmail(opts: {
+  to: string
+  name: string
+  doctorName?: string | null
+  planName: string
+  priceLabel: string
+  firstPeriodLabel?: string | null
+  note?: string | null
+}) {
+  const firstName = opts.name.split(" ")[0] || "hola"
+  const doc = opts.doctorName ? `Dr. ${opts.doctorName}` : "tu médico"
+  const url = `${getCanonicalBaseUrl()}/portal/recetas?plan=oferta`
+  const rows = [{ label: "Plan recomendado", value: opts.planName }]
+  if (opts.firstPeriodLabel) rows.push({ label: "Primer pago", value: opts.firstPeriodLabel })
+  rows.push({ label: opts.firstPeriodLabel ? "Después" : "Importe", value: opts.priceLabel })
+  const body = `
+    ${p(`Hola ${firstName}, ${doc} te ha preparado el plan que acordasteis en tu consulta. Cuando quieras, actívalo desde tu panel y tendrás acceso completo al tratamiento y al seguimiento.`)}
+    ${dataBox(rows)}
+    ${opts.note ? p(`<strong>Nota de tu médico:</strong> ${opts.note}`) : ""}
+    ${p("Al confirmar el pago se activa automáticamente tu suscripción, tu receta y el chat con tu médico. Puedes cancelar cuando quieras.")}
+    <div style="margin:22px 0 4px;">${button(url, "Ver y activar mi plan")}</div>
+  `
+  return send(
+    opts.to,
+    "Tu plan de tratamiento está listo — DoctorLife",
+    shell({ title: "Tu plan está listo", body, preheader: "Actívalo desde tu panel para empezar." }),
+  )
+}
+
 /** Credenciales de acceso para un médico creado por el admin. */
 export async function sendDoctorWelcomeEmail(opts: { to: string; name: string; tempPassword: string }) {
   const loginUrl = `${getCanonicalBaseUrl()}/sign-in`

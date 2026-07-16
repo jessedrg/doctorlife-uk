@@ -7,6 +7,7 @@ import { ImmersiveProduct } from "@/components/immersive-product";
 import { ProductCarousel } from "@/components/product-carousel";
 import { Transformation } from "@/components/transformation";
 import { MobileFollowup } from "@/components/mobile-followup";
+import { MedicalTeamSection } from "@/components/medical-team-section";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
@@ -50,6 +51,7 @@ export default function Home() {
           </section>
           <Transformation />
           <MobileFollowup />
+          <MedicalTeamSection compact />
           <FinalCta />
         </main>
         <Footer />

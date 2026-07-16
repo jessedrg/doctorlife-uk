@@ -3,7 +3,8 @@
 import { db } from "@/lib/db"
 import { appointments, doctorProfiles, subscriptions, user } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
-import { stripe } from "@/lib/stripe"
+import { stripe, platformFeeCents } from "@/lib/stripe"
+import { getClinicChargeContext } from "@/lib/clinic"
 import { getRequestBaseUrl } from "@/lib/base-url"
 import { getPooledSlots, isSlotFree } from "@/lib/scheduling/pool"
 import { scheduling } from "@/lib/scheduling"
@@ -54,6 +55,17 @@ export async function createBookingCheckout(
     return { error: "Ese horario acaba de ocuparse. Elige otro." }
   }
 
+  // Compliance: el acto médico lo cobra y factura la CLÍNICA. Sin clínica lista
+  // no se puede cobrar (el dinero no debe caer en la plataforma).
+  const clinic = await getClinicChargeContext()
+  if (!clinic) {
+    return {
+      error:
+        "La clínica todavía no puede procesar cobros. Inténtalo de nuevo más tarde.",
+    }
+  }
+  const feeCents = platformFeeCents(CONSULT_PRICE_CENTS)
+
   // Creamos la cita en estado pending_payment (reserva el hueco).
   let appointmentId: number
   try {
@@ -66,8 +78,8 @@ export async function createBookingCheckout(
         endsAt: new Date(slot.endUtc),
         status: "pending_payment",
         amountCents: CONSULT_PRICE_CENTS,
-        // La primera consulta va íntegra al médico (sin comisión de plataforma).
-        applicationFeeCents: 0,
+        // La clínica cobra el acto médico; DoctorLife retiene su comisión tecnológica.
+        applicationFeeCents: feeCents,
       })
       .returning({ id: appointments.id })
     appointmentId = row.id
@@ -75,8 +87,8 @@ export async function createBookingCheckout(
     return { error: "Ese horario acaba de ocuparse. Elige otro." }
   }
 
-  // Cargo a la plataforma. El reparto al médico se hace por transferencia
-  // separada al confirmar el pago (separate charges and transfers).
+  // Cargo liquidado en la clínica: `on_behalf_of` + `transfer_data.destination`
+  // = clínica; DoctorLife retiene `application_fee_amount`.
   const baseUrl = await getRequestBaseUrl()
   try {
     const session = await stripe.checkout.sessions.create({
@@ -89,14 +101,19 @@ export async function createBookingCheckout(
             currency: "eur",
             unit_amount: CONSULT_PRICE_CENTS,
             product_data: {
-              name: "Primera consulta médica · DoctorLife",
+              name: "Consulta médica · DoctorLife",
               description: `Cita con ${slot.doctorName} el ${slot.date} a las ${slot.label}`,
             },
           },
         },
       ],
       metadata: { appointmentId: String(appointmentId) },
-      payment_intent_data: { metadata: { appointmentId: String(appointmentId) } },
+      payment_intent_data: {
+        metadata: { appointmentId: String(appointmentId) },
+        on_behalf_of: clinic.accountId,
+        transfer_data: { destination: clinic.accountId },
+        application_fee_amount: feeCents,
+      },
       success_url: `${baseUrl}/portal/citas?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/portal/reservar?cancelled=1`,
     })
@@ -250,37 +267,15 @@ export async function finalizeAppointment(
     })
     .where(eq(appointments.id, appointmentId))
 
-  // Datos del médico y paciente para transferencia y reunión.
+  // El acto médico ya se liquidó en la clínica en el propio cargo (destination
+  // charge con `application_fee`). No se transfiere nada al médico: la clínica
+  // gestiona su remuneración fuera de la app. Solo necesitamos el email del
+  // médico para crear la videollamada.
   const [doc] = await db
-    .select({
-      stripeAccountId: doctorProfiles.stripeAccountId,
-      chargesEnabled: doctorProfiles.chargesEnabled,
-      email: user.email,
-    })
+    .select({ email: user.email })
     .from(doctorProfiles)
     .innerJoin(user, eq(user.id, doctorProfiles.userId))
     .where(eq(doctorProfiles.userId, appt.doctorId))
-
-  // Transferencia al médico (payout) — solo si su cuenta Connect está lista.
-  if (doc?.stripeAccountId && doc.chargesEnabled && paymentIntentId) {
-    try {
-      const pi = await stripe.paymentIntents.retrieve(paymentIntentId)
-      const amount = appt.amountCents - appt.applicationFeeCents
-      const transfer = await stripe.transfers.create({
-        amount,
-        currency: appt.currency,
-        destination: doc.stripeAccountId,
-        source_transaction: pi.latest_charge as string,
-        metadata: { appointmentId: String(appointmentId) },
-      })
-      await db
-        .update(appointments)
-        .set({ stripeTransferId: transfer.id, updatedAt: new Date() })
-        .where(eq(appointments.id, appointmentId))
-    } catch (e) {
-      console.log("[v0] transfer to doctor failed:", e instanceof Error ? e.message : e)
-    }
-  }
 
   // Enlace de Google Meet (si Google está configurado y el médico conectado).
   const [pat] = await db.select({ email: user.email }).from(user).where(eq(user.id, appt.patientId))
@@ -611,48 +606,9 @@ export async function rescheduleAppointment(
     .set({ rescheduledToId: newId, updatedAt: new Date() })
     .where(eq(appointments.id, appointmentId))
 
-  // Movimiento de dinero solo si es primera consulta y cambia de médico.
-  let newTransferId: string | null = old.stripeTransferId
-  if (!followup && doctorId !== old.doctorId) {
-    // Revierte la transferencia al médico original (si existía).
-    if (old.stripeTransferId) {
-      try {
-        await stripe.transfers.createReversal(old.stripeTransferId)
-      } catch (e) {
-        console.log("[v0] reversal failed:", e instanceof Error ? e.message : e)
-      }
-    }
-    // Transfiere al nuevo médico usando el cargo original.
-    const [newDoc] = await db
-      .select({
-        stripeAccountId: doctorProfiles.stripeAccountId,
-        chargesEnabled: doctorProfiles.chargesEnabled,
-      })
-      .from(doctorProfiles)
-      .where(eq(doctorProfiles.userId, doctorId))
-    if (newDoc?.stripeAccountId && newDoc.chargesEnabled && old.stripePaymentIntentId) {
-      try {
-        const pi = await stripe.paymentIntents.retrieve(old.stripePaymentIntentId)
-        const transfer = await stripe.transfers.create({
-          amount: old.amountCents - old.applicationFeeCents,
-          currency: old.currency,
-          destination: newDoc.stripeAccountId,
-          source_transaction: pi.latest_charge as string,
-          metadata: { appointmentId: String(newId), rescheduledFrom: String(appointmentId) },
-        })
-        newTransferId = transfer.id
-      } catch (e) {
-        console.log("[v0] re-transfer failed:", e instanceof Error ? e.message : e)
-        newTransferId = null
-      }
-    } else {
-      newTransferId = null
-    }
-    await db
-      .update(appointments)
-      .set({ stripeTransferId: newTransferId, updatedAt: new Date() })
-      .where(eq(appointments.id, newId))
-  }
+  // No hay movimiento de dinero al reprogramar: el acto médico lo cobra la
+  // clínica (destination charge), independientemente del médico asignado, así
+  // que cambiar de médico no requiere revertir ni recrear transferencias.
 
   // Crea el enlace de la nueva videollamada.
   const [doc] = await db

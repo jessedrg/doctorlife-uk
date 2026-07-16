@@ -6,13 +6,15 @@ import {
   appointments,
   doctorProfiles,
   leads,
-  commissions,
+  planOffers,
   user as userTable,
 } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
-import { stripe, DOCTOR_SHARE_CENTS, DOCTOR_ACTIVATION_CENTS } from "@/lib/stripe"
+import { stripe } from "@/lib/stripe"
 import { getRequestBaseUrl } from "@/lib/base-url"
-import { getPlan, defaultPlan, FIRST_MONTH_DISCOUNT_CENTS, SUBSCRIPTION_PRICE_CENTS, type PlanInfo } from "@/lib/plans"
+import { getPlan, defaultPlan, SUBSCRIPTION_PRICE_CENTS, MAIN_PRODUCT_ID, type PlanInfo } from "@/lib/plans"
+import { getProduct } from "@/lib/catalog"
+import { buildClinicCheckoutSession } from "@/lib/checkout"
 import { hasPendingVerification } from "@/app/actions/verification"
 import { createNotification } from "@/app/actions/notifications"
 import { and, desc, eq, inArray } from "drizzle-orm"
@@ -148,8 +150,11 @@ async function getPatientPlan(email: string): Promise<PlanInfo> {
 
 /**
  * Inicia el checkout de la suscripción mensual del tratamiento.
- * Cobro recurrente a la plataforma con comisión + transferencia al médico
- * (destination charge) cuando su cuenta Connect está lista.
+ *
+ * Compliance: el cobro recurrente se liquida en la cuenta Connect de la CLÍNICA
+ * (comerciante de liquidación) vía `on_behalf_of` + `transfer_data.destination`;
+ * DoctorLife solo retiene su comisión de servicio tecnológico
+ * (`application_fee_percent`). El enrutado lo aplica `buildClinicCheckoutSession`.
  */
 export async function startSubscriptionCheckout(): Promise<{ url: string } | { error: string }> {
   const patient = await requireRole("patient")
@@ -181,66 +186,52 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
     }
   }
 
-  const plan = await getPatientPlan(patient.email)
+  // El plan a activar es el que la clínica envió por correo (oferta 'sent'). Si
+  // no hay ninguna, usamos el producto principal del catálogo como respaldo.
+  const [offer] = await db
+    .select({ productId: planOffers.productId })
+    .from(planOffers)
+    .where(and(eq(planOffers.patientId, patient.id), eq(planOffers.status, "sent")))
+    .orderBy(desc(planOffers.id))
+    .limit(1)
 
-  // Guardamos una fila de suscripción en estado incompleto.
-  // Precio siempre almacenado como el mensual recurrente = 100 €.
+  // Producto del catálogo (fuente de verdad de precio y oferta del primer mes).
+  const product = getProduct(offer?.productId ?? MAIN_PRODUCT_ID) ?? getProduct(MAIN_PRODUCT_ID)
+  if (!product) {
+    return { error: "El plan no está disponible en este momento." }
+  }
+
+  // Guardamos una fila de suscripción en estado incompleto con el plan elegido.
   const [pending] = await db
     .insert(subscriptions)
     .values({
       patientId: patient.id,
       doctorId,
-      plan: plan.name,
-      priceCents: SUBSCRIPTION_PRICE_CENTS,
+      plan: product.name,
+      priceCents: product.priceCents,
       status: "incomplete",
     })
     .returning({ id: subscriptions.id })
 
-  const subscriptionData: Record<string, unknown> = {
-    metadata: { subscriptionRowId: String(pending.id), patientId: patient.id, doctorId },
-  }
-
   try {
-    // Oferta de lanzamiento — Primer mes: 100 € − 40 € = 60 €.
-    // Meses siguientes: 100 € recurrentes.
-    const firstMonthCoupon = await stripe.coupons.create({
-      amount_off: FIRST_MONTH_DISCOUNT_CENTS,   // 4000 céntimos = 40 €
-      currency: "eur",
-      duration: "once",
-      name: "Oferta de lanzamiento (−40 € el primer mes)",
-    })
-
     const baseUrl = await getRequestBaseUrl()
-    const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
-      customer_email: patient.email,
-      discounts: [{ coupon: firstMonthCoupon.id }],
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency: "eur",
-            unit_amount: SUBSCRIPTION_PRICE_CENTS,   // 100 € IVA incl.
-            recurring: { interval: "month" },
-            product_data: {
-              name: `${plan.name} · DoctorLife`,
-              description:
-                "Suscripción mensual con seguimiento médico. Oferta de lanzamiento: primer mes 60 € (después, 100 €/mes).",
-            },
-          },
-        },
-      ],
-      subscription_data: subscriptionData,
-      metadata: { subscriptionRowId: String(pending.id) },
-      success_url: `${baseUrl}/portal/recetas?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/portal/recetas?subscription=cancelled`,
+    const result = await buildClinicCheckoutSession({
+      product,
+      customerEmail: patient.email,
+      metadata: {
+        subscriptionRowId: String(pending.id),
+        patientId: patient.id,
+        doctorId,
+      },
+      successUrl: `${baseUrl}/portal/recetas?subscription=ok&session_id={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${baseUrl}/portal/recetas?subscription=cancelled`,
     })
 
-    if (!session.url) {
+    if ("error" in result) {
       await db.delete(subscriptions).where(eq(subscriptions.id, pending.id))
-      return { error: "No se pudo iniciar la suscripción." }
+      return { error: result.error }
     }
-    return { url: session.url }
+    return { url: result.url }
   } catch (e) {
     await db.delete(subscriptions).where(eq(subscriptions.id, pending.id))
     return { error: e instanceof Error ? e.message : "No se pudo iniciar la suscripción." }
@@ -254,6 +245,78 @@ export async function syncSubscriptionBySession(sessionId: string): Promise<void
   if (!rowId || !session.subscription) return
   const sub = await stripe.subscriptions.retrieve(session.subscription as string)
   await applySubscriptionState(rowId, sub, session.customer as string | null)
+}
+
+/**
+ * Activa el acceso de un plan de PAGO ÚNICO (pack 5 meses, nutricionista+GLP1)
+ * a partir de la sesión de Checkout. Concede acceso durante `accessMonths` meses
+ * (5 por defecto) sin renovación automática. Idempotente: si ya está activo, no
+ * hace nada.
+ */
+export async function activateOneTimeAccessBySession(sessionId: string): Promise<void> {
+  const session = await stripe.checkout.sessions.retrieve(sessionId)
+  if (session.mode !== "payment") return
+  const rowId = Number(session.metadata?.subscriptionRowId)
+  if (!rowId || session.payment_status !== "paid") return
+
+  const [row] = await db
+    .select({
+      id: subscriptions.id,
+      status: subscriptions.status,
+      patientId: subscriptions.patientId,
+      doctorId: subscriptions.doctorId,
+    })
+    .from(subscriptions)
+    .where(eq(subscriptions.id, rowId))
+    .limit(1)
+  if (!row) return
+  // Ya activado (idempotencia).
+  if (["active", "trialing", "past_due"].includes(row.status)) return
+
+  const product = session.metadata?.productId ? getProduct(session.metadata.productId) : undefined
+  const months = product?.accessMonths ?? 5
+  const end = new Date()
+  end.setMonth(end.getMonth() + months)
+
+  await db
+    .update(subscriptions)
+    .set({
+      status: "active",
+      // Pago único: no renueva automáticamente; el acceso caduca al final.
+      cancelAtPeriodEnd: true,
+      currentPeriodEnd: end,
+      stripeCustomerId: (session.customer as string | null) ?? undefined,
+      updatedAt: new Date(),
+    })
+    .where(eq(subscriptions.id, rowId))
+
+  // Cerramos la oferta de plan que la clínica hubiera enviado.
+  await db
+    .update(planOffers)
+    .set({ status: "paid", paidAt: new Date() })
+    .where(and(eq(planOffers.patientId, row.patientId), eq(planOffers.status, "sent")))
+
+  // Aviso de activación al médico.
+  if (row.doctorId) {
+    const [patient] = await db
+      .select({ name: userTable.name })
+      .from(userTable)
+      .where(eq(userTable.id, row.patientId))
+      .limit(1)
+    const patientName = patient?.name || "Un paciente"
+    try {
+      await createNotification({
+        userId: row.doctorId,
+        type: "subscription_activated",
+        title: `${patientName} activó su plan`,
+        body: `${patientName} ha activado el plan "${product?.name ?? "tratamiento"}" (${months} meses de acceso).`,
+        href: "/medico/pacientes",
+      })
+    } catch (e) {
+      console.log("[v0] one-time activation notify failed:", e instanceof Error ? e.message : e)
+    }
+  }
+  revalidatePath("/portal")
 }
 
 /** Aplica el estado de una suscripción de Stripe a nuestra fila. */
@@ -273,6 +336,21 @@ export async function applySubscriptionState(
       updatedAt: new Date(),
     })
     .where(eq(subscriptions.id, rowId))
+
+  // Al quedar activa, cerramos la oferta de plan que la clínica había enviado.
+  if (["active", "trialing", "past_due"].includes(sub.status)) {
+    const [row] = await db
+      .select({ patientId: subscriptions.patientId })
+      .from(subscriptions)
+      .where(eq(subscriptions.id, rowId))
+      .limit(1)
+    if (row) {
+      await db
+        .update(planOffers)
+        .set({ status: "paid", paidAt: new Date() })
+        .where(and(eq(planOffers.patientId, row.patientId), eq(planOffers.status, "sent")))
+    }
+  }
   revalidatePath("/portal")
 }
 
@@ -302,13 +380,18 @@ export async function cancelMySubscription(): Promise<{ ok: boolean; error?: str
 }
 
 /**
- * Transfiere al médico asignado su parte fija (25 €) de un pago de suscripción.
- * El cobro entró íntegro en la cuenta de la empresa; aquí movemos 25 € al médico
- * mediante una transferencia separada usando el cargo de la factura como origen.
- * Idempotente: la idempotency key por factura evita pagos duplicados si el
- * webhook se reintenta.
+ * Procesa el pago de una factura de suscripción.
+ *
+ * Compliance: el dinero ya se liquida en la clínica en el propio cargo
+ * (`on_behalf_of` + `transfer_data.destination`), con la comisión de DoctorLife
+ * retenida como `application_fee`. Aquí NO se mueve dinero: solo lógica de
+ * negocio no monetaria:
+ *  - En renovaciones, se habilita la videollamada de seguimiento (`followupDueAt`).
+ *  - Se avisa al médico de la actividad del paciente (sin importes de reparto).
+ *
+ * Idempotente por naturaleza (los cambios son estados/avisos derivados).
  */
-export async function payoutDoctorForInvoice(invoice: {
+export async function handleInvoicePaidForSubscription(invoice: {
   id?: string
   subscription?: string | null
   charge?: string | null
@@ -316,8 +399,7 @@ export async function payoutDoctorForInvoice(invoice: {
   billing_reason?: string | null
 }): Promise<void> {
   const subId = invoice.subscription
-  const chargeId = invoice.charge
-  if (!subId || !chargeId || !invoice.id) return
+  if (!subId || !invoice.id) return
 
   const isActivation = invoice.billing_reason === "subscription_create"
 
@@ -343,14 +425,7 @@ export async function payoutDoctorForInvoice(invoice: {
     revalidatePath("/portal")
   }
 
-  // Importe que recibe el médico:
-  // - Activación (primer pago 60 € con la oferta de lanzamiento): 10 € de comisión por captación.
-  // - Renovación (100 € mensuales): 35 € fijos; el resto (65 €) se queda en la empresa.
-  const amountPaid = invoice.amount_paid ?? 0
-  const targetAmount = isActivation ? DOCTOR_ACTIVATION_CENTS : DOCTOR_SHARE_CENTS
-  const amount = Math.min(targetAmount, amountPaid)
-
-  // Datos del paciente para los avisos.
+  // Datos del paciente para el aviso al médico.
   const [patient] = await db
     .select({ name: userTable.name })
     .from(userTable)
@@ -358,74 +433,22 @@ export async function payoutDoctorForInvoice(invoice: {
     .limit(1)
   const patientName = patient?.name || "Un paciente"
 
-  // Registro de comisión (idempotente por factura) + aviso al médico.
+  // Aviso de actividad al médico (sin importes: la clínica gestiona la remuneración).
   try {
-    const inserted = await db
-      .insert(commissions)
-      .values({
-        doctorId: row.doctorId,
-        patientId: row.patientId,
-        subscriptionId: row.id,
-        kind: isActivation ? "activation" : "renewal",
-        amountCents: amount,
-        currency: "eur",
-        stripeInvoiceId: invoice.id,
-      })
-      .onConflictDoNothing({ target: commissions.stripeInvoiceId })
-      .returning({ id: commissions.id })
-
-    // Solo notificamos si la comisión es nueva (evita duplicar avisos en reintentos).
-    if (inserted.length > 0) {
-      await createNotification({
-        userId: row.doctorId,
-        type: isActivation ? "subscription_activated" : "subscription_renewed",
-        title: isActivation
-          ? `${patientName} activó su suscripción`
-          : `${patientName} renovó su suscripción`,
-        body: isActivation
-          ? `Has recibido ${formatEur(amount)} de comisión por captación.`
-          : `Has recibido ${formatEur(amount)} por la renovación mensual.`,
-        href: "/medico/pacientes",
-      })
-    }
-  } catch (e) {
-    console.log("[v0] commission record/notify failed:", e instanceof Error ? e.message : e)
-  }
-
-  // Transferencia en Stripe Connect al médico (si tiene cuenta operativa).
-  const [doc] = await db
-    .select({
-      stripeAccountId: doctorProfiles.stripeAccountId,
-      chargesEnabled: doctorProfiles.chargesEnabled,
+    await createNotification({
+      userId: row.doctorId,
+      type: isActivation ? "subscription_activated" : "subscription_renewed",
+      title: isActivation
+        ? `${patientName} activó su suscripción`
+        : `${patientName} renovó su suscripción`,
+      body: isActivation
+        ? `${patientName} ha activado el tratamiento con seguimiento médico.`
+        : `${patientName} ha renovado su suscripción mensual.`,
+      href: "/medico/pacientes",
     })
-    .from(doctorProfiles)
-    .where(eq(doctorProfiles.userId, row.doctorId))
-    .limit(1)
-  if (!doc?.stripeAccountId || !doc.chargesEnabled) return
-  if (amount <= 0) return
-
-  try {
-    await stripe.transfers.create(
-      {
-        amount,
-        currency: "eur",
-        destination: doc.stripeAccountId,
-        source_transaction: chargeId,
-        metadata: {
-          kind: isActivation ? "subscription_activation_share" : "subscription_doctor_share",
-          invoiceId: invoice.id,
-          doctorId: row.doctorId,
-        },
-      },
-      { idempotencyKey: `sub-payout-${invoice.id}` },
-    )
   } catch (e) {
-    console.log("[v0] subscription payout to doctor failed:", e instanceof Error ? e.message : e)
+    console.log("[v0] subscription activity notify failed:", e instanceof Error ? e.message : e)
   }
-}
-
-function formatEur(cents: number) {
-  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
 }
 
 /** Localiza la fila por id de suscripción de Stripe (para webhooks). */

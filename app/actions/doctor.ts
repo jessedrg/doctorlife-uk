@@ -414,10 +414,9 @@ export type DoctorBilling = {
   upcomingTotalCents: number
 }
 
-/** Suscripciones de los pacientes del médico y sus comisiones registradas. */
+/** Suscripciones y actividad de los pacientes del médico. */
 export async function getDoctorBilling(): Promise<DoctorBilling> {
   const me = await requireDoctor()
-  const { DOCTOR_SHARE_CENTS } = await import("@/lib/stripe")
 
   const subs = await db
     .select({
@@ -435,25 +434,10 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
     .where(eq(subscriptions.doctorId, me.id))
     .orderBy(desc(subscriptions.createdAt))
 
-  const comms = await db
-    .select({
-      id: commissions.id,
-      patientName: userTable.name,
-      kind: commissions.kind,
-      amountCents: commissions.amountCents,
-      currency: commissions.currency,
-      createdAt: commissions.createdAt,
-    })
-    .from(commissions)
-    .leftJoin(userTable, eq(userTable.id, commissions.patientId))
-    .where(eq(commissions.doctorId, me.id))
-    .orderBy(desc(commissions.createdAt))
-    .limit(100)
-
   const activeStates = ["active", "trialing", "past_due"]
 
-  // Próximos pagos: solo suscripciones activas que no se van a cancelar,
-  // ordenadas por fecha de próxima renovación (más próxima primero).
+  // Próximas renovaciones de los pacientes (para contexto del médico). Sin
+  // importes de reparto: la clínica gestiona los honorarios fuera de la app.
   const upcomingPayouts = subs
     .filter(
       (s) =>
@@ -464,7 +448,7 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
     .map((s) => ({
       patientName: s.patientName || "Paciente",
       renewalDate: new Date(s.currentPeriodEnd!),
-      doctorPayoutCents: DOCTOR_SHARE_CENTS,
+      doctorPayoutCents: 0,
       currency: s.currency,
     }))
     .sort((a, b) => a.renewalDate.getTime() - b.renewalDate.getTime())
@@ -479,18 +463,11 @@ export async function getDoctorBilling(): Promise<DoctorBilling> {
       currentPeriodEnd: s.currentPeriodEnd ? new Date(s.currentPeriodEnd) : null,
       cancelAtPeriodEnd: s.cancelAtPeriodEnd,
     })),
-    commissions: comms.map((c) => ({
-      id: c.id,
-      patientName: c.patientName || "Paciente",
-      kind: (c.kind === "activation" ? "activation" : "renewal") as "activation" | "renewal",
-      amountCents: c.amountCents,
-      currency: c.currency,
-      createdAt: new Date(c.createdAt),
-    })),
-    totalCommissionCents: comms.reduce((sum, c) => sum + c.amountCents, 0),
+    commissions: [],
+    totalCommissionCents: 0,
     activeCount: subs.filter((s) => activeStates.includes(s.status)).length,
     upcomingPayouts,
-    upcomingTotalCents: upcomingPayouts.reduce((sum, p) => sum + p.doctorPayoutCents, 0),
+    upcomingTotalCents: 0,
   }
 }
 
