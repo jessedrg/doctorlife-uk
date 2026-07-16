@@ -1,10 +1,10 @@
 "use server"
 
 import { db } from "@/lib/db"
-import { user as userTable, doctorProfiles, doctorAvailability, appointments, leads, subscriptions, conversations, messages, session, account, notifications, prescriptions } from "@/lib/db/schema"
+import { user as userTable, doctorProfiles, doctorAvailability, availabilityExceptions, appointments, leads, subscriptions, conversations, messages, session, account, notifications, prescriptions, planOffers, commissions, doctorNotes, verificationRequests } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
 import { missingClinicFields } from "@/lib/clinic"
-import { count, desc, eq, inArray, notInArray, sql, sum } from "drizzle-orm"
+import { and, count, desc, eq, inArray, notInArray, sql, sum } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { auth } from "@/lib/auth"
 import { generateTempPassword } from "@/lib/credentials"
@@ -365,6 +365,70 @@ export async function setDoctorAccepting(doctorId: string, accepting: boolean) {
     .update(doctorProfiles)
     .set({ acceptingPatients: accepting, updatedAt: new Date() })
     .where(eq(doctorProfiles.userId, doctorId))
+  revalidatePath("/admin/clinicas")
+  return { ok: true }
+}
+
+/**
+ * Elimina por completo una clínica (usuario con rol doctor) y todos sus datos
+ * asociados. Bloquea el borrado si tiene suscripciones activas para no dejar
+ * pacientes de pago sin médico. Acción irreversible.
+ */
+export async function deleteClinic(doctorId: string) {
+  await requireAdmin()
+
+  // Verificar que es efectivamente una clínica/médico.
+  const [target] = await db
+    .select({ id: userTable.id, role: userTable.role })
+    .from(userTable)
+    .where(eq(userTable.id, doctorId))
+    .limit(1)
+  if (!target || target.role !== "doctor") {
+    return { ok: false, error: "La cuenta no existe o no es una clínica." }
+  }
+
+  // Salvaguarda: no borrar si tiene suscripciones de pacientes activas.
+  const [{ value: activeSubs } = { value: 0 }] = await db
+    .select({ value: count() })
+    .from(subscriptions)
+    .where(and(eq(subscriptions.doctorId, doctorId), inArray(subscriptions.status, ACTIVE_SUB_STATES)))
+  if (Number(activeSubs) > 0) {
+    return {
+      ok: false,
+      error:
+        "No se puede eliminar: la clínica tiene suscripciones de pacientes activas. Cancélalas o reasígnalas primero.",
+    }
+  }
+
+  // Borrar mensajes de sus conversaciones (por conversationId).
+  const convs = await db
+    .select({ id: conversations.id })
+    .from(conversations)
+    .where(eq(conversations.doctorId, doctorId))
+  const convIds = convs.map((c) => c.id)
+  if (convIds.length > 0) {
+    await db.delete(messages).where(inArray(messages.conversationId, convIds))
+  }
+
+  // Borrar el resto de datos asociados a la clínica.
+  await db.delete(conversations).where(eq(conversations.doctorId, doctorId))
+  await db.delete(appointments).where(eq(appointments.doctorId, doctorId))
+  await db.delete(prescriptions).where(eq(prescriptions.doctorId, doctorId))
+  await db.delete(subscriptions).where(eq(subscriptions.doctorId, doctorId))
+  await db.delete(planOffers).where(eq(planOffers.doctorId, doctorId))
+  await db.delete(commissions).where(eq(commissions.doctorId, doctorId))
+  await db.delete(doctorNotes).where(eq(doctorNotes.doctorId, doctorId))
+  await db.delete(verificationRequests).where(eq(verificationRequests.doctorId, doctorId))
+  await db.delete(doctorAvailability).where(eq(doctorAvailability.userId, doctorId))
+  await db.delete(availabilityExceptions).where(eq(availabilityExceptions.userId, doctorId))
+  await db.delete(notifications).where(eq(notifications.userId, doctorId))
+  await db.delete(doctorProfiles).where(eq(doctorProfiles.userId, doctorId))
+
+  // Borrar credenciales/sesiones y, por último, el usuario.
+  await db.delete(session).where(eq(session.userId, doctorId))
+  await db.delete(account).where(eq(account.userId, doctorId))
+  await db.delete(userTable).where(eq(userTable.id, doctorId))
+
   revalidatePath("/admin/clinicas")
   return { ok: true }
 }
