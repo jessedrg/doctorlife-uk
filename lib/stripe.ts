@@ -2,11 +2,39 @@ import "server-only"
 
 import Stripe from "stripe"
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable")
+/** Si la plataforma tiene configurada la clave secreta de Stripe. */
+export const isStripeConfigured = Boolean(process.env.STRIPE_SECRET_KEY)
+
+/**
+ * Cliente de Stripe con inicialización perezosa. No lanzamos al importar el
+ * módulo (eso tumbaría cualquier página que lo importe si falta la env var);
+ * en su lugar, lanzamos solo cuando se intenta usar el cliente sin clave, y
+ * dejamos que las server actions capturen el error y degraden con elegancia.
+ */
+let _stripe: Stripe | null = null
+function getStripe(): Stripe {
+  if (_stripe) return _stripe
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) {
+    throw new Error(
+      "Stripe no está configurado: falta la variable de entorno STRIPE_SECRET_KEY.",
+    )
+  }
+  _stripe = new Stripe(key)
+  return _stripe
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+/**
+ * Proxy que difiere la creación del cliente hasta el primer acceso a una
+ * propiedad/método. Permite `import { stripe }` sin evaluar la clave en import.
+ */
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop) {
+    const client = getStripe()
+    const value = Reflect.get(client, prop)
+    return typeof value === "function" ? value.bind(client) : value
+  },
+}) as Stripe
 
 /**
  * Modelo de facturación compliant (Stripe Connect):

@@ -1,15 +1,7 @@
 "use client"
 
 import type { DoctorBilling } from "@/app/actions/doctor"
-import {
-  CreditCard,
-  RefreshCw,
-  CheckCircle2,
-  CalendarClock,
-  TrendingUp,
-  Sparkles,
-  Clock,
-} from "lucide-react"
+import { CreditCard, CheckCircle2, CalendarClock, Clock } from "lucide-react"
 
 function fmtMoney(cents: number, currency = "eur") {
   return new Intl.NumberFormat("es-ES", {
@@ -24,11 +16,6 @@ const dateFmt = new Intl.DateTimeFormat("es-ES", {
   year: "numeric",
 })
 
-const shortDateFmt = new Intl.DateTimeFormat("es-ES", {
-  day: "numeric",
-  month: "short",
-})
-
 const STATUS_META: Record<string, { label: string; cls: string }> = {
   active: { label: "Activa", cls: "bg-olive/15 text-olive" },
   trialing: { label: "En prueba", cls: "bg-olive/15 text-olive" },
@@ -38,19 +25,12 @@ const STATUS_META: Record<string, { label: string; cls: string }> = {
 }
 
 export function DoctorBillingOverview({ billing }: { billing: DoctorBilling }) {
-  const {
-    subscriptions,
-    commissions,
-    totalCommissionCents,
-    activeCount,
-    upcomingPayouts,
-    upcomingTotalCents,
-  } = billing
+  const { subscriptions, activeCount, upcomingPayouts } = billing
 
   return (
     <div className="flex flex-col gap-8">
-      {/* KPIs */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      {/* KPIs de actividad */}
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-[16px] border border-ink/10 bg-cream p-5">
           <div className="flex items-center gap-2 text-ink-soft">
             <CheckCircle2 className="size-4" aria-hidden />
@@ -64,48 +44,31 @@ export function DoctorBillingOverview({ billing }: { billing: DoctorBilling }) {
 
         <div className="rounded-[16px] border border-ink/10 bg-cream p-5">
           <div className="flex items-center gap-2 text-ink-soft">
-            <CreditCard className="size-4" aria-hidden />
+            <CalendarClock className="size-4" aria-hidden />
             <span className="text-[12px] font-semibold uppercase tracking-[.06em]">
-              Total acumulado
+              Próximas renovaciones
             </span>
           </div>
           <p className="mt-2.5 text-[32px] font-light leading-none text-ink">
-            {fmtMoney(totalCommissionCents)}
+            {upcomingPayouts.length}
           </p>
-          <p className="mt-1 text-[12px] text-ink-mute">comisiones cobradas</p>
-        </div>
-
-        <div className="rounded-[16px] border border-olive/20 bg-olive/5 p-5">
-          <div className="flex items-center gap-2 text-olive">
-            <TrendingUp className="size-4" aria-hidden />
-            <span className="text-[12px] font-semibold uppercase tracking-[.06em]">
-              Próximo mes
-            </span>
-          </div>
-          <p className="mt-2.5 text-[32px] font-light leading-none text-ink">
-            {fmtMoney(upcomingTotalCents)}
-          </p>
-          <p className="mt-1 text-[12px] text-ink-mute">
-            {upcomingPayouts.length === 0
-              ? "sin renovaciones próximas"
-              : `${upcomingPayouts.length} renovación${upcomingPayouts.length > 1 ? "es" : ""} estimada${upcomingPayouts.length > 1 ? "s" : ""}`}
-          </p>
+          <p className="mt-1 text-[12px] text-ink-mute">en los próximos meses</p>
         </div>
       </div>
 
-      {/* Próximos pagos */}
+      {/* Próximas renovaciones */}
       <section>
         <div className="flex items-center gap-2">
           <Clock className="size-4 text-ink-soft" aria-hidden />
-          <h3 className="text-[16px] font-medium text-ink">Próximos ingresos estimados</h3>
+          <h3 className="text-[16px] font-medium text-ink">Próximas renovaciones</h3>
         </div>
         <p className="mt-1 text-[13.5px] text-ink-soft">
-          Recibirás <strong>35 €</strong> por cada renovación mensual de tus pacientes.
+          Fechas en las que tus pacientes renuevan su tratamiento.
         </p>
 
         {upcomingPayouts.length === 0 ? (
           <p className="mt-4 rounded-[14px] border border-dashed border-ink/15 bg-warm px-4 py-6 text-center text-[14px] text-ink-soft">
-            No hay renovaciones próximas estimadas.
+            No hay renovaciones próximas.
           </p>
         ) : (
           <ul className="mt-4 flex flex-col gap-2">
@@ -117,35 +80,30 @@ export function DoctorBillingOverview({ billing }: { billing: DoctorBilling }) {
               return (
                 <li
                   key={i}
-                  className="flex items-center justify-between gap-3 rounded-[13px] border border-ink/10 bg-cream px-4 py-3.5"
+                  className="flex items-center gap-3 rounded-[13px] border border-ink/10 bg-cream px-4 py-3.5"
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`flex size-9 shrink-0 items-center justify-center rounded-full ${isImminent ? "bg-olive/15" : "bg-ink/5"}`}
-                    >
-                      <CalendarClock
-                        className={`size-4 ${isImminent ? "text-olive" : "text-ink-soft"}`}
-                        aria-hidden
-                      />
-                    </div>
-                    <div>
-                      <p className="text-[14px] font-medium text-ink">{p.patientName}</p>
-                      <p className="text-[12.5px] text-ink-soft">
-                        Renovación el{" "}
-                        <span className={isImminent ? "font-semibold text-olive" : ""}>
-                          {dateFmt.format(p.renewalDate)}
-                        </span>
-                        {isImminent && (
-                          <span className="ml-1.5 inline-flex items-center rounded-full bg-olive/15 px-1.5 py-0.5 text-[11px] font-medium text-olive">
-                            en {daysUntil}d
-                          </span>
-                        )}
-                      </p>
-                    </div>
+                  <div
+                    className={`flex size-9 shrink-0 items-center justify-center rounded-full ${isImminent ? "bg-olive/15" : "bg-ink/5"}`}
+                  >
+                    <CalendarClock
+                      className={`size-4 ${isImminent ? "text-olive" : "text-ink-soft"}`}
+                      aria-hidden
+                    />
                   </div>
-                  <p className="text-[15px] font-semibold text-olive">
-                    +{fmtMoney(p.doctorPayoutCents, p.currency)}
-                  </p>
+                  <div>
+                    <p className="text-[14px] font-medium text-ink">{p.patientName}</p>
+                    <p className="text-[12.5px] text-ink-soft">
+                      Renovación el{" "}
+                      <span className={isImminent ? "font-semibold text-olive" : ""}>
+                        {dateFmt.format(p.renewalDate)}
+                      </span>
+                      {isImminent && (
+                        <span className="ml-1.5 inline-flex items-center rounded-full bg-olive/15 px-1.5 py-0.5 text-[11px] font-medium text-olive">
+                          en {daysUntil}d
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </li>
               )
             })}
@@ -190,66 +148,15 @@ export function DoctorBillingOverview({ billing }: { billing: DoctorBilling }) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[14px] font-medium text-ink">
+                    <p className="flex items-center gap-1 text-[14px] font-medium text-ink">
+                      <CreditCard className="size-3.5 text-ink-mute" aria-hidden />
                       {fmtMoney(s.priceCents, s.currency)}
                       <span className="text-[12px] font-normal text-ink-mute">/mes</span>
                     </p>
-                    <p className="text-[11.5px] text-ink-mute">Tu parte: {fmtMoney(3500)}/mes</p>
                   </div>
                 </li>
               )
             })}
-          </ul>
-        )}
-      </section>
-
-      {/* Historial de comisiones */}
-      <section>
-        <div className="flex items-center gap-2">
-          <Sparkles className="size-4 text-ink-soft" aria-hidden />
-          <h3 className="text-[16px] font-medium text-ink">Historial de comisiones</h3>
-        </div>
-        <p className="mt-1 text-[13.5px] text-ink-soft">
-          <strong>10 €</strong> por captación al activar tratamiento ·{" "}
-          <strong>35 €</strong> en cada renovación mensual.
-        </p>
-        {commissions.length === 0 ? (
-          <p className="mt-4 rounded-[14px] border border-dashed border-ink/15 bg-warm px-4 py-6 text-center text-[14px] text-ink-soft">
-            Todavía no se ha registrado ninguna comisión.
-          </p>
-        ) : (
-          <ul className="mt-4 flex flex-col gap-2">
-            {commissions.map((c) => (
-              <li
-                key={c.id}
-                className="flex items-center justify-between gap-3 rounded-[12px] border border-ink/10 bg-cream px-4 py-3"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className={`flex size-8 shrink-0 items-center justify-center rounded-full ${c.kind === "activation" ? "bg-olive/15" : "bg-ink/5"}`}
-                  >
-                    {c.kind === "activation" ? (
-                      <CheckCircle2 className="size-4 text-olive" aria-hidden />
-                    ) : (
-                      <RefreshCw className="size-4 text-ink-soft" aria-hidden />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-[14px] text-ink">
-                      {c.patientName}
-                      <span className="text-ink-mute">
-                        {" · "}
-                        {c.kind === "activation" ? "Captación" : "Renovación"}
-                      </span>
-                    </p>
-                    <p className="text-[11.5px] text-ink-mute">{dateFmt.format(c.createdAt)}</p>
-                  </div>
-                </div>
-                <p className="text-[14px] font-semibold text-olive">
-                  +{fmtMoney(c.amountCents, c.currency)}
-                </p>
-              </li>
-            ))}
           </ul>
         )}
       </section>

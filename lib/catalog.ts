@@ -10,6 +10,8 @@
  * Los precios se guardan en céntimos (EUR) e incluyen IVA.
  */
 
+import type Stripe from "stripe"
+
 export type PricingModel = "subscription" | "pack" | "one_time"
 
 export type BillingInterval = "month" | "year"
@@ -122,20 +124,19 @@ export function stripeMode(product: Product): "subscription" | "payment" {
  * Traduce un producto del catálogo a un `line_item` de Stripe Checkout,
  * uniforme para cualquier modelo (`price_data` inline, sin Price IDs fijos).
  */
-export function toStripeLineItem(product: Product) {
-  const base = {
-    quantity: 1,
-    price_data: {
-      currency: product.currency,
-      unit_amount: product.priceCents,
-      product_data: {
-        name: `${product.name} · DoctorLife`,
-        description: product.description,
-      },
-    } as Record<string, unknown>,
+export function toStripeLineItem(
+  product: Product,
+): Stripe.Checkout.SessionCreateParams.LineItem {
+  const priceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
+    currency: product.currency,
+    unit_amount: product.priceCents,
+    product_data: {
+      name: `${product.name} · DoctorLife`,
+      description: product.description,
+    },
   }
   if (product.model === "subscription") {
-    base.price_data.recurring = { interval: product.interval ?? "month" }
+    priceData.recurring = { interval: product.interval ?? "month" }
   }
-  return base
+  return { quantity: 1, price_data: priceData }
 }

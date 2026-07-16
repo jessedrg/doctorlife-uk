@@ -50,7 +50,7 @@ export async function buildClinicCheckoutSession(
   const params: Stripe.Checkout.SessionCreateParams = {
     mode,
     customer_email: customerEmail,
-    line_items: [toStripeLineItem(product) as Stripe.Checkout.SessionCreateParams.LineItem],
+    line_items: [toStripeLineItem(product)],
     metadata: productMeta,
     success_url: successUrl,
     cancel_url: cancelUrl,
