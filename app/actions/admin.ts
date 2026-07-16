@@ -192,6 +192,7 @@ export async function listLeads() {
       id: leads.id,
       name: leads.name,
       email: leads.email,
+      phone: leads.phone,
       goal: leads.goal,
       plan: leads.plan,
       bmi: leads.bmi,
