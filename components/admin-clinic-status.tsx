@@ -17,6 +17,20 @@ const STEP_LABELS: { key: keyof Clinic; label: string }[] = [
   { key: "availabilitySet", label: "Disponibilidad" },
 ]
 
+const FISCAL_FIELDS: { key: keyof Clinic["fiscal"]; label: string }[] = [
+  { key: "clinicName", label: "Clínica" },
+  { key: "taxId", label: "CIF/NIF" },
+  { key: "addressLine", label: "Dirección" },
+  { key: "city", label: "Ciudad" },
+  { key: "postalCode", label: "C.P." },
+  { key: "province", label: "Provincia" },
+  { key: "healthRegistryNumber", label: "Nº registro sanitario" },
+  { key: "medicalDirectorName", label: "Director médico" },
+  { key: "medicalDirectorLicense", label: "Nº colegiado dir." },
+  { key: "billingEmail", label: "Email facturación" },
+  { key: "dataProtectionContact", label: "Contacto RGPD" },
+]
+
 function StepPill({ label, done }: { label: string; done: boolean }) {
   return (
     <span
@@ -68,6 +82,23 @@ export function AdminClinicStatus({ clinic }: { clinic: Clinic }) {
             <StepPill key={s.key} label={s.label} done={Boolean(clinic[s.key])} />
           ))}
         </div>
+      </div>
+
+      {/* Datos fiscales y sanitarios */}
+      <div>
+        <div className="mb-1 text-[12.5px] font-medium text-ink">Datos fiscales y sanitarios</div>
+        {FISCAL_FIELDS.every((f) => !clinic.fiscal[f.key]) ? (
+          <p className="text-[13px] text-ink-soft">Sin datos rellenados.</p>
+        ) : (
+          <dl className="grid grid-cols-1 gap-x-4 gap-y-0.5 text-[13px] sm:grid-cols-2">
+            {FISCAL_FIELDS.map((f) => (
+              <div key={f.key} className="flex gap-1.5">
+                <dt className="shrink-0 text-ink-soft">{f.label}:</dt>
+                <dd className="min-w-0 break-words text-ink">{clinic.fiscal[f.key] || "—"}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
 
       {/* Resumen de disponibilidad */}
