@@ -82,10 +82,15 @@ export function SendPlanForm({ patientId }: { patientId: string }) {
             />
             <div className="min-w-0">
               <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                <p className="text-[14px] font-medium text-ink">{p.name}</p>
-                <p className="text-[13.5px] font-semibold text-ink">
-                  {p.firstPeriodLabel ? `${p.firstPeriodLabel} 1er mes` : p.priceLabel}
+                <p className="text-[14px] font-medium text-ink">
+                  {p.name}
+                  {p.oneTime && (
+                    <span className="ml-2 rounded-full bg-ink/10 px-2 py-0.5 text-[11px] font-medium text-ink-soft align-middle">
+                      Pago único
+                    </span>
+                  )}
                 </p>
+                <p className="text-[13.5px] font-semibold text-ink">{p.priceLabel}</p>
               </div>
               <p className="mt-0.5 text-[12.5px] leading-snug text-ink-soft">{p.description}</p>
             </div>

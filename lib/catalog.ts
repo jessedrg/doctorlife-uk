@@ -147,6 +147,27 @@ export function mainSubscription(): Product | undefined {
   return activeSubscriptions()[0]
 }
 
+/** Formatea céntimos como precio en euros: 13900 → "139,00 €". */
+export function formatPrice(cents: number, currency = "eur"): string {
+  return new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+  }).format(cents / 100)
+}
+
+/**
+ * Etiqueta de precio según el modelo del plan:
+ *  - Suscripción → "139,00 €/mes"
+ *  - Pago único con acceso → "449,00 € · pago único · 5 meses"
+ *  - Pago único sin acceso definido → "649,00 € · pago único"
+ */
+export function planPriceLabel(p: Product): string {
+  const base = formatPrice(p.priceCents, p.currency)
+  if (p.model === "subscription") return `${base}/mes`
+  if (p.accessMonths) return `${base} · pago único · ${p.accessMonths} meses`
+  return `${base} · pago único`
+}
+
 /** Descuento del primer periodo de una suscripción (céntimos), o 0. */
 export function firstPeriodDiscountCents(product: Product): number {
   if (product.model !== "subscription" || product.firstPeriodCents == null) return 0

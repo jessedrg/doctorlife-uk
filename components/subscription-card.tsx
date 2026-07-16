@@ -116,8 +116,9 @@ export function SubscriptionCard({
                   : "Tu plan de tratamiento ya está listo"}
               </p>
               <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
-                Tu médico ha preparado tu receta. Activa la suscripción mensual para descargarla y
-                empezar el tratamiento.
+                {offer?.oneTime
+                  ? "Tu médico ha preparado tu receta. Realiza el pago del programa para descargarla y empezar el tratamiento."
+                  : "Tu médico ha preparado tu receta. Activa la suscripción mensual para descargarla y empezar el tratamiento."}
               </p>
             </div>
           </div>
@@ -125,18 +126,25 @@ export function SubscriptionCard({
           {offer ? (
             <div className="mb-4 rounded-[14px] border border-ink/10 bg-warm p-4">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <p className="text-[15px] font-medium text-ink">{offer.product.name}</p>
-                <p className="text-[14px] font-semibold text-ink">
-                  {offer.product.firstPeriodCents != null
-                    ? `${eur(offer.product.firstPeriodCents)} el 1er mes`
-                    : `${eur(offer.product.priceCents)}/mes`}
+                <p className="text-[15px] font-medium text-ink">
+                  {offer.product.name}
+                  {offer.oneTime && (
+                    <span className="ml-2 rounded-full bg-ink/10 px-2 py-0.5 text-[11px] font-medium text-ink-soft align-middle">
+                      Pago único
+                    </span>
+                  )}
                 </p>
+                <p className="text-[14px] font-semibold text-ink">{offer.priceLabel}</p>
               </div>
-              {offer.product.firstPeriodCents != null ? (
+              {offer.oneTime && offer.product.accessMonths ? (
                 <p className="mt-0.5 text-[12.5px] text-ink-mute">
-                  Después, {eur(offer.product.priceCents)}/mes. Cancela cuando quieras.
+                  Un solo pago con {offer.product.accessMonths} meses de acceso al tratamiento.
                 </p>
-              ) : null}
+              ) : (
+                <p className="mt-0.5 text-[12.5px] text-ink-mute">
+                  Sin permanencia: cancela cuando quieras.
+                </p>
+              )}
               {offer.note ? (
                 <p className="mt-2 border-t border-ink/10 pt-2 text-[13px] leading-relaxed text-ink-soft">
                   <span className="font-medium text-ink">Nota de tu médico:</span> {offer.note}
@@ -146,8 +154,9 @@ export function SubscriptionCard({
           ) : null}
 
           <p className="text-[14px] leading-relaxed text-ink-soft">
-            Incluye endocrino asignado, videollamada mensual de seguimiento y chat en vivo. Puedes
-            cancelar cuando quieras.
+            {offer?.oneTime
+              ? "Incluye seguimiento médico, receta cuando proceda y una consulta por llamada al mes durante todo el programa."
+              : "Incluye seguimiento con tu médico, una consulta por llamada al mes y chat en vivo. Puedes cancelar cuando quieras."}
           </p>
 
           {verificationPending ? (
@@ -174,7 +183,11 @@ export function SubscriptionCard({
               disabled={loading}
               className="mt-4 inline-flex rounded-full bg-ink px-4 py-2 text-[13.5px] font-medium text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {loading ? "Redirigiendo…" : "Activar suscripción — ver mi receta"}
+              {loading
+                ? "Redirigiendo…"
+                : offer?.oneTime
+                  ? "Pagar programa — ver mi receta"
+                  : "Activar suscripción — ver mi receta"}
             </button>
           )}
         </div>

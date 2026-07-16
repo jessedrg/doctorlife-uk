@@ -9,7 +9,12 @@ import {
   doctorProfiles,
 } from "@/lib/db/schema"
 import { getSessionUser } from "@/lib/session"
-import { activeSubscriptions, getProduct, firstPeriodDiscountCents, type Product } from "@/lib/catalog"
+import {
+  activeSellablePlans,
+  getProduct,
+  planPriceLabel,
+  type Product,
+} from "@/lib/catalog"
 import { sendPlanOfferEmail } from "@/lib/email"
 import { getClinic, clinicDataComplete } from "@/lib/clinic"
 import { createNotification } from "@/app/actions/notifications"
@@ -38,25 +43,16 @@ async function assertDoctorOwnsPatient(doctorId: string, patientId: string) {
   if (!row) throw new Error("Unauthorized")
 }
 
-function eur(cents: number, currency = "eur") {
-  return new Intl.NumberFormat("es-ES", {
-    style: "currency",
-    currency: currency.toUpperCase(),
-  }).format(cents / 100)
-}
-
-/** Planes que la clínica puede enviar (suscripciones activas del catálogo). */
+/** Planes que la clínica puede enviar (suscripción + pagos únicos del catálogo). */
 export async function getSendablePlans() {
   await requireDoctor()
-  return activeSubscriptions().map((p) => ({
+  return activeSellablePlans().map((p) => ({
     id: p.id,
     name: p.name,
     description: p.description,
-    priceLabel: `${eur(p.priceCents, p.currency)}/mes`,
-    firstPeriodLabel:
-      firstPeriodDiscountCents(p) > 0 && p.firstPeriodCents != null
-        ? eur(p.firstPeriodCents, p.currency)
-        : null,
+    priceLabel: planPriceLabel(p),
+    /** true si es pago único (pack / one_time); false si es suscripción. */
+    oneTime: p.model !== "subscription",
   }))
 }
 
@@ -85,7 +81,7 @@ export async function sendPlanOffer(input: {
     }
 
     const product = getProduct(input.productId)
-    if (!product || !product.active || product.model !== "subscription") {
+    if (!product || !product.active) {
       return { ok: false, error: "El plan seleccionado no está disponible." }
     }
 
@@ -138,11 +134,8 @@ export async function sendPlanOffer(input: {
       name: patient.name || "Paciente",
       doctorName: prof?.fullName ?? me.name ?? null,
       planName: product.name,
-      priceLabel: `${eur(product.priceCents, product.currency)}/mes`,
-      firstPeriodLabel:
-        firstPeriodDiscountCents(product) > 0 && product.firstPeriodCents != null
-          ? `${eur(product.firstPeriodCents, product.currency)} el primer mes`
-          : null,
+      priceLabel: planPriceLabel(product),
+      firstPeriodLabel: null,
       note,
     })
 
@@ -170,7 +163,14 @@ export async function sendPlanOffer(input: {
 export type MyPlanOffer = {
   id: number
   productId: string
-  product: Pick<Product, "id" | "name" | "description" | "priceCents" | "currency" | "firstPeriodCents">
+  product: Pick<
+    Product,
+    "id" | "name" | "description" | "priceCents" | "currency" | "firstPeriodCents" | "model" | "accessMonths"
+  >
+  /** Etiqueta de precio ya formateada según el modelo del plan. */
+  priceLabel: string
+  /** true si es pago único (pack / one_time). */
+  oneTime: boolean
   note: string | null
   doctorName: string | null
 }
@@ -207,7 +207,11 @@ export async function getMyPlanOffer(): Promise<MyPlanOffer | null> {
       priceCents: product.priceCents,
       currency: product.currency,
       firstPeriodCents: product.firstPeriodCents,
+      model: product.model,
+      accessMonths: product.accessMonths,
     },
+    priceLabel: planPriceLabel(product),
+    oneTime: product.model !== "subscription",
     note: offer.note,
     doctorName: offer.doctorName,
   }

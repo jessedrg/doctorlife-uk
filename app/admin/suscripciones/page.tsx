@@ -1,5 +1,11 @@
 import { requireRole } from "@/lib/session"
 import { listSubscriptions } from "@/app/actions/admin"
+import { CATALOG } from "@/lib/catalog"
+
+/** Nombres de planes de pago único (para mostrar el importe sin "/mes"). */
+const ONE_TIME_PLAN_NAMES = new Set(
+  CATALOG.filter((p) => p.model !== "subscription").map((p) => p.name),
+)
 
 export const metadata = { title: "Suscripciones — DoctorLife" }
 
@@ -25,7 +31,7 @@ export default async function AdminSubscriptionsPage() {
         Suscripciones ({subs.length})
       </h1>
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Tratamientos mensuales activos y su estado de cobro.
+        Tratamientos activos (suscripción mensual y packs de pago único) y su estado de cobro.
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-[18px] border border-ink/10">
@@ -45,7 +51,10 @@ export default async function AdminSubscriptionsPage() {
                 <td className="px-4 py-3 text-ink">{s.patientName ?? "—"}</td>
                 <td className="px-4 py-3 text-ink-soft">{s.doctorName ?? "—"}</td>
                 <td className="px-4 py-3 text-ink-soft">{s.plan}</td>
-                <td className="px-4 py-3 text-ink">{eur(s.priceCents)}/mes</td>
+                <td className="px-4 py-3 text-ink">
+                  {eur(s.priceCents)}
+                  {ONE_TIME_PLAN_NAMES.has(s.plan) ? " · pago único" : "/mes"}
+                </td>
                 <td className="px-4 py-3">
                   <span className="rounded-full bg-sage/30 px-2.5 py-1 text-[12px] font-semibold text-ink">
                     {STATUS_LABELS[s.status] ?? s.status}
