@@ -63,7 +63,7 @@ export default async function AdminClinicsPage() {
             {doctors.length === 0 && (
               <tr className="bg-warm">
                 <td colSpan={5} className="px-4 py-6 text-center text-ink-mute">
-                  Aún no hay médicos. Crea el primero con el formulario de arriba.
+                  Aún no hay clínicas. Invita la primera con el formulario de arriba.
                 </td>
               </tr>
             )}

@@ -32,7 +32,7 @@ export async function createDoctor(input: {
   const email = input.email.trim().toLowerCase()
   const specialty = input.specialty?.trim() || null
 
-  if (!name) return { ok: false, error: "Introduce el nombre del médico." }
+  if (!name) return { ok: false, error: "Introduce el nombre de la clínica." }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return { ok: false, error: "Introduce un email válido." }
   }
@@ -54,7 +54,7 @@ export async function createDoctor(input: {
   // Better Auth crea el usuario y hashea la contraseña.
   const created = await auth.api.signUpEmail({ body: { name, email, password: tempPassword } })
   const userId = created?.user?.id
-  if (!userId) return { ok: false, error: "No se pudo crear la cuenta del médico." }
+  if (!userId) return { ok: false, error: "No se pudo crear la cuenta de la clínica." }
 
   await db
     .update(userTable)
