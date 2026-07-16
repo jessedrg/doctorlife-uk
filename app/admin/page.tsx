@@ -24,11 +24,11 @@ export default async function AdminHome() {
         Administración
       </h1>
       <p className="mt-1.5 max-w-[60ch] text-[15.5px] leading-relaxed text-ink-soft">
-        Supervisa médicos, pacientes, citas y pagos de la plataforma.
+        Supervisa clínicas, pacientes, citas y pagos de la plataforma.
       </p>
 
       <div className="mt-7 grid grid-cols-2 gap-3 lg:grid-cols-3">
-        <MetricCard label="Médicos" value={String(metrics.doctors)} />
+        <MetricCard label="Clínicas" value={String(metrics.doctors)} />
         <MetricCard label="Pacientes" value={String(metrics.patients)} />
         <MetricCard label="Leads (quiz)" value={String(metrics.leads)} />
         <MetricCard label="Citas confirmadas" value={String(metrics.confirmedAppointments)} />
