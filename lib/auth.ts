@@ -2,11 +2,13 @@ import { betterAuth } from "better-auth"
 import { pool } from "@/lib/db"
 import { sendResetPasswordEmail } from "@/lib/email"
 
-/** Scopes de Google Calendar que pide el médico al conectar su cuenta. */
-const GOOGLE_CALENDAR_SCOPES = [
-  "https://www.googleapis.com/auth/calendar.events",
-  "https://www.googleapis.com/auth/calendar.readonly",
-]
+/**
+ * Scopes de Google que pide la clínica al conectar su cuenta.
+ * Solo `calendar.events`: suficiente para crear/cancelar la cita con enlace de
+ * Google Meet. La disponibilidad se gestiona en nuestra propia base de datos,
+ * así que NO necesitamos leer el calendario del usuario (calendar.readonly).
+ */
+const GOOGLE_CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 
 const googleConfigured = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
 
