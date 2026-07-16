@@ -27,7 +27,8 @@ export type Author = {
   slug: string;
   name: string;
   jobTitle: string;
-  colegiado: string; // número de colegiado + colegio
+  image?: string;
+  colegiado?: string; // número de colegiado + colegio, si se publica
   shortBio: string;
   bio: string[];
   experience: string[];
@@ -54,22 +55,22 @@ export const authors: Author[] = [
     ],
   },
   {
-    slug: "carlos-vidal",
-    name: "Dr. Carlos Vidal",
-    jobTitle: "Médico especialista en Medicina Interna",
-    colegiado: "Nº de colegiado 28/5567 · Colegio Oficial de Médicos de Madrid",
+    slug: "miguel-a-guirola",
+    name: "Dr. Miguel A. Guirola",
+    jobTitle: "Médico especialista en obesidad",
+    image: "/images/miguel-guirola.jpeg",
     shortBio:
-      "Internista centrado en salud metabólica, riesgo cardiovascular y abordaje integral del peso.",
+      "Médico de DoctorLife especializado en el abordaje y seguimiento médico de la obesidad.",
     bio: [
-      "El Dr. Carlos Vidal es médico especialista en Medicina Interna, colegiado en Madrid (nº 28/5567). Su trabajo se centra en la salud metabólica: la relación entre peso, glucosa, tensión arterial y riesgo cardiovascular.",
-      "Cree en explicar las cosas claras. Cuando un paciente entiende por qué su cuerpo se comporta como lo hace, las decisiones sobre tratamiento, alimentación y hábitos dejan de ser una lucha y pasan a tener sentido.",
-      "Escribe y revisa contenido para DoctorLife con el objetivo de que cualquier persona pueda tomar decisiones informadas sobre su salud sin sentirse juzgada.",
+      "El Dr. Miguel A. Guirola es médico especialista en obesidad y forma parte del equipo médico de DoctorLife.",
+      "Su trabajo se centra en valorar cada caso de forma individual y acompañar al paciente durante el tratamiento y el seguimiento.",
+      "También escribe y revisa el contenido clínico de DoctorLife para ofrecer información clara, prudente y útil sobre obesidad y cuidado del peso.",
     ],
     experience: [
-      "Especialista en Medicina Interna (vía MIR).",
-      "Enfoque en síndrome metabólico y riesgo cardiovascular.",
-      "Experiencia en unidades de obesidad y consulta de seguimiento.",
-      "Divulgación médica rigurosa orientada al paciente.",
+      "Médico especialista en obesidad.",
+      "Médico del equipo de DoctorLife.",
+      "Valoración y seguimiento médico de pacientes.",
+      "Autor y revisor de contenido clínico sobre obesidad.",
     ],
   },
 ];
@@ -273,7 +274,7 @@ export const articles: Article[] = [
       },
     ],
     sources: [S.oms, S.seen, S.nice],
-    authorSlug: "carlos-vidal",
+    authorSlug: "miguel-a-guirola",
     reviewerSlug: "laura-mendez",
     datePublished: "2026-01-12",
     dateModified: "2026-06-16",
@@ -384,7 +385,7 @@ export const articles: Article[] = [
     ],
     sources: [S.oms, S.nice, S.semfyc],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-01-20",
     dateModified: "2026-06-16",
     relatedSlugs: ["cuanto-se-tarda-en-notar-que-bajas-de-peso", "por-que-no-consigo-adelgazar", "por-que-pierdo-peso-y-luego-lo-recupero"],
@@ -499,7 +500,7 @@ export const articles: Article[] = [
     ],
     sources: [S.seen, S.oms, S.nice],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-02-03",
     dateModified: "2026-06-16",
     relatedSlugs: ["por-que-no-consigo-adelgazar", "por-que-pierdo-peso-y-luego-lo-recupero", "cuanto-se-tarda-en-notar-que-bajas-de-peso"],
@@ -614,11 +615,11 @@ export const articles: Article[] = [
       {
         pregunta: "¿Cómo se reduce la grasa abdominal visceral?",
         respuesta:
-          "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo médico acelera los resultados.",
+          "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo m��dico acelera los resultados.",
       },
     ],
     sources: [S.oms, S.nice, S.seen],
-    authorSlug: "carlos-vidal",
+    authorSlug: "miguel-a-guirola",
     reviewerSlug: "laura-mendez",
     datePublished: "2026-02-15",
     dateModified: "2026-06-16",
@@ -730,7 +731,7 @@ export const articles: Article[] = [
     ],
     sources: [S.aemps, S.seen, S.nice],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-03-01",
     dateModified: "2026-06-16",
     relatedSlugs: ["retatrutida-vs-ozempic-mounjaro", "por-que-pierdo-peso-y-luego-lo-recupero", "retatrutida-que-es"],
@@ -847,7 +848,7 @@ export const articles: Article[] = [
       },
     ],
     sources: [S.oms, S.nice, S.semfyc],
-    authorSlug: "carlos-vidal",
+    authorSlug: "miguel-a-guirola",
     reviewerSlug: "laura-mendez",
     datePublished: "2026-03-12",
     dateModified: "2026-06-16",
@@ -959,7 +960,7 @@ export const articles: Article[] = [
     ],
     sources: [S.seen, S.oms, S.nice],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-03-25",
     dateModified: "2026-06-16",
     relatedSlugs: ["tengo-barriga-pero-no-estoy-gordo", "por-que-engordo-si-como-poco", "por-que-no-consigo-adelgazar"],
@@ -1070,7 +1071,7 @@ export const articles: Article[] = [
     ],
     sources: [S.oms, S.seen, S.nice, S.aemps],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-04-05",
     dateModified: "2026-06-16",
     relatedSlugs: ["por-que-no-consigo-adelgazar", "ozempic-merece-la-pena", "cuanto-se-tarda-en-notar-que-bajas-de-peso"],
@@ -1210,7 +1211,7 @@ export const articles: Article[] = [
     ],
     sources: [S.nejm, S.lilly, S.ema, S.aemps],
     authorSlug: "laura-mendez",
-    reviewerSlug: "carlos-vidal",
+    reviewerSlug: "miguel-a-guirola",
     datePublished: "2026-06-10",
     dateModified: "2026-06-16",
     relatedSlugs: ["retatrutida-comprar-espana", "retatrutida-vs-ozempic-mounjaro", "ozempic-merece-la-pena"],
@@ -1331,7 +1332,7 @@ export const articles: Article[] = [
       },
     ],
     sources: [S.aemps, S.ema, S.nejm, S.seen],
-    authorSlug: "carlos-vidal",
+    authorSlug: "miguel-a-guirola",
     reviewerSlug: "laura-mendez",
     datePublished: "2026-06-12",
     dateModified: "2026-06-16",
@@ -1445,7 +1446,7 @@ export const articles: Article[] = [
       },
     ],
     sources: [S.nejm, S.lilly, S.aemps, S.ema, S.seen],
-    authorSlug: "carlos-vidal",
+    authorSlug: "miguel-a-guirola",
     reviewerSlug: "laura-mendez",
     datePublished: "2026-06-14",
     dateModified: "2026-06-16",
