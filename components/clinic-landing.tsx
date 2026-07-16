@@ -150,7 +150,7 @@ const payments = [
 ];
 
 const FIRST_VISIT = "Gratis";
-const MONTHLY = "100 €/mes";
+const MONTHLY = "139 €/mes";
 
 const TRUSTPILOT_URL = "https://es.trustpilot.com/review/doctorlife.io";
 const TRUSTPILOT_GREEN = "#00b67a";

@@ -28,7 +28,7 @@ const sections: Section[] = [
   },
   {
     title: "3. Precio y pago",
-    body: "La primera consulta es gratis, sin compromiso. Si el médico aprueba el tratamiento y decides continuar, la suscripción mensual es de 100 €/mes (oferta de lanzamiento: primer mes 60 €), sin permanencia y cancelable cuando quieras.",
+    body: "La primera valoración es gratis, sin compromiso. Si el médico aprueba el tratamiento y decides continuar, eliges tu plan: suscripción mensual de 139 €/mes (sin permanencia y cancelable cuando quieras), pack de 5 meses por 449 € o nutricionista + GLP1 por 649 € (ambos pago único, 5 meses de acceso). Los servicios médicos están exentos de IVA.",
   },
   {
     title: "4. Limitaciones del servicio",
