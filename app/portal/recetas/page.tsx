@@ -3,6 +3,7 @@ import { getMySubscription, getPatientStatus, syncSubscriptionBySession } from "
 import { requireRole } from "@/lib/session"
 import { PrescriptionList } from "@/components/prescription-list"
 import { hasPendingVerification } from "@/app/actions/verification"
+import { getMyPlanOffer } from "@/app/actions/clinic-plans"
 import { SubscriptionCard } from "@/components/subscription-card"
 
 export default async function RecetasPage({
@@ -22,11 +23,12 @@ export default async function RecetasPage({
 
   const me = await requireRole("patient")
 
-  const [prescriptions, subscription, status, verificationPending] = await Promise.all([
+  const [prescriptions, subscription, status, verificationPending, offer] = await Promise.all([
     getMyPrescriptions(),
     getMySubscription(),
     getPatientStatus(me.id),
     hasPendingVerification(me.id),
+    getMyPlanOffer(),
   ])
 
   const isActive = status === "active" || status === "followup_available"
@@ -56,6 +58,7 @@ export default async function RecetasPage({
           subscription={subscription}
           patientStatus={status}
           verificationPending={verificationPending}
+          offer={offer}
         />
       )}
     </div>

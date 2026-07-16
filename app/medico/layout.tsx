@@ -6,7 +6,7 @@ export default async function MedicoLayout({ children }: { children: React.React
   return (
     <PortalShell
       user={user}
-      badge="Médico"
+      badge="Clínica"
       homeHref="/medico"
       showNotifications
       nav={[

@@ -6,6 +6,7 @@ import {
   appointments,
   doctorProfiles,
   leads,
+  planOffers,
   user as userTable,
 } from "@/lib/db/schema"
 import { getSessionUser, requireRole } from "@/lib/session"
@@ -185,27 +186,32 @@ export async function startSubscriptionCheckout(): Promise<{ url: string } | { e
     }
   }
 
-  const plan = await getPatientPlan(patient.email)
+  // El plan a activar es el que la clínica envió por correo (oferta 'sent'). Si
+  // no hay ninguna, usamos el producto principal del catálogo como respaldo.
+  const [offer] = await db
+    .select({ productId: planOffers.productId })
+    .from(planOffers)
+    .where(and(eq(planOffers.patientId, patient.id), eq(planOffers.status, "sent")))
+    .orderBy(desc(planOffers.id))
+    .limit(1)
 
-  // Guardamos una fila de suscripción en estado incompleto.
-  // Precio siempre almacenado como el mensual recurrente = 100 €.
+  // Producto del catálogo (fuente de verdad de precio y oferta del primer mes).
+  const product = getProduct(offer?.productId ?? MAIN_PRODUCT_ID) ?? getProduct(MAIN_PRODUCT_ID)
+  if (!product) {
+    return { error: "El plan no está disponible en este momento." }
+  }
+
+  // Guardamos una fila de suscripción en estado incompleto con el plan elegido.
   const [pending] = await db
     .insert(subscriptions)
     .values({
       patientId: patient.id,
       doctorId,
-      plan: plan.name,
-      priceCents: SUBSCRIPTION_PRICE_CENTS,
+      plan: product.name,
+      priceCents: product.priceCents,
       status: "incomplete",
     })
     .returning({ id: subscriptions.id })
-
-  // Producto del catálogo (fuente de verdad de precio y oferta del primer mes).
-  const product = getProduct(MAIN_PRODUCT_ID)
-  if (!product) {
-    await db.delete(subscriptions).where(eq(subscriptions.id, pending.id))
-    return { error: "El plan no está disponible en este momento." }
-  }
 
   try {
     const baseUrl = await getRequestBaseUrl()
@@ -258,6 +264,21 @@ export async function applySubscriptionState(
       updatedAt: new Date(),
     })
     .where(eq(subscriptions.id, rowId))
+
+  // Al quedar activa, cerramos la oferta de plan que la clínica había enviado.
+  if (["active", "trialing", "past_due"].includes(sub.status)) {
+    const [row] = await db
+      .select({ patientId: subscriptions.patientId })
+      .from(subscriptions)
+      .where(eq(subscriptions.id, rowId))
+      .limit(1)
+    if (row) {
+      await db
+        .update(planOffers)
+        .set({ status: "paid", paidAt: new Date() })
+        .where(and(eq(planOffers.patientId, row.patientId), eq(planOffers.status, "sent")))
+    }
+  }
   revalidatePath("/portal")
 }
 

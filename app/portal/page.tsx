@@ -4,6 +4,7 @@ import { getNextAppointment } from "@/app/actions/booking"
 import { getMyPlan } from "@/app/actions/patient"
 import { getMySubscription, getPatientStatus, syncSubscriptionBySession } from "@/app/actions/subscription"
 import { hasPendingVerification } from "@/app/actions/verification"
+import { getMyPlanOffer } from "@/app/actions/clinic-plans"
 import { AppointmentSummary } from "@/components/appointment-summary"
 import { SubscriptionCard } from "@/components/subscription-card"
 import { FollowupReminder } from "@/components/followup-reminder"
@@ -24,12 +25,13 @@ export default async function PortalHome({
     await syncSubscriptionBySession(sp.session_id)
   }
 
-  const [next, plan, subscription, verificationPending, status] = await Promise.all([
+  const [next, plan, subscription, verificationPending, status, offer] = await Promise.all([
     getNextAppointment(),
     getMyPlan(),
     getMySubscription(),
     hasPendingVerification(user.id),
     getPatientStatus(user.id),
+    getMyPlanOffer(),
   ])
 
   const subActive = status === "active" || status === "followup_available"
@@ -95,6 +97,7 @@ export default async function PortalHome({
           subscription={subscription}
           patientStatus={status}
           verificationPending={verificationPending}
+          offer={offer}
         />
       </div>
 

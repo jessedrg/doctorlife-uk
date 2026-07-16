@@ -5,7 +5,7 @@ import { getDoctorReadiness } from "@/lib/doctor/readiness"
 import { DoctorOnboardingChecklist } from "@/components/doctor-onboarding-checklist"
 import { DoctorMetricsGrid } from "@/components/doctor-metrics"
 
-export const metadata = { title: "Panel del médico — DoctorLife" }
+export const metadata = { title: "Panel de la clínica — DoctorLife" }
 
 export default async function MedicoHome() {
   const user = await requireRole("doctor")

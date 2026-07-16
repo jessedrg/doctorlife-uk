@@ -254,6 +254,28 @@ export type Subscription = typeof subscriptions.$inferSelect
 export type NewSubscription = typeof subscriptions.$inferInsert
 
 /**
+ * Oferta de plan que la clínica (médico) envía a un paciente por correo tras la
+ * primera consulta. El paciente la paga desde su portal y, al confirmarse el
+ * pago, se activa su suscripción. `productId` referencia el catálogo
+ * (`lib/catalog.ts`).
+ * status: 'sent' | 'paid' | 'cancelled'
+ */
+export const planOffers = pgTable("plan_offers", {
+  id: serial("id").primaryKey(),
+  patientId: text("patientId").notNull(),
+  doctorId: text("doctorId").notNull(),
+  productId: text("productId").notNull(),
+  /** Nota opcional del médico que se incluye en el correo al paciente. */
+  note: text("note"),
+  status: text("status").notNull().default("sent"),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+  paidAt: timestamp("paidAt", { withTimezone: true }),
+})
+
+export type PlanOffer = typeof planOffers.$inferSelect
+export type NewPlanOffer = typeof planOffers.$inferInsert
+
+/**
  * Comisiones que la plataforma abona al médico por los pagos de suscripción.
  * - kind "activation": primer pago, va ÍNTEGRO al médico.
  * - kind "renewal": renovación mensual, 25 € fijos al médico.
