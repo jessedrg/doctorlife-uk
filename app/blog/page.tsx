@@ -9,14 +9,14 @@ import { BlogFilters } from "@/components/blog-filters";
 import { posts, SITE_URL, type Post } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog DoctorLife — Wegovy, Mounjaro y pérdida de peso con GLP‑1",
+  title: "DoctorLife Blog — Wegovy, Mounjaro and GLP-1 weight loss",
   description:
-    "Guías claras y médicas sobre Wegovy, Mounjaro, semaglutida y tirzepatida: precios, recetas y cómo empezar tu tratamiento de pérdida de peso en España.",
+    "Clear, medical guides on Wegovy, Mounjaro, semaglutide and tirzepatide: prices, prescriptions and how to start your weight-loss treatment in the UK.",
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
-    title: "Blog DoctorLife — Cuidado del peso con GLP‑1",
+    title: "DoctorLife Blog — Weight care with GLP-1",
     description:
-      "Guías sobre Wegovy, Mounjaro y pérdida de peso con GLP‑1: precios, recetas y cómo empezar con seguimiento médico.",
+      "Guides on Wegovy, Mounjaro and GLP-1 weight loss: prices, prescriptions and how to start with medical follow-up.",
     url: `${SITE_URL}/blog`,
     type: "website",
   },
@@ -24,18 +24,18 @@ export const metadata: Metadata = {
 
 const PER_PAGE = 24;
 
-/* Orden preferido de las categorías en los chips de filtro. */
+/* Preferred category order for the filter chips. */
 const CATEGORY_ORDER = [
   "Wegovy",
   "Mounjaro",
   "Ozempic",
   "Saxenda",
-  "Precios",
-  "Comparativas",
-  "Adelgazar",
-  "Sin receta",
-  "En investigación",
-  "Guías",
+  "Prices",
+  "Comparisons",
+  "Weight loss",
+  "Prescription",
+  "Clinic",
+  "Guides",
 ];
 
 function norm(s: string): string {
