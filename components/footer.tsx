@@ -20,16 +20,16 @@ export function Footer() {
           <div className="mb-2 md:col-span-1 md:mb-0">
             <a
               href="/#top"
-              aria-label="DoctorLife — inicio"
+              aria-label="DoctorLife — home"
               className="inline-flex no-underline"
             >
               <BrandLogo boxed markSize={28} textSize={23} textClassName="text-paper" />
             </a>
             <p className="mt-5 max-w-[280px] text-[15px] leading-relaxed text-paper/65">
-              Plataforma que conecta pacientes con médicos colegiados independientes para el seguimiento del peso con tratamiento GLP‑1.
+              Platform connecting patients with independent registered doctors for weight management with GLP‑1 treatment.
             </p>
             <QuizTrigger className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink">
-              Primera consulta gratis
+              First consultation free
               <span className="text-[13px]">↗</span>
             </QuizTrigger>
             <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
@@ -40,8 +40,8 @@ export function Footer() {
 
         <div className="flex flex-col gap-5 border-t border-paper/10 px-8 py-7 md:flex-row md:items-center md:justify-between md:px-14">
           <div className="flex flex-col gap-3">
-            <span className="text-xs uppercase tracking-[.14em] text-sage">Pago seguro</span>
-            <ul className="flex flex-wrap items-center gap-2.5" aria-label="Métodos de pago aceptados">
+            <span className="text-xs uppercase tracking-[.14em] text-sage">Secure payment</span>
+            <ul className="flex flex-wrap items-center gap-2.5" aria-label="Accepted payment methods">
               {paymentMethods.map((p) => (
                 <li
                   key={p.label}
@@ -61,7 +61,7 @@ export function Footer() {
           </div>
           <div className="flex flex-col gap-1 text-[12.5px] text-paper/45 md:items-end">
             <span>© 2026 DoctorLife · doctorlife.io</span>
-            <span>Tratamiento sujeto a evaluación médica.</span>
+            <span>Treatment subject to medical assessment.</span>
           </div>
         </div>
       </div>

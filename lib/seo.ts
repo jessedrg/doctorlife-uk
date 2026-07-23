@@ -144,7 +144,7 @@ export function drugSchema(opts: {
   };
 }
 
-/* Página de listado (hubs como /herramientas o /autores). */
+/* Listing page (hubs like /tools or /authors). */
 export function itemListSchema(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",

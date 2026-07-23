@@ -60,7 +60,7 @@ export function ResetPasswordForm({
                 Este enlace de recuperación ha caducado o no es válido. Solicita uno nuevo.
               </p>
               <Link
-                href="/recuperar"
+                href="/recover"
                 className="mt-6 inline-block w-full rounded-[13px] bg-ink py-3.5 text-center text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Solicitar nuevo enlace

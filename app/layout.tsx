@@ -36,9 +36,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://doctorlife.io'),
-  title: 'DoctorLife — Tu cuerpo, por fin entendido',
+  title: 'DoctorLife — Your body, finally understood',
   description:
-    'Cuidado del peso y hormonal dirigido por médicos, diseñado en torno a tu cuerpo — no a un protocolo único.',
+    'Weight and hormonal care led by doctors, designed around your body — not a one-size-fits-all protocol.',
   generator: 'v0.app',
   icons: {
     icon: '/favicon.svg',
@@ -62,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en-GB"
       className={`${hanken.variable} ${sora.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
     >
       <body className="bg-paper text-ink font-sans antialiased">

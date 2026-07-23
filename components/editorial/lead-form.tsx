@@ -14,7 +14,7 @@ const PHONE_RE = /^[+]?[\d\s().-]{9,}$/;
  * estado React controlado + botón con onClick. Incluye consentimiento
  * RGPD obligatorio y estado de éxito tras el envío.
  */
-export function LeadForm({ source = "articulo" }: { source?: string }) {
+export function LeadForm({ source = "article" }: { source?: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -140,8 +140,8 @@ export function LeadForm({ source = "articulo" }: { source?: string }) {
           />
           <span>
             He leído y acepto la{" "}
-            <a href="/privacidad" className="text-olive underline underline-offset-2">
-              política de privacidad
+            <a href="/privacy" className="text-olive underline underline-offset-2">
+              privacy policy
             </a>{" "}
             y consiento el tratamiento de mis datos, incluidos los de salud, para recibir una
             valoración médica (art. 9.2.h RGPD). Responsable: DoctorLife.

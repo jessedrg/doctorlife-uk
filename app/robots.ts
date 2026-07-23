@@ -43,7 +43,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       },
     ],
     // Un único índice de sitemaps que Google expande solo a sus hijos
-    // (/sitemaps/paginas.xml, /sitemaps/articulos.xml, /sitemaps/blog-1.xml, …).
+    // (/sitemaps/pages.xml, /sitemaps/articles.xml, /sitemaps/blog-1.xml, …).
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

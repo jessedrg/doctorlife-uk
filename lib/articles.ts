@@ -1,15 +1,15 @@
 /* ───────────────────────────────────────────────────────────
-   Cluster editorial "Adelgazar con supervisión médica".
-   Contenido como datos: un único ArticleLayout renderiza
-   cualquier artículo a partir de estos objetos tipados.
-   Edita el copy aquí y todo el sitio (rutas, sitemap, JSON-LD,
-   enlazado interno) se actualiza solo.
+   Editorial cluster "Losing weight with medical supervision".
+   Content as data: a single ArticleLayout renders
+   any article from these typed objects.
+   Edit the copy here and the entire site (routes, sitemap, JSON-LD,
+   internal linking) updates automatically.
    ─────────────────────────────────────────────────────────── */
 
 export const SITE_URL = "https://doctorlife.io";
 export const BRAND = "DoctorLife";
 
-/* ── Bloques de contenido tipados ── */
+/* ── Typed content blocks ── */
 export type Block =
   | { type: "p"; text: string }
   | { type: "h3"; text: string }
@@ -19,16 +19,16 @@ export type Block =
   | { type: "table"; caption?: string; head: string[]; rows: string[][] };
 
 export type Section = { h2: string; blocks: Block[] };
-export type Faq = { pregunta: string; respuesta: string };
+export type Faq = { question: string; answer: string };
 export type Source = { label: string; org: string; href: string };
 
-/* ── Autoría médica (E‑E‑A‑T para contenido YMYL) ── */
+/* ── Medical authorship (E‑E‑A‑T for YMYL content) ── */
 export type Author = {
   slug: string;
   name: string;
   jobTitle: string;
   image?: string;
-  colegiado?: string; // número de colegiado + colegio, si se publica
+  colegiado?: string; // medical registration number + medical college, if published
   shortBio: string;
   bio: string[];
   experience: string[];
@@ -37,21 +37,21 @@ export type Author = {
 export const authors: Author[] = [
   {
     slug: "laura-mendez",
-    name: "Dra. Laura Méndez",
-    jobTitle: "Médica especialista en Endocrinología y Nutrición",
-    colegiado: "Nº de colegiada 28/2841 · Colegio Oficial de Médicos de Barcelona",
+    name: "Dr. Laura Méndez",
+    jobTitle: "Medical specialist in Endocrinology and Nutrition",
+    colegiado: "Registration No. 28/2841 · Official College of Physicians of Barcelona",
     shortBio:
-      "Endocrinóloga con más de 12 años de experiencia en obesidad y tratamiento con análogos del GLP‑1.",
+      "Endocrinologist with over 12 years of experience in obesity and GLP‑1 analogue treatment.",
     bio: [
-      "La Dra. Laura Méndez es médica especialista en Endocrinología y Nutrición, colegiada en Barcelona (nº 28/2841). Lleva más de doce años acompañando a pacientes con sobrepeso, obesidad y alteraciones metabólicas, tanto en consulta hospitalaria como en telemedicina.",
-      "Su enfoque parte de una idea sencilla: adelgazar no es una cuestión de fuerza de voluntad, sino de fisiología. Por eso dedica cada valoración a entender el contexto real de la persona —hormonas, sueño, fármacos, historia de dietas— antes de proponer un plan.",
-      "En DoctorLife revisa y firma el contenido clínico para que sea riguroso, actualizado y útil para quien busca respuestas honestas sobre su peso.",
+      "Dr. Laura Méndez is a medical specialist in Endocrinology and Nutrition, registered in Barcelona (no. 28/2841). She has spent over twelve years supporting patients with overweight, obesity, and metabolic disorders, both in hospital consultations and telemedicine.",
+      "Her approach is based on a simple idea: losing weight is not a matter of willpower, but of physiology. That's why she dedicates each assessment to understanding the person's real context — hormones, sleep, medications, diet history — before proposing a plan.",
+      "At DoctorLife, she reviews and signs off on clinical content to ensure it is rigorous, up-to-date, and useful for those seeking honest answers about their weight.",
     ],
     experience: [
-      "Especialista en Endocrinología y Nutrición (vía MIR).",
-      "+12 años tratando obesidad y enfermedad metabólica.",
-      "Experiencia clínica con análogos del GLP‑1 (semaglutida, tirzepatida).",
-      "Formación continua en medicina de la obesidad y abordaje del peso.",
+      "Specialist in Endocrinology and Nutrition (via MIR).",
+      "+12 years treating obesity and metabolic disease.",
+      "Clinical experience with GLP‑1 analogues (semaglutide, tirzepatide).",
+      "Continuous training in obesity medicine and weight management.",
     ],
   },
   {
@@ -79,15 +79,15 @@ export function getAuthor(slug: string): Author | undefined {
   return authors.find((a) => a.slug === slug);
 }
 
-/* ── Modelo de artículo ── */
+/* ── Article model ── */
 export type Article = {
   slug: string;
-  title: string; // título corto (breadcrumb, cards)
+  title: string; // short title (breadcrumb, cards)
   h1: string;
   metaTitle: string;
   metaDescription: string;
   category: string;
-  answerFirst: string; // respuesta directa 40-60 palabras
+  answerFirst: string; // direct answer 40-60 words
   keyTakeaways: string[];
   body: Section[];
   faq: Faq[];
@@ -102,7 +102,7 @@ export type Article = {
   readMins: number;
 };
 
-/* Fuentes oficiales reutilizables */
+/* Reusable official sources */
 const S = {
   oms: {
     label: "Obesidad y sobrepeso (nota descriptiva)",
@@ -147,41 +147,41 @@ const S = {
 } satisfies Record<string, Source>;
 
 export const PILLAR = {
-  slug: "adelgazar-con-supervision-medica",
-  title: "Adelgazar con supervisión médica",
-  h1: "Adelgazar con supervisión médica: la guía honesta para perder peso de verdad",
-  metaTitle: "Adelgazar con Supervisión Médica: Guía Completa 2026 | DoctorLife",
+  slug: "losing-weight-with-medical-supervision",
+  title: "Losing weight with medical supervision",
+  h1: "Losing weight with medical supervision: the honest guide to real weight loss",
+  metaTitle: "Losing Weight with Medical Supervision: Complete Guide 2026 | DoctorLife",
   metaDescription:
-    "Por qué adelgazar es fisiología y no fuerza de voluntad. Guía médica sobre causas reales, tratamientos GLP‑1, hábitos y cómo perder peso sin recuperarlo. Valoración gratuita.",
+    "Why losing weight is physiology, not willpower. Medical guide on real causes, GLP‑1 treatments, habits, and how to lose weight without regaining it. Free assessment.",
   answerFirst:
-    "Adelgazar con supervisión médica significa tratar el peso como lo que es: un problema de salud con causas fisiológicas. Un médico identifica qué frena tu pérdida de peso (hormonas, fármacos, sueño, dietas previas), descarta enfermedades y, si procede, prescribe y supervisa un tratamiento seguro. Así pierdes peso de forma sostenible y sin recuperarlo.",
+    "Losing weight with medical supervision means treating weight for what it is: a health problem with physiological causes. A doctor identifies what's stopping your weight loss (hormones, medications, sleep, previous diets), rules out diseases, and if appropriate, prescribes and supervises a safe treatment. This way you lose weight sustainably without regaining it.",
   keyTakeaways: [
-    "El peso depende de tu fisiología (hormonas, genética, sueño, fármacos), no solo de la fuerza de voluntad.",
-    "Las dietas restrictivas por tu cuenta fracasan en la mayoría de casos por el efecto rebote.",
-    "Una valoración médica descarta causas tratables y personaliza el plan.",
-    "Los análogos del GLP‑1 (semaglutida, tirzepatida) son eficaces, pero requieren receta y seguimiento.",
-    "Perder peso despacio y con acompañamiento es lo que evita recuperarlo.",
+    "Weight depends on your physiology (hormones, genetics, sleep, medications), not just willpower.",
+    "Restrictive diets on your own fail in most cases due to the rebound effect.",
+    "A medical assessment rules out treatable causes and personalizes the plan.",
+    "GLP‑1 analogues (semaglutide, tirzepatide) are effective, but require prescription and follow-up.",
+    "Losing weight slowly with support is what prevents regaining it.",
   ],
 } as const;
 
-/* ── Los 8 artículos long-tail del cluster ── */
+/* ── The 8 long-tail articles of the cluster ── */
 export const articles: Article[] = [
   {
-    slug: "por-que-no-consigo-adelgazar",
-    title: "Por qué no consigo adelgazar",
-    h1: "Por qué no consigo adelgazar (aunque lo intento todo)",
-    metaTitle: "Por Qué No Consigo Adelgazar: 7 Causas Reales y Qué Hacer | DoctorLife",
+    slug: "why-cant-i-lose-weight",
+    title: "Why can't I lose weight",
+    h1: "Why can't I lose weight (even though I try everything)",
+    metaTitle: "Why Can't I Lose Weight: 7 Real Causes and What to Do | DoctorLife",
     metaDescription:
-      "Si lo intentas todo y no adelgazas, el problema no es tu fuerza de voluntad. Causas médicas reales (hormonas, fármacos, sueño, dietas) y cómo resolverlas con un médico.",
-    category: "Causas",
+      "If you try everything and don't lose weight, the problem isn't your willpower. Real medical causes (hormones, medications, sleep, diets) and how to resolve them with a doctor.",
+    category: "Causes",
     answerFirst:
-      "Si no consigues adelgazar pese a esforzarte, casi nunca es por falta de voluntad. Suele haber causas fisiológicas: resistencia a la insulina, hipotiroidismo, déficit de sueño, estrés crónico, ciertos fármacos o un metabolismo adaptado tras años de dietas. Identificar la causa real con un médico es lo que desbloquea la pérdida de peso.",
+      "If you can't lose weight despite your efforts, it's almost never due to lack of willpower. There are usually physiological causes: insulin resistance, hypothyroidism, sleep deprivation, chronic stress, certain medications, or a metabolism adapted after years of dieting. Identifying the real cause with a doctor is what unlocks weight loss.",
     keyTakeaways: [
-      "No adelgazar pese a esforzarte suele tener una causa fisiológica concreta, no un fallo de voluntad.",
-      "El hipotiroidismo, la resistencia a la insulina y el SOP frenan la pérdida de peso.",
-      "Dormir poco y el estrés crónico elevan el cortisol y favorecen acumular grasa.",
-      "Algunos fármacos habituales (antidepresivos, corticoides) hacen ganar peso.",
-      "Una analítica y una valoración médica identifican qué te está frenando a ti.",
+      "Not losing weight despite effort usually has a specific physiological cause, not a willpower failure.",
+      "Hypothyroidism, insulin resistance, and PCOS slow down weight loss.",
+      "Little sleep and chronic stress raise cortisol and promote fat accumulation.",
+      "Some common medications (antidepressants, corticosteroids) cause weight gain.",
+      "A blood test and medical assessment identify what's holding you back.",
     ],
     body: [
       {
@@ -253,23 +253,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Por qué no adelgazo si hago dieta y ejercicio?",
-        respuesta:
+        question: "¿Por qué no adelgazo si hago dieta y ejercicio?",
+        answer:
           "Porque el peso no depende solo de comer menos y moverte más. Hormonas como la tiroides o la insulina, el sueño, el estrés y ciertos fármacos pueden frenar la pérdida de peso. Una valoración médica identifica qué te está afectando y permite tratarlo.",
       },
       {
-        pregunta: "¿Puede ser un problema de tiroides?",
-        respuesta:
+        question: "¿Puede ser un problema de tiroides?",
+        answer:
           "Sí. El hipotiroidismo reduce el gasto energético y dificulta adelgazar. Es fácil de detectar con una analítica (TSH) y, una vez tratado, perder peso vuelve a ser posible. Por eso conviene descartarlo antes de culparte.",
       },
       {
-        pregunta: "¿Adelgazar es solo cuestión de fuerza de voluntad?",
-        respuesta:
+        question: "¿Adelgazar es solo cuestión de fuerza de voluntad?",
+        answer:
           "No. La fuerza de voluntad ayuda, pero el peso lo regula tu fisiología. Si tu cuerpo defiende un peso alto por causas hormonales o metabólicas, esforzarse más sin tratar la causa rara vez funciona a largo plazo.",
       },
       {
-        pregunta: "¿Cuándo debería ir al médico por mi peso?",
-        respuesta:
+        question: "¿Cuándo debería ir al médico por mi peso?",
+        answer:
           "Si llevas tiempo intentándolo sin resultados, has recuperado el peso varias veces o notas síntomas como cansancio, frío o cambios de ánimo, merece la pena una valoración médica para descartar causas tratables.",
       },
     ],
@@ -285,21 +285,21 @@ export const articles: Article[] = [
   },
 
   {
-    slug: "llevo-una-semana-a-dieta-y-no-bajo-de-peso",
-    title: "Llevo una semana a dieta y no bajo de peso",
-    h1: "Llevo una semana a dieta y no bajo de peso: ¿es normal?",
-    metaTitle: "Llevo una Semana a Dieta y No Bajo de Peso: Por Qué Pasa | DoctorLife",
+    slug: "ive-been-on-a-diet-for-a-week-and-not-losing-weight",
+    title: "I've been on a diet for a week and not losing weight",
+    h1: "I've been on a diet for a week and not losing weight: is it normal?",
+    metaTitle: "I've Been on a Diet for a Week and Not Losing Weight: Why It Happens | DoctorLife",
     metaDescription:
-      "Llevas una semana a dieta y la báscula no se mueve. Es normal y tiene explicación: retención de líquidos, músculo y cómo medir el progreso real más allá del peso.",
-    category: "Resultados",
+      "You've been on a diet for a week and the scale doesn't move. It's normal and has an explanation: fluid retention, muscle, and how to measure real progress beyond weight.",
+    category: "Results",
     answerFirst:
-      "Es completamente normal no bajar de peso en la primera semana de dieta. El cuerpo retiene líquidos al cambiar la alimentación, las heces y el glucógeno pesan, y la grasa se pierde más despacio de lo que marca la báscula. Una semana es muy poco tiempo: el progreso real se mide en semanas, no en días.",
+      "It's completely normal not to lose weight in the first week of dieting. The body retains fluids when changing diet, stool and glycogen weigh, and fat is lost more slowly than the scale shows. A week is very little time: real progress is measured in weeks, not days.",
     keyTakeaways: [
-      "No bajar de peso en la primera semana de dieta es normal y no significa que falles.",
-      "El peso diario varía por agua, glucógeno, sal, hormonas y tránsito intestinal.",
-      "La grasa se pierde despacio: lo razonable es 0,5–1 % del peso por semana.",
-      "Medir solo la báscula engaña; usa también ropa, fotos y medidas.",
-      "Si tras 4–6 semanas no hay ningún cambio, conviene revisar el plan con un médico.",
+      "Not losing weight in the first week of dieting is normal and doesn't mean you're failing.",
+      "Daily weight varies due to water, glycogen, salt, hormones, and intestinal transit.",
+      "Fat is lost slowly: reasonable is 0.5–1% of weight per week.",
+      "Measuring only the scale is misleading; also use clothing, photos, and measurements.",
+      "If after 4–6 weeks there's no change, it's worth reviewing the plan with a doctor.",
     ],
     body: [
       {
@@ -363,23 +363,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Es normal no bajar de peso la primera semana de dieta?",
-        respuesta:
+        question: "¿Es normal no bajar de peso la primera semana de dieta?",
+        answer:
           "Sí, es muy normal. En la primera semana influyen la retención de líquidos, el glucógeno y el tránsito intestinal, que pueden ocultar la grasa que pierdes. El progreso real se ve a lo largo de varias semanas.",
       },
       {
-        pregunta: "¿Por qué he engordado al empezar a hacer ejercicio?",
-        respuesta:
+        question: "¿Por qué he engordado al empezar a hacer ejercicio?",
+        answer:
           "Al iniciar ejercicio, los músculos retienen agua para repararse, lo que puede subir el peso unos días. No es grasa. Con el tiempo, el ejercicio ayuda a perder grasa y mejorar la composición corporal.",
       },
       {
-        pregunta: "¿Cada cuánto debo pesarme?",
-        respuesta:
+        question: "¿Cada cuánto debo pesarme?",
+        answer:
           "Lo ideal es una vez por semana, en las mismas condiciones (en ayunas, sin ropa). Pesarse a diario genera ansiedad por las variaciones normales de agua y comida.",
       },
       {
-        pregunta: "¿Cuánto peso es sano perder por semana?",
-        respuesta:
+        question: "¿Cuánto peso es sano perder por semana?",
+        answer:
           "Entre 0,5 y 1 kg por semana en la mayoría de personas. Perder más rápido suele implicar pérdida de músculo y agua, y aumenta el riesgo de recuperar el peso.",
       },
     ],
@@ -395,21 +395,21 @@ export const articles: Article[] = [
   },
 
   {
-    slug: "por-que-engordo-si-como-poco",
-    title: "Por qué engordo si como poco",
-    h1: "Por qué engordo si como poco: la explicación médica",
-    metaTitle: "Por Qué Engordo Si Como Poco: Causas Reales y Soluciones | DoctorLife",
+    slug: "why-do-i-gain-weight-if-i-eat-little",
+    title: "Why do I gain weight if I eat little",
+    h1: "Why do I gain weight if I eat little: the medical explanation",
+    metaTitle: "Why Do I Gain Weight If I Eat Little: Real Causes and Solutions | DoctorLife",
     metaDescription:
-      "Comes poco y aun así engordas o no adelgazas. Te explicamos por qué: metabolismo adaptado, hormonas, fármacos y por qué contar solo calorías no basta.",
-    category: "Causas",
+      "You eat little and still gain weight or don't lose weight. We explain why: adapted metabolism, hormones, medications, and why just counting calories isn't enough.",
+    category: "Causes",
     answerFirst:
-      "Si comes poco y aun así engordas, suele deberse a un metabolismo adaptado tras años de dietas, a alteraciones hormonales (tiroides, insulina, cortisol) o a fármacos que favorecen ganar peso. También influye que solemos subestimar lo que comemos. No es que tu cuerpo 'rompa las reglas': es que tu fisiología juega en tu contra.",
+      "If you eat little and still gain weight, it's usually due to a metabolism adapted after years of dieting, hormonal alterations (thyroid, insulin, cortisol), or medications that promote weight gain. It also influences that we tend to underestimate what we eat. It's not that your body 'breaks the rules': it's that your physiology works against you.",
     keyTakeaways: [
-      "Engordar comiendo poco casi siempre tiene una causa fisiológica identificable.",
-      "Tras muchas dietas, el metabolismo baja su gasto para defenderse (adaptación metabólica).",
-      "El hipotiroidismo y la resistencia a la insulina favorecen acumular grasa.",
-      "Solemos subestimar las calorías reales que ingerimos a lo largo del día.",
-      "El tratamiento empieza por un diagnóstico, no por comer todavía menos.",
+      "Gaining weight while eating little almost always has an identifiable physiological cause.",
+      "After many diets, metabolism lowers its expenditure to defend itself (metabolic adaptation).",
+      "Hypothyroidism and insulin resistance promote fat accumulation.",
+      "We tend to underestimate the actual calories we consume throughout the day.",
+      "Treatment starts with a diagnosis, not by eating even less.",
     ],
     body: [
       {
@@ -478,23 +478,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Por qué engordo si apenas como?",
-        respuesta:
+        question: "¿Por qué engordo si apenas como?",
+        answer:
           "Suele deberse a un metabolismo adaptado tras años de dietas, a alteraciones hormonales (tiroides, insulina, cortisol) o a fármacos. Además es fácil subestimar lo que comemos. La solución no es comer menos, sino diagnosticar la causa.",
       },
       {
-        pregunta: "¿Comer muy poco frena el metabolismo?",
-        respuesta:
+        question: "¿Comer muy poco frena el metabolismo?",
+        answer:
           "Sí. Restringir mucho durante tiempo reduce el gasto energético en reposo, te hace moverte menos y aumenta el hambre. Por eso las dietas de hambre suelen acabar en recuperación del peso.",
       },
       {
-        pregunta: "¿Cómo sé si tengo un problema hormonal?",
-        respuesta:
+        question: "¿Cómo sé si tengo un problema hormonal?",
+        answer:
           "Con una analítica que incluya tiroides (TSH), glucosa e insulina, valorada por un médico. Síntomas como cansancio, frío, caída de pelo o cambios menstruales también orientan.",
       },
       {
-        pregunta: "¿Puedo perder peso aunque tenga el metabolismo adaptado?",
-        respuesta:
+        question: "¿Puedo perder peso aunque tenga el metabolismo adaptado?",
+        answer:
           "Sí, pero rara vez comiendo todavía menos. Hay que recuperar el músculo, mejorar el sueño, tratar las causas hormonales y, en algunos casos, usar tratamiento médico supervisado.",
       },
     ],
@@ -510,21 +510,21 @@ export const articles: Article[] = [
   },
 
   {
-    slug: "tengo-barriga-pero-no-estoy-gordo",
-    title: "Tengo barriga pero no estoy gordo",
-    h1: "Tengo barriga pero no estoy gordo: por qué pasa y qué significa",
-    metaTitle: "Tengo Barriga Pero No Estoy Gordo: Qué Significa de Verdad | DoctorLife",
+    slug: "i-have-belly-fat-but-im-not-overweight",
+    title: "I have belly fat but I'm not overweight",
+    h1: "I have belly fat but I'm not overweight: why it happens and what it means",
+    metaTitle: "I Have Belly Fat But I'm Not Overweight: What It Really Means | DoctorLife",
     metaDescription:
-      "Estás delgado pero tienes barriga. Puede ser grasa visceral, hinchazón o postura. Te explicamos las causas, por qué importa para tu salud y qué hacer.",
-    category: "Salud metabólica",
+      "You're thin but have belly fat. It could be visceral fat, bloating, or posture. We explain the causes, why it matters for your health, and what to do.",
+    category: "Metabolic health",
     answerFirst:
-      "Tener barriga sin estar gordo suele deberse a grasa visceral (la que rodea los órganos), a hinchazón digestiva o a una mala postura. La grasa visceral es la más peligrosa para la salud aunque tu peso sea normal: se asocia a riesgo cardiovascular y resistencia a la insulina. Por eso conviene valorarla, no solo mirar la báscula.",
+      "Having belly fat without being overweight is usually due to visceral fat (which surrounds organs), digestive bloating, or poor posture. Visceral fat is the most dangerous for health even if your weight is normal: it's associated with cardiovascular risk and insulin resistance. That's why it's worth assessing, not just looking at the scale.",
     keyTakeaways: [
-      "Se puede tener barriga con un peso normal: lo importante es qué tipo de grasa es.",
-      "La grasa visceral rodea los órganos y es la más dañina para la salud.",
-      "El perímetro de cintura es mejor indicador de riesgo que el peso o el IMC.",
-      "La hinchazón digestiva y la postura también explican parte de la barriga.",
-      "Dormir mal, el estrés y el alcohol favorecen la grasa abdominal.",
+      "You can have belly fat with normal weight: what matters is what type of fat it is.",
+      "Visceral fat surrounds organs and is the most harmful to health.",
+      "Waist circumference is a better risk indicator than weight or BMI.",
+      "Digestive bloating and posture also explain part of the belly.",
+      "Poor sleep, stress, and alcohol promote abdominal fat.",
     ],
     body: [
       {
@@ -598,23 +598,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Se puede tener barriga estando delgado?",
-        respuesta:
+        question: "¿Se puede tener barriga estando delgado?",
+        answer:
           "Sí. Puede deberse a grasa visceral (alrededor de los órganos), a hinchazón digestiva o a la postura. La grasa visceral es relevante para la salud aunque el peso sea normal.",
       },
       {
-        pregunta: "¿La grasa visceral es peligrosa?",
-        respuesta:
+        question: "¿La grasa visceral es peligrosa?",
+        answer:
           "Sí, es la grasa más asociada a riesgo cardiovascular, resistencia a la insulina e inflamación. Por eso importa más el perímetro de cintura que el peso aislado.",
       },
       {
-        pregunta: "¿Cómo sé si mi barriga es grasa o hinchazón?",
-        respuesta:
+        question: "¿Cómo sé si mi barriga es grasa o hinchazón?",
+        answer:
           "La hinchazón suele variar a lo largo del día y empeora tras comer. La grasa visceral es más constante y firme. Una valoración médica ayuda a diferenciarlas y a medir el riesgo.",
       },
       {
-        pregunta: "¿Cómo se reduce la grasa abdominal visceral?",
-        respuesta:
+        question: "¿Cómo se reduce la grasa abdominal visceral?",
+        answer:
           "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo m��dico acelera los resultados.",
       },
     ],
@@ -709,23 +709,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Ozempic merece la pena para adelgazar?",
-        respuesta:
+        question: "¿Ozempic merece la pena para adelgazar?",
+        answer:
           "Puede merecer la pena si tienes sobrepeso u obesidad con riesgo para la salud y lo usas con supervisión médica. Es muy eficaz reduciendo el apetito, pero requiere receta, tiene efectos secundarios y exige seguimiento para no recuperar peso.",
       },
       {
-        pregunta: "¿Se recupera el peso al dejar Ozempic?",
-        respuesta:
+        question: "¿Se recupera el peso al dejar Ozempic?",
+        answer:
           "Es habitual recuperar parte del peso si se deja sin una estrategia de mantenimiento. Por eso el tratamiento debe incluir un plan de hábitos y, a veces, una retirada progresiva supervisada.",
       },
       {
-        pregunta: "¿Puedo comprar Ozempic sin receta?",
-        respuesta:
+        question: "¿Puedo comprar Ozempic sin receta?",
+        answer:
           "No. Es un medicamento de prescripción y comprarlo sin receta es ilegal y peligroso. Necesita valoración médica previa y seguimiento de la dosis y los efectos.",
       },
       {
-        pregunta: "¿Qué efectos secundarios tiene?",
-        respuesta:
+        question: "¿Qué efectos secundarios tiene?",
+        answer:
           "Los más frecuentes son digestivos: náuseas, digestiones lentas y estreñimiento. Suelen ser leves y transitorios, y se gestionan subiendo la dosis poco a poco bajo control médico.",
       },
     ],
@@ -827,23 +827,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Cuánto se tarda en notar que bajas de peso?",
-        respuesta:
+        question: "¿Cuánto se tarda en notar que bajas de peso?",
+        answer:
           "El primer cambio en la báscula aparece en 1–2 semanas (sobre todo agua), la ropa cambia hacia las 3–4 semanas y los cambios visibles en el espejo, entre la semana 6 y la 12. Depende de tu punto de partida y tu plan.",
       },
       {
-        pregunta: "¿Por qué tardo más que otras personas?",
-        respuesta:
+        question: "¿Por qué tardo más que otras personas?",
+        answer:
           "Influyen el peso de partida, las hormonas (tiroides, insulina), el sueño, el estrés y la genética. No compararse es clave: cada cuerpo responde a su ritmo.",
       },
       {
-        pregunta: "¿En qué parte del cuerpo se nota antes?",
-        respuesta:
+        question: "¿En qué parte del cuerpo se nota antes?",
+        answer:
           "Varía según la persona. Muchas notan primero la cara y la barriga, pero no se puede elegir dónde se pierde grasa: depende de tu genética.",
       },
       {
-        pregunta: "¿Adelgazar rápido es mejor?",
-        respuesta:
+        question: "¿Adelgazar rápido es mejor?",
+        answer:
           "No. Perder peso muy rápido suele implicar pérdida de músculo y agua y favorece el efecto rebote. Un ritmo de 0,5–1 % del peso por semana es más sano y duradero.",
       },
     ],
@@ -938,23 +938,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Cómo se quita la grasa de la barriga que no se va?",
-        respuesta:
+        question: "¿Cómo se quita la grasa de la barriga que no se va?",
+        answer:
           "Mejorando el sueño y el estrés (para bajar el cortisol), comiendo más proteína y menos ultraprocesados, entrenando fuerza y tratando la resistencia a la insulina si existe. No hay pérdida localizada: los abdominales no bastan.",
       },
       {
-        pregunta: "¿Los abdominales queman la grasa de la barriga?",
-        respuesta:
+        question: "¿Los abdominales queman la grasa de la barriga?",
+        answer:
           "No. Los abdominales fortalecen el músculo, pero no eliminan la grasa que tienen encima. La grasa se pierde de forma global, no en la zona que trabajas.",
       },
       {
-        pregunta: "¿Por qué tengo barriga si hago ejercicio?",
-        respuesta:
+        question: "¿Por qué tengo barriga si hago ejercicio?",
+        answer:
           "Porque la grasa abdominal suele ser metabólica: resistencia a la insulina, cortisol alto por estrés o falta de sueño. Si no tratas la causa, el ejercicio solo no la elimina.",
       },
       {
-        pregunta: "¿El estrés engorda la barriga?",
-        respuesta:
+        question: "¿El estrés engorda la barriga?",
+        answer:
           "Sí. El estrés crónico eleva el cortisol, que favorece acumular grasa abdominal y aumenta el apetito. Gestionarlo es parte del tratamiento, no un detalle menor.",
       },
     ],
@@ -1049,23 +1049,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Por qué recupero el peso que pierdo?",
-        respuesta:
+        question: "¿Por qué recupero el peso que pierdo?",
+        answer:
           "Por el efecto rebote: tras una dieta restrictiva, tu cuerpo baja el gasto energético y aumenta el hambre para volver a su peso previo. Es biología de supervivencia. Se evita perdiendo peso despacio y con una fase de mantenimiento.",
       },
       {
-        pregunta: "¿Qué es el efecto rebote?",
-        respuesta:
+        question: "¿Qué es el efecto rebote?",
+        answer:
           "Es la recuperación del peso tras adelgazar, causada por la adaptación del metabolismo y el aumento del hambre. Cuanto más estricta es la dieta, mayor es el rebote posterior.",
       },
       {
-        pregunta: "¿Cómo evito volver a engordar?",
-        respuesta:
+        question: "¿Cómo evito volver a engordar?",
+        answer:
           "Perdiendo peso despacio, manteniendo músculo con proteína y fuerza, cuidando sueño y estrés, y planificando una fase de mantenimiento supervisada en lugar de 'terminar' la dieta de golpe.",
       },
       {
-        pregunta: "¿Se recupera el peso al dejar un tratamiento GLP‑1?",
-        respuesta:
+        question: "¿Se recupera el peso al dejar un tratamiento GLP‑1?",
+        answer:
           "Puede ocurrir si se retira sin estrategia. Por eso la retirada debe ser progresiva y acompañada de hábitos consolidados y seguimiento médico para mantener los resultados.",
       },
     ],
@@ -1189,23 +1189,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿La retatrutida ya se vende en España?",
-        respuesta:
+        question: "¿La retatrutida ya se vende en España?",
+        answer:
           "No. La retatrutida es un fármaco experimental que aún no ha sido aprobado por la EMA ni por la AEMPS, por lo que no está a la venta en España ni en la Unión Europea. Cualquier producto que se anuncie como 'retatrutida' fuera del circuito legal es un riesgo para tu salud.",
       },
       {
-        pregunta: "¿Cuánto peso se pierde con la retatrutida?",
-        respuesta:
+        question: "¿Cuánto peso se pierde con la retatrutida?",
+        answer:
           "En el ensayo de fase 2, las personas con la dosis más alta perdieron de media alrededor del 24 % de su peso en 48 semanas. Son resultados muy llamativos, pero todavía deben confirmarse en ensayos de fase 3 antes de su posible aprobación.",
       },
       {
-        pregunta: "¿En qué se diferencia de Ozempic o Mounjaro?",
-        respuesta:
+        question: "¿En qué se diferencia de Ozempic o Mounjaro?",
+        answer:
           "Ozempic (semaglutida) actúa sobre una hormona, Mounjaro (tirzepatida) sobre dos y la retatrutida sobre tres (GLP‑1, GIP y glucagón). Ese triple mecanismo es lo que explicaría sus mayores pérdidas de peso, pero a diferencia de las otras dos, la retatrutida aún no está aprobada.",
       },
       {
-        pregunta: "¿Hay alguna alternativa legal disponible ahora?",
-        respuesta:
+        question: "¿Hay alguna alternativa legal disponible ahora?",
+        answer:
           "Sí. La semaglutida y la tirzepatida están aprobadas y se prescriben con receta y supervisión médica. Una valoración médica permite saber si son adecuadas para ti, con seguridad y sin recurrir a fármacos experimentales.",
       },
     ],
@@ -1311,23 +1311,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Dónde puedo comprar retatrutida en España?",
-        respuesta:
+        question: "¿Dónde puedo comprar retatrutida en España?",
+        answer:
           "En ningún sitio de forma legal. La retatrutida no está aprobada por la AEMPS ni la EMA, así que no se vende en farmacias ni con receta. Cualquier web o vendedor que la ofrezca opera al margen de la ley y pone en riesgo tu salud.",
       },
       {
-        pregunta: "¿Es peligroso comprar retatrutida por internet?",
-        respuesta:
+        question: "¿Es peligroso comprar retatrutida por internet?",
+        answer:
           "Sí, mucho. No tienes garantías de qué contiene el producto, cómo se ha fabricado ni si está contaminado. Además, usar un fármaco no aprobado sin supervisión médica puede provocar efectos adversos graves y es ilegal.",
       },
       {
-        pregunta: "¿Cuándo estará disponible la retatrutida en España?",
-        respuesta:
+        question: "¿Cuándo estará disponible la retatrutida en España?",
+        answer:
           "No hay fecha confirmada. Depende de que termine los ensayos de fase 3 y reciba la aprobación de la EMA y la AEMPS, algo que suele tardar varios años. Hasta entonces no estará disponible por ningún canal legal.",
       },
       {
-        pregunta: "¿Qué alternativa legal hay mientras tanto?",
-        respuesta:
+        question: "¿Qué alternativa legal hay mientras tanto?",
+        answer:
           "La semaglutida y la tirzepatida ya están aprobadas y se prescriben con receta y seguimiento. Una valoración médica gratuita en DoctorLife permite saber si alguna encaja en tu caso, de forma segura y legal.",
       },
     ],
@@ -1425,23 +1425,23 @@ export const articles: Article[] = [
     ],
     faq: [
       {
-        pregunta: "¿Es la retatrutida mejor que Mounjaro u Ozempic?",
-        respuesta:
+        question: "¿Es la retatrutida mejor que Mounjaro u Ozempic?",
+        answer:
           "En los ensayos, la retatrutida muestra mayores pérdidas de peso (hasta el 24 %) que la tirzepatida (Mounjaro) o la semaglutida (Ozempic). Pero 'mejor en un estudio' no equivale a mejor para ti: la retatrutida aún es experimental y no se puede usar, mientras que las otras dos ya están disponibles.",
       },
       {
-        pregunta: "¿Cuál pierde más peso?",
-        respuesta:
+        question: "¿Cuál pierde más peso?",
+        answer:
           "Según los datos disponibles, la retatrutida es la que más, seguida de la tirzepatida y luego la semaglutida. Aun así, las cifras vienen de estudios distintos y no son directamente comparables, y la respuesta varía mucho de una persona a otra.",
       },
       {
-        pregunta: "¿Puedo elegir yo qué fármaco usar?",
-        respuesta:
+        question: "¿Puedo elegir yo qué fármaco usar?",
+        answer:
           "No directamente. Son medicamentos de prescripción: es el médico quien valora tu caso y decide cuál es adecuado y seguro para ti, ajustando la dosis y haciendo seguimiento. Autoindicarse o comprarlos por internet es peligroso e ilegal.",
       },
       {
-        pregunta: "¿Por qué no puedo usar retatrutida si es la más eficaz?",
-        respuesta:
+        question: "¿Por qué no puedo usar retatrutida si es la más eficaz?",
+        answer:
           "Porque todavía no ha sido aprobada por la EMA ni la AEMPS y sigue en fase de investigación. Hasta que complete los ensayos y reciba autorización, no está disponible de forma legal en España.",
       },
     ],

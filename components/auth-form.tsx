@@ -88,7 +88,7 @@ export function AuthForm() {
           </form>
 
           <p className="mt-6 text-center text-[13.5px] text-ink-soft">
-            <Link href="/recuperar" className="font-medium text-ink underline underline-offset-4">
+            <Link href="/recover" className="font-medium text-ink underline underline-offset-4">
               ¿Olvidaste tu contraseña?
             </Link>
           </p>

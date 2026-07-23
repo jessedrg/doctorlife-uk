@@ -118,7 +118,7 @@ export function ArticleLayout({ article }: { article: Article }) {
     jobTitle: a.jobTitle,
     description: a.shortBio,
     identifier: a.colegiado,
-    url: `${SITE_URL}/autores/${a.slug}`,
+    url: `${SITE_URL}/authors/${a.slug}`,
   });
 
   const articleLd = {
@@ -160,8 +160,8 @@ export function ArticleLayout({ article }: { article: Article }) {
     "@type": "FAQPage",
     mainEntity: article.faq.map((f) => ({
       "@type": "Question",
-      name: f.pregunta,
-      acceptedAnswer: { "@type": "Answer", text: f.respuesta },
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
     })),
   };
 
@@ -209,14 +209,14 @@ export function ArticleLayout({ article }: { article: Article }) {
                 </h2>
                 {section.blocks.map((b, i) => renderBlock(b, i))}
                 {idx === midIndex && (
-                  <CTABlock variant="compact" source={`articulo:${article.slug}`} />
+                  <CTABlock variant="compact" source={`article:${article.slug}`} />
                 )}
               </section>
             ))}
 
             <FAQSection faqs={article.faq} />
 
-            <CTABlock variant="form" source={`articulo:${article.slug}`} />
+            <CTABlock variant="form" source={`article:${article.slug}`} />
 
             <SourcesList sources={article.sources} />
 

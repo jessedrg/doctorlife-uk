@@ -736,14 +736,14 @@ export function ClinicLanding({ config }: { config: ClinicConfig }) {
               colegiados en España para una atención rápida, segura y cercana.
             </p>
             <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-ink-soft">
-              <a href="/aviso-legal" className="hover:text-ink">
-                Aviso legal
+              <a href="/legal-notice" className="hover:text-ink">
+                Legal notice
               </a>
-              <a href="/privacidad" className="hover:text-ink">
-                Política de privacidad
+              <a href="/privacy" className="hover:text-ink">
+                Privacy policy
               </a>
-              <a href="/contacto" className="hover:text-ink">
-                Contacto
+              <a href="/contact" className="hover:text-ink">
+                Contact
               </a>
             </nav>
             <span className="text-[12.5px] text-ink-mute">

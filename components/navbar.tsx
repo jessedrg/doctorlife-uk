@@ -7,9 +7,9 @@ import { BrandLogo } from "./brand-logo";
 import { analytics } from "@/lib/analytics";
 
 const links = [
-  { label: "Cómo funciona", href: "/#product" },
-  { label: "Planes y precios", href: "/#planes" },
-  { label: "Empezar", href: "/#cta" },
+  { label: "How it works", href: "/#product" },
+  { label: "Plans and pricing", href: "/#planes" },
+  { label: "Get started", href: "/#cta" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -72,7 +72,7 @@ export function Navbar() {
             }
           }}
           className="flex items-center text-ink no-underline transition-transform duration-300 hover:scale-[1.03] active:scale-95"
-          aria-label="DoctorLife — inicio"
+          aria-label="DoctorLife — home"
         >
           <BrandLogo markSize={scrolled ? 27 : 30} textSize={scrolled ? 19 : 20} textClassName="text-ink" />
         </a>
@@ -107,11 +107,11 @@ export function Navbar() {
             href="/sign-in"
             className="hidden items-center whitespace-nowrap rounded-full px-3 py-2 text-[15px] font-medium text-ink no-underline opacity-75 transition-opacity duration-300 hover:opacity-100 md:inline-flex"
           >
-            Iniciar sesión
+            Sign in
           </a>
 
           <QuizTrigger className="group hidden items-center gap-2 whitespace-nowrap rounded-full bg-ink px-[22px] py-[13px] text-[15px] font-medium text-paper transition-transform duration-300 hover:scale-[1.04] active:scale-95 sm:inline-flex">
-            Comenzar
+            Get started
             <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
               ↗
             </span>
@@ -120,7 +120,7 @@ export function Navbar() {
           {/* botón menú móvil */}
           <button
             type="button"
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
             className="flex h-[48px] w-[48px] items-center justify-center rounded-full bg-ink text-paper transition-transform duration-300 active:scale-90 md:hidden"
@@ -183,10 +183,10 @@ export function Navbar() {
             onClick={() => setOpen(false)}
             className="mt-2 flex w-full items-center justify-center rounded-full border border-ink/15 px-6 py-4 text-[16px] font-medium text-ink no-underline transition-colors hover:bg-ink/5"
           >
-            Iniciar sesión
+            Sign in
           </a>
           <QuizTrigger className="group mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-4 text-[16px] font-medium text-paper transition-transform duration-300 active:scale-95">
-            Comenzar
+            Get started
             <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-[3px] group-hover:-translate-y-[3px]">
               ↗
             </span>

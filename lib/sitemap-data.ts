@@ -11,8 +11,8 @@ import {
    dividimos en SEGMENTOS con nombre semántico:
 
      /sitemap.xml            → índice (lo que envías a Search Console)
-     /sitemaps/paginas.xml   → home, legales y herramientas
-     /sitemaps/articulos.xml → pillar + artículos editoriales + autores
+     /sitemaps/pages.xml   → home, legal pages and tools
+     /sitemaps/articles.xml → pillar + editorial articles + authors
      /sitemaps/blog-1.xml     → posts del blog (bloques de 10.000)
      /sitemaps/blog-2.xml
      …
@@ -48,15 +48,15 @@ function staticUrls(now: Date): SitemapUrl[] {
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE_URL}/${PILLAR.slug}`, lastModified: now, changeFrequency: "monthly", priority: 0.95 },
-    { url: `${SITE_URL}/privacidad`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/legal/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE_URL}/terminos`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/legal/terms-of-services`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}/cookies`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE_URL}/herramientas/calculadora-imc`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-    { url: `${SITE_URL}/herramientas/calculadora-tdee`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-    { url: `${SITE_URL}/herramientas/calculadora-deficit-calorico`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-    { url: `${SITE_URL}/herramientas/calculadora-proteina-diaria`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${SITE_URL}/tools/bmi-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${SITE_URL}/tools/tdee-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${SITE_URL}/tools/calorie-deficit-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${SITE_URL}/tools/daily-protein-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
   ];
 }
 
@@ -68,7 +68,7 @@ function articleUrls(now: Date): SitemapUrl[] {
     priority: 0.85,
   }));
   const authorPages: SitemapUrl[] = authors.map((a) => ({
-    url: `${SITE_URL}/autores/${a.slug}`,
+    url: `${SITE_URL}/authors/${a.slug}`,
     lastModified: now,
     changeFrequency: "yearly",
     priority: 0.5,
@@ -90,7 +90,7 @@ export function getSitemapSegments(): SitemapSegment[] {
   const now = new Date();
   const segments: SitemapSegment[] = [
     { name: "paginas", urls: staticUrls(now) },
-    { name: "articulos", urls: articleUrls(now) },
+    { name: "articles", urls: articleUrls(now) },
   ];
 
   // Cada cluster grande va en su propio segmento para monitorizarlo

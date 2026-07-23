@@ -11,10 +11,10 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ articulo: string }>;
+  params: Promise<{ article: string }>;
 }): Promise<Metadata> {
-  const { articulo } = await params;
-  const article = getArticle(articulo);
+  const { article: slug } = await params;
+  const article = getArticle(slug);
   if (!article) return {};
 
   const url = `${SITE_URL}/${article.slug}`;
@@ -31,7 +31,7 @@ export async function generateMetadata({
       description: article.metaDescription,
       publishedTime: article.datePublished,
       modifiedTime: article.dateModified,
-      authors: [`${SITE_URL}/autores/${article.authorSlug}`],
+      authors: [`${SITE_URL}/authors/${article.authorSlug}`],
       images: [{ url: imageUrl, alt: article.coverAlt }],
     },
     twitter: {
@@ -43,13 +43,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArticuloPage({
+export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ articulo: string }>;
+  params: Promise<{ article: string }>;
 }) {
-  const { articulo } = await params;
-  const article = getArticle(articulo);
+  const { article: slug } = await params;
+  const article = getArticle(slug);
   if (!article) notFound();
   return <ArticleLayout article={article} />;
 }

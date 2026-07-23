@@ -15,7 +15,7 @@ export default async function PortalLayout({ children }: { children: React.React
   const showReservar = patientStatus === "followup_available"
 
   const nav: { href: string; label: string; icon: NavIcon }[] = [
-    { href: "/portal", label: "Inicio", icon: "home" },
+    { href: "/portal", label: "Home", icon: "home" },
     ...(showReservar ? [{ href: "/portal/reservar", label: "Reservar seguimiento", icon: "reservar" as NavIcon }] : []),
     { href: "/portal/citas", label: "Mis citas", icon: "citas" },
     { href: "/portal/progreso", label: "Mi progreso", icon: "progreso" },

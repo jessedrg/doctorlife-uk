@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       badge="Admin"
       homeHref="/admin"
       nav={[
-        { href: "/admin", label: "Inicio", icon: "home" },
+        { href: "/admin", label: "Home", icon: "home" },
         { href: "/admin/clinicas", label: "Clínicas", icon: "medicos" },
         { href: "/admin/pacientes", label: "Pacientes", icon: "pacientes" },
         { href: "/admin/suscripciones", label: "Suscripciones", icon: "suscripciones" },

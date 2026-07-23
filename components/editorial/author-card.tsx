@@ -27,7 +27,7 @@ export function AuthorCard({
         <div className="text-[13.5px] leading-snug">
           <p className="text-ink-mute">Escrito por</p>
           <a
-            href={`/autores/${author.slug}`}
+            href={`/authors/${author.slug}`}
             className="font-medium text-ink underline decoration-ink/20 underline-offset-2 hover:decoration-ink"
           >
             {author.name}
@@ -42,7 +42,7 @@ export function AuthorCard({
         <div>
           <p className="text-ink-mute">Revisado médicamente por</p>
           <a
-            href={`/autores/${reviewer.slug}`}
+            href={`/authors/${reviewer.slug}`}
             className="font-medium text-ink underline decoration-ink/20 underline-offset-2 hover:decoration-ink"
           >
             {reviewer.name}

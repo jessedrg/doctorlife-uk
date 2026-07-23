@@ -10,7 +10,7 @@ import { QuizTrigger } from "@/components/quiz-trigger";
  */
 export function CTABlock({
   variant = "compact",
-  source = "articulo",
+  source = "article",
   title,
   subtitle,
 }: {

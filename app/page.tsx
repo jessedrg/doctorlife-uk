@@ -12,17 +12,17 @@ import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "DoctorLife — Tu cuerpo, por fin entendido",
+  title: "DoctorLife — Your body, finally understood",
   description:
-    "Cuidado del peso y hormonal dirigido por médicos colegiados en España, con seguimiento real desde la app. Sin listas de espera y sin permanencia.",
+    "Weight and hormonal care led by UK-registered doctors, with real follow-up via the app. No waiting lists and no commitment.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "DoctorLife — Tu cuerpo, por fin entendido",
+    title: "DoctorLife — Your body, finally understood",
     description:
-      "Cuidado del peso y hormonal dirigido por médicos colegiados en España, con seguimiento real desde la app.",
+      "Weight and hormonal care led by UK-registered doctors, with real follow-up via the app.",
     url: "/",
     type: "website",
-    locale: "es_ES",
+    locale: "en-GB",
     siteName: "DoctorLife",
   },
 };

@@ -8,8 +8,8 @@ const suggestions = [
   { label: "Cómo funciona el tratamiento", href: "/#product" },
   { label: "Planes y precios", href: "/#planes" },
   { label: "Blog médico", href: "/blog" },
-  { label: "Nuestros médicos", href: "/autores" },
-  { label: "Calculadora de IMC", href: "/herramientas/calculadora-imc" },
+  { label: "Our doctors", href: "/authors" },
+  { label: "BMI Calculator", href: "/tools/bmi-calculator" },
 ];
 
 export default function NotFound() {
@@ -34,7 +34,7 @@ export default function NotFound() {
               href="/"
               className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-[15px] font-semibold text-paper no-underline transition-colors hover:bg-olive"
             >
-              Volver al inicio
+              Back to home
               <ArrowRight aria-hidden className="h-4 w-4" />
             </Link>
           </div>

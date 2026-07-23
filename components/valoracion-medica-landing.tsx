@@ -22,7 +22,7 @@ import { BRAND } from "@/lib/articles";
 import { StickyValoracionCTA } from "@/components/sticky-valoracion-cta";
 
 export type ValoracionConfig = {
-  /** Ruta canónica, p. ej. "/valoracion-medica" */
+  /** Canonical route, e.g. "/medical-assessment" */
   path: string;
   /** Prefijo para los eventos de analítica, p. ej. "ads-valoracion" */
   planPrefix: string;
@@ -510,12 +510,12 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
             <div className="flex flex-col items-center gap-6 text-center">
               <BrandLogo markSize={28} textSize={19} textClassName="text-ink" />
               <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13.5px] text-ink-soft">
-                <a href="/sobre-nosotros" className="hover:text-ink">Sobre nosotros</a>
-                <a href="/politica-editorial" className="hover:text-ink">Política editorial</a>
-                <a href="/privacidad" className="hover:text-ink">Privacidad</a>
-                <a href="/terminos" className="hover:text-ink">Términos</a>
+                <a href="/about-us" className="hover:text-ink">About us</a>
+                <a href="/editorial-policy" className="hover:text-ink">Editorial policy</a>
+                <a href="/privacy" className="hover:text-ink">Privacy</a>
+                <a href="/terms" className="hover:text-ink">Terms</a>
                 <a href="/cookies" className="hover:text-ink">Cookies</a>
-                <a href="/legal" className="hover:text-ink">Aviso legal</a>
+                <a href="/legal-notice" className="hover:text-ink">Legal notice</a>
               </nav>
               <p className="mx-auto max-w-[70ch] text-[12px] leading-relaxed text-ink-mute">
                 {BRAND} es un servicio de consulta médica online prestado por

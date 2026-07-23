@@ -314,8 +314,8 @@ export function QuizModal() {
 
               <p className="mt-3.5 text-[12px] leading-relaxed text-ink-mute">
                 Al continuar aceptas nuestra{" "}
-                <a href="/privacidad" className="underline decoration-ink/25 underline-offset-2 hover:text-ink">
-                  política de privacidad
+                <a href="/privacy" className="underline decoration-ink/25 underline-offset-2 hover:text-ink">
+                  privacy policy
                 </a>
                 . Primera consulta gratis, sin tarjeta ni compromiso.
               </p>

@@ -184,7 +184,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   const breadcrumbLd = breadcrumbSchema([
-    { name: "Inicio", url: SITE_URL },
+    { name: "Home", url: SITE_URL },
     { name: "Blog", url: `${SITE_URL}/blog` },
     { name: post.title, url },
   ]);
@@ -207,7 +207,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           <article className="mx-auto max-w-[760px] px-5 pb-6 pt-10 lg:max-w-[820px] 2xl:max-w-[900px]">
             {/* breadcrumb */}
             <nav className="mb-8 flex items-center gap-2 text-[13px] text-ink-mute">
-              <a href="/" className="no-underline hover:text-ink">Inicio</a>
+              <a href="/" className="no-underline hover:text-ink">Home</a>
               <span aria-hidden>/</span>
               <a href="/blog" className="no-underline hover:text-ink">Blog</a>
               <span aria-hidden>/</span>
