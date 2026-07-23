@@ -1,15 +1,15 @@
 /**
- * Catálogo central de todo lo que DoctorLife cobra.
+ * Central catalogue of everything DoctorLife UK charges for.
  *
- * Única fuente de verdad para suscripciones, packs de sesiones y pagos únicos.
- * Para añadir un nuevo modelo de venta en el futuro, basta con añadir una fila a
- * `CATALOG`: el flujo de checkout (`lib/checkout.ts`) lo convierte en una sesión
- * de Stripe y aplica automáticamente el enrutado a la clínica + la comisión de
- * plataforma. No hace falta tocar la lógica de pagos.
+ * Single source of truth for subscriptions, session packs and one-off payments.
+ * To add a new sales model in the future, just add a row to `CATALOG`: the
+ * checkout flow (`lib/checkout.ts`) turns it into a Stripe session and
+ * automatically applies clinic routing + the platform fee. There is no need to
+ * touch the payments logic.
  *
- * Los precios se guardan en céntimos (EUR). La asistencia sanitaria prestada
- * por profesionales médicos está exenta de IVA (art. 20 Ley del IVA), por lo
- * que el precio mostrado es el total final, sin impuestos añadidos.
+ * Prices are stored in pence (GBP). Medical care provided by healthcare
+ * professionals is VAT-exempt in the UK, so the displayed price is the final
+ * total, with no tax added on top.
  */
 
 import type Stripe from "stripe"
@@ -19,99 +19,99 @@ export type PricingModel = "subscription" | "pack" | "one_time"
 export type BillingInterval = "month" | "year"
 
 export interface Product {
-  /** Identificador estable usado en metadata de Stripe y en el código. */
+  /** Stable identifier used in Stripe metadata and in the code. */
   id: string
-  /** Nombre visible en el checkout y la factura. */
+  /** Name shown at checkout and on the invoice. */
   name: string
-  /** Descripción visible en el checkout. */
+  /** Description shown at checkout. */
   description: string
-  /** Modelo de cobro. */
+  /** Billing model. */
   model: PricingModel
-  /** Precio recurrente / unitario (céntimos). Sin IVA (servicio médico exento). */
+  /** Recurring / unit price (pence). No VAT (VAT-exempt medical service). */
   priceCents: number
-  /** Divisa ISO (por defecto EUR). */
+  /** ISO currency (defaults to GBP). */
   currency: string
-  /** Si está disponible para contratar. */
+  /** Whether it is available to purchase. */
   active: boolean
-  /** Bullets opcionales para UI. */
+  /** Optional bullets for the UI. */
   features?: string[]
   /**
-   * Meses de acceso al tratamiento que concede un pago único (pack / one_time).
-   * En suscripciones no aplica (el acceso se mantiene mientras esté activa).
+   * Months of treatment access granted by a one-off payment (pack / one_time).
+   * Not applicable to subscriptions (access continues while active).
    */
   accessMonths?: number
 
-  /* ── Suscripción ── */
-  /** Periodicidad del cobro recurrente. */
+  /* ── Subscription ── */
+  /** Frequency of the recurring charge. */
   interval?: BillingInterval
-  /** Precio promocional del primer periodo (céntimos). Si se define, se aplica un cupón por la diferencia. */
+  /** Promotional first-period price (pence). If set, a coupon is applied for the difference. */
   firstPeriodCents?: number
 
   /* ── Pack ── */
-  /** Nº de sesiones/unidades incluidas en el pack. */
+  /** Number of sessions/units included in the pack. */
   quantity?: number
-  /** Caducidad del pack en días (informativo). */
+  /** Pack expiry in days (informational). */
   expiresInDays?: number
 }
 
 /* ────────────────────────────────────────────────────────────
-   CATÁLOGO — edita/añade filas aquí para crear nuevos productos.
+   CATALOGUE — edit/add rows here to create new products.
    ──────────────────────────────────────────────────────────── */
 export const CATALOG: Product[] = [
   {
-    id: "seguimiento-mensual",
-    name: "Suscripción mensual",
+    id: "monthly-follow-up",
+    name: "Monthly subscription",
     description:
-      "Seguimiento médico continuo, receta cuando proceda y una consulta por llamada al mes. Sin permanencia, cancela cuando quieras.",
+      "Ongoing medical follow-up, a prescription where appropriate and one phone consultation a month. No lock-in, cancel whenever you like.",
     model: "subscription",
-    priceCents: 13900, // 139 €/mes
-    currency: "eur",
+    priceCents: 13900, // £139/month
+    currency: "gbp",
     active: true,
     interval: "month",
     features: [
-      "Seguimiento médico continuo con tu médico",
-      "Receta electrónica cuando proceda",
-      "Una consulta por llamada al mes",
-      "Sin permanencia: cancela cuando quieras",
+      "Ongoing medical follow-up with your doctor",
+      "Electronic prescription where appropriate",
+      "One phone consultation a month",
+      "No lock-in: cancel whenever you like",
     ],
   },
   {
-    id: "pack-5-meses",
-    name: "Pack 5 meses",
+    id: "pack-5-months",
+    name: "5-month pack",
     description:
-      "Programa completo de 5 meses en un único pago. La mejor relación calidad-precio para comprometerte con tu objetivo.",
+      "Complete 5-month programme in a single payment. The best value if you want to commit to your goal.",
     model: "one_time",
-    priceCents: 44900, // 449 € pago único
-    currency: "eur",
+    priceCents: 44900, // £449 one-off
+    currency: "gbp",
     active: true,
     accessMonths: 5,
     features: [
-      "5 meses de seguimiento médico",
-      "Receta electrónica cuando proceda",
-      "Consulta por llamada mensual incluida",
-      "Precio cerrado: te sale mucho más barato",
+      "5 months of medical follow-up",
+      "Electronic prescription where appropriate",
+      "Monthly phone consultation included",
+      "Fixed price: works out much cheaper",
     ],
   },
   {
-    id: "nutricionista-glp1",
-    name: "Nutricionista + GLP1",
+    id: "dietitian-glp1",
+    name: "Dietitian + GLP-1",
     description:
-      "Programa de 5 meses con seguimiento médico y acompañamiento de nutricionista, en un único pago.",
+      "5-month programme with medical follow-up and dietitian support, in a single payment.",
     model: "one_time",
-    priceCents: 64900, // 649 € pago único
-    currency: "eur",
+    priceCents: 64900, // £649 one-off
+    currency: "gbp",
     active: true,
     accessMonths: 5,
     features: [
-      "5 meses de seguimiento médico",
-      "Acompañamiento de nutricionista",
-      "Receta electrónica cuando proceda",
-      "Consulta por llamada mensual incluida",
+      "5 months of medical follow-up",
+      "Dietitian support",
+      "Electronic prescription where appropriate",
+      "Monthly phone consultation included",
     ],
   },
 ]
 
-/* ── Helpers de lectura ── */
+/* ── Read helpers ── */
 
 export function getProduct(id: string): Product | undefined {
   return CATALOG.find((p) => p.id === id)
@@ -129,59 +129,59 @@ export function activePacks(): Product[] {
   return activeProducts().filter((p) => p.model === "pack")
 }
 
-/** Pagos únicos activos (packs cerrados y programas de un solo pago). */
+/** Active one-off payments (closed packs and single-payment programmes). */
 export function activeOneTime(): Product[] {
   return activeProducts().filter((p) => p.model === "one_time" || p.model === "pack")
 }
 
 /**
- * Todos los planes que se pueden ofrecer a un paciente (suscripción + pagos
- * únicos), ordenados: primero la suscripción recurrente y luego los packs.
+ * All plans that can be offered to a patient (subscription + one-off
+ * payments), ordered: recurring subscription first, then the packs.
  */
 export function activeSellablePlans(): Product[] {
   return [...activeSubscriptions(), ...activeOneTime()]
 }
 
-/** Suscripción principal (primera suscripción activa del catálogo). */
+/** Main subscription (first active subscription in the catalogue). */
 export function mainSubscription(): Product | undefined {
   return activeSubscriptions()[0]
 }
 
-/** Formatea céntimos como precio en euros: 13900 → "139,00 €". */
-export function formatPrice(cents: number, currency = "eur"): string {
-  return new Intl.NumberFormat("es-ES", {
+/** Formats pence as a price in pounds: 13900 → "£139.00". */
+export function formatPrice(cents: number, currency = "gbp"): string {
+  return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: currency.toUpperCase(),
   }).format(cents / 100)
 }
 
 /**
- * Etiqueta de precio según el modelo del plan:
- *  - Suscripción → "139,00 €/mes"
- *  - Pago único con acceso → "449,00 € · pago único · 5 meses"
- *  - Pago único sin acceso definido → "649,00 € · pago único"
+ * Price label based on the plan model:
+ *  - Subscription → "£139.00/month"
+ *  - One-off with access → "£449.00 · one-off · 5 months"
+ *  - One-off with no defined access → "£649.00 · one-off"
  */
 export function planPriceLabel(p: Product): string {
   const base = formatPrice(p.priceCents, p.currency)
-  if (p.model === "subscription") return `${base}/mes`
-  if (p.accessMonths) return `${base} · pago único · ${p.accessMonths} meses`
-  return `${base} · pago único`
+  if (p.model === "subscription") return `${base}/month`
+  if (p.accessMonths) return `${base} · one-off · ${p.accessMonths} months`
+  return `${base} · one-off`
 }
 
-/** Descuento del primer periodo de una suscripción (céntimos), o 0. */
+/** First-period discount of a subscription (pence), or 0. */
 export function firstPeriodDiscountCents(product: Product): number {
   if (product.model !== "subscription" || product.firstPeriodCents == null) return 0
   return Math.max(0, product.priceCents - product.firstPeriodCents)
 }
 
-/** Modo de Stripe Checkout que corresponde al modelo del producto. */
+/** Stripe Checkout mode that matches the product model. */
 export function stripeMode(product: Product): "subscription" | "payment" {
   return product.model === "subscription" ? "subscription" : "payment"
 }
 
 /**
- * Traduce un producto del catálogo a un `line_item` de Stripe Checkout,
- * uniforme para cualquier modelo (`price_data` inline, sin Price IDs fijos).
+ * Translates a catalogue product into a Stripe Checkout `line_item`,
+ * uniform for any model (inline `price_data`, no fixed Price IDs).
  */
 export function toStripeLineItem(
   product: Product,
