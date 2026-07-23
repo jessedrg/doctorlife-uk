@@ -143,23 +143,23 @@ function EmptyCard() {
   return (
     <div className="flex w-full max-w-[400px] flex-col gap-3">
       <div className="rounded-[24px] bg-espresso/80 px-7 py-7 ring-1 ring-paper/8">
-        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-amber/50">Tu TDEE</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-amber/50">Your TDEE</span>
         <p className="mt-3 text-[20px] font-bold leading-snug text-paper">
-          Para mantener<br />tu peso actual
+          To maintain<br />your current weight
         </p>
         <div className="mt-4 flex items-baseline gap-2">
           <div className="h-8 w-28 animate-pulse rounded-lg bg-paper/8" />
-          <span className="text-lg text-paper/30">kcal/día</span>
+          <span className="text-lg text-paper/30">kcal/day</span>
         </div>
       </div>
       <div className="rounded-[24px] bg-sage/10 px-7 py-6 ring-1 ring-sage/20">
-        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-sage/50">Ajuste de calorías</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-sage/50">Calorie adjustment</span>
         <p className="mt-3 text-[17px] font-semibold text-paper/40">
-          Rellena el formulario para ver<br />tu objetivo calórico.
+          Fill in the form to see<br />your calorie target.
         </p>
         <div className="mt-4 flex items-baseline gap-2">
           <div className="h-7 w-20 animate-pulse rounded-lg bg-paper/6" />
-          <span className="text-base text-paper/25">kcal/día</span>
+          <span className="text-base text-paper/25">kcal/day</span>
         </div>
       </div>
     </div>
