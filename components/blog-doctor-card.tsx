@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 /**
  * Editorial "Meet our doctor" card for the pSEO blog articles.
  * Briefly introduces Dr Miguel A. Guirola, reinforcing E-E-A-T and reader
@@ -8,16 +6,7 @@ import Image from "next/image"
 export function BlogDoctorCard() {
   return (
     <aside className="mt-14 overflow-hidden rounded-[24px] border border-ink/10 bg-warm">
-      <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
-        <div className="relative mx-auto h-[150px] w-[150px] flex-shrink-0 overflow-hidden rounded-[20px] bg-cream-2 sm:mx-0">
-          <Image
-            src="/images/miguel-guirola.jpeg"
-            alt="Dr Miguel A. Guirola, obesity specialist at DoctorLife"
-            fill
-            sizes="150px"
-            className="object-cover object-[50%_30%]"
-          />
-        </div>
+      <div className="flex flex-col gap-5 p-5 sm:p-6">
         <div className="text-center sm:text-left">
           <span className="text-[12.5px] font-semibold uppercase tracking-[.14em] text-olive">
             Meet our doctor
