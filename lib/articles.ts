@@ -303,84 +303,84 @@ export const articles: Article[] = [
     ],
     body: [
       {
-        h2: "Por qué la báscula no se mueve la primera semana",
+        h2: "Why the scale doesn't move in the first week",
         blocks: [
           {
             type: "p",
-            text: "Cuando empiezas a comer distinto, tu cuerpo tarda en adaptarse. En los primeros días pueden pasar varias cosas a la vez: retienes líquidos, cambian tus depósitos de glucógeno (que arrastran agua) y tu tránsito intestinal se reajusta. Todo eso pesa y puede ocultar la grasa que sí estás perdiendo.",
+            text: "When you start eating differently, your body takes time to adapt. In the first few days several things can happen at once: you retain fluids, your glycogen stores shift (which pull water with them) and your digestion readjusts. All of that has weight and can hide the fat you are actually losing.",
           },
           {
             type: "p",
-            text: "Además, si has empezado a hacer ejercicio, tus músculos retienen agua para repararse. Es posible perder grasa y que la báscula no baje, o incluso suba un poco, durante unos días.",
+            text: "On top of that, if you've started exercising, your muscles retain water to repair themselves. It's possible to lose fat while the scale doesn't drop, or even rises slightly, for a few days.",
           },
         ],
       },
       {
-        h2: "Cuánto peso es realista perder",
+        h2: "How much weight is realistic to lose",
         blocks: [
           {
             type: "stat",
-            value: "0,5–1 kg",
-            label: "es la pérdida de grasa razonable por semana en la mayoría de personas",
+            value: "0.5–1 kg",
+            label: "is the reasonable fat loss per week for most people",
           },
           {
             type: "p",
-            text: "Perder más rápido suele significar perder agua y músculo, no grasa, y favorece el efecto rebote. Un ritmo lento y sostenido es lo que de verdad se mantiene en el tiempo.",
+            text: "Losing faster usually means losing water and muscle, not fat, and encourages the rebound effect. A slow, steady pace is what really lasts over time.",
           },
         ],
       },
       {
-        h2: "Cómo medir el progreso de verdad",
+        h2: "How to measure real progress",
         blocks: [
           {
             type: "list",
             items: [
-              "Pésate siempre en las mismas condiciones (en ayunas, una vez por semana).",
-              "Usa una cinta métrica: cintura, cadera y brazo dicen más que la báscula.",
-              "Haz fotos cada 2–3 semanas con la misma luz y ropa.",
-              "Fíjate en cómo te queda la ropa y en tu energía y descanso.",
+              "Always weigh yourself under the same conditions (fasted, once a week).",
+              "Use a tape measure: waist, hips and arm say more than the scale.",
+              "Take photos every 2–3 weeks with the same lighting and clothing.",
+              "Notice how your clothes fit and your energy and sleep.",
             ],
           },
           {
             type: "quote",
-            text: "La báscula es solo uno de los datos. Si te obsesionas con el número diario, te frustrarás justo cuando más progreso estás haciendo.",
+            text: "The scale is only one data point. If you obsess over the daily number, you'll get frustrated just when you're making the most progress.",
           },
         ],
       },
       {
-        h2: "¿Cuándo preocuparse?",
+        h2: "When should you worry?",
         blocks: [
           {
             type: "p",
-            text: "Una semana sin cambios no es motivo de alarma. Pero si pasan 4–6 semanas siguiendo bien el plan y no notas absolutamente nada (ni peso, ni medidas, ni ropa), tiene sentido revisar la situación con un médico para descartar causas como el hipotiroidismo o ajustar el enfoque.",
+            text: "A week without changes is no cause for alarm. But if 4–6 weeks pass while following the plan well and you notice absolutely nothing (no weight, no measurements, no clothing change), it makes sense to review the situation with a doctor to rule out causes such as hypothyroidism or to adjust the approach.",
           },
           {
             type: "p",
-            text: "En DoctorLife valoramos tu caso sin coste y te decimos con honestidad si lo que haces tiene sentido o si conviene cambiar de estrategia.",
+            text: "At DoctorLife we assess your case at no cost and tell you honestly whether what you're doing makes sense or whether it's worth changing strategy.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Es normal no bajar de peso la primera semana de dieta?",
+        question: "Is it normal not to lose weight in the first week of a diet?",
         answer:
-          "Sí, es muy normal. En la primera semana influyen la retención de líquidos, el glucógeno y el tránsito intestinal, que pueden ocultar la grasa que pierdes. El progreso real se ve a lo largo de varias semanas.",
+          "Yes, it's very normal. In the first week fluid retention, glycogen and digestion all play a role and can hide the fat you're losing. Real progress shows over several weeks.",
       },
       {
-        question: "¿Por qué he engordado al empezar a hacer ejercicio?",
+        question: "Why have I gained weight after starting to exercise?",
         answer:
-          "Al iniciar ejercicio, los músculos retienen agua para repararse, lo que puede subir el peso unos días. No es grasa. Con el tiempo, el ejercicio ayuda a perder grasa y mejorar la composición corporal.",
+          "When you start exercising, muscles retain water to repair themselves, which can raise your weight for a few days. It isn't fat. Over time, exercise helps you lose fat and improve body composition.",
       },
       {
-        question: "¿Cada cuánto debo pesarme?",
+        question: "How often should I weigh myself?",
         answer:
-          "Lo ideal es una vez por semana, en las mismas condiciones (en ayunas, sin ropa). Pesarse a diario genera ansiedad por las variaciones normales de agua y comida.",
+          "Ideally once a week, under the same conditions (fasted, without clothing). Weighing yourself daily creates anxiety because of the normal variations from water and food.",
       },
       {
-        question: "¿Cuánto peso es sano perder por semana?",
+        question: "How much weight is healthy to lose per week?",
         answer:
-          "Entre 0,5 y 1 kg por semana en la mayoría de personas. Perder más rápido suele implicar pérdida de músculo y agua, y aumenta el riesgo de recuperar el peso.",
+          "Between 0.5 and 1 kg per week for most people. Losing faster usually involves losing muscle and water, and increases the risk of regaining the weight.",
       },
     ],
     sources: [S.who, S.nice, S.nhs],
@@ -388,9 +388,9 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-01-20",
     dateModified: "2026-06-16",
-    relatedSlugs: ["cuanto-se-tarda-en-notar-que-bajas-de-peso", "por-que-no-consigo-adelgazar", "por-que-pierdo-peso-y-luego-lo-recupero"],
+    relatedSlugs: ["how-long-to-notice-weight-loss", "why-cant-i-lose-weight", "why-i-lose-weight-then-regain-it"],
     cover: "/hero/woman.png",
-    coverAlt: "Báscula y cinta métrica sobre el suelo de un baño",
+    coverAlt: "Scale and tape measure on a bathroom floor",
     readMins: 6,
   },
 
@@ -413,89 +413,89 @@ export const articles: Article[] = [
     ],
     body: [
       {
-        h2: "El metabolismo se adapta a las dietas",
+        h2: "Metabolism adapts to diets",
         blocks: [
           {
             type: "p",
-            text: "Cuando comes muy poco durante mucho tiempo, tu cuerpo no se queda quieto: reduce el gasto energético para sobrevivir con menos. Baja la temperatura, te mueves menos sin darte cuenta y aprovechas mejor cada caloría. Es lo que se llama adaptación metabólica, y explica por qué cada vez tienes que comer menos para mantener el mismo peso.",
+            text: "When you eat very little for a long time, your body doesn't stay still: it lowers energy expenditure to survive on less. Your temperature drops, you move less without realising it and you use every calorie more efficiently. This is called metabolic adaptation, and it explains why you have to eat less and less to maintain the same weight.",
           },
           {
             type: "p",
-            text: "El problema es que esa estrategia es una trampa: cuanto más restringes, más se defiende tu cuerpo, y más fácil es engordar en cuanto comes algo más.",
+            text: "The problem is that this strategy is a trap: the more you restrict, the more your body defends itself, and the easier it is to gain weight as soon as you eat a little more.",
           },
         ],
       },
       {
-        h2: "Hormonas que hacen ganar peso",
+        h2: "Hormones that cause weight gain",
         blocks: [
           {
             type: "list",
             items: [
-              "Tiroides lenta (hipotiroidismo): reduce el gasto energético en reposo.",
-              "Resistencia a la insulina: facilita almacenar grasa, sobre todo abdominal.",
-              "Cortisol alto por estrés o falta de sueño: favorece el apetito y la grasa.",
-              "SOP en mujeres: muy ligado a la dificultad para perder peso.",
+              "Underactive thyroid (hypothyroidism): reduces resting energy expenditure.",
+              "Insulin resistance: makes it easier to store fat, especially around the belly.",
+              "High cortisol from stress or lack of sleep: promotes appetite and fat.",
+              "PCOS in women: closely linked to difficulty losing weight.",
             ],
           },
           {
             type: "p",
-            text: "Estas alteraciones no se ven a simple vista, pero se detectan con una analítica sencilla. Tratarlas cambia por completo la respuesta del cuerpo a la dieta.",
+            text: "These alterations aren't visible to the naked eye, but they're detected with a simple blood test. Treating them completely changes how the body responds to a diet.",
           },
         ],
       },
       {
-        h2: "El factor que casi nadie tiene en cuenta",
+        h2: "The factor almost no one takes into account",
         blocks: [
           {
             type: "p",
-            text: "Aunque comas 'poco' en las comidas principales, es muy fácil subestimar lo que entra durante el día: el aceite al cocinar, los picoteos, las bebidas, los fines de semana. No se trata de culpar, sino de tener una foto realista. A veces 'como poco' significa, en realidad, 'como irregular'.",
+            text: "Even if you eat 'little' at your main meals, it's very easy to underestimate what goes in during the day: the oil used in cooking, snacking, drinks, weekends. It's not about blame, but about having a realistic picture. Sometimes 'I eat little' actually means 'I eat irregularly'.",
           },
           {
             type: "quote",
-            text: "Contar calorías a ojo es muy poco fiable. El objetivo no es comer menos a la fuerza, sino entender tu patrón real.",
+            text: "Estimating calories by eye is very unreliable. The goal isn't to force yourself to eat less, but to understand your real pattern.",
           },
         ],
       },
       {
-        h2: "Qué hacer en lugar de comer aún menos",
+        h2: "What to do instead of eating even less",
         blocks: [
           {
             type: "list",
             items: [
-              "Hazte una analítica con tiroides, glucosa e insulina.",
-              "Prioriza proteína y comida real para no perder músculo.",
-              "Recupera el sueño y reduce el estrés crónico.",
-              "Evita las dietas de hambre: empeoran la adaptación metabólica.",
-              "Valora con un médico si un tratamiento como el GLP‑1 te conviene.",
+              "Get a blood test covering thyroid, glucose and insulin.",
+              "Prioritise protein and real food so you don't lose muscle.",
+              "Recover your sleep and reduce chronic stress.",
+              "Avoid starvation diets: they worsen metabolic adaptation.",
+              "Discuss with a doctor whether a treatment such as a GLP‑1 suits you.",
             ],
           },
           {
             type: "p",
-            text: "En DoctorLife no te diremos que comas menos sin más. Buscamos la causa de por qué tu cuerpo retiene el peso y la tratamos de raíz.",
+            text: "At DoctorLife we won't just tell you to eat less. We look for the reason your body holds onto weight and treat it at the root.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Por qué engordo si apenas como?",
+        question: "Why do I gain weight if I barely eat?",
         answer:
-          "Suele deberse a un metabolismo adaptado tras años de dietas, a alteraciones hormonales (tiroides, insulina, cortisol) o a fármacos. Además es fácil subestimar lo que comemos. La solución no es comer menos, sino diagnosticar la causa.",
+          "It's usually due to a metabolism adapted after years of dieting, hormonal alterations (thyroid, insulin, cortisol) or medications. It's also easy to underestimate what we eat. The solution isn't to eat less, but to diagnose the cause.",
       },
       {
-        question: "¿Comer muy poco frena el metabolismo?",
+        question: "Does eating very little slow the metabolism?",
         answer:
-          "Sí. Restringir mucho durante tiempo reduce el gasto energético en reposo, te hace moverte menos y aumenta el hambre. Por eso las dietas de hambre suelen acabar en recuperación del peso.",
+          "Yes. Restricting heavily for a long time reduces resting energy expenditure, makes you move less and increases hunger. That's why starvation diets usually end in regaining the weight.",
       },
       {
-        question: "¿Cómo sé si tengo un problema hormonal?",
+        question: "How do I know if I have a hormonal problem?",
         answer:
-          "Con una analítica que incluya tiroides (TSH), glucosa e insulina, valorada por un médico. Síntomas como cansancio, frío, caída de pelo o cambios menstruales también orientan.",
+          "With a blood test that includes thyroid (TSH), glucose and insulin, assessed by a doctor. Symptoms such as fatigue, feeling cold, hair loss or menstrual changes also point to it.",
       },
       {
-        question: "¿Puedo perder peso aunque tenga el metabolismo adaptado?",
+        question: "Can I lose weight even with an adapted metabolism?",
         answer:
-          "Sí, pero rara vez comiendo todavía menos. Hay que recuperar el músculo, mejorar el sueño, tratar las causas hormonales y, en algunos casos, usar tratamiento médico supervisado.",
+          "Yes, but rarely by eating even less. You need to rebuild muscle, improve sleep, treat the hormonal causes and, in some cases, use supervised medical treatment.",
       },
     ],
     sources: [S.easo, S.who, S.nice],
@@ -503,9 +503,9 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-02-03",
     dateModified: "2026-06-16",
-    relatedSlugs: ["por-que-no-consigo-adelgazar", "por-que-pierdo-peso-y-luego-lo-recupero", "cuanto-se-tarda-en-notar-que-bajas-de-peso"],
+    relatedSlugs: ["why-cant-i-lose-weight", "why-i-lose-weight-then-regain-it", "how-long-to-notice-weight-loss"],
     cover: "/products/maren-oral.png",
-    coverAlt: "Plato pequeño de comida sobre una mesa",
+    coverAlt: "Small plate of food on a table",
     readMins: 7,
   },
 
@@ -528,94 +528,94 @@ export const articles: Article[] = [
     ],
     body: [
       {
-        h2: "Barriga no siempre significa estar gordo",
+        h2: "A belly doesn't always mean being overweight",
         blocks: [
           {
             type: "p",
-            text: "Puedes estar delgado, tener un peso normal y aun así notar barriga. Esto desconcierta a mucha gente porque asociamos barriga con sobrepeso. Pero el abdomen puede sobresalir por varios motivos distintos, y no todos tienen que ver con tener 'kilos de más'.",
+            text: "You can be slim, at a normal weight and still notice a belly. This confuses many people because we associate a belly with being overweight. But the abdomen can stick out for several different reasons, and not all of them have to do with carrying 'extra kilos'.",
           },
           {
             type: "list",
             items: [
-              "Grasa visceral: la que se acumula alrededor de los órganos.",
-              "Hinchazón digestiva: gases, retención, intolerancias o tránsito lento.",
-              "Postura: una pelvis adelantada hace que la barriga parezca mayor.",
-              "Pérdida de tono abdominal: poca actividad de la musculatura del core.",
+              "Visceral fat: the fat that accumulates around the organs.",
+              "Digestive bloating: gas, fluid retention, intolerances or slow transit.",
+              "Posture: a forward-tilted pelvis makes the belly look bigger.",
+              "Loss of abdominal tone: little activity in the core muscles.",
             ],
           },
         ],
       },
       {
-        h2: "Por qué la grasa visceral importa tanto",
+        h2: "Why visceral fat matters so much",
         blocks: [
           {
             type: "p",
-            text: "La grasa visceral no es solo estética. Es metabólicamente activa y libera sustancias que aumentan la inflamación, la resistencia a la insulina y el riesgo cardiovascular. Por eso una persona 'delgada por fuera' pero con mucha grasa visceral puede tener más riesgo que alguien con sobrepeso pero con grasa repartida.",
+            text: "Visceral fat isn't just cosmetic. It's metabolically active and releases substances that increase inflammation, insulin resistance and cardiovascular risk. That's why someone 'slim on the outside' but with a lot of visceral fat can be at higher risk than someone who is overweight but with evenly distributed fat.",
           },
           {
             type: "stat",
-            value: "> 94 cm (hombres) / > 80 cm (mujeres)",
-            label: "perímetro de cintura a partir del cual aumenta el riesgo cardiometabólico",
+            value: "> 94 cm (men) / > 80 cm (women)",
+            label: "waist circumference above which cardiometabolic risk increases",
           },
         ],
       },
       {
-        h2: "Cómo saber qué tipo de barriga tienes",
+        h2: "How to know what kind of belly you have",
         blocks: [
           {
             type: "list",
             items: [
-              "Mídete la cintura con una cinta a la altura del ombligo, sin apretar.",
-              "Observa si la barriga cambia a lo largo del día (sugiere hinchazón).",
-              "Fíjate si es firme y constante (más típico de grasa visceral).",
-              "Valora con un médico una analítica de glucosa, insulina y perfil lipídico.",
+              "Measure your waist with a tape at navel height, without pulling tight.",
+              "Notice whether the belly changes throughout the day (suggests bloating).",
+              "Check whether it's firm and constant (more typical of visceral fat).",
+              "Discuss with a doctor a blood test for glucose, insulin and lipid profile.",
             ],
           },
           {
             type: "quote",
-            text: "El peso puede ser normal y la barriga, una señal de alerta. La cintura cuenta una historia que la báscula no ve.",
+            text: "Your weight can be normal while the belly is a warning sign. The waist tells a story the scale can't see.",
           },
         ],
       },
       {
-        h2: "Qué hacer",
+        h2: "What to do",
         blocks: [
           {
             type: "list",
             items: [
-              "Reduce el alcohol y los ultraprocesados, muy ligados a la grasa visceral.",
-              "Duerme bien y controla el estrés: el cortisol acumula grasa abdominal.",
-              "Haz fuerza y trabaja el core; el ejercicio reduce grasa visceral.",
-              "Si hay resistencia a la insulina, trátala con apoyo médico.",
+              "Cut down on alcohol and ultra-processed foods, closely linked to visceral fat.",
+              "Sleep well and manage stress: cortisol accumulates abdominal fat.",
+              "Do strength training and work your core; exercise reduces visceral fat.",
+              "If there's insulin resistance, treat it with medical support.",
             ],
           },
           {
             type: "p",
-            text: "En DoctorLife valoramos tu salud metabólica más allá del peso. Si tu barriga responde a grasa visceral o a un problema de insulina, lo detectamos y lo abordamos.",
+            text: "At DoctorLife we assess your metabolic health beyond your weight. If your belly is down to visceral fat or an insulin problem, we detect it and address it.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Se puede tener barriga estando delgado?",
+        question: "Can you have a belly while being slim?",
         answer:
-          "Sí. Puede deberse a grasa visceral (alrededor de los órganos), a hinchazón digestiva o a la postura. La grasa visceral es relevante para la salud aunque el peso sea normal.",
+          "Yes. It can be due to visceral fat (around the organs), digestive bloating or posture. Visceral fat is relevant to health even if your weight is normal.",
       },
       {
-        question: "¿La grasa visceral es peligrosa?",
+        question: "Is visceral fat dangerous?",
         answer:
-          "Sí, es la grasa más asociada a riesgo cardiovascular, resistencia a la insulina e inflamación. Por eso importa más el perímetro de cintura que el peso aislado.",
+          "Yes, it's the fat most associated with cardiovascular risk, insulin resistance and inflammation. That's why waist circumference matters more than weight alone.",
       },
       {
-        question: "¿Cómo sé si mi barriga es grasa o hinchazón?",
+        question: "How do I know if my belly is fat or bloating?",
         answer:
-          "La hinchazón suele variar a lo largo del día y empeora tras comer. La grasa visceral es más constante y firme. Una valoración médica ayuda a diferenciarlas y a medir el riesgo.",
+          "Bloating usually varies throughout the day and worsens after eating. Visceral fat is more constant and firm. A medical assessment helps tell them apart and measure the risk.",
       },
       {
-        question: "¿Cómo se reduce la grasa abdominal visceral?",
+        question: "How do you reduce visceral abdominal fat?",
         answer:
-          "Con menos alcohol y ultraprocesados, buen sueño, control del estrés y ejercicio de fuerza. Si hay resistencia a la insulina, tratarla con apoyo m��dico acelera los resultados.",
+          "With less alcohol and ultra-processed food, good sleep, stress management and strength training. If there's insulin resistance, treating it with medical support speeds up results.",
       },
     ],
     sources: [S.who, S.nice, S.easo],
@@ -623,110 +623,110 @@ export const articles: Article[] = [
     reviewerSlug: "laura-mendez",
     datePublished: "2026-02-15",
     dateModified: "2026-06-16",
-    relatedSlugs: ["como-quitar-la-grasa-de-la-barriga-que-no-se-va", "por-que-no-consigo-adelgazar", "por-que-engordo-si-como-poco"],
+    relatedSlugs: ["how-to-lose-stubborn-belly-fat", "why-cant-i-lose-weight", "why-do-i-gain-weight-if-i-eat-little"],
     cover: "/products/maren-pen.png",
-    coverAlt: "Persona delgada midiéndose el perímetro de la cintura",
+    coverAlt: "Slim person measuring their waist circumference",
     readMins: 7,
   },
 
   {
-    slug: "ozempic-merece-la-pena",
-    title: "¿Ozempic merece la pena?",
-    h1: "¿Ozempic merece la pena para adelgazar? Análisis honesto",
-    metaTitle: "¿Ozempic Merece la Pena para Adelgazar? Pros, Contras y Precio | DoctorLife",
+    slug: "is-ozempic-worth-it",
+    title: "Is Ozempic worth it?",
+    h1: "Is Ozempic worth it for weight loss? An honest analysis",
+    metaTitle: "Is Ozempic Worth It for Weight Loss? Pros, Cons and Price | DoctorLife",
     metaDescription:
-      "¿Vale la pena Ozempic para perder peso? Eficacia real, efectos secundarios, precio, efecto rebote y para quién tiene sentido. Análisis médico sin exageraciones.",
-    category: "Tratamientos",
+      "Is Ozempic worth it for losing weight? Real effectiveness, side effects, price, rebound effect and who it makes sense for. A medical analysis without the hype.",
+    category: "Treatments",
     answerFirst:
-      "Ozempic (semaglutida) puede merecer la pena para perder peso si tienes sobrepeso u obesidad con riesgo para la salud y lo usas con supervisión médica. Es muy eficaz reduciendo el apetito, pero requiere receta, tiene efectos secundarios digestivos y, si lo dejas sin estrategia, el peso vuelve. No es un atajo mágico: es un tratamiento médico.",
+      "Ozempic (semaglutide) can be worth it for weight loss if you have overweight or obesity with a health risk and use it under medical supervision. It's very effective at reducing appetite, but it requires a prescription, has digestive side effects and, if you stop it without a strategy, the weight comes back. It's not a magic shortcut: it's a medical treatment.",
     keyTakeaways: [
-      "Ozempic (semaglutida) está aprobado para diabetes; para peso se usa la semaglutida (Wegovy).",
-      "Es muy eficaz reduciendo el apetito y puede lograr pérdidas notables de peso.",
-      "Requiere receta y seguimiento médico: no debe comprarse sin control.",
-      "Los efectos secundarios suelen ser digestivos, leves y transitorios.",
-      "Si se deja sin un plan de mantenimiento, es habitual recuperar peso.",
+      "Ozempic (semaglutide) is approved for diabetes; for weight, semaglutide is used as Wegovy.",
+      "It's very effective at reducing appetite and can achieve notable weight loss.",
+      "It requires a prescription and medical follow-up: it shouldn't be bought without oversight.",
+      "Side effects are usually digestive, mild and temporary.",
+      "If stopped without a maintenance plan, regaining weight is common.",
     ],
     body: [
       {
-        h2: "Qué es Ozempic y para qué sirve",
+        h2: "What Ozempic is and what it's for",
         blocks: [
           {
             type: "p",
-            text: "Ozempic es el nombre comercial de la semaglutida, un análogo del GLP‑1. Su indicación oficial es la diabetes tipo 2, pero la misma molécula a dosis mayores (Wegovy) está aprobada para el tratamiento del sobrepeso y la obesidad. Actúa reduciendo el apetito y enlenteciendo el vaciado del estómago, así que comes menos sin pasar hambre constante.",
+            text: "Ozempic is the brand name for semaglutide, a GLP‑1 analogue. Its official indication is type 2 diabetes, but the same molecule at higher doses (Wegovy) is approved for treating overweight and obesity. It works by reducing appetite and slowing stomach emptying, so you eat less without feeling constantly hungry.",
           },
           {
             type: "p",
-            text: "Por eso se ha vuelto tan popular: por primera vez hay fármacos realmente eficaces para perder peso. Pero eficaz no significa inofensivo ni adecuado para todo el mundo.",
+            text: "That's why it's become so popular: for the first time there are genuinely effective medicines for losing weight. But effective doesn't mean harmless or suitable for everyone.",
           },
         ],
       },
       {
-        h2: "Ventajas reales",
+        h2: "Real advantages",
         blocks: [
           {
             type: "list",
             items: [
-              "Reduce el apetito y los pensamientos constantes sobre comida.",
-              "Permite pérdidas de peso significativas en muchos pacientes.",
-              "Mejora marcadores metabólicos como la glucosa.",
-              "Se administra una vez por semana con una pluma sencilla.",
+              "Reduces appetite and the constant thoughts about food.",
+              "Allows significant weight loss in many patients.",
+              "Improves metabolic markers such as glucose.",
+              "Given once a week with a simple pen.",
             ],
           },
         ],
       },
       {
-        h2: "Inconvenientes que debes conocer",
+        h2: "Drawbacks you should know about",
         blocks: [
           {
             type: "list",
             items: [
-              "Efectos secundarios digestivos: náuseas, digestiones lentas, estreñimiento.",
-              "Precio: el tratamiento es privado en la mayoría de casos.",
-              "Necesita receta y seguimiento; no es seguro comprarlo por tu cuenta.",
-              "Efecto rebote si se deja sin estrategia de mantenimiento.",
-              "No sustituye unos buenos hábitos, los complementa.",
+              "Digestive side effects: nausea, slow digestion, constipation.",
+              "Price: treatment is private in most cases.",
+              "Needs a prescription and follow-up; it isn't safe to buy on your own.",
+              "Rebound effect if stopped without a maintenance strategy.",
+              "It doesn't replace good habits, it complements them.",
             ],
           },
           {
             type: "quote",
-            text: "La pregunta correcta no es si Ozempic funciona, sino si es adecuado para ti y si vas a tener un buen seguimiento médico.",
+            text: "The right question isn't whether Ozempic works, but whether it's right for you and whether you'll have good medical follow-up.",
           },
         ],
       },
       {
-        h2: "¿Para quién merece la pena?",
+        h2: "Who is it worth it for?",
         blocks: [
           {
             type: "p",
-            text: "Tiene más sentido en personas con obesidad o sobrepeso con problemas de salud asociados (prediabetes, hipertensión, apnea) que no han logrado resultados con cambios de hábitos. No es para perder dos o tres kilos por estética ni para usarlo sin control.",
+            text: "It makes most sense for people with obesity or overweight and associated health problems (prediabetes, high blood pressure, sleep apnoea) who haven't achieved results with lifestyle changes. It isn't for losing two or three kilos for aesthetics, nor for using without oversight.",
           },
           {
             type: "p",
-            text: "En DoctorLife valoramos tu caso de forma honesta: si un GLP‑1 te conviene, lo prescribimos y lo seguimos de cerca; si no, te lo decimos. Lo importante no es vender un fármaco, sino que pierdas peso de forma segura y sostenible.",
+            text: "At DoctorLife we assess your case honestly: if a GLP‑1 suits you, we prescribe it and follow it closely; if not, we tell you. The point isn't to sell a medicine, but for you to lose weight safely and sustainably.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Ozempic merece la pena para adelgazar?",
+        question: "Is Ozempic worth it for weight loss?",
         answer:
-          "Puede merecer la pena si tienes sobrepeso u obesidad con riesgo para la salud y lo usas con supervisión médica. Es muy eficaz reduciendo el apetito, pero requiere receta, tiene efectos secundarios y exige seguimiento para no recuperar peso.",
+          "It can be worth it if you have overweight or obesity with a health risk and use it under medical supervision. It's very effective at reducing appetite, but it requires a prescription, has side effects and needs follow-up to avoid regaining weight.",
       },
       {
-        question: "¿Se recupera el peso al dejar Ozempic?",
+        question: "Do you regain weight after stopping Ozempic?",
         answer:
-          "Es habitual recuperar parte del peso si se deja sin una estrategia de mantenimiento. Por eso el tratamiento debe incluir un plan de hábitos y, a veces, una retirada progresiva supervisada.",
+          "Regaining some weight is common if you stop without a maintenance strategy. That's why treatment should include a habits plan and, sometimes, a supervised gradual withdrawal.",
       },
       {
-        question: "¿Puedo comprar Ozempic sin receta?",
+        question: "Can I buy Ozempic without a prescription?",
         answer:
-          "No. Es un medicamento de prescripción y comprarlo sin receta es ilegal y peligroso. Necesita valoración médica previa y seguimiento de la dosis y los efectos.",
+          "No. It's a prescription-only medicine and buying it without a prescription is illegal and dangerous. It needs a prior medical assessment and monitoring of the dose and effects.",
       },
       {
-        question: "¿Qué efectos secundarios tiene?",
+        question: "What side effects does it have?",
         answer:
-          "Los más frecuentes son digestivos: náuseas, digestiones lentas y estreñimiento. Suelen ser leves y transitorios, y se gestionan subiendo la dosis poco a poco bajo control médico.",
+          "The most common are digestive: nausea, slow digestion and constipation. They're usually mild and temporary, and are managed by increasing the dose gradually under medical supervision.",
       },
     ],
     sources: [S.mhra, S.easo, S.nice],
@@ -734,117 +734,117 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-03-01",
     dateModified: "2026-06-16",
-    relatedSlugs: ["retatrutida-vs-ozempic-mounjaro", "por-que-pierdo-peso-y-luego-lo-recupero", "retatrutida-que-es"],
+    relatedSlugs: ["retatrutide-vs-ozempic-mounjaro", "why-i-lose-weight-then-regain-it", "what-is-retatrutide"],
     cover: "/products/maren-lineup.png",
-    coverAlt: "Pluma de semaglutida sobre una superficie clara",
+    coverAlt: "Semaglutide pen on a light surface",
     readMins: 8,
   },
 
   {
-    slug: "cuanto-se-tarda-en-notar-que-bajas-de-peso",
-    title: "Cuánto se tarda en notar que bajas de peso",
-    h1: "¿Cuánto se tarda en notar que bajas de peso?",
-    metaTitle: "Cuánto se Tarda en Notar que Bajas de Peso: Plazos Reales | DoctorLife",
+    slug: "how-long-to-notice-weight-loss",
+    title: "How long it takes to notice weight loss",
+    h1: "How long does it take to notice weight loss?",
+    metaTitle: "How Long It Takes to Notice Weight Loss: Realistic Timeframes | DoctorLife",
     metaDescription:
-      "Cuánto tardas en notar que adelgazas: en la báscula, en la ropa y en el espejo. Plazos realistas semana a semana y qué acelera o frena los resultados.",
-    category: "Resultados",
+      "How long it takes to notice weight loss: on the scale, in your clothes and in the mirror. Realistic week-by-week timeframes and what speeds up or slows results.",
+    category: "Results",
     answerFirst:
-      "Los primeros cambios en la báscula suelen notarse en 1–2 semanas, sobre todo por pérdida de agua. Notar la diferencia en la ropa lleva de 3 a 4 semanas, y verla con claridad en el espejo y que lo noten los demás, entre 6 y 12 semanas. El ritmo depende de tu punto de partida, tu plan y tu fisiología.",
+      "The first changes on the scale are usually noticed in 1–2 weeks, mostly from water loss. Noticing a difference in your clothes takes 3 to 4 weeks, and seeing it clearly in the mirror and having others notice takes between 6 and 12 weeks. The pace depends on your starting point, your plan and your physiology.",
     keyTakeaways: [
-      "En 1–2 semanas se nota el primer cambio en la báscula (en gran parte, agua).",
-      "La ropa empieza a quedar distinta hacia las 3–4 semanas.",
-      "Los cambios visibles en el espejo llegan entre la semana 6 y la 12.",
-      "Cuanto mayor es el peso de partida, antes se notan los primeros resultados.",
-      "Un ritmo lento y constante es señal de que estás perdiendo grasa, no músculo.",
+      "In 1–2 weeks you notice the first change on the scale (largely water).",
+      "Clothes start to feel different around 3–4 weeks.",
+      "Visible changes in the mirror come between weeks 6 and 12.",
+      "The higher your starting weight, the sooner the first results show.",
+      "A slow, steady pace is a sign you're losing fat, not muscle.",
     ],
     body: [
       {
-        h2: "Lo que pasa semana a semana",
+        h2: "What happens week by week",
         blocks: [
           {
             type: "table",
-            caption: "Plazos orientativos para notar la pérdida de peso",
-            head: ["Plazo", "Qué sueles notar"],
+            caption: "Rough timeframes for noticing weight loss",
+            head: ["Timeframe", "What you usually notice"],
             rows: [
-              ["Semana 1–2", "Bajada inicial en la báscula (sobre todo agua), menos hinchazón"],
-              ["Semana 3–4", "La ropa empieza a quedar más holgada"],
-              ["Semana 6–8", "Cambios visibles en el espejo, más energía"],
-              ["Semana 10–12", "Lo notan los demás; pérdida de grasa consolidada"],
+              ["Week 1–2", "Initial drop on the scale (mostly water), less bloating"],
+              ["Week 3–4", "Clothes start to feel looser"],
+              ["Week 6–8", "Visible changes in the mirror, more energy"],
+              ["Week 10–12", "Others notice; fat loss consolidated"],
             ],
           },
           {
             type: "p",
-            text: "Son orientaciones, no una regla exacta. Cada cuerpo tiene su ritmo y su orden: hay quien adelgaza primero de cara y barriga, y quien tarda más en notarlo donde le gustaría.",
+            text: "These are guides, not an exact rule. Every body has its own pace and order: some lose weight first from the face and belly, and some take longer to notice it where they'd like.",
           },
         ],
       },
       {
-        h2: "De qué depende que sea más rápido o más lento",
+        h2: "What determines whether it's faster or slower",
         blocks: [
           {
             type: "list",
             items: [
-              "Tu peso de partida: con más peso, los primeros cambios llegan antes.",
-              "El déficit calórico real y la calidad de tu alimentación.",
-              "El sueño y el estrés, que influyen en las hormonas del apetito.",
-              "Tu fisiología: tiroides, insulina, edad y genética.",
-              "Si usas un tratamiento médico supervisado, el ritmo puede ser mayor.",
+              "Your starting weight: with more weight, the first changes come sooner.",
+              "Your real calorie deficit and the quality of your diet.",
+              "Sleep and stress, which affect appetite hormones.",
+              "Your physiology: thyroid, insulin, age and genetics.",
+              "If you use a supervised medical treatment, the pace can be faster.",
             ],
           },
         ],
       },
       {
-        h2: "Por qué no deberías ir más rápido",
+        h2: "Why you shouldn't go faster",
         blocks: [
           {
             type: "p",
-            text: "Es tentador querer resultados en una semana, pero perder peso demasiado rápido suele significar perder músculo y agua, no grasa. Y el músculo es justo lo que mantiene tu metabolismo activo. Un ritmo de 0,5–1 % del peso por semana es lo que mejor se sostiene y lo que evita el efecto rebote.",
+            text: "It's tempting to want results in a week, but losing weight too fast usually means losing muscle and water, not fat. And muscle is exactly what keeps your metabolism active. A pace of 0.5–1% of body weight per week is what lasts best and avoids the rebound effect.",
           },
           {
             type: "quote",
-            text: "Lo rápido se recupera rápido. Lo que se pierde despacio y con cabeza es lo que se queda.",
+            text: "What's lost fast comes back fast. What's lost slowly and sensibly is what stays.",
           },
         ],
       },
       {
-        h2: "Cómo no perder la motivación",
+        h2: "How not to lose motivation",
         blocks: [
           {
             type: "list",
             items: [
-              "Mide más allá de la báscula: fotos, medidas y cómo te queda la ropa.",
-              "Fíjate en señales de energía, sueño y digestión.",
-              "Celebra el proceso, no solo el número final.",
-              "Apóyate en un seguimiento profesional para ajustar a tiempo.",
+              "Measure beyond the scale: photos, measurements and how your clothes fit.",
+              "Notice signs of energy, sleep and digestion.",
+              "Celebrate the process, not just the final number.",
+              "Lean on professional follow-up to adjust in time.",
             ],
           },
           {
             type: "p",
-            text: "En DoctorLife te ayudamos a leer bien tu progreso para que no abandones justo cuando estás avanzando. La valoración inicial es gratuita.",
+            text: "At DoctorLife we help you read your progress properly so you don't give up just when you're making headway. The initial assessment is free.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Cuánto se tarda en notar que bajas de peso?",
+        question: "How long does it take to notice weight loss?",
         answer:
-          "El primer cambio en la báscula aparece en 1–2 semanas (sobre todo agua), la ropa cambia hacia las 3–4 semanas y los cambios visibles en el espejo, entre la semana 6 y la 12. Depende de tu punto de partida y tu plan.",
+          "The first change on the scale appears in 1–2 weeks (mostly water), clothes change around 3–4 weeks and visible changes in the mirror between weeks 6 and 12. It depends on your starting point and your plan.",
       },
       {
-        question: "¿Por qué tardo más que otras personas?",
+        question: "Why does it take me longer than other people?",
         answer:
-          "Influyen el peso de partida, las hormonas (tiroides, insulina), el sueño, el estrés y la genética. No compararse es clave: cada cuerpo responde a su ritmo.",
+          "Starting weight, hormones (thyroid, insulin), sleep, stress and genetics all play a role. Not comparing yourself is key: every body responds at its own pace.",
       },
       {
-        question: "¿En qué parte del cuerpo se nota antes?",
+        question: "Where on the body do you notice it first?",
         answer:
-          "Varía según la persona. Muchas notan primero la cara y la barriga, pero no se puede elegir dónde se pierde grasa: depende de tu genética.",
+          "It varies from person to person. Many notice the face and belly first, but you can't choose where you lose fat: it depends on your genetics.",
       },
       {
-        question: "¿Adelgazar rápido es mejor?",
+        question: "Is losing weight quickly better?",
         answer:
-          "No. Perder peso muy rápido suele implicar pérdida de músculo y agua y favorece el efecto rebote. Un ritmo de 0,5–1 % del peso por semana es más sano y duradero.",
+          "No. Losing weight very fast usually involves losing muscle and water and encourages the rebound effect. A pace of 0.5–1% of body weight per week is healthier and longer-lasting.",
       },
     ],
     sources: [S.who, S.nice, S.nhs],
@@ -852,110 +852,110 @@ export const articles: Article[] = [
     reviewerSlug: "laura-mendez",
     datePublished: "2026-03-12",
     dateModified: "2026-06-16",
-    relatedSlugs: ["llevo-una-semana-a-dieta-y-no-bajo-de-peso", "por-que-no-consigo-adelgazar", "por-que-pierdo-peso-y-luego-lo-recupero"],
+    relatedSlugs: ["ive-been-on-a-diet-for-a-week-and-not-losing-weight", "why-cant-i-lose-weight", "why-i-lose-weight-then-regain-it"],
     cover: "/hero/woman.png",
-    coverAlt: "Persona comprobando cómo le queda la ropa más holgada",
+    coverAlt: "Person checking how their looser clothes fit",
     readMins: 6,
   },
 
   {
-    slug: "como-quitar-la-grasa-de-la-barriga-que-no-se-va",
-    title: "Cómo quitar la grasa de la barriga que no se va",
-    h1: "Cómo quitar la grasa de la barriga que no se va",
-    metaTitle: "Cómo Quitar la Grasa de la Barriga que No se Va: Guía Médica | DoctorLife",
+    slug: "how-to-lose-stubborn-belly-fat",
+    title: "How to lose stubborn belly fat that won't go away",
+    h1: "How to lose stubborn belly fat that won't go away",
+    metaTitle: "How to Lose Stubborn Belly Fat That Won't Go Away: A Medical Guide | DoctorLife",
     metaDescription:
-      "La grasa de la barriga que no se va tiene causas concretas: insulina, cortisol, sueño y hormonas. Qué funciona de verdad y qué es un mito para perder barriga.",
-    category: "Salud metabólica",
+      "Stubborn belly fat has specific causes: insulin, cortisol, sleep and hormones. What really works and what's a myth for losing belly fat.",
+    category: "Metabolic health",
     answerFirst:
-      "La grasa de la barriga que no se va suele estar ligada a la resistencia a la insulina, al cortisol alto por estrés o falta de sueño y a factores hormonales. No se elimina con abdominales ni con productos milagro: se reduce mejorando el sueño, el estrés, la alimentación, el ejercicio de fuerza y, si hace falta, con tratamiento médico.",
+      "Stubborn belly fat that won't go away is usually linked to insulin resistance, high cortisol from stress or lack of sleep, and hormonal factors. It isn't removed with sit-ups or miracle products: it's reduced by improving sleep, stress, diet, strength training and, if needed, medical treatment.",
     keyTakeaways: [
-      "No existe la pérdida de grasa localizada: los abdominales no queman la barriga.",
-      "La resistencia a la insulina y el cortisol alto favorecen la grasa abdominal.",
-      "Dormir poco y el estrés crónico son causas muy frecuentes y poco tenidas en cuenta.",
-      "El ejercicio de fuerza y la proteína ayudan más que el cardio infinito.",
-      "Si hay un problema metabólico, tratarlo es lo que desbloquea la barriga.",
+      "Spot fat reduction doesn't exist: sit-ups don't burn belly fat.",
+      "Insulin resistance and high cortisol promote abdominal fat.",
+      "Poor sleep and chronic stress are very common and often overlooked causes.",
+      "Strength training and protein help more than endless cardio.",
+      "If there's a metabolic problem, treating it is what unlocks the belly.",
     ],
     body: [
       {
-        h2: "Por qué esa barriga no se va",
+        h2: "Why that belly won't go away",
         blocks: [
           {
             type: "p",
-            text: "La grasa abdominal que se resiste rara vez es 'culpa' de no hacer suficientes abdominales. Suele tener un origen metabólico y hormonal. Cuando hay resistencia a la insulina, el cuerpo almacena grasa preferentemente en el abdomen. Y cuando el cortisol está alto por estrés o por dormir poco, ocurre lo mismo.",
+            text: "Stubborn abdominal fat is rarely the 'fault' of not doing enough sit-ups. It usually has a metabolic and hormonal origin. When there's insulin resistance, the body preferentially stores fat around the abdomen. And when cortisol is high from stress or poor sleep, the same thing happens.",
           },
           {
             type: "p",
-            text: "Por eso puedes estar haciendo ejercicio y comiendo 'bien' y aun así no ver cambios en la tripa: estás trabajando el síntoma, no la causa.",
+            text: "That's why you can be exercising and eating 'well' and still see no changes in your tummy: you're working on the symptom, not the cause.",
           },
         ],
       },
       {
-        h2: "Mitos que no funcionan",
+        h2: "Myths that don't work",
         blocks: [
           {
             type: "list",
             items: [
-              "Hacer mil abdominales: tonifican el músculo, pero no queman la grasa de encima.",
-              "Fajas, cremas y 'quemagrasas': sin evidencia para reducir grasa real.",
-              "El cardio en ayunas como solución mágica: ayuda poco si todo lo demás falla.",
-              "Eliminar un solo alimento 'milagro': la grasa abdominal es multifactorial.",
+              "Doing a thousand sit-ups: they tone the muscle, but don't burn the fat on top.",
+              "Waist trainers, creams and 'fat burners': no evidence for reducing real fat.",
+              "Fasted cardio as a magic solution: it helps little if everything else fails.",
+              "Cutting out a single 'miracle' food: abdominal fat is multifactorial.",
             ],
           },
           {
             type: "quote",
-            text: "La grasa localizada no se elige. No puedes quemar barriga haciendo barriga: el cuerpo decide de dónde tira.",
+            text: "You don't get to choose where fat goes. You can't burn belly fat by working the belly: the body decides where it draws from.",
           },
         ],
       },
       {
-        h2: "Lo que sí funciona",
+        h2: "What does work",
         blocks: [
           {
             type: "list",
             items: [
-              "Dormir 7–8 horas: bajar el cortisol cambia mucho la grasa abdominal.",
-              "Gestionar el estrés crónico (es una causa real, no una excusa).",
-              "Comer más proteína y reducir ultraprocesados y alcohol.",
-              "Entrenar fuerza: más músculo mejora la sensibilidad a la insulina.",
-              "Tratar la resistencia a la insulina si existe, con apoyo médico.",
+              "Sleep 7–8 hours: lowering cortisol changes abdominal fat a lot.",
+              "Manage chronic stress (it's a real cause, not an excuse).",
+              "Eat more protein and reduce ultra-processed foods and alcohol.",
+              "Train strength: more muscle improves insulin sensitivity.",
+              "Treat insulin resistance if present, with medical support.",
             ],
           },
         ],
       },
       {
-        h2: "Cuándo conviene una valoración médica",
+        h2: "When a medical assessment is worthwhile",
         blocks: [
           {
             type: "p",
-            text: "Si has hecho todo lo razonable y la barriga no cede, no es momento de castigarte más, sino de mirar dentro. Una analítica de glucosa e insulina y una valoración pueden revelar una resistencia a la insulina o un problema hormonal que, una vez tratado, hace que por fin se mueva.",
+            text: "If you've done everything reasonable and the belly won't budge, it's not time to punish yourself more, but to look inside. A glucose and insulin blood test and an assessment can reveal insulin resistance or a hormonal problem that, once treated, finally gets things moving.",
           },
           {
             type: "p",
-            text: "En DoctorLife valoramos tu salud metabólica gratis y, si lo necesitas, diseñamos un plan que ataque la causa real de esa barriga que no se va.",
+            text: "At DoctorLife we assess your metabolic health for free and, if you need it, design a plan that tackles the real cause of that belly fat that won't go away.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Cómo se quita la grasa de la barriga que no se va?",
+        question: "How do you get rid of belly fat that won't go away?",
         answer:
-          "Mejorando el sueño y el estrés (para bajar el cortisol), comiendo más proteína y menos ultraprocesados, entrenando fuerza y tratando la resistencia a la insulina si existe. No hay pérdida localizada: los abdominales no bastan.",
+          "By improving sleep and stress (to lower cortisol), eating more protein and fewer ultra-processed foods, training strength and treating insulin resistance if present. There's no spot reduction: sit-ups aren't enough.",
       },
       {
-        question: "¿Los abdominales queman la grasa de la barriga?",
+        question: "Do sit-ups burn belly fat?",
         answer:
-          "No. Los abdominales fortalecen el músculo, pero no eliminan la grasa que tienen encima. La grasa se pierde de forma global, no en la zona que trabajas.",
+          "No. Sit-ups strengthen the muscle, but don't remove the fat on top of it. Fat is lost overall, not in the area you work.",
       },
       {
-        question: "¿Por qué tengo barriga si hago ejercicio?",
+        question: "Why do I have a belly if I exercise?",
         answer:
-          "Porque la grasa abdominal suele ser metabólica: resistencia a la insulina, cortisol alto por estrés o falta de sueño. Si no tratas la causa, el ejercicio solo no la elimina.",
+          "Because abdominal fat is usually metabolic: insulin resistance, high cortisol from stress or lack of sleep. If you don't treat the cause, exercise alone won't remove it.",
       },
       {
-        question: "¿El estrés engorda la barriga?",
+        question: "Does stress increase belly fat?",
         answer:
-          "Sí. El estrés crónico eleva el cortisol, que favorece acumular grasa abdominal y aumenta el apetito. Gestionarlo es parte del tratamiento, no un detalle menor.",
+          "Yes. Chronic stress raises cortisol, which promotes storing abdominal fat and increases appetite. Managing it is part of treatment, not a minor detail.",
       },
     ],
     sources: [S.easo, S.who, S.nice],
@@ -963,110 +963,110 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-03-25",
     dateModified: "2026-06-16",
-    relatedSlugs: ["tengo-barriga-pero-no-estoy-gordo", "por-que-engordo-si-como-poco", "por-que-no-consigo-adelgazar"],
+    relatedSlugs: ["i-have-belly-fat-but-im-not-overweight", "why-do-i-gain-weight-if-i-eat-little", "why-cant-i-lose-weight"],
     cover: "/products/maren-pen.png",
-    coverAlt: "Persona midiéndose la barriga frente al espejo",
+    coverAlt: "Person measuring their belly in front of the mirror",
     readMins: 7,
   },
 
   {
-    slug: "por-que-pierdo-peso-y-luego-lo-recupero",
-    title: "Por qué pierdo peso y luego lo recupero",
-    h1: "Por qué pierdo peso y luego lo recupero (el efecto rebote)",
-    metaTitle: "Por Qué Pierdo Peso y Luego lo Recupero: El Efecto Rebote | DoctorLife",
+    slug: "why-i-lose-weight-then-regain-it",
+    title: "Why I lose weight then regain it",
+    h1: "Why I lose weight then regain it (the rebound effect)",
+    metaTitle: "Why I Lose Weight Then Regain It: The Rebound Effect | DoctorLife",
     metaDescription:
-      "Adelgazas y vuelves a engordar una y otra vez. Te explicamos el efecto rebote, por qué tu cuerpo defiende su peso y cómo perder peso sin recuperarlo.",
-    category: "Mantenimiento",
+      "You lose weight and gain it back time and again. We explain the rebound effect, why your body defends its weight and how to lose weight without regaining it.",
+    category: "Maintenance",
     answerFirst:
-      "Pierdes peso y luego lo recuperas por el efecto rebote: tras una dieta restrictiva, tu cuerpo baja el gasto energético y aumenta el hambre para volver a su peso anterior. Es una respuesta biológica de supervivencia, no un fracaso personal. Se evita perdiendo peso despacio, manteniendo músculo y con una fase de mantenimiento supervisada.",
+      "You lose weight then regain it because of the rebound effect: after a restrictive diet, your body lowers energy expenditure and increases hunger to return to its previous weight. It's a biological survival response, not a personal failure. It's avoided by losing weight slowly, maintaining muscle and with a supervised maintenance phase.",
     keyTakeaways: [
-      "El efecto rebote es una respuesta biológica, no una falta de disciplina.",
-      "Las dietas restrictivas bajan el metabolismo y disparan el hambre al terminar.",
-      "Perder músculo durante la dieta facilita recuperar la grasa después.",
-      "El mantenimiento es una fase del tratamiento, no el 'final' de la dieta.",
-      "Un plan supervisado y un ritmo lento son lo que evita recuperar el peso.",
+      "The rebound effect is a biological response, not a lack of discipline.",
+      "Restrictive diets lower the metabolism and spike hunger once they end.",
+      "Losing muscle during a diet makes it easier to regain fat afterwards.",
+      "Maintenance is a phase of treatment, not the 'end' of the diet.",
+      "A supervised plan and a slow pace are what avoid regaining the weight.",
     ],
     body: [
       {
-        h2: "Qué es el efecto rebote",
+        h2: "What the rebound effect is",
         blocks: [
           {
             type: "p",
-            text: "Tu cuerpo tiene un peso que tiende a defender. Cuando adelgazas rápido con una dieta dura, interpreta la pérdida como una amenaza: reduce el gasto en reposo, aumenta las hormonas del hambre (grelina) y baja las de la saciedad (leptina). El resultado es que, al terminar la dieta, tienes más hambre y quemas menos. La báscula vuelve a subir casi sin querer.",
+            text: "Your body has a weight it tends to defend. When you lose weight fast on a harsh diet, it interprets the loss as a threat: it reduces resting expenditure, increases hunger hormones (ghrelin) and lowers fullness hormones (leptin). The result is that, once the diet ends, you're hungrier and burn less. The scale creeps back up almost by itself.",
           },
           {
             type: "quote",
-            text: "El efecto rebote no es que falles tú: es que tu biología está haciendo exactamente lo que evolucionó para hacer.",
+            text: "The rebound effect isn't you failing: it's your biology doing exactly what it evolved to do.",
           },
         ],
       },
       {
-        h2: "Por qué las dietas estrictas casi garantizan recuperar el peso",
+        h2: "Why strict diets almost guarantee regaining the weight",
         blocks: [
           {
             type: "list",
             items: [
-              "Son insostenibles: nadie come así toda la vida.",
-              "Hacen perder músculo, que es el motor del metabolismo.",
-              "Generan ansiedad por la comida y atracones posteriores.",
-              "No enseñan hábitos, así que al dejarlas vuelves al punto de partida.",
+              "They're unsustainable: no one eats like that for life.",
+              "They cause muscle loss, which is the engine of the metabolism.",
+              "They create food anxiety and later binges.",
+              "They don't teach habits, so when you stop them you return to square one.",
             ],
           },
           {
             type: "p",
-            text: "Por eso el patrón se repite: pierdes 8 kilos, recuperas 10; pierdes 10, recuperas 12. Cada ciclo deja el metabolismo más adaptado y el siguiente intento, más difícil.",
+            text: "That's why the pattern repeats: you lose 8 kilos, regain 10; you lose 10, regain 12. Each cycle leaves the metabolism more adapted and the next attempt harder.",
           },
         ],
       },
       {
-        h2: "Cómo perder peso sin recuperarlo",
+        h2: "How to lose weight without regaining it",
         blocks: [
           {
             type: "list",
             items: [
-              "Pierde peso despacio (0,5–1 % por semana) para preservar músculo.",
-              "Come suficiente proteína y entrena fuerza durante el proceso.",
-              "Cuida el sueño y el estrés, que regulan el apetito.",
-              "Planifica una fase de mantenimiento, no un 'fin de la dieta'.",
-              "Apóyate en seguimiento médico para ajustar antes de recaer.",
+              "Lose weight slowly (0.5–1% per week) to preserve muscle.",
+              "Eat enough protein and train strength during the process.",
+              "Look after sleep and stress, which regulate appetite.",
+              "Plan a maintenance phase, not an 'end of the diet'.",
+              "Lean on medical follow-up to adjust before relapsing.",
             ],
           },
         ],
       },
       {
-        h2: "El papel del tratamiento médico",
+        h2: "The role of medical treatment",
         blocks: [
           {
             type: "p",
-            text: "En personas con obesidad, los análogos del GLP‑1 ayudan precisamente con el punto débil del mantenimiento: regulan el apetito y reducen las ganas de recuperar lo perdido. Pero deben usarse con un plan, y la retirada, cuando llega, debe ser progresiva y supervisada para no caer de nuevo en el rebote.",
+            text: "In people with obesity, GLP‑1 analogues help precisely with the weak point of maintenance: they regulate appetite and reduce the urge to regain what was lost. But they must be used with a plan, and withdrawal, when it comes, must be gradual and supervised so you don't fall back into the rebound.",
           },
           {
             type: "p",
-            text: "En DoctorLife no buscamos que adelgaces rápido, sino que no vuelvas a empezar de cero. Diseñamos el tratamiento pensando en el después. La primera valoración es gratuita.",
+            text: "At DoctorLife we don't aim for you to lose weight fast, but for you not to start from scratch again. We design treatment with the aftermath in mind. The first assessment is free.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Por qué recupero el peso que pierdo?",
+        question: "Why do I regain the weight I lose?",
         answer:
-          "Por el efecto rebote: tras una dieta restrictiva, tu cuerpo baja el gasto energético y aumenta el hambre para volver a su peso previo. Es biología de supervivencia. Se evita perdiendo peso despacio y con una fase de mantenimiento.",
+          "Because of the rebound effect: after a restrictive diet, your body lowers energy expenditure and increases hunger to return to its previous weight. It's survival biology. It's avoided by losing weight slowly and with a maintenance phase.",
       },
       {
-        question: "¿Qué es el efecto rebote?",
+        question: "What is the rebound effect?",
         answer:
-          "Es la recuperación del peso tras adelgazar, causada por la adaptación del metabolismo y el aumento del hambre. Cuanto más estricta es la dieta, mayor es el rebote posterior.",
+          "It's regaining weight after losing it, caused by the metabolism adapting and hunger increasing. The stricter the diet, the greater the subsequent rebound.",
       },
       {
-        question: "¿Cómo evito volver a engordar?",
+        question: "How do I avoid gaining weight again?",
         answer:
-          "Perdiendo peso despacio, manteniendo músculo con proteína y fuerza, cuidando sueño y estrés, y planificando una fase de mantenimiento supervisada en lugar de 'terminar' la dieta de golpe.",
+          "By losing weight slowly, maintaining muscle with protein and strength training, looking after sleep and stress, and planning a supervised maintenance phase instead of 'ending' the diet abruptly.",
       },
       {
-        question: "¿Se recupera el peso al dejar un tratamiento GLP‑1?",
+        question: "Do you regain weight after stopping a GLP‑1 treatment?",
         answer:
-          "Puede ocurrir si se retira sin estrategia. Por eso la retirada debe ser progresiva y acompañada de hábitos consolidados y seguimiento médico para mantener los resultados.",
+          "It can happen if withdrawn without a strategy. That's why withdrawal should be gradual and accompanied by established habits and medical follow-up to maintain the results.",
       },
     ],
     sources: [S.who, S.easo, S.nice, S.mhra],
@@ -1074,139 +1074,139 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-04-05",
     dateModified: "2026-06-16",
-    relatedSlugs: ["por-que-no-consigo-adelgazar", "ozempic-merece-la-pena", "cuanto-se-tarda-en-notar-que-bajas-de-peso"],
+    relatedSlugs: ["why-cant-i-lose-weight", "is-ozempic-worth-it", "how-long-to-notice-weight-loss"],
     cover: "/products/maren-oral.png",
-    coverAlt: "Gráfico de peso que sube y baja representando el efecto rebote",
+    coverAlt: "Weight chart going up and down representing the rebound effect",
     readMins: 8,
   },
 
-  /* ── Cluster Retatrutida (tema de alta demanda de búsqueda) ── */
+  /* ── Retatrutide cluster (high search-demand topic) ── */
   {
-    slug: "retatrutida-que-es",
-    title: "Qué es la retatrutida",
-    h1: "Retatrutida: qué es, para qué sirve y por qué todo el mundo habla de ella",
-    metaTitle: "Retatrutida: Qué Es, Para Qué Sirve y Resultados | DoctorLife",
+    slug: "what-is-retatrutide",
+    title: "What is retatrutide",
+    h1: "Retatrutide: what it is, what it's for and why everyone is talking about it",
+    metaTitle: "Retatrutide: What It Is, What It's For and Results | DoctorLife",
     metaDescription:
-      "Qué es la retatrutida, el inyectable triple agonista de Eli Lilly para la obesidad. Cómo funciona, resultados de los ensayos y por qué aún no se vende en España.",
-    category: "Tratamientos",
+      "What retatrutide is, Eli Lilly's triple agonist injectable for obesity. How it works, trial results and why it isn't available in the UK yet.",
+    category: "Treatments",
     answerFirst:
-      "La retatrutida es un medicamento inyectable experimental de Eli Lilly para la obesidad y la diabetes tipo 2. Es un triple agonista: estimula a la vez los receptores de GLP‑1, GIP y glucagón, lo que reduce el apetito y aumenta el gasto energético. En ensayos clínicos logró pérdidas de hasta el 24 % del peso, pero todavía no está aprobada ni a la venta en España.",
+      "Retatrutide is an experimental injectable medicine from Eli Lilly for obesity and type 2 diabetes. It's a triple agonist: it stimulates the GLP‑1, GIP and glucagon receptors at the same time, which reduces appetite and increases energy expenditure. In clinical trials it achieved weight loss of up to 24%, but it isn't yet approved or available in the UK.",
     keyTakeaways: [
-      "La retatrutida es un triple agonista (GLP‑1, GIP y glucagón), una generación por delante de Ozempic o Mounjaro.",
-      "En el ensayo de fase 2 logró pérdidas de peso de hasta el 24 % a las 48 semanas.",
-      "Sigue siendo experimental: no está aprobada por la EMA ni la AEMPS y no se vende en España.",
-      "Comprarla por internet o fuera del circuito legal es peligroso e ilegal.",
-      "Hoy ya existen alternativas eficaces y legales con receta y supervisión médica (semaglutida, tirzepatida).",
+      "Retatrutide is a triple agonist (GLP‑1, GIP and glucagon), a generation ahead of Ozempic or Mounjaro.",
+      "In the phase 2 trial it achieved weight loss of up to 24% at 48 weeks.",
+      "It remains experimental: it isn't approved by the MHRA or the EMA and isn't sold in the UK.",
+      "Buying it online or outside the legal supply chain is dangerous and illegal.",
+      "Effective, legal alternatives already exist with a prescription and medical supervision (semaglutide, tirzepatide).",
     ],
     body: [
       {
-        h2: "Qué es exactamente la retatrutida",
+        h2: "What exactly retatrutide is",
         blocks: [
           {
             type: "p",
-            text: "La retatrutida (nombre en investigación LY3437943) es un fármaco inyectable que Eli Lilly está desarrollando para tratar la obesidad y la diabetes tipo 2. Pertenece a la misma familia que Ozempic, Wegovy o Mounjaro —los llamados análogos de las hormonas intestinales— pero da un paso más allá en su mecanismo.",
+            text: "Retatrutide (research name LY3437943) is an injectable medicine that Eli Lilly is developing to treat obesity and type 2 diabetes. It belongs to the same family as Ozempic, Wegovy or Mounjaro — the so-called gut hormone analogues — but goes a step further in its mechanism.",
           },
           {
             type: "p",
-            text: "Mientras la semaglutida (Ozempic, Wegovy) actúa sobre una sola hormona y la tirzepatida (Mounjaro) sobre dos, la retatrutida actúa sobre tres a la vez. Por eso se la conoce como 'triple agonista' y por eso genera tanta expectación: en los estudios preliminares ha mostrado las mayores pérdidas de peso vistas hasta ahora con un fármaco.",
+            text: "While semaglutide (Ozempic, Wegovy) acts on a single hormone and tirzepatide (Mounjaro) on two, retatrutide acts on three at once. That's why it's known as a 'triple agonist' and why it generates so much excitement: in preliminary studies it has shown the largest weight losses seen so far with a medicine.",
           },
         ],
       },
       {
-        h2: "Cómo funciona el triple mecanismo",
+        h2: "How the triple mechanism works",
         blocks: [
           {
             type: "p",
-            text: "La retatrutida imita tres hormonas que tu cuerpo produce de forma natural y que regulan el hambre, la glucosa y el gasto de energía:",
+            text: "Retatrutide mimics three hormones your body produces naturally that regulate hunger, glucose and energy expenditure:",
           },
           {
             type: "list",
             items: [
-              "GLP‑1: reduce el apetito y enlentece el vaciado del estómago, así te sientes saciado antes y durante más tiempo.",
-              "GIP: mejora cómo el cuerpo gestiona la glucosa y potencia el efecto del GLP‑1 sobre el apetito.",
-              "Glucagón: aumenta el gasto energético, es decir, ayuda a 'quemar' más energía en reposo.",
+              "GLP‑1: reduces appetite and slows stomach emptying, so you feel full sooner and for longer.",
+              "GIP: improves how the body manages glucose and boosts the effect of GLP‑1 on appetite.",
+              "Glucagon: increases energy expenditure, that is, it helps 'burn' more energy at rest.",
             ],
           },
           {
             type: "p",
-            text: "Esa combinación de comer menos y gastar más a la vez es lo que explica los resultados tan llamativos. Es también lo que la diferencia de los GLP‑1 actuales, que trabajan sobre todo reduciendo el apetito.",
+            text: "That combination of eating less and spending more at the same time is what explains such striking results. It's also what sets it apart from current GLP‑1s, which mainly work by reducing appetite.",
           },
         ],
       },
       {
-        h2: "Qué resultados ha mostrado en los ensayos",
+        h2: "What results it has shown in trials",
         blocks: [
           {
             type: "stat",
-            value: "Hasta 24 %",
-            label: "de pérdida de peso a las 48 semanas en el ensayo de fase 2 publicado en NEJM",
+            value: "Up to 24%",
+            label: "weight loss at 48 weeks in the phase 2 trial published in NEJM",
           },
           {
             type: "p",
-            text: "En el ensayo de fase 2 publicado en The New England Journal of Medicine, las personas que recibieron la dosis más alta perdieron de media alrededor del 24 % de su peso corporal en 48 semanas, una cifra superior a la de cualquier otro fármaco para la obesidad disponible hoy. Aun así, conviene ser prudente: son resultados de estudios todavía en marcha y faltan los ensayos de fase 3, que son los que confirman eficacia y seguridad a largo plazo.",
+            text: "In the phase 2 trial published in The New England Journal of Medicine, people who received the highest dose lost on average around 24% of their body weight in 48 weeks, a figure higher than any other obesity medicine available today. Even so, it's worth being cautious: these are results from studies still under way and the phase 3 trials — the ones that confirm long-term efficacy and safety — are still to come.",
           },
           {
             type: "quote",
-            text: "Los datos de la retatrutida son prometedores, pero 'prometedor' no significa 'disponible'. Un fármaco experimental no es una opción de tratamiento todavía.",
+            text: "The retatrutide data are promising, but 'promising' doesn't mean 'available'. An experimental medicine isn't a treatment option yet.",
           },
         ],
       },
       {
-        h2: "Efectos secundarios conocidos",
+        h2: "Known side effects",
         blocks: [
           {
             type: "p",
-            text: "Como el resto de fármacos de esta familia, los efectos adversos más frecuentes en los estudios fueron digestivos y de intensidad leve a moderada, sobre todo al subir la dosis:",
+            text: "Like the rest of the medicines in this family, the most common adverse effects in the studies were digestive and mild to moderate in intensity, especially when increasing the dose:",
           },
           {
             type: "list",
             items: [
-              "Náuseas, sobre todo al inicio del tratamiento.",
-              "Diarrea o estreñimiento.",
-              "Vómitos y molestias abdominales.",
-              "Disminución del apetito (efecto buscado, pero a veces excesivo).",
+              "Nausea, especially at the start of treatment.",
+              "Diarrhoea or constipation.",
+              "Vomiting and abdominal discomfort.",
+              "Reduced appetite (the intended effect, but sometimes excessive).",
             ],
           },
           {
             type: "p",
-            text: "Al ser un medicamento experimental, su perfil de seguridad completo todavía se está estudiando. Por eso ningún profesional serio puede recomendártela hoy fuera de un ensayo clínico.",
+            text: "As an experimental medicine, its full safety profile is still being studied. That's why no serious professional can recommend it to you today outside a clinical trial.",
           },
         ],
       },
       {
-        h2: "Entonces, ¿qué puedes hacer hoy?",
+        h2: "So what can you do today?",
         blocks: [
           {
             type: "p",
-            text: "Si la retatrutida te interesa porque buscas perder peso de forma eficaz, la buena noticia es que no tienes que esperar años. Ya existen tratamientos aprobados, legales y con años de evidencia detrás: la semaglutida y la tirzepatida, que se prescriben con receta y seguimiento médico.",
+            text: "If retatrutide interests you because you want to lose weight effectively, the good news is that you don't have to wait years. Approved, legal treatments with years of evidence behind them already exist: semaglutide and tirzepatide, prescribed with a prescription and medical follow-up.",
           },
           {
             type: "p",
-            text: "En DoctorLife, una valoración médica gratuita permite saber si uno de estos tratamientos encaja en tu caso, sin recurrir a fármacos experimentales ni a compras ilegales por internet.",
+            text: "At DoctorLife, a free medical assessment lets you find out whether one of these treatments fits your case, without resorting to experimental medicines or illegal online purchases.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿La retatrutida ya se vende en España?",
+        question: "Is retatrutide available in the UK yet?",
         answer:
-          "No. La retatrutida es un fármaco experimental que aún no ha sido aprobado por la EMA ni por la AEMPS, por lo que no está a la venta en España ni en la Unión Europea. Cualquier producto que se anuncie como 'retatrutida' fuera del circuito legal es un riesgo para tu salud.",
+          "No. Retatrutide is an experimental medicine that hasn't yet been approved by the MHRA or the EMA, so it isn't on sale in the UK or the European Union. Any product advertised as 'retatrutide' outside the legal supply chain is a risk to your health.",
       },
       {
-        question: "¿Cuánto peso se pierde con la retatrutida?",
+        question: "How much weight do you lose with retatrutide?",
         answer:
-          "En el ensayo de fase 2, las personas con la dosis más alta perdieron de media alrededor del 24 % de su peso en 48 semanas. Son resultados muy llamativos, pero todavía deben confirmarse en ensayos de fase 3 antes de su posible aprobación.",
+          "In the phase 2 trial, people on the highest dose lost on average around 24% of their weight in 48 weeks. These are very striking results, but they still need to be confirmed in phase 3 trials before any possible approval.",
       },
       {
-        question: "¿En qué se diferencia de Ozempic o Mounjaro?",
+        question: "How does it differ from Ozempic or Mounjaro?",
         answer:
-          "Ozempic (semaglutida) actúa sobre una hormona, Mounjaro (tirzepatida) sobre dos y la retatrutida sobre tres (GLP‑1, GIP y glucagón). Ese triple mecanismo es lo que explicaría sus mayores pérdidas de peso, pero a diferencia de las otras dos, la retatrutida aún no está aprobada.",
+          "Ozempic (semaglutide) acts on one hormone, Mounjaro (tirzepatide) on two and retatrutide on three (GLP‑1, GIP and glucagon). That triple mechanism would explain its greater weight losses, but unlike the other two, retatrutide isn't approved yet.",
       },
       {
-        question: "¿Hay alguna alternativa legal disponible ahora?",
+        question: "Is there a legal alternative available now?",
         answer:
-          "Sí. La semaglutida y la tirzepatida están aprobadas y se prescriben con receta y supervisión médica. Una valoración médica permite saber si son adecuadas para ti, con seguridad y sin recurrir a fármacos experimentales.",
+          "Yes. Semaglutide and tirzepatide are approved and prescribed with a prescription and medical supervision. A medical assessment lets you find out whether they're right for you, safely and without resorting to experimental medicines.",
       },
     ],
     sources: [S.nejm, S.lilly, S.ema, S.mhra],
@@ -1214,121 +1214,121 @@ export const articles: Article[] = [
     reviewerSlug: "carlos-vidal",
     datePublished: "2026-06-10",
     dateModified: "2026-06-16",
-    relatedSlugs: ["retatrutida-comprar-espana", "retatrutida-vs-ozempic-mounjaro", "ozempic-merece-la-pena"],
+    relatedSlugs: ["where-to-buy-retatrutide-uk", "retatrutide-vs-ozempic-mounjaro", "is-ozempic-worth-it"],
     cover: "/articles/retatrutida-que-es.png",
-    coverAlt: "Pluma inyectable de medicación sobre una superficie cálida representando la retatrutida",
+    coverAlt: "Injectable medication pen on a warm surface representing retatrutide",
     readMins: 8,
   },
 
   {
-    slug: "retatrutida-comprar-espana",
-    title: "Comprar retatrutida en España",
-    h1: "Comprar retatrutida en España: ¿es posible en 2026?",
-    metaTitle: "Comprar Retatrutida en España: ¿Se Puede? (Aviso 2026) | DoctorLife",
+    slug: "where-to-buy-retatrutide-uk",
+    title: "Buying retatrutide in the UK",
+    h1: "Buying retatrutide in the UK: is it possible in 2026?",
+    metaTitle: "Buying Retatrutide in the UK: Can You? (2026 Warning) | DoctorLife",
     metaDescription:
-      "¿Se puede comprar retatrutida en España? Hoy NO es legal ni está aprobada. Te explicamos los riesgos del mercado negro y qué alternativas legales sí existen.",
-    category: "Disponibilidad",
+      "Can you buy retatrutide in the UK? Right now it's NOT legal or approved. We explain the risks of the black market and which legal alternatives do exist.",
+    category: "Availability",
     answerFirst:
-      "No, hoy no es posible comprar retatrutida en España de forma legal: es un fármaco experimental que aún no ha sido aprobado por la AEMPS ni la EMA, por lo que no existe en farmacias ni con receta. Cualquier web que la venda opera en el mercado negro, con riesgos graves para tu salud. Sí existen alternativas legales y eficaces con supervisión médica.",
+      "No, it isn't currently possible to buy retatrutide legally in the UK: it's an experimental medicine that hasn't yet been approved by the MHRA or the EMA, so it doesn't exist in pharmacies or on prescription. Any website selling it operates on the black market, with serious risks to your health. Legal, effective alternatives do exist with medical supervision.",
     keyTakeaways: [
-      "La retatrutida no está aprobada ni a la venta en España: no la encontrarás en ninguna farmacia legal.",
-      "Las webs que la ofrecen venden productos sin garantías, falsificados o peligrosos.",
-      "Comprar e inyectarse un fármaco no aprobado es ilegal y un riesgo serio para tu salud.",
-      "Existen tratamientos aprobados (semaglutida, tirzepatida) que sí puedes usar con receta.",
-      "Una valoración médica gratuita te dice qué opción legal encaja contigo hoy.",
+      "Retatrutide isn't approved or on sale in the UK: you won't find it in any legitimate pharmacy.",
+      "The websites offering it sell products with no guarantees, counterfeit or dangerous.",
+      "Buying and injecting an unapproved medicine is illegal and a serious risk to your health.",
+      "Approved treatments exist (semaglutide, tirzepatide) that you can use on prescription.",
+      "A free medical assessment tells you which legal option fits you today.",
     ],
     body: [
       {
-        h2: "La respuesta corta: hoy no se puede comprar legalmente",
+        h2: "The short answer: you can't buy it legally today",
         blocks: [
           {
             type: "p",
-            text: "Si has llegado hasta aquí buscando dónde comprar retatrutida en España, conviene ser claro desde el principio: no se puede hacer de forma legal. La retatrutida sigue siendo un medicamento en investigación. No ha completado los ensayos necesarios ni ha recibido la autorización de la Agencia Europea de Medicamentos (EMA) ni de la Agencia Española de Medicamentos (AEMPS).",
+            text: "If you've come here looking for where to buy retatrutide in the UK, it's worth being clear from the start: you can't do it legally. Retatrutide is still an investigational medicine. It hasn't completed the necessary trials or received authorisation from the European Medicines Agency (EMA) or the UK's Medicines and Healthcare products Regulatory Agency (MHRA).",
           },
           {
             type: "p",
-            text: "Eso significa que no existe en las farmacias, no se puede prescribir con receta y ningún canal oficial la distribuye. Está reservada, de momento, a los ensayos clínicos controlados.",
+            text: "That means it doesn't exist in pharmacies, can't be prescribed and no official channel distributes it. For now, it's reserved for controlled clinical trials.",
           },
         ],
       },
       {
-        h2: "Por qué deberías desconfiar de quien te la venda",
+        h2: "Why you should distrust anyone selling it to you",
         blocks: [
           {
             type: "p",
-            text: "Justamente porque hay mucha gente buscándola, han aparecido webs, redes sociales y vendedores que ofrecen supuesta 'retatrutida'. Detrás de esas ofertas casi nunca hay un fármaco real y seguro:",
+            text: "Precisely because so many people are searching for it, websites, social media accounts and sellers have appeared offering supposed 'retatrutide'. Behind those offers there is almost never a real, safe medicine:",
           },
           {
             type: "list",
             items: [
-              "No sabes qué contiene el vial: puede ser una sustancia falsa, mal dosificada o contaminada.",
-              "No hay control de fabricación, esterilidad ni cadena de frío.",
-              "Nadie supervisa la dosis ni los efectos adversos, que pueden ser graves.",
-              "Es ilegal: importar y usar un medicamento no autorizado tiene consecuencias legales.",
-              "Si algo va mal, no tienes ninguna garantía ni respaldo sanitario.",
+              "You don't know what the vial contains: it could be a fake substance, wrongly dosed or contaminated.",
+              "There's no control of manufacturing, sterility or cold chain.",
+              "No one supervises the dose or the adverse effects, which can be serious.",
+              "It's illegal: importing and using an unauthorised medicine has legal consequences.",
+              "If something goes wrong, you have no guarantee or medical support.",
             ],
           },
           {
             type: "quote",
-            text: "Inyectarte un producto comprado por internet del que no conoces ni el origen ni el contenido no es 'adelantarte al futuro': es jugártela con tu salud.",
+            text: "Injecting yourself with a product bought online, whose origin and contents you don't know, isn't 'getting ahead of the future': it's gambling with your health.",
           },
         ],
       },
       {
-        h2: "Por qué hay tanta gente buscándola",
+        h2: "Why so many people are searching for it",
         blocks: [
           {
             type: "p",
-            text: "La expectación es comprensible. Los datos preliminares de la retatrutida muestran las mayores pérdidas de peso vistas con un fármaco —hasta un 24 % en los estudios—, y eso genera muchísimo interés en quienes llevan años intentando adelgazar sin éxito. El problema es confundir 'noticia prometedora' con 'tratamiento disponible'.",
+            text: "The excitement is understandable. The preliminary retatrutide data show the largest weight losses seen with a medicine — up to 24% in the studies — and that generates huge interest among people who have spent years trying to lose weight without success. The problem is confusing 'promising news' with 'available treatment'.",
           },
           {
             type: "p",
-            text: "Probablemente la retatrutida llegue a aprobarse en los próximos años si confirma su eficacia y seguridad. Pero hasta entonces, perseguirla por canales no oficiales solo te expone a riesgos sin ninguna ventaja real.",
+            text: "Retatrutide will probably be approved in the coming years if it confirms its efficacy and safety. But until then, chasing it through unofficial channels only exposes you to risks with no real benefit.",
           },
         ],
       },
       {
-        h2: "Qué sí puedes hacer hoy (y es legal)",
+        h2: "What you can do today (and it's legal)",
         blocks: [
           {
             type: "p",
-            text: "La buena noticia es que no necesitas esperar a la retatrutida para tratar tu peso con un fármaco eficaz. Ya hay opciones aprobadas, con años de evidencia y disponibles con receta:",
+            text: "The good news is that you don't need to wait for retatrutide to treat your weight with an effective medicine. Approved options with years of evidence and available on prescription already exist:",
           },
           {
             type: "list",
             items: [
-              "Semaglutida (el principio activo de Ozempic y Wegovy): pérdidas de peso de en torno al 15 % en los estudios.",
-              "Tirzepatida (el principio activo de Mounjaro): doble agonista, con pérdidas de hasta el 22 %.",
-              "Ambas se prescriben tras una valoración médica y con seguimiento profesional.",
+              "Semaglutide (the active ingredient in Ozempic and Wegovy): weight loss of around 15% in the studies.",
+              "Tirzepatide (the active ingredient in Mounjaro): a dual agonist, with losses of up to 22%.",
+              "Both are prescribed after a medical assessment and with professional follow-up.",
             ],
           },
           {
             type: "p",
-            text: "En DoctorLife puedes hacer una valoración médica gratuita para saber si uno de estos tratamientos es adecuado para ti. Es la forma de obtener resultados reales sin recurrir a fármacos experimentales ni a compras ilegales.",
+            text: "At DoctorLife you can have a free medical assessment to find out whether one of these treatments is right for you. It's the way to get real results without resorting to experimental medicines or illegal purchases.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Dónde puedo comprar retatrutida en España?",
+        question: "Where can I buy retatrutide in the UK?",
         answer:
-          "En ningún sitio de forma legal. La retatrutida no está aprobada por la AEMPS ni la EMA, así que no se vende en farmacias ni con receta. Cualquier web o vendedor que la ofrezca opera al margen de la ley y pone en riesgo tu salud.",
+          "Nowhere legally. Retatrutide isn't approved by the MHRA or the EMA, so it isn't sold in pharmacies or on prescription. Any website or seller offering it is operating outside the law and putting your health at risk.",
       },
       {
-        question: "¿Es peligroso comprar retatrutida por internet?",
+        question: "Is it dangerous to buy retatrutide online?",
         answer:
-          "Sí, mucho. No tienes garantías de qué contiene el producto, cómo se ha fabricado ni si está contaminado. Además, usar un fármaco no aprobado sin supervisión médica puede provocar efectos adversos graves y es ilegal.",
+          "Yes, very. You have no guarantees about what the product contains, how it was made or whether it's contaminated. Using an unapproved medicine without medical supervision can cause serious adverse effects and is illegal.",
       },
       {
-        question: "¿Cuándo estará disponible la retatrutida en España?",
+        question: "When will retatrutide be available in the UK?",
         answer:
-          "No hay fecha confirmada. Depende de que termine los ensayos de fase 3 y reciba la aprobación de la EMA y la AEMPS, algo que suele tardar varios años. Hasta entonces no estará disponible por ningún canal legal.",
+          "There's no confirmed date. It depends on completing the phase 3 trials and receiving approval from the MHRA and the EMA, which usually takes several years. Until then it won't be available through any legal channel.",
       },
       {
-        question: "¿Qué alternativa legal hay mientras tanto?",
+        question: "What legal alternative is there in the meantime?",
         answer:
-          "La semaglutida y la tirzepatida ya están aprobadas y se prescriben con receta y seguimiento. Una valoración médica gratuita en DoctorLife permite saber si alguna encaja en tu caso, de forma segura y legal.",
+          "Semaglutide and tirzepatide are already approved and prescribed with a prescription and follow-up. A free medical assessment at DoctorLife lets you find out whether one fits your case, safely and legally.",
       },
     ],
     sources: [S.mhra, S.ema, S.nejm, S.easo],
@@ -1336,113 +1336,113 @@ export const articles: Article[] = [
     reviewerSlug: "laura-mendez",
     datePublished: "2026-06-12",
     dateModified: "2026-06-16",
-    relatedSlugs: ["retatrutida-que-es", "retatrutida-vs-ozempic-mounjaro", "ozempic-merece-la-pena"],
+    relatedSlugs: ["what-is-retatrutide", "retatrutide-vs-ozempic-mounjaro", "is-ozempic-worth-it"],
     cover: "/articles/retatrutida-comprar-espana.png",
-    coverAlt: "Persona buscando en el móvil cómo comprar retatrutida con una farmacia desenfocada al fondo",
+    coverAlt: "Person searching on their phone how to buy retatrutide with a blurred pharmacy in the background",
     readMins: 7,
   },
 
   {
-    slug: "retatrutida-vs-ozempic-mounjaro",
-    title: "Retatrutida vs Ozempic y Mounjaro",
-    h1: "Retatrutida vs Ozempic, Wegovy y Mounjaro: ¿cuál es mejor?",
-    metaTitle: "Retatrutida vs Ozempic vs Mounjaro: Comparativa 2026 | DoctorLife",
+    slug: "retatrutide-vs-ozempic-mounjaro",
+    title: "Retatrutide vs Ozempic and Mounjaro",
+    h1: "Retatrutide vs Ozempic, Wegovy and Mounjaro: which is best?",
+    metaTitle: "Retatrutide vs Ozempic vs Mounjaro: 2026 Comparison | DoctorLife",
     metaDescription:
-      "Comparativa entre retatrutida, semaglutida (Ozempic, Wegovy) y tirzepatida (Mounjaro): mecanismo, pérdida de peso y disponibilidad. Cuál puedes usar hoy en España.",
-    category: "Comparativa",
+      "A comparison of retatrutide, semaglutide (Ozempic, Wegovy) and tirzepatide (Mounjaro): mechanism, weight loss and availability. Which you can use in the UK today.",
+    category: "Comparison",
     answerFirst:
-      "La retatrutida es un triple agonista (GLP‑1, GIP y glucagón) y en los ensayos logra las mayores pérdidas de peso (hasta el 24 %), por delante de la tirzepatida (Mounjaro, hasta 22 %) y la semaglutida (Ozempic/Wegovy, en torno al 15 %). Sin embargo, la retatrutida aún es experimental, mientras que las otras dos ya están aprobadas y disponibles con receta en España.",
+      "Retatrutide is a triple agonist (GLP‑1, GIP and glucagon) and in trials achieves the largest weight losses (up to 24%), ahead of tirzepatide (Mounjaro, up to 22%) and semaglutide (Ozempic/Wegovy, around 15%). However, retatrutide is still experimental, while the other two are already approved and available on prescription in the UK.",
     keyTakeaways: [
-      "La diferencia clave es el mecanismo: semaglutida actúa sobre 1 hormona, tirzepatida sobre 2 y retatrutida sobre 3.",
-      "En los estudios, la pérdida de peso crece con cada generación: ~15 %, ~22 % y hasta 24 %.",
-      "Solo la semaglutida y la tirzepatida están aprobadas y disponibles en España.",
-      "Más pérdida de peso potencial no significa que sea la mejor opción para ti: importa la seguridad y el seguimiento.",
-      "La opción adecuada se decide en una valoración médica, no por la cifra de un titular.",
+      "The key difference is the mechanism: semaglutide acts on 1 hormone, tirzepatide on 2 and retatrutide on 3.",
+      "In the studies, weight loss grows with each generation: ~15%, ~22% and up to 24%.",
+      "Only semaglutide and tirzepatide are approved and available in the UK.",
+      "More potential weight loss doesn't mean it's the best option for you: safety and follow-up matter.",
+      "The right option is decided in a medical assessment, not by a headline figure.",
     ],
     body: [
       {
-        h2: "La diferencia está en cuántas hormonas activan",
+        h2: "The difference is in how many hormones they activate",
         blocks: [
           {
             type: "p",
-            text: "Los tres fármacos pertenecen a la misma familia, pero representan generaciones distintas. La clave para entenderlos es cuántas hormonas intestinales imitan, porque de ahí salen sus diferencias en eficacia.",
+            text: "All three medicines belong to the same family, but represent different generations. The key to understanding them is how many gut hormones they mimic, because that's where their differences in efficacy come from.",
           },
           {
             type: "list",
             items: [
-              "Semaglutida (Ozempic, Wegovy): agonista único de GLP‑1.",
-              "Tirzepatida (Mounjaro): doble agonista de GLP‑1 y GIP.",
-              "Retatrutida: triple agonista de GLP‑1, GIP y glucagón.",
+              "Semaglutide (Ozempic, Wegovy): single GLP‑1 agonist.",
+              "Tirzepatide (Mounjaro): dual agonist of GLP‑1 and GIP.",
+              "Retatrutide: triple agonist of GLP‑1, GIP and glucagon.",
             ],
           },
         ],
       },
       {
-        h2: "Comparativa rápida",
+        h2: "Quick comparison",
         blocks: [
           {
             type: "table",
-            caption: "Comparativa orientativa basada en datos de ensayos clínicos. No es una recomendación de tratamiento.",
-            head: ["Fármaco", "Mecanismo", "Pérdida de peso (estudios)", "Disponible en España"],
+            caption: "Indicative comparison based on clinical trial data. It isn't a treatment recommendation.",
+            head: ["Medicine", "Mechanism", "Weight loss (studies)", "Available in the UK"],
             rows: [
-              ["Semaglutida (Ozempic/Wegovy)", "Agonista GLP‑1", "~15 %", "Sí, con receta"],
-              ["Tirzepatida (Mounjaro)", "Doble: GLP‑1 + GIP", "Hasta ~22 %", "Sí, con receta"],
-              ["Retatrutida", "Triple: GLP‑1 + GIP + glucagón", "Hasta ~24 %", "No (experimental)"],
+              ["Semaglutide (Ozempic/Wegovy)", "GLP‑1 agonist", "~15%", "Yes, on prescription"],
+              ["Tirzepatide (Mounjaro)", "Dual: GLP‑1 + GIP", "Up to ~22%", "Yes, on prescription"],
+              ["Retatrutide", "Triple: GLP‑1 + GIP + glucagon", "Up to ~24%", "No (experimental)"],
             ],
           },
           {
             type: "p",
-            text: "Las cifras de pérdida de peso proceden de ensayos distintos y no son directamente comparables entre sí, pero dan una idea de la tendencia: cada generación añade un mecanismo y, con él, mayor potencial de pérdida de peso.",
+            text: "The weight loss figures come from different trials and aren't directly comparable with each other, but they give a sense of the trend: each generation adds a mechanism and, with it, greater potential for weight loss.",
           },
         ],
       },
       {
-        h2: "Más pérdida de peso no significa 'mejor para ti'",
+        h2: "More weight loss doesn't mean 'better for you'",
         blocks: [
           {
             type: "p",
-            text: "Es tentador quedarse con el número más alto, pero la mejor opción no es la que más adelgaza en un estudio, sino la que es adecuada y segura para tu caso concreto. Influyen tu historia clínica, otras enfermedades, los efectos secundarios que toleras y, sobre todo, qué está aprobado y disponible.",
+            text: "It's tempting to focus on the highest number, but the best option isn't the one that loses the most weight in a study, but the one that's appropriate and safe for your specific case. Your medical history, other conditions, the side effects you tolerate and, above all, what's approved and available all play a role.",
           },
           {
             type: "quote",
-            text: "El fármaco 'más potente' sobre el papel no sirve de nada si no puedes usarlo de forma legal y supervisada. Hoy, eso descarta a la retatrutida.",
+            text: "The 'most powerful' medicine on paper is no use if you can't use it legally and under supervision. Today, that rules out retatrutide.",
           },
         ],
       },
       {
-        h2: "Qué puedes usar hoy en España",
+        h2: "What you can use in the UK today",
         blocks: [
           {
             type: "p",
-            text: "A día de hoy, las opciones realistas y legales son la semaglutida y la tirzepatida. Ambas tienen años de evidencia, se prescriben con receta y se usan con seguimiento médico para ajustar la dosis y vigilar los efectos. La retatrutida, por muy prometedora que sea, todavía no es una de ellas.",
+            text: "As things stand, the realistic and legal options are semaglutide and tirzepatide. Both have years of evidence, are prescribed with a prescription and are used with medical follow-up to adjust the dose and monitor effects. Retatrutide, however promising, isn't one of them yet.",
           },
           {
             type: "p",
-            text: "La forma sensata de decidir es una valoración médica: un profesional revisa tu situación y te dice qué tratamiento aprobado encaja contigo. En DoctorLife esa primera valoración es gratuita.",
+            text: "The sensible way to decide is a medical assessment: a professional reviews your situation and tells you which approved treatment fits you. At DoctorLife that first assessment is free.",
           },
         ],
       },
     ],
     faq: [
       {
-        question: "¿Es la retatrutida mejor que Mounjaro u Ozempic?",
+        question: "Is retatrutide better than Mounjaro or Ozempic?",
         answer:
-          "En los ensayos, la retatrutida muestra mayores pérdidas de peso (hasta el 24 %) que la tirzepatida (Mounjaro) o la semaglutida (Ozempic). Pero 'mejor en un estudio' no equivale a mejor para ti: la retatrutida aún es experimental y no se puede usar, mientras que las otras dos ya están disponibles.",
+          "In trials, retatrutide shows greater weight losses (up to 24%) than tirzepatide (Mounjaro) or semaglutide (Ozempic). But 'better in a study' doesn't equal better for you: retatrutide is still experimental and can't be used, while the other two are already available.",
       },
       {
-        question: "¿Cuál pierde más peso?",
+        question: "Which one loses the most weight?",
         answer:
-          "Según los datos disponibles, la retatrutida es la que más, seguida de la tirzepatida y luego la semaglutida. Aun así, las cifras vienen de estudios distintos y no son directamente comparables, y la respuesta varía mucho de una persona a otra.",
+          "According to the available data, retatrutide loses the most, followed by tirzepatide and then semaglutide. Even so, the figures come from different studies and aren't directly comparable, and the response varies greatly from person to person.",
       },
       {
-        question: "¿Puedo elegir yo qué fármaco usar?",
+        question: "Can I choose which medicine to use?",
         answer:
-          "No directamente. Son medicamentos de prescripción: es el médico quien valora tu caso y decide cuál es adecuado y seguro para ti, ajustando la dosis y haciendo seguimiento. Autoindicarse o comprarlos por internet es peligroso e ilegal.",
+          "Not directly. They're prescription medicines: the doctor assesses your case and decides which is appropriate and safe for you, adjusting the dose and providing follow-up. Self-prescribing or buying them online is dangerous and illegal.",
       },
       {
-        question: "¿Por qué no puedo usar retatrutida si es la más eficaz?",
+        question: "Why can't I use retatrutide if it's the most effective?",
         answer:
-          "Porque todavía no ha sido aprobada por la EMA ni la AEMPS y sigue en fase de investigación. Hasta que complete los ensayos y reciba autorización, no está disponible de forma legal en España.",
+          "Because it hasn't yet been approved by the MHRA or the EMA and is still in the research phase. Until it completes the trials and receives authorisation, it isn't legally available in the UK.",
       },
     ],
     sources: [S.nejm, S.lilly, S.mhra, S.ema, S.easo],
@@ -1450,9 +1450,9 @@ export const articles: Article[] = [
     reviewerSlug: "laura-mendez",
     datePublished: "2026-06-14",
     dateModified: "2026-06-16",
-    relatedSlugs: ["retatrutida-que-es", "retatrutida-comprar-espana", "ozempic-merece-la-pena"],
+    relatedSlugs: ["what-is-retatrutide", "where-to-buy-retatrutide-uk", "is-ozempic-worth-it"],
     cover: "/articles/retatrutida-vs-ozempic-mounjaro.png",
-    coverAlt: "Tres plumas inyectables alineadas comparando retatrutida, Ozempic y Mounjaro",
+    coverAlt: "Three injectable pens lined up comparing retatrutide, Ozempic and Mounjaro",
     readMins: 8,
   },
 ];
@@ -1475,7 +1475,7 @@ export function getArticlesByAuthor(authorSlug: string): Article[] {
 }
 
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("es-ES", {
+  return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
