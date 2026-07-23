@@ -8,23 +8,23 @@ export function Labs() {
         <div className="absolute -right-[5%] -top-[20%] h-[90%] w-1/2" style={{ background: "radial-gradient(closest-side,rgba(95,179,163,.22),transparent)", filter: "blur(10px)" }} />
 
         <div className="relative z-[2] mb-2 text-center">
-          <div className="text-[13px] uppercase tracking-[.16em] text-teal">analíticas doctorlife</div>
+          <div className="text-[13px] uppercase tracking-[.16em] text-teal">doctorlife blood tests</div>
           <h2 className="mt-[10px] text-[clamp(34px,4.8vw,62px)] font-light leading-none tracking-[-.02em]">
-            Mide lo que tu cuerpo
+            Measure what your body
             <br />
-            te lleva <span className="font-serif italic text-teal-light">tiempo diciendo</span>
+            has been <span className="font-serif italic text-teal-light">trying to tell you</span>
           </h2>
         </div>
 
-        {/* phone mockup placeholder — sustituir por imagen de la app en una mano */}
+        {/* phone mockup placeholder — replace with app image held in a hand */}
         <div className="relative z-[2] mx-auto mt-[30px] flex justify-center">
           <div className="flex h-[460px] w-[230px] flex-col items-center justify-center rounded-[38px] border-2 border-dashed border-teal/40 text-center" style={{ background: "rgba(20,28,40,.55)" }}>
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-teal/40 text-teal text-2xl font-light">＋</div>
             <div className="px-6 text-[13px] font-medium leading-snug text-[#cdd6e2]">
-              Mockup de la app
+              App mockup
             </div>
             <div className="mt-1 px-6 text-[11.5px] leading-snug text-[#9aa6b6]">
-              Móvil en una mano
+              Phone in hand
             </div>
           </div>
         </div>
@@ -32,14 +32,14 @@ export function Labs() {
         <div className="relative z-[2] mt-[30px] grid grid-cols-1 gap-[18px] md:grid-cols-2">
           <div className="rounded-[26px] border border-[#e9ecf2]/10 p-9" style={{ background: "rgba(20,28,40,.5)" }}>
             <div className="text-[26px] font-light leading-[1.1]">
-              Descubre tu <span className="font-serif italic text-teal-light">punto de partida</span>
+              Discover your <span className="font-serif italic text-teal-light">starting point</span>
             </div>
             <p className="mt-3 max-w-[34ch] text-[15px] leading-relaxed text-[#9aa6b6]">
-              Una imagen clara de tu salud con una sola analítica en casa —
-              más de 130 biomarcadores, revisados por médicos.
+              A clear picture of your health from a single at-home blood test —
+              over 130 biomarkers, reviewed by doctors.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
-              {["Hormonas", "Metabolismo", "Tiroides", "Corazón", "Inmunidad"].map((c) => (
+              {["Hormones", "Metabolism", "Thyroid", "Heart", "Immunity"].map((c) => (
                 <span key={c} className="rounded-full border border-[#e9ecf2]/20 px-[14px] py-[7px] text-[13px]">{c}</span>
               ))}
             </div>
@@ -47,15 +47,15 @@ export function Labs() {
           <div className="flex flex-col justify-between rounded-[26px] border border-[#e9ecf2]/10 p-9" style={{ background: "linear-gradient(150deg,rgba(95,179,163,.18),rgba(20,28,40,.5))" }}>
             <div>
               <div className="text-[26px] font-light leading-[1.1]">
-                Planifica tu <span className="font-serif italic text-teal-light">avance</span>
+                Plan your <span className="font-serif italic text-teal-light">progress</span>
               </div>
               <p className="mt-3 max-w-[32ch] text-[15px] leading-relaxed text-[#9aa6b6]">
-                Convierte tus resultados en un plan de acción desarrollado por
-                médicos — con seguimiento en la app de DoctorLife.
+                Turn your results into an action plan developed by doctors —
+                with tracking in the DoctorLife app.
               </p>
             </div>
             <button type="button" className="mt-6 self-start rounded-full bg-teal px-7 py-[13px] text-[15px] font-semibold text-slate-deep">
-              Ver el plan
+              View the plan
             </button>
           </div>
         </div>

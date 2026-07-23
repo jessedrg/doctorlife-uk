@@ -24,118 +24,118 @@ import { StickyValoracionCTA } from "@/components/sticky-valoracion-cta";
 export type ValoracionConfig = {
   /** Canonical route, e.g. "/medical-assessment" */
   path: string;
-  /** Prefijo para los eventos de analítica, p. ej. "ads-valoracion" */
+  /** Prefix for analytics events, e.g. "ads-assessment" */
   planPrefix: string;
-  /** Oculta el widget TrustBox y la sección de opiniones de Trustpilot */
+  /** Hides the TrustBox widget and the Trustpilot reviews section */
   hideReviews?: boolean;
-  /** Muestra un distintivo de tratamiento médico GLP-1 en el hero */
+  /** Shows a GLP-1 medical treatment badge in the hero */
   showGlpBadge?: boolean;
-  /** Texto del distintivo GLP-1 del hero (por defecto "Tratamiento médico GLP-1, si el médico lo considera adecuado") */
+  /** Text of the hero GLP-1 badge (defaults to "GLP-1 medical treatment, if the doctor considers it appropriate") */
   glpBadgeText?: string;
-  /** Oculta todos los botones de formulario/valoración (hero, precio, CTA final y sticky) */
+  /** Hides all form/assessment buttons (hero, price, final CTA and sticky) */
   hideCta?: boolean;
 };
 
 const heroPoints = [
-  { icon: Stethoscope, label: "Valoración con un médico colegiado en España" },
-  { icon: Video, label: "Videoconsulta sin cita previa ni desplazamientos" },
-  { icon: MessageSquareText, label: "Seguimiento con el equipo médico por chat" },
-  { icon: Lock, label: "Tus datos de salud siempre protegidos" },
+  { icon: Stethoscope, label: "Assessment with a GMC-registered doctor" },
+  { icon: Video, label: "Video consultation with no appointment or travel" },
+  { icon: MessageSquareText, label: "Follow-up with the medical team via chat" },
+  { icon: Lock, label: "Your health data always protected" },
 ];
 
 const steps = [
   {
     icon: ClipboardList,
-    title: "Completa el cuestionario de salud",
-    text: "Nos cuentas tu historia clínica y tus objetivos en unos minutos, desde el móvil o el ordenador.",
+    title: "Complete the health questionnaire",
+    text: "You tell us your medical history and your goals in a few minutes, from your phone or computer.",
   },
   {
     icon: Video,
-    title: "Videoconsulta con tu médico",
-    text: "Un médico colegiado en España revisa tu caso y valora la opción más adecuada para ti.",
+    title: "Video consultation with your doctor",
+    text: "A GMC-registered doctor reviews your case and assesses the most suitable option for you.",
   },
   {
     icon: HeartPulse,
-    title: "Seguimiento continuo",
-    text: "Acompañamos tu evolución y ajustamos el plan cuando haga falta, con tu médico siempre disponible por chat.",
+    title: "Continuous follow-up",
+    text: "We support your progress and adjust the plan when needed, with your doctor always available via chat.",
   },
 ];
 
 const planIncludes = [
-  "Videoconsulta con un médico colegiado en España",
-  "Valoración clínica personalizada de tu caso",
-  "Plan adaptado a tu historia clínica y tus objetivos",
-  "Seguimiento con el equipo médico durante todo el proceso",
-  "Chat con tu médico siempre que lo necesites",
-  "Recomendaciones personalizadas según tu valoración clínica",
+  "Video consultation with a GMC-registered doctor",
+  "Personalised clinical assessment of your case",
+  "Plan tailored to your medical history and goals",
+  "Follow-up with the medical team throughout the process",
+  "Chat with your doctor whenever you need it",
+  "Personalised recommendations based on your clinical assessment",
 ];
 
-const TRUSTPILOT_URL = "https://es.trustpilot.com/review/doctorlife.io";
+const TRUSTPILOT_URL = "https://uk.trustpilot.com/review/doctorlife.io";
 const TRUSTPILOT_GREEN = "#00b67a";
 
-/** Reseñas reales verificadas en Trustpilot, centradas en la atención y el servicio. */
+/** Real reviews verified on Trustpilot, focused on care and service. */
 const reviews = [
   {
     name: "Eric Jenkins",
     initial: "E",
     stars: 5,
-    title: "Todo online sin perder cercanía",
-    text: "Lo que más me gustó fue poder hacerlo todo online sin perder la sensación de estar bien atendido. El equipo médico responde rápido y con cercanía.",
-    timeAgo: "Hace 3 días",
+    title: "All online without losing the personal touch",
+    text: "What I liked most was being able to do everything online without losing the feeling of being well looked after. The medical team replies quickly and warmly.",
+    timeAgo: "3 days ago",
   },
   {
     name: "Samuel Shah",
     initial: "S",
     stars: 5,
-    title: "Seguimiento excelente",
-    text: "Empecé con bastante miedo porque había probado muchas cosas sin éxito. El seguimiento con el equipo médico ha sido excelente y me he sentido acompañado en todo momento.",
-    timeAgo: "Hace 3 días",
+    title: "Excellent follow-up",
+    text: "I started quite scared because I'd tried many things without success. The follow-up with the medical team has been excellent and I felt supported the whole way.",
+    timeAgo: "3 days ago",
   },
   {
     name: "Max",
     initial: "M",
     stars: 5,
-    title: "Trato inmejorable",
-    text: "La verdad que 10/10, muy contento con la atención y el trato del equipo médico.",
-    timeAgo: "Hace 4 días",
+    title: "Unbeatable care",
+    text: "Honestly it's 10/10, really happy with the care and the way the medical team treated me.",
+    timeAgo: "4 days ago",
   },
   {
     name: "Zachary Moore",
     initial: "Z",
     stars: 4,
-    title: "Un equipo que entiende el problema",
-    text: "Por fin encontré un equipo que entiende de verdad el problema y que se implica en el proceso. Muy recomendable.",
-    timeAgo: "Hace 3 días",
+    title: "A team that understands the problem",
+    text: "I finally found a team that truly understands the problem and gets involved in the process. Highly recommended.",
+    timeAgo: "3 days ago",
   },
 ];
 
 const faqs = [
   {
-    q: "¿Quién realiza la valoración?",
-    a: "Siempre un médico colegiado en España. Revisa tu cuestionario de salud y tu caso en una videoconsulta antes de recomendarte cualquier plan.",
+    q: "Who carries out the assessment?",
+    a: "Always a GMC-registered doctor. They review your health questionnaire and your case in a video consultation before recommending any plan.",
   },
   {
-    q: "¿Necesito cita previa o desplazarme?",
-    a: "No. Todo el proceso es online: completas el cuestionario cuando quieras y la videoconsulta se realiza desde casa, sin colas ni salas de espera.",
+    q: "Do I need an appointment or to travel?",
+    a: "No. The whole process is online: you complete the questionnaire whenever you like and the video consultation takes place from home, with no queues or waiting rooms.",
   },
   {
-    q: "¿Cuánto cuesta?",
-    a: "La primera valoración es gratuita. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Puedes cancelar la suscripción cuando quieras.",
+    q: "How much does it cost?",
+    a: "The first assessment is free. If you decide to continue, you choose your plan: a £139/month subscription with no lock-in, a 5-month pack for £449, or a nutritionist + GLP-1 for £649. You can cancel the subscription whenever you like.",
   },
   {
-    q: "¿Qué pasa después de la valoración?",
-    a: "Si el médico lo considera adecuado, te propone un plan personalizado y hace seguimiento de tu evolución. Tú decides si quieres continuar en cada momento.",
+    q: "What happens after the assessment?",
+    a: "If the doctor considers it appropriate, they propose a personalised plan and follow your progress. You decide whether to continue at each step.",
   },
   {
-    q: "¿Mis datos están protegidos?",
-    a: "Sí. Tratamos tu información clínica conforme al RGPD y solo el personal médico autorizado accede a ella.",
+    q: "Is my data protected?",
+    a: "Yes. We process your clinical information in line with UK GDPR and only authorised medical staff can access it.",
   },
 ];
 
-/** Fila de estrellas con el estilo verde de Trustpilot. */
+/** Row of stars in Trustpilot's green style. */
 function TrustpilotStars({ rating, size = 24 }: { rating: number; size?: number }) {
   return (
-    <div className="flex items-center gap-[2px]" aria-label={`${rating} de 5 estrellas`}>
+    <div className="flex items-center gap-[2px]" aria-label={`${rating} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <span
           key={i}
@@ -159,36 +159,35 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
   return (
     <QuizProvider variant="ads">
       <main className="min-h-screen bg-paper text-ink">
-        {/* ── Cabecera mínima: solo logo (sin navbar) ── */}
+        {/* ── Minimal header: logo only (no navbar) ── */}
         <header className="mx-auto flex max-w-[1100px] items-center justify-between px-5 py-5">
           <BrandLogo markSize={30} textSize={20} textClassName="text-ink" />
           <span className="hidden items-center gap-2 text-[13px] font-medium text-ink-soft sm:flex">
             <ShieldCheck aria-hidden className="h-4 w-4 text-olive" />
-            Médicos colegiados en España
+            GMC-registered doctors
           </span>
         </header>
 
-        {/* ── Hero (con imagen del médico en el móvil) ── */}
+        {/* ── Hero (with image of the doctor on the phone) ── */}
         <section className="relative overflow-hidden bg-espresso text-paper">
           <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-10 px-5 py-16 sm:py-20 lg:grid-cols-[1.05fr_.95fr] lg:gap-12">
-            {/* Columna de texto */}
+            {/* Text column */}
             <div className="text-center lg:text-left">
               <span className="inline-flex items-center gap-2 rounded-full bg-paper/10 px-4 py-1.5 text-[13px] font-medium text-paper/90 ring-1 ring-paper/15">
                 <Stethoscope aria-hidden className="h-4 w-4 text-sage" />
-                Valoración médica online
+                Online medical assessment
               </span>
 
               <h1 className="mt-6 text-balance text-[clamp(30px,5vw,52px)] font-light leading-[1.05] tracking-[-.03em] text-paper">
-                Cuida tu peso con{" "}
-                <span className="font-serif italic text-sage">apoyo médico</span>{" "}
-                profesional
+                Manage your weight with professional{" "}
+                <span className="font-serif italic text-sage">medical support</span>
               </h1>
 
               <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-[16px] leading-relaxed text-paper/80 lg:mx-0">
-                Completa un breve cuestionario de salud y un médico colegiado en
-                España valora tu caso en una videoconsulta. Si lo considera
-                adecuado, te propone un plan personalizado con seguimiento
-                continuo.
+                Complete a short health questionnaire and a GMC-registered doctor
+                assesses your case in a video consultation. If they consider it
+                appropriate, they propose a personalised plan with continuous
+                follow-up.
               </p>
 
               {config.showGlpBadge && (
@@ -197,13 +196,13 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                     <Pill aria-hidden className="h-4 w-4 flex-shrink-0 text-sage" />
                     <span className="text-pretty">
                       {config.glpBadgeText ??
-                        "Tratamiento médico GLP-1, si el médico lo considera adecuado"}
+                        "GLP-1 medical treatment, if the doctor considers it appropriate"}
                     </span>
                   </span>
                 </div>
               )}
 
-              {/* Prueba social */}
+              {/* Social proof */}
               <div className="mt-6 flex items-center justify-center gap-2 lg:justify-start">
                 <div className="flex items-center gap-1 text-sage">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -211,7 +210,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                   ))}
                 </div>
                 <span className="text-[14px] font-medium text-paper/85">
-                  <span className="font-semibold text-paper">4,1/5</span> · valoración de nuestros pacientes
+                  <span className="font-semibold text-paper">4.1/5</span> · our patients' rating
                 </span>
               </div>
 
@@ -221,10 +220,10 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                     plan={`${planPrefix}-hero`}
                     className="w-full max-w-[360px] rounded-full bg-sage px-8 py-[16px] text-[16px] font-bold text-espresso"
                   >
-                    Empezar mi valoración gratuita
+                    Start my free assessment
                   </QuizTrigger>
                   <span className="text-[13px] text-paper/70">
-                    Primera valoración gratis · sin compromiso
+                    First assessment free · no obligation
                   </span>
                 </div>
               )}
@@ -242,9 +241,9 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </ul>
             </div>
 
-            {/* Columna de imagen: médico en videollamada desde el móvil */}
+            {/* Image column: doctor on a video call from the phone */}
             <div className="relative mx-auto w-full max-w-[420px] lg:max-w-none">
-              {/* resplandor que funde la imagen en el fondo */}
+              {/* glow that blends the image into the background */}
               <div
                 aria-hidden
                 className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -252,24 +251,24 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               />
               <img
                 src="/doctor-mobile.webp"
-                alt="Médico colegiado de DoctorLife atendiendo una videoconsulta desde el móvil"
+                alt="A GMC-registered DoctorLife doctor holding a video consultation from a phone"
                 className="relative mx-auto h-auto w-full max-w-[380px] object-contain lg:max-w-[440px]"
               />
             </div>
           </div>
         </section>
 
-        {/* ── Cómo funciona ── */}
+        {/* ── How it works ── */}
         <section aria-labelledby="como-funciona" className="mx-auto max-w-[1100px] px-5 pt-20">
           <div className="text-center">
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Cómo funciona
+              How it works
             </span>
             <h2
               id="como-funciona"
               className="mx-auto mt-3 max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Tres pasos sencillos, siempre con un médico
+              Three simple steps, always with a doctor
             </h2>
           </div>
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -288,18 +287,18 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </div>
         </section>
 
-        {/* ── Precio + qué incluye ── */}
+        {/* ── Price + what's included ── */}
         <section aria-labelledby="precio" className="mx-auto max-w-[1100px] px-5 pt-20">
           <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
             <div>
               <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Qué incluye tu programa
+                What your programme includes
               </span>
               <h2
                 id="precio"
                 className="mt-3 text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
               >
-                Todo lo que necesitas, en un solo lugar
+                Everything you need, in one place
               </h2>
               <ul className="mt-7 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
                 {planIncludes.map((item) => (
@@ -313,31 +312,31 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </ul>
             </div>
 
-            {/* Tarjeta de precio */}
+            {/* Price card */}
             <div className="rounded-[28px] border border-ink/10 bg-warm p-7 sm:p-8">
               <span className="inline-flex items-center gap-2 rounded-full bg-sage/50 px-3 py-1 text-[12.5px] font-semibold text-olive">
                 <BadgeCheck aria-hidden className="h-4 w-4" />
-                Primera valoración gratis
+                First assessment free
               </span>
               <div className="mt-5 flex items-end gap-2">
-                <span className="text-[44px] font-light leading-none tracking-[-.03em] text-ink">0 €</span>
-                <span className="pb-1 text-[15px] text-ink-mute">primera valoración</span>
+                <span className="text-[44px] font-light leading-none tracking-[-.03em] text-ink">£0</span>
+                <span className="pb-1 text-[15px] text-ink-mute">first assessment</span>
               </div>
               <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
-                Si decides continuar con el seguimiento médico:
+                If you decide to continue with medical follow-up:
               </p>
               <ul className="mt-4 flex flex-col gap-2.5 text-[15px] text-ink">
                 <li className="flex items-center justify-between border-b border-ink/10 pb-2.5">
-                  <span>Suscripción mensual</span>
-                  <span className="font-semibold">139 €/mes</span>
+                  <span>Monthly subscription</span>
+                  <span className="font-semibold">£139/month</span>
                 </li>
                 <li className="flex items-center justify-between border-b border-ink/10 pb-2.5">
-                  <span>Pack 5 meses</span>
-                  <span className="font-semibold">449 €</span>
+                  <span>5-month pack</span>
+                  <span className="font-semibold">£449</span>
                 </li>
                 <li className="flex items-center justify-between">
-                  <span>Nutricionista + GLP1</span>
-                  <span className="font-semibold">649 €</span>
+                  <span>Nutritionist + GLP-1</span>
+                  <span className="font-semibold">£649</span>
                 </li>
               </ul>
               {!config.hideCta && (
@@ -346,11 +345,11 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                     plan={`${planPrefix}-precio`}
                     className="mt-6 block w-full rounded-full bg-ink px-8 py-[15px] text-center text-[16px] font-bold text-paper"
                   >
-                    Empezar valoración gratuita
+                    Start free assessment
                   </QuizTrigger>
                   <p className="mt-3 flex items-center justify-center gap-2 text-center text-[12.5px] text-ink-mute">
                     <CalendarCheck aria-hidden className="h-4 w-4 text-olive" />
-                    Sin permanencia · cancela cuando quieras
+                    No lock-in · cancel whenever you like
                   </p>
                 </>
               )}
@@ -358,21 +357,21 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </div>
         </section>
 
-        {/* ── Confianza / TrustBox ── */}
+        {/* ── Trust / TrustBox ── */}
         <section className="mx-auto max-w-[1100px] px-5 pt-20">
           <div className="rounded-[28px] border border-ink/10 bg-warm px-6 py-8 text-center">
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
               <span className="flex items-center gap-2 text-[14.5px] font-medium text-ink">
                 <ShieldCheck aria-hidden className="h-5 w-5 text-olive" />
-                Médicos colegiados en España
+                GMC-registered doctors
               </span>
               <span className="flex items-center gap-2 text-[14.5px] font-medium text-ink">
                 <Lock aria-hidden className="h-5 w-5 text-olive" />
-                Datos protegidos (RGPD)
+                Data protected (UK GDPR)
               </span>
               <span className="flex items-center gap-2 text-[14.5px] font-medium text-ink">
                 <FileCheck2 aria-hidden className="h-5 w-5 text-olive" />
-                Seguimiento médico personalizado
+                Personalised medical follow-up
               </span>
             </div>
             {!config.hideReviews && (
