@@ -18,85 +18,85 @@ import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type LandingConfig = {
-  /** Ruta canónica, p. ej. "/consulta-peso-glp1" */
+  /** Canonical route, e.g. "/weight-consultation-glp1" */
   path: string;
-  /** Prefijo para los eventos de analítica, p. ej. "ads-peso-glp1" */
+  /** Prefix for analytics events, e.g. "ads-weight-glp1" */
   planPrefix: string;
-  /** Texto del badge superior */
+  /** Top badge text */
   eyebrow: string;
-  /** Titular (acepta JSX para estilar partes) */
+  /** Headline (accepts JSX for styling parts) */
   headline: React.ReactNode;
-  /** Subtítulo bajo el titular */
+  /** Subtitle under the headline */
   subtitle: string;
-  /** Nº de casos antes/después a mostrar (0 = sin fotos) */
+  /** Number of before/after cases to show (0 = no photos) */
   photos: number;
 };
 
 const steps = [
   {
     icon: ClipboardList,
-    title: "Cuéntanos tu caso",
-    text: "Completas un cuestionario clínico sencillo sobre tu historia, hábitos y objetivos. Solo unos minutos.",
+    title: "Tell us your case",
+    text: "Complete a simple clinical questionnaire about your history, habits, and goals. Just a few minutes.",
   },
   {
     icon: Video,
-    title: "Videoconsulta con tu médico",
-    text: "Un médico colegiado valora tu situación por videollamada y resuelve tus dudas con calma.",
+    title: "Video consultation with your doctor",
+    text: "A registered doctor assesses your situation via video call and answers your questions calmly.",
   },
   {
     icon: HeartPulse,
-    title: "Plan y seguimiento",
-    text: "Recibes un plan personalizado y acompañamiento continuo por chat. Si tu médico lo considera clínicamente indicado, puede prescribir tratamiento y ajustarlo a tu evolución.",
+    title: "Plan and follow-up",
+    text: "You receive a personalised plan and continuous follow-up via chat. If your doctor considers it clinically indicated, they can prescribe treatment and adjust it to your progress.",
   },
 ];
 
 const benefits = [
   {
     icon: Stethoscope,
-    title: "Endocrinos y médicos colegiados",
-    text: "Especialistas en endocrinología y nutrición, colegiados e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
+    title: "Endocrinologists and registered doctors",
+    text: "Specialists in endocrinology and nutrition, registered and listed in the State Registry of Health Professionals (REPS).",
   },
   {
     icon: Video,
-    title: "100% online, desde casa",
-    text: "Sin desplazamientos ni salas de espera. Tú eliges el horario que mejor te venga.",
+    title: "100% online, from home",
+    text: "No travel or waiting rooms. You choose the schedule that suits you best.",
   },
   {
     icon: CalendarCheck,
-    title: "Seguimiento continuo",
-    text: "No es una consulta suelta: te acompañamos mes a mes y ajustamos el plan a tu ritmo.",
+    title: "Continuous follow-up",
+    text: "Not a one-off consultation: we accompany you month by month and adjust the plan to your pace.",
   },
   {
     icon: ShieldCheck,
-    title: "Sin permanencia",
-    text: "Una única suscripción transparente. Puedes pausar o cancelar cuando quieras.",
+    title: "No commitment",
+    text: "A single transparent subscription. You can pause or cancel whenever you want.",
   },
 ];
 
 const faqs = [
   {
-    q: "¿Qué incluye la primera visita?",
-    a: "Una valoración clínica completa con un médico colegiado por videollamada, en la que se revisa tu historia y tus objetivos y se define el punto de partida. La primera visita es gratis, sin compromiso.",
+    q: "What does the first visit include?",
+    a: "A complete clinical assessment with a registered doctor via video call, where your history and objectives are reviewed and the starting point is defined. The first visit is free, with no commitment.",
   },
   {
-    q: "¿Los médicos están colegiados?",
-    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS), incluidos especialistas en endocrinología y nutrición. Verificamos su titulación y colegiación antes de incorporarlos.",
+    q: "Are the doctors registered?",
+    a: "Yes. All our professionals are doctors registered in Spain and listed in the State Registry of Health Professionals (REPS), including specialists in endocrinology and nutrition. We verify their qualifications and registration before incorporating them.",
   },
   {
-    q: "¿El médico puede recetar tratamiento?",
-    a: "Sí. Cuando la valoración clínica lo justifica, el médico o endocrino puede prescribir el tratamiento que considere adecuado para tu caso y hacer su seguimiento. La indicación depende siempre de una valoración médica individual; no todos los casos requieren medicación.",
+    q: "Can the doctor prescribe treatment?",
+    a: "Yes. When the clinical assessment justifies it, the doctor or endocrinologist can prescribe the treatment they consider appropriate for your case and follow it up. The indication always depends on an individual medical assessment; not all cases require medication.",
   },
   {
-    q: "¿Cuánto cuesta?",
-    a: "La primera valoración es gratis. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Incluye seguimiento por chat con tu médico y ajuste del plan.",
+    q: "How much does it cost?",
+    a: "The first assessment is free. If you decide to continue, you choose your plan: subscription of 139 €/month with no commitment, 5-month pack for 449 €, or nutritionist + GLP1 for 649 €. Includes follow-up via chat with your doctor and plan adjustment.",
   },
   {
-    q: "¿Necesito acudir presencialmente?",
-    a: "No es necesario: el servicio es 100% online. Si en algún momento tu médico considera que necesitas una valoración o prueba presencial, te lo indicará y te orientará sobre cómo hacerlo.",
+    q: "Do I need to attend in person?",
+    a: "It's not necessary: the service is 100% online. If at any point your doctor considers you need an in-person assessment or test, they will let you know and guide you on how to do it.",
   },
   {
-    q: "¿Mis datos están protegidos?",
-    a: "Sí. Tratamos tus datos de salud conforme al RGPD y la LOPDGDD, con medidas de seguridad reforzadas y confidencialidad médica.",
+    q: "Are my data protected?",
+    a: "Yes. We process your health data in accordance with GDPR and LOPDGDD, with reinforced security measures and medical confidentiality.",
   },
 ];
 
@@ -110,7 +110,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
     url: `${SITE_URL}${path}`,
     medicalSpecialty: "Endocrinology",
     description:
-      "Servicio de telemedicina para el control de peso con médicos colegiados en España. Valoración clínica, plan personalizado y seguimiento continuo.",
+      "Telemedicine service for weight control with doctors registered in Spain. Clinical assessment, personalised plan, and continuous follow-up.",
     areaServed: "ES",
     priceRange: "€€",
   };
@@ -150,10 +150,10 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       plan={planPrefix}
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
-                      Reservar primera visita gratis
+                      Book free first visit
                     </QuizTrigger>
                     <span className="text-[13.5px] text-paper/70">
-                      Gratis · sin compromiso
+                      Free · no commitment
                     </span>
                   </div>
 
@@ -188,10 +188,10 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Stethoscope, label: "Endocrinos colegiados (REPS)" },
-                { icon: ClipboardList, label: "Prescripción si está indicada" },
-                { icon: ShieldCheck, label: "Sin permanencia" },
-                { icon: Lock, label: "Datos protegidos (RGPD)" },
+                { icon: Stethoscope, label: "Registered endocrinologists (REPS)" },
+                { icon: ClipboardList, label: "Prescription if indicated" },
+                { icon: ShieldCheck, label: "No commitment" },
+                { icon: Lock, label: "Data protected (GDPR)" },
               ].map(({ icon: Icon, label }) => (
                 <li
                   key={label}
@@ -212,13 +212,13 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
             className="mx-auto max-w-[1100px] px-5 pt-16"
           >
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Cómo funciona
+              How it works
             </span>
             <h2
               id="como-funciona"
               className="mt-3 max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Tres pasos para empezar con seguridad
+              Three steps to start safely
             </h2>
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
               {steps.map(({ icon: Icon, title, text }, i) => (
@@ -248,13 +248,13 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
           >
             <div className="overflow-hidden rounded-[32px] bg-espresso px-6 py-12 text-paper sm:px-12">
               <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-sage">
-                Por qué con un médico
+                Why with a doctor
               </span>
               <h2
                 id="beneficios"
                 className="mt-3 max-w-[24ch] text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.12]"
               >
-                El peso tiene causas fisiológicas. Tratarlas requiere criterio médico.
+                Weight has physiological causes. Treating them requires medical judgement.
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
                 {benefits.map(({ icon: Icon, title, text }) => (
@@ -282,26 +282,26 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
             <div className="grid grid-cols-1 items-center gap-8 rounded-[32px] border border-ink/10 bg-warm p-8 sm:p-12 md:grid-cols-[1.1fr_1fr]">
               <div>
                 <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                  Precio transparente
+                  Transparent pricing
                 </span>
                 <h2
                   id="precio"
                   className="mt-3 text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.1] text-ink"
                 >
-                  Empieza gratis y decide con calma
+                  Start free and decide calmly
                 </h2>
                 <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  La primera valoración es gratis. Si decides continuar, eliges tu
-                  plan: 139 €/mes sin permanencia, pack de 5 meses por 449 € o
-                  nutricionista + GLP1 por 649 €. Cubre el seguimiento con tu médico
-                  y el ajuste de tu plan. Sin sorpresas.
+                  The first assessment is free. If you decide to continue, you choose your
+                  plan: 139 €/month with no commitment, 5-month pack for 449 € or
+                  nutritionist + GLP1 for 649 €. Covers follow-up with your doctor
+                  and plan adjustment. No surprises.
                 </p>
                 <ul className="mt-6 flex flex-col gap-2.5 text-[15px] text-ink">
                   {[
-                    "Valoración con médico colegiado",
-                    "Plan personalizado a tu caso",
-                    "Chat de seguimiento con tu médico",
-                    "Cancela cuando quieras",
+                    "Assessment with registered doctor",
+                    "Plan personalised to your case",
+                    "Follow-up chat with your doctor",
+                    "Cancel whenever you want",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-2.5">
                       <BadgeCheck
@@ -315,31 +315,31 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
               </div>
 
               <div className="rounded-[24px] bg-espresso p-8 text-paper">
-                <p className="text-[14px] text-paper/70">Primera visita</p>
+                <p className="text-[14px] text-paper/70">First visit</p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[48px] font-light leading-none">Gratis</span>
+                  <span className="text-[48px] font-light leading-none">Free</span>
                   <span className="mb-1 text-[14px] text-paper/70">
-                    sin compromiso
+                    no commitment
                   </span>
                 </p>
                 <div className="my-6 h-px bg-paper/15" />
                 <p className="text-[14px] text-paper/70">
-                  Si continúas · elige tu plan
+                  If you continue · choose your plan
                 </p>
                 <p className="mt-1 flex items-end gap-2">
                   <span className="text-[32px] font-light leading-none">139 €</span>
                   <span className="mb-1 text-[14px] text-paper/70">
-                    /mes · o pack 5 meses 449 €
+                    /month · or 5-month pack 449 €
                   </span>
                 </p>
                 <QuizTrigger
                   plan={`${planPrefix}-precio`}
                   className="mt-7 block w-full rounded-full bg-sage px-7 py-[15px] text-center text-[16px] font-semibold text-ink"
                 >
-                  Reservar primera visita
+                  Book first visit
                 </QuizTrigger>
                 <p className="mt-3 text-center text-[12.5px] text-paper/60">
-                  Sin permanencia · cancela cuando quieras
+                  No commitment · cancel whenever you want
                 </p>
               </div>
             </div>
@@ -354,7 +354,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
               id="faq"
               className="text-balance text-[clamp(24px,3.2vw,36px)] font-light leading-[1.1] text-ink"
             >
-              Preguntas frecuentes
+              Frequently asked questions
             </h2>
             <div className="mt-8 divide-y divide-ink/10 overflow-hidden rounded-[24px] border border-ink/10 bg-warm">
               {faqs.map(({ q, a }) => (
@@ -388,25 +388,25 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                     id="cta-final"
                     className="text-balance text-[clamp(24px,3.2vw,36px)] font-light leading-[1.1]"
                   >
-                    Da el primer paso hoy, con un médico de tu lado
+                    Take the first step today, with a doctor by your side
                   </h2>
                   <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-paper/75">
-                    Reserva tu primera visita gratis. Sin desplazamientos, sin
-                    permanencia y con el rigor de médicos colegiados.
+                    Book your free first visit. No travel, no commitment,
+                    and with the rigour of registered doctors.
                   </p>
                   <QuizTrigger
                     plan={`${planPrefix}-final`}
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
-                    Reservar primera visita gratis
+                    Book free first visit
                   </QuizTrigger>
                   <p className="mt-5 text-[14px] text-paper/70">
-                    ¿Quieres conocernos mejor?{" "}
+                    Want to know us better?{" "}
                     <a
                       href="/#product"
                       className="font-medium text-paper underline decoration-paper/40 underline-offset-4 transition-colors hover:decoration-paper"
                     >
-                      Descubre cómo funciona DoctorLife
+                      Discover how DoctorLife works
                     </a>
                   </p>
                 </div>
@@ -429,25 +429,25 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
               </div>
             </div>
 
-            {/* Aviso médico compliant (sin nombres de fármacos) */}
+            {/* Medical compliant notice (without drug names) */}
             <p className="mx-auto mt-8 max-w-[70ch] text-center text-[12.5px] leading-relaxed text-ink-mute">
-              Servicio de telemedicina prestado por médicos colegiados en España.
-              La indicación de cualquier tratamiento depende siempre de una
-              valoración médica individual. Este servicio no garantiza resultados
-              concretos y no sustituye la atención presencial cuando sea necesaria.
-              Tratamos tus datos conforme al RGPD y la LOPDGDD.
+              Telemedicine service provided by doctors registered in Spain.
+              The indication of any treatment always depends on an
+              individual medical assessment. This service does not guarantee specific
+              results and does not replace in-person care when necessary.
+              We process your data in accordance with GDPR and LOPDGDD.
             </p>
           </section>
         </main>
 
-        {/* ── Footer limpio y compliant (sin nombres de fármacos) ── */}
+        {/* ── Clean and compliant footer (without drug names) ── */}
         <footer className="px-3 pb-6 pt-[40px] sm:px-4 lg:px-5">
           <div className="mx-auto max-w-none overflow-hidden rounded-[32px] bg-ink text-paper">
             <div className="grid grid-cols-1 gap-x-10 gap-y-8 px-8 pb-10 pt-12 md:grid-cols-[1.6fr_1fr_1fr] md:px-14">
               <div>
                 <a
                   href="/"
-                  aria-label="DoctorLife — inicio"
+                  aria-label="DoctorLife — home"
                   className="inline-flex no-underline"
                 >
                   <BrandLogo
@@ -458,15 +458,14 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   />
                 </a>
                 <p className="mt-5 max-w-[320px] text-[15px] leading-relaxed text-paper/65">
-                  Plataforma de telemedicina que conecta a pacientes con médicos
-                  colegiados independientes para el control de peso con supervisión
-                  médica.
+                  Telemedicine platform that connects patients with independent
+                  registered doctors for weight control with medical supervision.
                 </p>
                 <QuizTrigger
                   plan={`${planPrefix}-footer`}
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
-                  Reservar primera visita gratis
+                  Book free first visit
                   <span className="text-[13px]">↗</span>
                 </QuizTrigger>
                 <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
@@ -474,22 +473,22 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
 
               <div>
                 <span className="text-xs uppercase tracking-[.14em] text-sage">
-                  Servicio
+                  Service
                 </span>
                 <ul className="mt-4 flex flex-col gap-3 text-[15px] text-paper/75">
                   <li>
                     <a href="#como-funciona" className="no-underline hover:text-paper">
-                      Cómo funciona
+                      How it works
                     </a>
                   </li>
                   <li>
                     <a href="#precio" className="no-underline hover:text-paper">
-                      Precio
+                      Pricing
                     </a>
                   </li>
                   <li>
                     <a href="#faq" className="no-underline hover:text-paper">
-                      Preguntas frecuentes
+                      FAQ
                     </a>
                   </li>
                 </ul>
@@ -505,7 +504,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       href="/legal/privacy-policy"
                       className="no-underline hover:text-paper"
                     >
-                      Política de privacidad
+                      Privacy policy
                     </a>
                   </li>
                   <li>
@@ -513,12 +512,12 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       href="/legal/terms-of-services"
                       className="no-underline hover:text-paper"
                     >
-                      Términos y condiciones
+                      Terms and conditions
                     </a>
                   </li>
                   <li>
                     <a href="/cookies" className="no-underline hover:text-paper">
-                      Política de cookies
+                      Cookie policy
                     </a>
                   </li>
                 </ul>
@@ -527,7 +526,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
 
             <div className="flex flex-col gap-1 border-t border-paper/10 px-8 py-7 text-[12.5px] text-paper/45 md:flex-row md:items-center md:justify-between md:px-14">
               <span>© 2026 DoctorLife · doctorlife.io</span>
-              <span>Servicio sujeto a valoración médica individual.</span>
+              <span>Service subject to individual medical assessment.</span>
             </div>
           </div>
         </footer>
