@@ -178,8 +178,8 @@ export const analytics = {
     });
   },
 
-  /** El usuario hizo clic en el botón de WhatsApp. */
-  whatsappClicked(source: "button" | "tooltip" | "sticky_bar") {
+  /** The user clicked the WhatsApp button. */
+  whatsappClicked(source: "button" | "tooltip" | "sticky_bar" | "quiz" | "no_slots_quiz") {
     track("whatsapp_clicked", { source, path: currentPath() });
     // Fire Google Ads conversion — same weight as form lead
     fireGoogleAdsConversion();
