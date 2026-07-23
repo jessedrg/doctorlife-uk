@@ -8,7 +8,7 @@ export function MedicalTeamSection({ compact = false }: { compact?: boolean }) {
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[380px] overflow-hidden rounded-[28px] bg-cream-2">
             <Image
               src="/images/miguel-guirola.jpeg"
-              alt="Dr. Miguel A. Guirola, médico especialista en obesidad de DoctorLife"
+              alt="Dr Miguel A. Guirola, obesity specialist at DoctorLife"
               fill
               sizes="(max-width: 768px) 90vw, 380px"
               className="object-cover object-[50%_35%]"
@@ -17,17 +17,17 @@ export function MedicalTeamSection({ compact = false }: { compact?: boolean }) {
 
           <div>
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-olive">
-              Nuestro equipo médico
+              Our medical team
             </span>
             <h2
               id="medical-team-heading"
               className="mt-3 text-balance text-[clamp(26px,3.6vw,40px)] font-light leading-[1.1] tracking-[-0.03em] text-ink"
             >
-              Nuestro médico especialista en obesidad
+              Our obesity specialist doctor
             </h2>
-            <p className="mt-5 text-[20px] font-medium text-ink">Dr. Miguel A. Guirola</p>
+            <p className="mt-5 text-[20px] font-medium text-ink">Dr Miguel A. Guirola</p>
             <p className="mt-1 text-[15px] text-ink-soft">
-              Médico especialista en obesidad · Médico de DoctorLife
+              Obesity specialist doctor · DoctorLife doctor
             </p>
           </div>
         </div>

@@ -42,7 +42,7 @@ export async function buildClinicCheckoutSession(
   if (!clinic) {
     return {
       error:
-        "La clínica todavía no puede procesar cobros. Completa la verificación de la clínica en Stripe antes de activar pagos.",
+        "The clinic cannot process payments yet. Complete the clinic verification in Stripe before enabling payments.",
     }
   }
 
@@ -66,7 +66,7 @@ export async function buildClinicCheckoutSession(
         amount_off: discount,
         currency: product.currency,
         duration: "once",
-        name: `Oferta de bienvenida (−${(discount / 100).toFixed(0)} €)`,
+        name: `Welcome offer (−£${(discount / 100).toFixed(0)})`,
       })
       params.discounts = [{ coupon: coupon.id }]
     }
@@ -88,9 +88,9 @@ export async function buildClinicCheckoutSession(
 
   try {
     const session = await stripe.checkout.sessions.create(params)
-    if (!session.url) return { error: "No se pudo iniciar el pago." }
+    if (!session.url) return { error: "Payment could not be started." }
     return { url: session.url }
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "No se pudo iniciar el pago." }
+    return { error: e instanceof Error ? e.message : "Payment could not be started." }
   }
 }

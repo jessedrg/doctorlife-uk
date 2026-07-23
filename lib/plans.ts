@@ -1,76 +1,76 @@
 /**
- * Plan principal de DoctorLife.
+ * DoctorLife UK main plan.
  *
- * La definición vive ahora en el catálogo central (`lib/catalog.ts`), fuente de
- * verdad de todos los productos (suscripciones, packs, pagos únicos). Este módulo
- * expone el plan principal en el formato `PlanInfo` que ya consumía la app, para
- * no romper las llamadas existentes.
+ * The definition now lives in the central catalogue (`lib/catalog.ts`), the
+ * source of truth for all products (subscriptions, packs, one-off payments).
+ * This module exposes the main plan in the `PlanInfo` format the app already
+ * consumed, so existing calls keep working.
  *
- * La primera visita (valoración) es GRATIS (0 €) y funciona como gancho. La
- * suscripción no tiene oferta de primer mes: el precio es plano desde el inicio.
- * Los servicios médicos están exentos de IVA (art. 20 Ley del IVA).
+ * The first visit (assessment) is FREE (£0) and works as a hook. The
+ * subscription has no first-month offer: the price is flat from the start.
+ * Medical services are VAT-exempt in the UK.
  */
 import { getProduct, mainSubscription, type Product } from "./catalog"
 
-/** Producto principal (suscripción de seguimiento mensual). */
+/** Main product (monthly follow-up subscription). */
 const MAIN_PRODUCT: Product =
   mainSubscription() ??
-  getProduct("seguimiento-mensual") ??
+  getProduct("monthly-follow-up") ??
   ({
-    id: "seguimiento-mensual",
-    name: "Suscripción mensual",
-    description: "Suscripción mensual con seguimiento médico.",
+    id: "monthly-follow-up",
+    name: "Monthly subscription",
+    description: "Monthly subscription with medical follow-up.",
     model: "subscription",
     priceCents: 13900,
-    currency: "eur",
+    currency: "gbp",
     active: true,
     interval: "month",
   } satisfies Product)
 
-/** Precio mensual (céntimos). Sin IVA (servicio médico exento). */
-export const SUBSCRIPTION_PRICE_CENTS = MAIN_PRODUCT.priceCents   // 139 €
+/** Monthly price (pence). No VAT (VAT-exempt medical service). */
+export const SUBSCRIPTION_PRICE_CENTS = MAIN_PRODUCT.priceCents   // £139
 
-/** Pago único de la primera visita (céntimos). Es GRATIS. */
-export const FIRST_VISIT_CENTS = 0               // 0 € (gratis)
+/** One-off payment for the first visit (pence). It is FREE. */
+export const FIRST_VISIT_CENTS = 0               // £0 (free)
 
-/** Id del producto principal en el catálogo (para el checkout). */
+/** Id of the main product in the catalogue (for checkout). */
 export const MAIN_PRODUCT_ID = MAIN_PRODUCT.id
 
-/** Etiqueta del pago de la primera visita. */
-export const FIRST_VISIT_LABEL = "gratis"
+/** Label for the first-visit payment. */
+export const FIRST_VISIT_LABEL = "free"
 
 export interface PlanInfo {
   name: string
-  /** Precio mensual (céntimos). Sin IVA. */
+  /** Monthly price (pence). No VAT. */
   priceCents: number
-  /** Total formateado, p. ej. "139,00 €/mes". */
+  /** Formatted total, e.g. "£139.00/month". */
   totalLabel: string
 }
 
-function eur(cents: number): string {
-  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cents / 100)
+function gbp(cents: number): string {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(cents / 100)
 }
 
 function buildMainPlan(): PlanInfo {
   return {
     name: MAIN_PRODUCT.name,
     priceCents: SUBSCRIPTION_PRICE_CENTS,
-    totalLabel: `${eur(SUBSCRIPTION_PRICE_CENTS)}/mes`,
+    totalLabel: `${gbp(SUBSCRIPTION_PRICE_CENTS)}/month`,
   }
 }
 
-/** Único plan disponible para contratar. */
+/** The only plan available to purchase. */
 export const MAIN_PLAN: PlanInfo = buildMainPlan()
 
 /**
- * Devuelve la info del plan. Como solo hay un plan activo, siempre devuelve
- * MAIN_PLAN (el parámetro se mantiene por compatibilidad con llamadas previas).
+ * Returns the plan info. As there is only one active plan, it always returns
+ * MAIN_PLAN (the parameter is kept for compatibility with previous calls).
  */
 export function getPlan(_name?: string | null): PlanInfo {
   return MAIN_PLAN
 }
 
-/** Plan por defecto (idéntico al único plan disponible). */
+/** Default plan (identical to the only available plan). */
 export function defaultPlan(): PlanInfo {
   return MAIN_PLAN
 }

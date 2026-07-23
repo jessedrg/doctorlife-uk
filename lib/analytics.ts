@@ -9,13 +9,13 @@ declare global {
   }
 }
 
-/** Dispara la conversión de Google Ads de "formulario completado". */
+/** Fires the "form completed" Google Ads conversion. */
 function fireGoogleAdsConversion() {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("event", "conversion", {
     send_to: GOOGLE_ADS_SEND_TO,
     value: 1.0,
-    currency: "EUR",
+    currency: "GBP",
   });
 }
 
@@ -178,8 +178,8 @@ export const analytics = {
     });
   },
 
-  /** El usuario hizo clic en el botón de WhatsApp. */
-  whatsappClicked(source: "button" | "tooltip" | "sticky_bar") {
+  /** The user clicked the WhatsApp button. */
+  whatsappClicked(source: "button" | "tooltip" | "sticky_bar" | "quiz" | "no_slots_quiz") {
     track("whatsapp_clicked", { source, path: currentPath() });
     // Fire Google Ads conversion — same weight as form lead
     fireGoogleAdsConversion();

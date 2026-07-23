@@ -1,219 +1,159 @@
 /* ───────────────────────────────────────────────────────────
-   Enlazado interno geográfico para el blog de DoctorLife.
+   Internal geographic linking for the DoctorLife blog (UK).
 
-   Objetivo SEO: eliminar páginas huérfanas y crear silos densos
-   (provincia → comunidad → nacional) para que Googlebot descubra
-   e indexe las miles de páginas de ciudad. Cada página enlaza a:
-     1. El mismo tratamiento en ciudades cercanas (silo geográfico)
-     2. Otros tratamientos en la misma ciudad (silo temático local)
-     3. Guías nacionales / comparativas (enlaces hacia los pilares)
-   Las páginas pilar enlazan hacia abajo a las grandes ciudades para
-   repartir autoridad e impulsar la indexación de la cola larga.
+   SEO goal: remove orphan pages and build dense silos (town →
+   treatment → national pillars) so Googlebot discovers and indexes
+   the town-level pages. Each page links to:
+     1. The same town with other GLP-1 treatments (local topical silo)
+     2. Nearby / popular town clinic pages (geographic silo)
+     3. National guides / comparisons (links up to the pillars)
+   Pillar pages link down to the largest cities to spread authority
+   and speed up indexing of the long tail.
    ─────────────────────────────────────────────────────────── */
 
 import { posts } from "./blog";
-import { CITIES } from "./blog-content";
-import { CITY_FACTS } from "./blog-city-facts";
+import {
+  MUNICIPIO_SLUG_PREFIX,
+  MUNICIPIO_DRUG_SLUG_PREFIXES,
+} from "./blog-municipios";
 
 export type LinkItem = { label: string; href: string };
 export type LinkGroup = { title: string; intro?: string; items: LinkItem[] };
 
-/* Fármacos GLP‑1 con páginas geográficas */
-const DRUG_KEYS = ["wegovy", "mounjaro", "ozempic", "saxenda"] as const;
-type DrugKey = (typeof DRUG_KEYS)[number];
-const DRUG_NAME: Record<DrugKey, string> = {
-  wegovy: "Wegovy",
-  mounjaro: "Mounjaro",
-  ozempic: "Ozempic",
-  saxenda: "Saxenda",
+const SLUG_SET = new Set(posts.map((p) => p.slug));
+const PLACE_BY_SLUG = new Map(posts.map((p) => [p.slug, p.place ?? ""]));
+
+/* Drug clinic prefixes → drug name */
+const DRUG_BY_PREFIX: Record<string, string> = {
+  "ozempic-clinic-": "Ozempic",
+  "wegovy-clinic-": "Wegovy",
+  "mounjaro-clinic-": "Mounjaro",
 };
 
-/* Plantillas de página por ciudad */
-type Kind = "buy" | "price" | "availability";
-const KIND_PREFIX: Record<Kind, string> = { buy: "comprar-", price: "precio-", availability: "" };
-
-/* ── Índices construidos una vez (en build/SSG) ── */
-const NAME_BY_SLUG: Record<string, string> = Object.fromEntries(
-  CITIES.map((c) => [c.slug, c.name]),
-);
-const SLUG_SET: Set<string> = new Set(posts.map((p) => p.slug));
-
-/** Ciudades agrupadas por provincia y por comunidad, ordenadas por población desc. */
-const byProvince = new Map<string, string[]>();
-const byCommunity = new Map<string, string[]>();
-for (const slug of Object.keys(CITY_FACTS)) {
-  const f = CITY_FACTS[slug];
-  if (!f) continue;
-  (byProvince.get(f.province) ?? byProvince.set(f.province, []).get(f.province)!).push(slug);
-  (byCommunity.get(f.community) ?? byCommunity.set(f.community, []).get(f.community)!).push(slug);
+/* National pillar guides (filtered against SLUG_SET so we never link to 404s) */
+const PILLARS: LinkItem[] = [
+  { label: "Buy Wegovy in the UK", href: "/blog/buy-wegovy-uk" },
+  { label: "Buy Mounjaro in the UK", href: "/blog/buy-mounjaro-uk" },
+  { label: "Buy Ozempic in the UK", href: "/blog/buy-ozempic-uk" },
+  { label: "Ozempic vs Wegovy vs Mounjaro", href: "/blog/ozempic-vs-wegovy-vs-mounjaro" },
+  { label: "Wegovy prescription online", href: "/blog/wegovy-prescription-online" },
+];
+function pillarLinks(): LinkItem[] {
+  return PILLARS.filter((l) => SLUG_SET.has(l.href.replace("/blog/", "")));
 }
-const popDesc = (a: string, b: string) =>
-  (CITY_FACTS[b]?.pop ?? 0) - (CITY_FACTS[a]?.pop ?? 0);
-for (const list of byProvince.values()) list.sort(popDesc);
-for (const list of byCommunity.values()) list.sort(popDesc);
 
-/* Mayores hubs nacionales para repartir autoridad hacia la cola larga */
-const NATIONAL_HUBS = ["madrid", "barcelona", "valencia", "sevilla", "zaragoza", "malaga", "bilbao", "murcia"];
+/* Largest UK cities we know have town pages, in priority order. */
+const POPULAR_TOWNS = [
+  "london",
+  "birmingham",
+  "leeds",
+  "glasgow",
+  "sheffield",
+  "manchester",
+  "liverpool",
+  "bristol",
+  "edinburgh",
+  "cardiff",
+  "leicester",
+  "coventry",
+  "nottingham",
+  "belfast",
+];
 
-/* ── Parser de slug → ciudad/fármaco/plantilla ── */
-type Parsed = { kind: Kind; drug: DrugKey; city: string };
+/* Town clinic slugs indexed once at build time. */
+const TOWN_CLINIC_SLUGS: string[] = posts
+  .map((p) => p.slug)
+  .filter((s) => s.startsWith(MUNICIPIO_SLUG_PREFIX));
 
-function parseCitySlug(slug: string): Parsed | null {
-  // comprar-{drug}-{city} | precio-{drug}-{city}
-  for (const kind of ["buy", "price"] as const) {
-    const prefix = KIND_PREFIX[kind];
+/** Parse a slug into { base, drug } if it is a town/clinic page. */
+type Parsed = { base: string; drug: string | null };
+function parseTownSlug(slug: string): Parsed | null {
+  for (const prefix of MUNICIPIO_DRUG_SLUG_PREFIXES) {
     if (slug.startsWith(prefix)) {
-      const rest = slug.slice(prefix.length);
-      for (const drug of DRUG_KEYS) {
-        if (rest.startsWith(drug + "-")) {
-          const city = rest.slice(drug.length + 1);
-          if (CITY_FACTS[city]) return { kind, drug, city };
-        }
-      }
+      return { base: slug.slice(prefix.length), drug: DRUG_BY_PREFIX[prefix] ?? null };
     }
   }
-  // {drug}-{city}  (disponibilidad)
-  for (const drug of DRUG_KEYS) {
-    if (slug.startsWith(drug + "-")) {
-      const city = slug.slice(drug.length + 1);
-      if (CITY_FACTS[city]) return { kind: "availability", drug, city };
-    }
+  if (slug.startsWith(MUNICIPIO_SLUG_PREFIX)) {
+    return { base: slug.slice(MUNICIPIO_SLUG_PREFIX.length), drug: null };
   }
   return null;
 }
 
-/* ── Constructores de enlaces (solo a páginas que existen) ── */
-function cityHref(kind: Kind, drug: DrugKey, city: string): string {
-  return `/blog/${KIND_PREFIX[kind]}${drug}-${city}`;
-}
-function cityLabel(kind: Kind, drug: DrugKey, city: string): string {
-  const name = NAME_BY_SLUG[city] ?? city;
-  const d = DRUG_NAME[drug];
-  if (kind === "buy") return `Comprar ${d} en ${name}`;
-  if (kind === "price") return `Precio de ${d} en ${name}`;
-  return `${d} en ${name}`;
-}
-function pushIfExists(items: LinkItem[], kind: Kind, drug: DrugKey, city: string) {
-  const slug = `${KIND_PREFIX[kind]}${drug}-${city}`;
-  if (SLUG_SET.has(slug)) items.push({ label: cityLabel(kind, drug, city), href: cityHref(kind, drug, city) });
+function townLabel(base: string): string {
+  const place = PLACE_BY_SLUG.get(`${MUNICIPIO_SLUG_PREFIX}${base}`);
+  if (place) return place;
+  return base.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/* Guías nacionales / pilares por fármaco (se filtran contra SLUG_SET) */
-const PILLARS: Record<DrugKey, LinkItem[]> = {
-  wegovy: [
-    { label: "Comprar Wegovy online en España", href: "/blog/comprar-wegovy-online" },
-    { label: "Precio de Wegovy en España", href: "/blog/wegovy-precio-espana" },
-    { label: "Receta de Wegovy online con médico", href: "/blog/receta-wegovy-online" },
-    { label: "Wegovy vs Mounjaro: comparativa", href: "/blog/wegovy-vs-mounjaro" },
-  ],
-  mounjaro: [
-    { label: "Comprar Mounjaro online en España", href: "/blog/comprar-mounjaro-online" },
-    { label: "Precio de Mounjaro en España", href: "/blog/mounjaro-precio-espana" },
-    { label: "Receta de Mounjaro online con médico", href: "/blog/receta-mounjaro-online" },
-    { label: "Wegovy vs Mounjaro: comparativa", href: "/blog/wegovy-vs-mounjaro" },
-  ],
-  ozempic: [
-    { label: "Comprar Ozempic online en España", href: "/blog/comprar-ozempic-online" },
-    { label: "Precio de Ozempic en España", href: "/blog/ozempic-precio-espana" },
-    { label: "Ozempic vs Wegovy: comparativa", href: "/blog/ozempic-vs-wegovy" },
-    { label: "Receta de Ozempic online con médico", href: "/blog/receta-ozempic-online" },
-  ],
-  saxenda: [
-    { label: "Comprar Saxenda online en España", href: "/blog/comprar-saxenda-online" },
-    { label: "Precio de Saxenda en España", href: "/blog/saxenda-precio-espana" },
-    { label: "Saxenda vs Wegovy: comparativa", href: "/blog/saxenda-vs-wegovy" },
-    { label: "Receta de Saxenda online con médico", href: "/blog/receta-saxenda-online" },
-  ],
-};
-function pillarsFor(drug: DrugKey): LinkItem[] {
-  return PILLARS[drug].filter((l) => SLUG_SET.has(l.href.replace("/blog/", "")));
+function pushIfExists(items: LinkItem[], slug: string, label: string) {
+  if (SLUG_SET.has(slug)) items.push({ label, href: `/blog/${slug}` });
 }
 
-/** Vecinas: misma provincia primero, luego comunidad, luego hubs nacionales. */
-function neighborCities(parsed: Parsed, max: number): string[] {
-  const f = CITY_FACTS[parsed.city];
-  const ordered: string[] = [];
-  const seen = new Set<string>([parsed.city]);
-  const add = (slug: string) => {
-    if (!seen.has(slug)) {
-      seen.add(slug);
-      ordered.push(slug);
-    }
-  };
-  if (f) {
-    for (const s of byProvince.get(f.province) ?? []) add(s);
-    for (const s of byCommunity.get(f.community) ?? []) add(s);
+/** Popular town clinic pages (for spreading authority downward). */
+function popularTownLinks(max: number): LinkItem[] {
+  const items: LinkItem[] = [];
+  for (const town of POPULAR_TOWNS) {
+    const slug = `${MUNICIPIO_SLUG_PREFIX}${town}`;
+    pushIfExists(items, slug, `Weight loss clinic in ${townLabel(town)}`);
+    if (items.length >= max) break;
   }
-  for (const s of NATIONAL_HUBS) add(s);
-  return ordered.slice(0, max);
+  return items;
 }
 
-/**
- * Devuelve los grupos de enlaces internos para un post.
- * - Páginas de ciudad → silos geográfico + temático + pilares.
- * - Páginas pilar/otras → enlaces descendentes a grandes ciudades.
- */
 export function getInternalLinks(slug: string): LinkGroup[] {
-  const parsed = parseCitySlug(slug);
+  const parsed = parseTownSlug(slug);
 
   if (parsed) {
-    const f = CITY_FACTS[parsed.city];
-    const cityName = NAME_BY_SLUG[parsed.city] ?? parsed.city;
-    const drugName = DRUG_NAME[parsed.drug];
     const groups: LinkGroup[] = [];
+    const townName = townLabel(parsed.base);
 
-    // 1) Mismo tratamiento en ciudades cercanas (silo geográfico)
-    const geo: LinkItem[] = [];
-    for (const city of neighborCities(parsed, 18)) {
-      pushIfExists(geo, parsed.kind, parsed.drug, city);
-      if (geo.length >= 8) break;
-    }
-    if (geo.length) {
-      const scope = f ? `de ${f.province}` : "cercanas";
-      groups.push({
-        title: `${drugName} en otras ciudades ${scope}`,
-        intro: `Consulta médica online y receta electrónica para ${drugName} también en estas localidades.`,
-        items: geo,
-      });
-    }
-
-    // 2) Otros tratamientos en la misma ciudad (silo temático local)
+    // 1) Other GLP-1 treatments in the same town (local topical silo)
     const local: LinkItem[] = [];
-    for (const drug of DRUG_KEYS) {
-      if (drug !== parsed.drug) pushIfExists(local, "buy", drug, parsed.city);
+    for (const prefix of MUNICIPIO_DRUG_SLUG_PREFIXES) {
+      const drug = DRUG_BY_PREFIX[prefix];
+      const drugSlug = `${prefix}${parsed.base}`;
+      if (drugSlug !== slug) pushIfExists(local, drugSlug, `${drug} clinic in ${townName}`);
     }
-    // y otras plantillas del mismo fármaco en esta ciudad
-    (["buy", "price", "availability"] as Kind[])
-      .filter((k) => k !== parsed.kind)
-      .forEach((k) => pushIfExists(local, k, parsed.drug, parsed.city));
+    const mainSlug = `${MUNICIPIO_SLUG_PREFIX}${parsed.base}`;
+    if (mainSlug !== slug) pushIfExists(local, mainSlug, `Weight loss clinic in ${townName}`);
     if (local.length) {
       groups.push({
-        title: `Otros tratamientos para adelgazar en ${cityName}`,
-        items: local.slice(0, 6),
+        title: `More weight-loss options in ${townName}`,
+        intro: `Online medical consultation and a private prescription for these treatments in ${townName} too.`,
+        items: local,
       });
     }
 
-    // 3) Guías nacionales (enlaces hacia los pilares)
-    const pillars = pillarsFor(parsed.drug);
+    // 2) Popular UK cities (geographic silo)
+    const geo = popularTownLinks(8).filter((l) => l.href !== `/blog/${slug}`);
+    if (geo.length) {
+      groups.push({
+        title: `Weight loss clinics in other UK cities`,
+        items: geo.slice(0, 8),
+      });
+    }
+
+    // 3) National guides (links up to the pillars)
+    const pillars = pillarLinks();
     if (pillars.length) {
-      groups.push({ title: `Guías de ${drugName} en España`, items: pillars });
+      groups.push({ title: `GLP-1 guides for the UK`, items: pillars });
     }
 
     return groups;
   }
 
-  // Páginas no geográficas (pilares, comparativas…): reparten autoridad
-  // hacia abajo enlazando a las grandes ciudades de cada fármaco.
-  const drug = DRUG_KEYS.find((d) => slug.includes(d)) ?? "wegovy";
-  const drugName = DRUG_NAME[drug];
-  const down: LinkItem[] = [];
-  for (const city of NATIONAL_HUBS) pushIfExists(down, "buy", drug, city);
+  // Non-geographic pages (pillars, comparisons…): spread authority down
+  // by linking to the largest cities' clinic pages.
+  const down = popularTownLinks(8);
   if (!down.length) return [];
   return [
     {
-      title: `Comprar ${drugName} por ciudad`,
-      intro: `Reserva tu consulta médica online estés donde estés. Estas son nuestras ciudades con más demanda de ${drugName}.`,
+      title: `Weight loss clinics by city`,
+      intro: `Book your online medical consultation wherever you are. These are our most in-demand UK cities.`,
       items: down.slice(0, 8),
     },
   ];
 }
+
+// Keep a stable reference so tree-shakers don't flag the index as unused.
+void TOWN_CLINIC_SLUGS;

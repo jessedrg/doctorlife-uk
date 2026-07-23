@@ -35,7 +35,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://doctorlife.io'),
+  metadataBase: new URL('https://doctorlife-uk.com'),
   title: 'DoctorLife — Your body, finally understood',
   description:
     'Weight and hormonal care led by doctors, designed around your body — not a one-size-fits-all protocol.',
@@ -66,14 +66,14 @@ export default function RootLayout({
       className={`${hanken.variable} ${sora.variable} ${instrument.variable} ${geistMono.variable} bg-paper`}
     >
       <body className="bg-paper text-ink font-sans antialiased">
-        {/* Preconexión a orígenes de terceros: acelera el arranque de
-            scripts diferidos y mejora LCP/INP. React 19 los eleva al <head>. */}
+        {/* Preconnect to third-party origins: speeds up deferred script
+            startup and improves LCP/INP. React 19 hoists these to <head>. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://widget.trustpilot.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://invitejs.trustpilot.com" />
-        {/* Entidad de marca + buscador de sitelinks (global) */}
+        {/* Brand entity + sitelinks search box (global) */}
         <JsonLd data={[organizationSchema, websiteSchema]} />
-        {/* Google Ads (gtag.js) — conversiones */}
+        {/* Google Ads (gtag.js) — conversions */}
         <Script
           id="gtag-src"
           strategy="afterInteractive"
@@ -87,7 +87,7 @@ export default function RootLayout({
             gtag('config', 'AW-18265536787');
           `}
         </Script>
-        {/* Trustpilot — invitación / registro de reseñas (global) */}
+        {/* Trustpilot — review invitation / registration (global) */}
         <Script id="trustpilot-invite" strategy="afterInteractive">
           {`
             (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
@@ -96,7 +96,7 @@ export default function RootLayout({
             tp('register', 'wUdA9FYxfifhoMPy');
           `}
         </Script>
-        {/* Trustpilot TrustBox — motor de widgets (global: hero, blogs, footer, etc.) */}
+        {/* Trustpilot TrustBox — widget engine (global: hero, blogs, footer, etc.) */}
         <Script
           id="trustpilot-widget-bootstrap"
           strategy="afterInteractive"

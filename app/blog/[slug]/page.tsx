@@ -16,8 +16,8 @@ import { getInternalLinks } from "@/lib/blog-internal-links";
 import { breadcrumbSchema } from "@/lib/seo";
 
 export const dynamic = "force-static";
-export const revalidate = 86400; // 24h ISR — se regenera en background sin bloquear el build
-export const dynamicParams = true; // rutas no conocidas en build se generan on-demand
+export const revalidate = 86400; // 24h ISR — regenerated in the background without blocking the build
+export const dynamicParams = true; // routes unknown at build time are generated on-demand
 
 export async function generateMetadata({
   params,
@@ -26,14 +26,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPost(slug);
-  if (!post) return { title: `Artículo no encontrado — ${BRAND}` };
+  if (!post) return { title: `Article not found — ${BRAND}` };
   const url = `${SITE_URL}/blog/${post.slug}`;
   const optimizedTitle = seoTitle(post);
   const optimizedDescription = seoDescription(post);
   return {
     title: optimizedTitle,
     description: optimizedDescription,
-    keywords: [post.keyword, "GLP-1", "pérdida de peso", "semaglutida", "tirzepatida", BRAND],
+    keywords: [post.keyword, "GLP-1", "weight loss", "semaglutide", "tirzepatide", BRAND],
     authors: [{ name: MEDICAL_REVIEWER.name }],
     alternates: { canonical: url },
     openGraph: {
@@ -137,9 +137,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const internalLinks = getInternalLinks(slug);
   const url = `${SITE_URL}/blog/${post.slug}`;
   const fmt = (d: string) =>
-    new Date(d).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
+    new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
-  // Inserta el funnel tras la segunda sección
+  // Insert the funnel after the second section
   const insertAt = Math.min(2, post.sections.length);
 
   const reviewer = {
@@ -163,7 +163,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     name: post.h1,
     description: post.metaDescription,
     image: `${SITE_URL}${post.cover}`,
-    inLanguage: "es-ES",
+    inLanguage: "en-GB",
     datePublished: post.date,
     dateModified: post.updated,
     keywords: post.keyword,
@@ -173,9 +173,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     publisher,
     about: [
       { "@type": "MedicalEntity", name: post.category },
-      // El fármaco se referencia como entidad médica (informativa), NO como
-      // Drug/Product: evita que Google lo evalúe como "Fragmento de producto"
-      // y exija offers/review/aggregateRating (no vendemos el medicamento).
+      // The drug is referenced as a medical entity (informational), NOT as a
+      // Drug/Product: this prevents Google from evaluating it as a "product snippet"
+      // and requiring offers/review/aggregateRating (we don't sell the medication).
       ...(drugInfo(post)
         ? [{ "@type": "MedicalEntity", name: drugInfo(post)!.name }]
         : []),
@@ -221,9 +221,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               {post.h1}
             </h1>
             <div className="mt-5 flex flex-wrap items-center gap-3 text-[13.5px] text-ink-mute">
-              <span>Actualizado el {fmt(post.updated)}</span>
+              <span>Updated {fmt(post.updated)}</span>
               <span aria-hidden>·</span>
-              <span>{post.readMins} min de lectura</span>
+              <span>{post.readMins} min read</span>
             </div>
             <div className="mt-6 flex items-start gap-3 rounded-[16px] border border-ink/10 bg-warm px-5 py-4">
               <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-ink font-serif text-[15px] font-bold text-paper">
@@ -231,7 +231,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </span>
               <div className="text-[13.5px] leading-snug">
                 <p className="font-medium text-ink">
-                  Revisado médicamente por {MEDICAL_REVIEWER.name}
+                  Medically reviewed by {MEDICAL_REVIEWER.name}
                 </p>
                 <p className="text-ink-mute">{MEDICAL_REVIEWER.role}</p>
                 <p className="text-ink-mute">{MEDICAL_REVIEWER.credentials}</p>
@@ -258,27 +258,27 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </section>
             ))}
 
-            {/* Casos reales antes / después */}
+            {/* Real before / after cases */}
             <section className="mt-14 rounded-[28px] border border-ink/10 bg-warm px-5 py-8 sm:px-8">
               <h2 className="text-balance text-center text-[clamp(22px,2.8vw,30px)] font-normal leading-[1.15] text-ink">
-                Casos reales con tratamiento GLP-1
+                Real results with GLP-1 treatment
               </h2>
               <p className="mx-auto mt-3 max-w-[440px] text-center text-[15px] leading-relaxed text-ink-soft">
-                Personas que empezaron su plan con supervisión médica. Desliza para
-                ver más casos.
+                People who started their plan with medical supervision. Swipe to
+                see more cases.
               </p>
               <div className="mx-auto mt-6 max-w-[460px]">
                 <BeforeAfterCarousel variant="light" />
               </div>
             </section>
 
-            {/* Conoce a nuestro médico */}
+            {/* Meet our doctor */}
             <BlogDoctorCard />
 
             {/* FAQ */}
             <section>
               <h2 className="mt-14 text-[clamp(22px,2.8vw,30px)] font-normal text-ink">
-                Preguntas frecuentes
+                Frequently asked questions
               </h2>
               <div className="mt-6 flex flex-col gap-3">
                 {post.faqs.map((f) => (
@@ -296,22 +296,22 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </section>
 
-            <BlogFunnel title="¿List@ para empezar?" subtitle="Reserva tu primera visita gratis y empieza con un plan diseñado en torno a ti." image="/testimonials/daniel.png" imageAlt="Daniel, paciente de DoctorLife, sonriendo" />
+            <BlogFunnel title="Ready to start?" subtitle="Book your free first consultation and start with a plan designed around you." image="/testimonials/daniel.png" imageAlt="Daniel, a DoctorLife patient, smiling" />
 
             <p className="mt-8 rounded-[16px] bg-cream/50 px-5 py-4 text-[13px] leading-relaxed text-ink-mute">
-              Este contenido es informativo y no sustituye el consejo médico. Los tratamientos GLP‑1 requieren
-              valoración y receta de un profesional colegiado. Contenido revisado por {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}).
+              This content is informational and does not replace medical advice. GLP-1 treatments require
+              assessment and a prescription from a GMC-registered clinician. Content reviewed by {MEDICAL_REVIEWER.name} ({MEDICAL_REVIEWER.credentials}).
             </p>
           </article>
 
-          {/* enlazado interno geográfico (silos por ciudad/fármaco) */}
+              {/* geographic internal linking (silos by city/drug) */}
           <BlogInternalLinks groups={internalLinks} />
 
-          {/* relacionados */}
+          {/* related */}
           {related.length > 0 && (
             <section className="mx-auto max-w-none px-3 pb-6 pt-10 sm:px-4 lg:px-5">
               <h2 className="mb-7 text-[clamp(22px,2.6vw,30px)] font-light text-ink">
-                Sigue leyendo
+                Keep reading
               </h2>
               <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {related.map((p) => (

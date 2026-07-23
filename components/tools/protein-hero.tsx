@@ -10,18 +10,18 @@ type Activity = "sedentario" | "ligero" | "moderado" | "activo" | "muy-activo";
 type Unit = "metric" | "imperial";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
-  sedentario: "Sedentario (sin ejercicio)",
-  ligero: "Ligero (1–2 días/semana)",
-  moderado: "Moderado (3–5 días/semana)",
-  activo: "Activo (6–7 días/semana)",
-  "muy-activo": "Muy activo (2× al día)",
+  sedentario: "Sedentary (no exercise)",
+  ligero: "Light (1–2 days/week)",
+  moderado: "Moderate (3–5 days/week)",
+  activo: "Active (6–7 days/week)",
+  "muy-activo": "Very active (2× a day)",
 };
 
 const GOAL_LABELS: Record<Goal, string> = {
-  perder: "Perder peso",
-  mantener: "Mantener peso",
-  ganar: "Ganar músculo",
-  rendimiento: "Rendimiento deportivo",
+  perder: "Lose weight",
+  mantener: "Maintain weight",
+  ganar: "Build muscle",
+  rendimiento: "Athletic performance",
 };
 
 /* ─── Protein calculation ─── */
@@ -169,21 +169,21 @@ export function ProteinHero() {
                       : "text-paper/50 hover:text-paper/80"
                   }`}
                 >
-                  {u === "metric" ? "Métrico (kg/cm)" : "Imperial (lb/in)"}
+                  {u === "metric" ? "Metric (kg/cm)" : "Imperial (lb/in)"}
                 </button>
               ))}
             </div>
 
             <h1 className="mb-2 font-serif text-4xl font-semibold leading-tight text-balance">
-              Calculadora de proteína diaria
+              Daily protein calculator
             </h1>
             <p className="mb-8 text-paper/60 leading-relaxed text-pretty">
-              Calcula cuánta proteína necesitas cada día según tu peso, objetivo y nivel de actividad. Obtén un rango personalizado basado en la evidencia científica.
+              Work out how much protein you need each day based on your weight, goal and activity level. Get a personalised range grounded in scientific evidence.
             </p>
 
             {/* Sex */}
             <div className="mb-5">
-              <span className={labelCls}>Sexo biológico</span>
+              <span className={labelCls}>Biological sex</span>
               <div className="grid grid-cols-2 gap-2">
                 {(["hombre", "mujer"] as Sex[]).map((s) => (
                   <button
@@ -195,7 +195,7 @@ export function ProteinHero() {
                         : "border-paper/20 text-paper/50 hover:border-paper/40 hover:text-paper/70"
                     }`}
                   >
-                    {s === "hombre" ? "Hombre" : "Mujer"}
+                    {s === "hombre" ? "Male" : "Female"}
                   </button>
                 ))}
               </div>
@@ -204,10 +204,10 @@ export function ProteinHero() {
             {/* Age + Weight */}
             <div className="mb-5 grid grid-cols-2 gap-4">
               <div>
-                <label className={labelCls}>Edad</label>
+                <label className={labelCls}>Age</label>
                 <input
                   type="number"
-                  placeholder="Años"
+                  placeholder="Years"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   min={15}
@@ -216,7 +216,7 @@ export function ProteinHero() {
                 />
               </div>
               <div>
-                <label className={labelCls}>Peso ({unit === "metric" ? "kg" : "lb"})</label>
+                <label className={labelCls}>Weight ({unit === "metric" ? "kg" : "lb"})</label>
                 <input
                   type="number"
                   placeholder={unit === "metric" ? "kg" : "lb"}
@@ -229,7 +229,7 @@ export function ProteinHero() {
 
             {/* Height */}
             <div className="mb-5">
-              <label className={labelCls}>Altura</label>
+              <label className={labelCls}>Height</label>
               {unit === "metric" ? (
                 <input
                   type="number"
@@ -242,14 +242,14 @@ export function ProteinHero() {
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     type="number"
-                    placeholder="Pies"
+                    placeholder="Feet"
                     value={heightFt}
                     onChange={(e) => setHeightFt(e.target.value)}
                     className={inputCls}
                   />
                   <input
                     type="number"
-                    placeholder="Pulgadas"
+                    placeholder="Inches"
                     value={heightIn}
                     onChange={(e) => setHeightIn(e.target.value)}
                     className={inputCls}
@@ -260,7 +260,7 @@ export function ProteinHero() {
 
             {/* Activity */}
             <div className="mb-5">
-              <label className={labelCls}>Nivel de actividad</label>
+              <label className={labelCls}>Activity level</label>
               <select
                 value={activity}
                 onChange={(e) => setActivity(e.target.value as Activity)}
@@ -274,7 +274,7 @@ export function ProteinHero() {
 
             {/* Goal */}
             <div className="mb-5">
-              <label className={labelCls}>Objetivo</label>
+              <label className={labelCls}>Goal</label>
               <div className="grid grid-cols-2 gap-2">
                 {(Object.entries(GOAL_LABELS) as [Goal, string][]).map(([v, l]) => (
                   <button
@@ -295,8 +295,8 @@ export function ProteinHero() {
             {/* Body fat optional */}
             <div className="mb-8">
               <label className={labelCls}>
-                % grasa corporal{" "}
-                <span className="font-normal text-paper/40">(opcional — mejora la precisión)</span>
+                Body fat %{" "}
+                <span className="font-normal text-paper/40">(optional — improves accuracy)</span>
               </label>
               <input
                 type="number"
@@ -313,7 +313,7 @@ export function ProteinHero() {
               onClick={handleCalc}
               className="w-full rounded-full bg-sage py-4 text-sm font-semibold text-espresso transition hover:brightness-110 active:scale-[.98]"
             >
-              Calcular proteína
+              Calculate protein
             </button>
           </div>
 
@@ -321,18 +321,18 @@ export function ProteinHero() {
           <div className="space-y-4">
             {/* Main result card */}
             <div className="rounded-[24px] bg-amber/15 border border-amber/25 p-7">
-              <p className="mb-1 text-xs uppercase tracking-widest text-amber/70">Tu proteína diaria</p>
+              <p className="mb-1 text-xs uppercase tracking-widest text-amber/70">Your daily protein</p>
 
               {calculated && result ? (
                 <>
                   <div className="flex items-end gap-2 mb-1">
                     <span className="text-6xl font-bold text-amber leading-none">{midpoint}</span>
-                    <span className="mb-2 text-xl text-amber/70">g/día</span>
+                    <span className="mb-2 text-xl text-amber/70">g/day</span>
                   </div>
                   <p className="text-sm text-paper/50 mb-6">
-                    Rango recomendado: <span className="text-paper/80 font-medium">{result.min}–{result.max} g/día</span>
+                    Recommended range: <span className="text-paper/80 font-medium">{result.min}–{result.max} g/day</span>
                     {result.leanMassKg && (
-                      <span className="block mt-0.5">Calculado sobre masa magra: <span className="text-paper/80">{result.leanMassKg} kg</span></span>
+                      <span className="block mt-0.5">Based on lean mass: <span className="text-paper/80">{result.leanMassKg} kg</span></span>
                     )}
                   </p>
 
@@ -357,7 +357,7 @@ export function ProteinHero() {
                     {[3, 4, 5].map((meals) => (
                       <div key={meals} className="rounded-xl bg-espresso/40 p-3 text-center">
                         <p className="text-lg font-semibold text-paper">{Math.round(midpoint! / meals)}g</p>
-                        <p className="text-[11px] text-paper/45">{meals} comidas</p>
+                        <p className="text-[11px] text-paper/45">{meals} meals</p>
                       </div>
                     ))}
                   </div>
@@ -366,10 +366,10 @@ export function ProteinHero() {
                 <>
                   <div className="flex items-end gap-2 mb-6">
                     <span className="text-6xl font-bold text-amber/30 leading-none">—</span>
-                    <span className="mb-2 text-xl text-amber/30">g/día</span>
+                    <span className="mb-2 text-xl text-amber/30">g/day</span>
                   </div>
                   <div className="h-3 rounded-full bg-espresso/40 mb-6" />
-                  <p className="text-sm text-paper/35 text-center">Rellena el formulario y pulsa calcular</p>
+                  <p className="text-sm text-paper/35 text-center">Fill in the form and press calculate</p>
                 </>
               )}
             </div>
@@ -377,10 +377,10 @@ export function ProteinHero() {
             {/* Multiplier reference cards */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: "Mínimo recomendado", mult: "0,8 g/kg", desc: "Requisito básico OMS" },
-                { label: "Para perder peso", mult: "1,6–2,0 g/kg", desc: "Preserva masa muscular" },
-                { label: "Para ganar músculo", mult: "1,8–2,5 g/kg", desc: "Máxima síntesis proteica" },
-                { label: "Deportistas de élite", mult: "2,2–3,1 g/kg", desc: "Alto volumen de entreno" },
+                { label: "Recommended minimum", mult: "0.8 g/kg", desc: "Basic WHO requirement" },
+                { label: "To lose weight", mult: "1.6–2.0 g/kg", desc: "Preserves muscle mass" },
+                { label: "To build muscle", mult: "1.8–2.5 g/kg", desc: "Maximum protein synthesis" },
+                { label: "Elite athletes", mult: "2.2–3.1 g/kg", desc: "High training volume" },
               ].map((c) => (
                 <div key={c.label} className="rounded-2xl border border-paper/10 bg-paper/5 p-4">
                   <p className="text-xs text-paper/45 mb-1">{c.label}</p>
@@ -394,10 +394,10 @@ export function ProteinHero() {
             {calculated && result && (
               <div className="rounded-2xl bg-espresso/60 border border-paper/10 p-5">
                 <p className="text-sm text-paper/70 mb-3">
-                  ¿Quieres un plan personalizado de nutrición y peso con seguimiento médico?
+                  Want a personalised nutrition and weight plan with medical support?
                 </p>
                 <QuizTrigger className="w-full rounded-full bg-sage py-3 text-sm font-semibold text-espresso text-center transition hover:brightness-110">
-                  Hablar con un médico
+                  Talk to a doctor
                 </QuizTrigger>
               </div>
             )}

@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 
-// Imagen social por defecto (Open Graph + Twitter) para toda la web.
+// Default social image (Open Graph + Twitter) for the whole site.
 export const runtime = "edge";
-export const alt = "DoctorLife — cuidado del peso con seguimiento médico";
+export const alt = "DoctorLife — weight care with medical follow-up";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -27,7 +27,7 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Marca */}
+        {/* Brand */}
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <div
             style={{
@@ -50,7 +50,7 @@ export default function OpengraphImage() {
           </span>
         </div>
 
-        {/* Titular */}
+        {/* Headline */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <span
             style={{
@@ -61,7 +61,7 @@ export default function OpengraphImage() {
               textTransform: "uppercase",
             }}
           >
-            Médicos colegiados en España
+            GMC-registered doctors in the UK
           </span>
           <span
             style={{
@@ -73,17 +73,17 @@ export default function OpengraphImage() {
               maxWidth: 940,
             }}
           >
-            Tu cuerpo, por fin entendido
+            Your body, finally understood
           </span>
           <span style={{ color: "#c9bfb0", fontSize: 30, lineHeight: 1.3, maxWidth: 900 }}>
-            Cuidado del peso con seguimiento médico real desde la app. Sin listas de espera.
+            Weight care with real medical follow-up from the app. No waiting lists.
           </span>
         </div>
 
-        {/* Pie */}
+        {/* Footer */}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div style={{ height: 6, width: 64, borderRadius: 3, backgroundColor: CLAY }} />
-          <span style={{ color: "#8f8578", fontSize: 24 }}>doctorlife.io</span>
+          <span style={{ color: "#8f8578", fontSize: 24 }}>doctorlife-uk.com</span>
         </div>
       </div>
     ),

@@ -80,9 +80,9 @@ export const auth = betterAuth({
       ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
     // Dominios propios del proyecto.
-    "https://doctorlife.io",
-    "https://www.doctorlife.io",
-    "https://dev.doctorlife.io",
+    "https://doctorlife-uk.com",
+    "https://www.doctorlife-uk.com",
+    "https://dev.doctorlife-uk.com",
     // Preview de v0 (el iframe se sirve desde subdominios de vusercontent.net)
     // y los preview deployments de Vercel.
     "https://*.vusercontent.net",

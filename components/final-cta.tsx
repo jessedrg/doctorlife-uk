@@ -31,18 +31,18 @@ export function FinalCta() {
 
         <div className="relative z-[2] p-[54px]">
           <h2 className="m-0 text-[clamp(30px,3.4vw,46px)] font-light leading-[1.04] tracking-[-.02em]">
-            Empieza con un plan
+            Start with a plan
             <br />
-            creado en torno a <span className="font-serif italic text-sage">ti</span>
+            built around <span className="font-serif italic text-sage">you</span>
           </h2>
           <p className="mb-[26px] mt-4 max-w-[36ch] text-base font-light leading-[1.5] text-paper/[.78]">
-            Recibe gratis tu guía «Equilibra tus hormonas», escrita por médicos
-            colegiados para acompañarte en tu camino.
+            Get your free "Balance your hormones" guide, written by GMC-registered
+            doctors to support you on your journey.
           </p>
 
           {status === "success" ? (
             <div className="flex max-w-[380px] items-center gap-3 rounded-[14px] border border-sage/40 bg-sage/10 px-5 py-4 text-[15px] text-sage">
-              Guía enviada. Revisa tu correo.
+              Guide sent. Check your email.
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex max-w-[380px] flex-col gap-3">
@@ -51,7 +51,7 @@ export function FinalCta() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Correo electrónico"
+                placeholder="Email address"
                 className="rounded-[14px] border border-paper/[.28] px-[18px] py-4 text-[15px] text-paper outline-none placeholder:text-paper/50"
                 style={{ background: "rgba(246,240,230,.1)" }}
               />
@@ -63,14 +63,14 @@ export function FinalCta() {
                 disabled={status === "loading"}
                 className="rounded-[14px] bg-paper py-4 text-base font-semibold text-ink transition-opacity disabled:opacity-60"
               >
-                {status === "loading" ? "Enviando..." : "Conseguir la guía"}
+                {status === "loading" ? "Sending..." : "Get the guide"}
               </button>
             </form>
           )}
 
           <p className="mt-4 max-w-[40ch] text-[11.5px] text-paper/50">
-            Al introducir tu correo aceptas nuestros Términos y Condiciones y
-            reconoces la Política de Privacidad.
+            By entering your email you accept our Terms & Conditions and
+            acknowledge the Privacy Policy.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export function FinalCta() {
           <div className="absolute inset-0" style={{ background: "linear-gradient(200deg,#c98a4f 0%,#7a4a2b 50%,#2a2114 100%)" }} />
           <img
             src="/testimonials/maria.png"
-            alt="Paciente de DoctorLife sonriendo"
+            alt="Smiling DoctorLife patient"
             className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
           />
           <div className="absolute inset-0" style={{ background: "linear-gradient(90deg,#171009 0%,transparent 28%)" }} />

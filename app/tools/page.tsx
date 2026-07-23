@@ -10,12 +10,12 @@ import { SITE_URL, BRAND, breadcrumbSchema, itemListSchema } from "@/lib/seo";
 const URL = `${SITE_URL}/tools`;
 
 export const metadata: Metadata = {
-  title: `Calculadoras de salud y peso gratis | ${BRAND}`,
+  title: `Free health and weight calculators | ${BRAND}`,
   description:
-    "Calculadoras gratuitas de salud: IMC, gasto calórico (TDEE), déficit calórico y proteína diaria. Resultados al instante y orientación médica de DoctorLife.",
+    "Free health calculators: BMI, daily calorie expenditure (TDEE), calorie deficit and daily protein. Instant results and medical guidance from DoctorLife.",
   alternates: { canonical: URL },
   openGraph: {
-    title: `Calculadoras de salud y peso gratis | ${BRAND}`,
+    title: `Free health and weight calculators | ${BRAND}`,
     description:
       "Calculate your BMI, TDEE, calorie deficit and daily protein for free. Evidence-based tools with medical guidance.",
     url: URL,
@@ -27,32 +27,32 @@ const TOOLS = [
   {
     href: "/tools/bmi-calculator",
     title: "BMI Calculator",
-    desc: "Conoce tu Índice de Masa Corporal y en qué rango de peso te encuentras en segundos.",
-    tag: "Peso",
+    desc: "Find out your Body Mass Index and which weight range you fall into in seconds.",
+    tag: "Weight",
   },
   {
     href: "/tools/tdee-calculator",
     title: "TDEE Calculator",
-    desc: "Calcula tu gasto energético diario total: cuántas calorías quemas al día según tu actividad.",
-    tag: "Calorías",
+    desc: "Work out your total daily energy expenditure: how many calories you burn each day based on your activity.",
+    tag: "Calories",
   },
   {
     href: "/tools/calorie-deficit-calculator",
     title: "Calorie Deficit Calculator",
-    desc: "Descubre cuántas calorías comer para perder peso a un ritmo saludable y sostenible.",
-    tag: "Pérdida de peso",
+    desc: "Discover how many calories to eat to lose weight at a healthy, sustainable pace.",
+    tag: "Weight loss",
   },
   {
     href: "/tools/daily-protein-calculator",
     title: "Daily Protein Calculator",
-    desc: "Calcula cuánta proteína necesitas al día según tu peso, objetivo y nivel de actividad.",
-    tag: "Nutrición",
+    desc: "Work out how much protein you need each day based on your weight, goal and activity level.",
+    tag: "Nutrition",
   },
 ];
 
 const RELATED = [
-  { href: "/adelgazar-con-supervision-medica", label: "Adelgazar con supervisión médica" },
-  { href: "/blog/wegovy-precio-espana", label: "Wegovy precio en España" },
+  { href: "/weight-loss-with-medical-supervision", label: "Weight loss with medical supervision" },
+  { href: "/blog/wegovy-price-uk", label: "Wegovy price in the UK" },
   { href: "/blog/ozempic-vs-wegovy-vs-mounjaro", label: "Ozempic vs Wegovy vs Mounjaro" },
 ];
 

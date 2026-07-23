@@ -26,14 +26,14 @@ export function ResetPasswordForm({
     e.preventDefault()
     setError(null)
     if (password !== confirm) {
-      setError("Las contraseñas no coinciden.")
+      setError("The passwords don't match.")
       return
     }
     setLoading(true)
     const { error } = await authClient.resetPassword({ newPassword: password, token: token! })
     setLoading(false)
     if (error) {
-      setError(error.message ?? "No se pudo restablecer la contraseña. Solicita un nuevo enlace.")
+      setError(error.message ?? "The password could not be reset. Please request a new link.")
       return
     }
     setDone(true)
@@ -54,39 +54,39 @@ export function ResetPasswordForm({
           {invalid ? (
             <>
               <h1 className="text-[26px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-                Enlace no válido
+                Invalid link
               </h1>
               <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">
-                Este enlace de recuperación ha caducado o no es válido. Solicita uno nuevo.
+                This recovery link has expired or is invalid. Please request a new one.
               </p>
               <Link
                 href="/recover"
                 className="mt-6 inline-block w-full rounded-[13px] bg-ink py-3.5 text-center text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Solicitar nuevo enlace
+                Request a new link
               </Link>
             </>
           ) : done ? (
             <>
               <h1 className="text-[26px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-                Contraseña actualizada
+                Password updated
               </h1>
               <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">
-                Te estamos redirigiendo para iniciar sesión…
+                We're redirecting you to sign in…
               </p>
             </>
           ) : (
             <>
               <h1 className="text-[26px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-                Crea tu nueva contraseña
+                Create your new password
               </h1>
               <p className="mt-1.5 text-[14.5px] leading-relaxed text-ink-soft">
-                Elige una contraseña de al menos 8 caracteres.
+                Choose a password of at least 8 characters.
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
                 <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                  Nueva contraseña
+                  New password
                   <input
                     type="password"
                     value={password}
@@ -98,7 +98,7 @@ export function ResetPasswordForm({
                   />
                 </label>
                 <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                  Repite la contraseña
+                  Repeat the password
                   <input
                     type="password"
                     value={confirm}
@@ -121,7 +121,7 @@ export function ResetPasswordForm({
                   disabled={loading}
                   className="mt-1 w-full cursor-pointer rounded-[13px] bg-ink py-3.5 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
-                  {loading ? "Guardando..." : "Guardar contraseña"}
+                  {loading ? "Saving..." : "Save password"}
                 </button>
               </form>
             </>

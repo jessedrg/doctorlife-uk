@@ -1,15 +1,14 @@
 /* ───────────────────────────────────────────────────────────
-   Generador de páginas de CLÍNICA por MUNICIPIO (~8.100 de España,
-   del CSV de localidades del usuario, datos INE).
+   Town-level CLINIC page generator (UK towns and cities).
 
-   Cada página usa DATOS REALES Y ÚNICOS del municipio (población,
-   tamaño, provincia, comunidad autónoma y servicio de salud) para
-   evitar thin content: la redacción cambia según sea un pueblo
-   pequeño, un municipio mediano o una ciudad.
+   Each page uses REAL, UNIQUE data for the town (population, size,
+   county, nation and NHS body) to avoid thin content: the copy
+   changes depending on whether it is a small town, a mid-sized town
+   or a large city.
 
-   Objetivo: rankear "clínica pérdida de peso {municipio}",
-   "clínica ozempic {municipio}", "adelgazar {municipio}"…
-   y llevar a la consulta online de DoctorLife (1ª consulta gratis).
+   Goal: rank for "weight loss clinic {town}", "ozempic clinic {town}",
+   "mounjaro {town}"… and funnel to the DoctorLife online consultation
+   (first consultation free).
    ─────────────────────────────────────────────────────────── */
 
 import type { Post, Section, Faq } from "./blog";
@@ -17,7 +16,7 @@ import rawMunicipios from "./data/municipios-raw";
 
 const BRAND = "DoctorLife";
 
-/* ── utilidades deterministas ── */
+/* ── deterministic helpers ── */
 function hash(s: string): number {
   let n = 0;
   for (let i = 0; i < s.length; i++) n = (n * 31 + s.charCodeAt(i)) >>> 0;
@@ -40,41 +39,21 @@ function slugify(s: string): string {
     .replace(/^-+|-+$/g, "");
 }
 function fmt(n: number): string {
-  return n.toLocaleString("es-ES");
+  return n.toLocaleString("en-GB");
 }
 
-/* Nombres tipo "Ejido (El)" → "El Ejido" para redactar con naturalidad */
+/* Names like "Town (The)" → "The Town" for natural reading */
 function displayName(name: string): string {
   const m = name.match(/^(.+) \((.+)\)$/);
   return m ? `${m[2]} ${m[1]}` : name;
 }
 
-/* ── servicio de salud por comunidad (dato único por página) ── */
+/* ── NHS body by nation (unique data point per page) ── */
 const HEALTH: Record<string, string> = {
-  "Andalucía": "Servicio Andaluz de Salud (SAS)",
-  "Aragón": "Servicio Aragonés de Salud (SALUD)",
-  "Principado de Asturias": "SESPA",
-  "Asturias": "SESPA",
-  "Islas Baleares": "IB-Salut",
-  "Baleares": "IB-Salut",
-  "Canarias": "Servicio Canario de la Salud (SCS)",
-  "Cantabria": "Servicio Cántabro de Salud",
-  "Castilla y León": "Sacyl",
-  "Castilla-La Mancha": "SESCAM",
-  "Cataluña": "CatSalut",
-  "Comunidad Valenciana": "Conselleria de Sanitat",
-  "Extremadura": "Servicio Extremeño de Salud (SES)",
-  "Galicia": "Sergas",
-  "Comunidad de Madrid": "SERMAS",
-  "Madrid": "SERMAS",
-  "Región de Murcia": "Servicio Murciano de Salud (SMS)",
-  "Murcia": "Servicio Murciano de Salud (SMS)",
-  "Comunidad Foral de Navarra": "Osasunbidea",
-  "Navarra": "Osasunbidea",
-  "País Vasco": "Osakidetza",
-  "La Rioja": "Servicio Riojano de Salud (Seris)",
-  "Ceuta": "INGESA",
-  "Melilla": "INGESA",
+  "England": "the NHS in England",
+  "Scotland": "NHS Scotland",
+  "Wales": "NHS Wales (GIG Cymru)",
+  "Northern Ireland": "Health and Social Care (HSC)",
 };
 
 const COVERS = [
@@ -101,39 +80,39 @@ function parseMunicipios(): Muni[] {
   return out;
 }
 
-/* Bucket de tamaño → redacción totalmente distinta por tipo de municipio */
-type SizeKey = "pueblo" | "villa" | "mediano" | "ciudad" | "gran-ciudad";
+/* Size bucket → completely different copy per town type */
+type SizeKey = "village" | "town" | "large-town" | "city" | "large-city";
 function sizeOf(pop: number): SizeKey {
-  if (pop >= 100000) return "gran-ciudad";
-  if (pop >= 20000) return "ciudad";
-  if (pop >= 5000) return "mediano";
-  if (pop >= 1000) return "villa";
-  return "pueblo";
+  if (pop >= 250000) return "large-city";
+  if (pop >= 100000) return "city";
+  if (pop >= 40000) return "large-town";
+  if (pop >= 15000) return "town";
+  return "village";
 }
 
 function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
-  const health = HEALTH[m.com] ?? "el servicio autonómico de salud";
+  const health = HEALTH[m.com] ?? "the NHS";
   const pop = fmt(m.pop);
 
   const introBySize: Record<SizeKey, string> = {
-    "pueblo": `${dName} (${m.prov}) tiene ${pop} habitantes y, como en la mayoría de municipios pequeños de ${m.com}, no cuenta con una clínica especializada en obesidad: la consulta de endocrinología más cercana suele estar a bastantes kilómetros. Eso ya no es un impedimento: con ${BRAND} tienes un endocrino colegiado por videoconsulta desde casa, con receta electrónica válida en cualquier farmacia de ${m.prov}.`,
-    "villa": `En ${dName} (${pop} habitantes, provincia de ${m.prov}) el acceso a una unidad de obesidad implica normalmente desplazarse y esperar semanas por ${health}. La alternativa: consulta online con endocrino colegiado, receta electrónica que funciona en tu farmacia habitual de ${dName} y seguimiento desde el móvil.`,
-    "mediano": `${dName} es un municipio de ${pop} habitantes de la provincia de ${m.prov}. Aunque hay consultas médicas privadas en la zona, pocas están especializadas en tratamiento farmacológico de la obesidad con GLP‑1. ${BRAND} te conecta por videoconsulta con endocrinos colegiados especializados, sin desplazamientos y con receta válida en las farmacias de ${dName}.`,
-    "ciudad": `Con ${pop} habitantes, ${dName} (${m.prov}) dispone de sanidad privada, pero las unidades específicas de obesidad con prescripción de GLP‑1 siguen siendo escasas y con lista de espera. En ${BRAND} la valoración con endocrino colegiado es por videoconsulta, sin esperas, y la receta electrónica te sirve en cualquier farmacia de la ciudad.`,
-    "gran-ciudad": `${dName} es una de las grandes ciudades de ${m.com}, con ${pop} habitantes. Hay oferta de clínicas, pero los precios de la medicina privada presencial y las listas de espera de ${health} hacen que cada vez más pacientes elijan la vía online: endocrino colegiado por videoconsulta, receta electrónica y seguimiento continuo desde la app.`,
+    "village": `${dName} (${m.prov}) has around ${pop} residents and, like most smaller towns in ${m.com}, does not have a dedicated weight-loss clinic: the nearest specialist obesity service is often miles away and NHS waiting lists are long. That is no longer a barrier: with ${BRAND} you get a GMC-registered doctor by video consultation from home, with a private prescription valid at any UK pharmacy.`,
+    "town": `In ${dName} (around ${pop} residents, ${m.prov}) getting seen by a specialist weight-management service usually means travelling and waiting months on ${health}. The alternative: an online consultation with a GMC-registered doctor, a private prescription that works at your local ${dName} pharmacy, and follow-up from your phone.`,
+    "large-town": `${dName} is a town of around ${pop} people in ${m.prov}. Although there is some private healthcare locally, very few clinics specialise in medical weight loss with GLP-1 treatment. ${BRAND} connects you by video consultation with GMC-registered doctors who specialise in this area, with no travel and a prescription valid at pharmacies in ${dName}.`,
+    "city": `With around ${pop} residents, ${dName} (${m.prov}) has private healthcare, but dedicated obesity units that prescribe GLP-1 medication are still scarce and have waiting lists. At ${BRAND} the assessment with a GMC-registered doctor is by video consultation, with no waiting, and the private prescription is valid at any pharmacy in the city.`,
+    "large-city": `${dName} is one of the major cities in ${m.com}, with around ${pop} residents. There are clinics available, but the cost of in-person private medicine and the ${health} waiting lists mean more and more patients are choosing the online route: a GMC-registered doctor by video consultation, a private prescription and continuous follow-up from the app.`,
   };
 
   const s1: Section = {
-    h2: `Clínica de pérdida de peso en ${dName}: tu opción online`,
+    h2: `Weight loss clinic in ${dName}: your online option`,
     blocks: [
       { type: "p", text: introBySize[size] },
       {
         type: "p",
         text: pick(
           [
-            `El tratamiento con análogos del GLP‑1 (Wegovy, Mounjaro, Ozempic o Saxenda) requiere siempre receta médica en España. Ningún portal que ofrezca estos fármacos "sin receta" a vecinos de ${dName} es legal ni seguro.`,
-            `En España, los medicamentos GLP‑1 como Wegovy, Mounjaro u Ozempic solo se dispensan con receta. Si ves anuncios de venta "sin receta" dirigidos a ${dName} o alrededores, desconfía: es ilegal y peligroso.`,
-            `Wegovy, Mounjaro, Ozempic y Saxenda exigen prescripción médica. La vía correcta en ${dName} es una valoración médica real —presencial u online— nunca webs que prometen envío sin receta.`,
+            `Treatment with GLP-1 medicines (Wegovy, Mounjaro, Ozempic or Saxenda) always requires a prescription in the UK. Any website offering these medicines "without a prescription" to residents of ${dName} is neither legal nor safe.`,
+            `In the UK, GLP-1 medicines such as Wegovy, Mounjaro or Ozempic are prescription-only. If you see adverts selling them "without a prescription" aimed at ${dName} or nearby, be wary: it is illegal and dangerous.`,
+            `Wegovy, Mounjaro, Ozempic and Saxenda all require a prescription. The right route in ${dName} is a genuine medical assessment — in person or online — never websites that promise delivery without a prescription.`,
           ],
           m.name + m.prov,
         ),
@@ -142,24 +121,24 @@ function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
   };
 
   const s2: Section = {
-    h2: `Cómo funciona la consulta online desde ${dName}`,
+    h2: `How the online consultation works from ${dName}`,
     blocks: [
       {
         type: "list",
         items: [
-          `Reserva tu primera consulta gratis desde el móvil u ordenador, sin desplazarte.`,
-          `Videoconsulta con un endocrino colegiado: historia clínica, IMC y objetivos.`,
-          `Si procede, prescripción de GLP‑1 con receta electrónica válida en cualquier farmacia de ${m.prov}.`,
-          `Seguimiento continuo por la app: dosis, efectos secundarios y ajustes sin salir de ${dName}.`,
+          `Book your first consultation free from your phone or computer, with no travel.`,
+          `Video consultation with a GMC-registered doctor: medical history, BMI and goals.`,
+          `If appropriate, a GLP-1 prescription with a private prescription valid at any pharmacy in ${m.prov}.`,
+          `Continuous follow-up in the app: dosing, side effects and adjustments without leaving ${dName}.`,
         ],
       },
       {
         type: "p",
         text: pick(
           [
-            `Todo el proceso cumple la normativa española de telemedicina y receta electrónica privada, complementando la atención de ${health}.`,
-            `La receta electrónica privada es interoperable: la retiras en tu farmacia de siempre en ${dName} o en cualquier otra de España.`,
-            `No necesitas volante ni derivación de ${health}: la vía privada online es directa y legal.`,
+            `The whole process follows UK telemedicine and private prescribing standards, complementing the care you receive from ${health}.`,
+            `A private prescription is accepted UK-wide: you collect it at your usual pharmacy in ${dName} or any other in the UK.`,
+            `You do not need a GP referral from ${health}: the private online route is direct and legal.`,
           ],
           m.prov + m.name,
         ),
@@ -168,22 +147,22 @@ function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
   };
 
   const s3: Section = {
-    h2: `Precios del tratamiento GLP‑1 (orientativos en farmacias de ${m.prov})`,
+    h2: `GLP-1 treatment prices (typical at UK pharmacies)`,
     blocks: [
       {
         type: "table",
-        caption: `Precios orientativos de farmacia en la provincia de ${m.prov}`,
-        head: ["Medicamento", "Principio activo", "Pauta", "Precio/mes"],
+        caption: `Typical private prices at pharmacies serving ${m.prov}`,
+        head: ["Medicine", "Active ingredient", "Regimen", "Price/month"],
         rows: [
-          ["Wegovy", "semaglutida 2,4 mg", "Inyección semanal", "200–300 €"],
-          ["Mounjaro", "tirzepatida", "Inyección semanal", "200–350 €"],
-          ["Ozempic", "semaglutida", "Inyección semanal", "120–170 €"],
-          ["Saxenda", "liraglutida", "Inyección diaria", "200–300 €"],
+          ["Wegovy", "semaglutide 2.4 mg", "Weekly injection", "£150–£200"],
+          ["Mounjaro", "tirzepatide", "Weekly injection", "£120–£250"],
+          ["Ozempic", "semaglutide", "Weekly injection", "£130–£180"],
+          ["Saxenda", "liraglutide", "Daily injection", "£150–£220"],
         ],
       },
       {
         type: "p",
-        text: `El precio del medicamento es el mismo en las farmacias de ${dName} que en el resto de España (precio libre con pequeñas variaciones). Lo que cambia es el coste de la consulta: en ${BRAND} tu primera consulta médica es gratis, sin compromiso.`,
+        text: `The price of the medicine is broadly the same at pharmacies in ${dName} as in the rest of the UK (free pricing with small variations). What changes is the cost of the consultation: at ${BRAND} your first medical consultation is free, with no obligation.`,
       },
     ],
   };
@@ -191,9 +170,9 @@ function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
   const s4: Section = {
     h2: pick(
       [
-        `¿Por qué elegir una clínica online viviendo en ${dName}?`,
-        `Ventajas de la telemedicina para pacientes de ${dName}`,
-        `Clínica online vs consulta presencial en ${m.prov}`,
+        `Why choose an online clinic when you live in ${dName}?`,
+        `Benefits of telemedicine for patients in ${dName}`,
+        `Online clinic vs in-person consultation in ${m.prov}`,
       ],
       m.name + "s4",
     ),
@@ -201,13 +180,13 @@ function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
       {
         type: "list",
         items: [
-          size === "pueblo" || size === "villa"
-            ? `Sin desplazamientos: no dependes de la distancia entre ${dName} y la capital de provincia para ver a un especialista.`
-            : `Sin salas de espera: la videoconsulta se adapta a tu horario, no al revés.`,
-          `Endocrinos colegiados en España, especializados en obesidad y GLP‑1.`,
-          `Receta electrónica válida en cualquier farmacia (también en la tuya de ${dName}).`,
-          `Seguimiento semanal por app: adherencia, efectos secundarios y ajuste de dosis.`,
-          `Primera consulta gratis: solo continúas si el médico confirma que el tratamiento es adecuado.`,
+          size === "village" || size === "town"
+            ? `No travel: you are not limited by the distance between ${dName} and the nearest city to see a specialist.`
+            : `No waiting rooms: the video consultation fits your schedule, not the other way around.`,
+          `GMC-registered doctors in the UK, specialising in obesity and GLP-1 treatment.`,
+          `Private prescription valid at any pharmacy (including yours in ${dName}).`,
+          `Weekly follow-up in the app: adherence, side effects and dose adjustment.`,
+          `First consultation free: you only continue if the doctor confirms the treatment is right for you.`,
         ],
       },
     ],
@@ -219,20 +198,20 @@ function buildSections(m: Muni, dName: string, size: SizeKey): Section[] {
 function buildFaqs(m: Muni, dName: string): Faq[] {
   return [
     {
-      q: `¿Hay una clínica de pérdida de peso en ${dName}?`,
-      a: `${dName} (${m.prov}) no necesita una clínica física especializada para acceder al tratamiento: con ${BRAND} la valoración con endocrino colegiado es por videoconsulta y la receta electrónica se dispensa en cualquier farmacia. La primera consulta es gratis.`,
+      q: `Is there a weight loss clinic in ${dName}?`,
+      a: `${dName} (${m.prov}) does not need a physical specialist clinic to access treatment: with ${BRAND} the assessment with a GMC-registered doctor is by video consultation and the private prescription can be dispensed at any pharmacy. The first consultation is free.`,
     },
     {
-      q: `¿Puedo conseguir Ozempic o Wegovy en ${dName}?`,
-      a: `Sí, con receta médica. Cualquier farmacia de ${dName} o de la provincia de ${m.prov} puede dispensar u encargar Wegovy, Mounjaro, Ozempic o Saxenda con una receta electrónica válida, como la que emite el endocrino de ${BRAND} si el tratamiento es adecuado para ti.`,
+      q: `Can I get Ozempic or Wegovy in ${dName}?`,
+      a: `Yes, with a prescription. Any pharmacy in ${dName} or across ${m.prov} can dispense or order Wegovy, Mounjaro, Ozempic or Saxenda with a valid prescription, such as the one a ${BRAND} doctor issues if the treatment is right for you.`,
     },
     {
-      q: `¿Cuánto cuesta el tratamiento desde ${dName}?`,
-      a: `El medicamento cuesta lo mismo que en el resto de España (Ozempic 120–170 €/mes; Wegovy o Saxenda 200–300 €/mes; Mounjaro 200–350 €/mes, orientativos). En ${BRAND}, la primera consulta médica es gratis.`,
+      q: `How much does treatment cost from ${dName}?`,
+      a: `The medicine costs the same as in the rest of the UK (Ozempic around £130–£180/month; Wegovy or Saxenda £150–£220/month; Mounjaro £120–£250/month, indicative). At ${BRAND}, the first medical consultation is free.`,
     },
     {
-      q: `¿La receta online es válida en las farmacias de ${m.prov}?`,
-      a: `Sí. La receta electrónica privada emitida por un médico colegiado español es válida en todas las farmacias de España, incluidas las de ${dName} y el resto de la provincia de ${m.prov}.`,
+      q: `Is the online prescription valid at pharmacies in ${m.prov}?`,
+      a: `Yes. A private prescription issued by a GMC-registered UK doctor is valid at every pharmacy in the UK, including those in ${dName} and the rest of ${m.prov}.`,
     },
   ];
 }
@@ -242,18 +221,18 @@ function buildMunicipioPost(m: Muni, index: number, slug: string): Post {
   const size = sizeOf(m.pop);
   return {
     slug,
-    title: `Clínica pérdida de peso en ${dName}`,
-    h1: `Clínica de pérdida de peso en ${dName}: GLP‑1 con médico online`,
-    metaTitle: `Clínica Pérdida de Peso en ${dName} (${m.prov}): GLP‑1 Online`,
-    metaDescription: `Clínica online de pérdida de peso para ${dName} (${m.prov}): endocrino colegiado, receta de Wegovy, Ozempic o Mounjaro y seguimiento por app. ¡Primera consulta gratis!`,
-    excerpt: `Tratamiento médico para adelgazar en ${dName} sin desplazarte: valoración por videoconsulta, receta electrónica válida en tu farmacia y seguimiento clínico continuo.`,
-    category: "Clínica",
-    keyword: `clinica perdida de peso ${dName.toLowerCase()}`,
+    title: `Weight loss clinic in ${dName}`,
+    h1: `Weight loss clinic in ${dName}: GLP-1 with an online doctor`,
+    metaTitle: `Weight Loss Clinic in ${dName} (${m.prov}): GLP-1 Online`,
+    metaDescription: `Online weight loss clinic for ${dName} (${m.prov}): GMC-registered doctor, prescriptions for Wegovy, Ozempic or Mounjaro and app-based follow-up. First consultation free!`,
+    excerpt: `Medical weight-loss treatment in ${dName} without travelling: video-consultation assessment, a private prescription valid at your pharmacy and continuous clinical follow-up.`,
+    category: "Clinic",
+    keyword: `weight loss clinic ${dName.toLowerCase()}`,
     readMins: 6 + (hash(slug) % 3),
     date: isoDate(index),
     updated: "2026-07-01",
     cover: COVERS[hash(slug) % COVERS.length],
-    coverAlt: `Clínica online de pérdida de peso con GLP‑1 para ${dName} (${m.prov})`,
+    coverAlt: `Online weight-loss clinic with GLP-1 for ${dName} (${m.prov})`,
     place: dName,
     sections: buildSections(m, dName, size),
     faqs: buildFaqs(m, dName),
@@ -261,9 +240,8 @@ function buildMunicipioPost(m: Muni, index: number, slug: string): Post {
 }
 
 /* ───────────────────────────────────────────────────────────
-   Cluster de MÁXIMA INTENCIÓN: "clínica {fármaco} {municipio}"
-   (clinica-ozempic-x, clinica-wegovy-x, clinica-mounjaro-x).
-   Estas queries no estaban cubiertas por ningún otro cluster.
+   HIGH-INTENT cluster: "clinic {drug} {town}"
+   (clinic-ozempic-x, clinic-wegovy-x, clinic-mounjaro-x).
    ─────────────────────────────────────────────────────────── */
 
 type ClinicDrug = {
@@ -279,49 +257,49 @@ const CLINIC_DRUGS: ClinicDrug[] = [
   {
     name: "Ozempic",
     slug: "ozempic",
-    active: "semaglutida",
-    dose: "inyección semanal (0,25 → 1 mg)",
-    price: "120–170 €/mes",
-    note: "Indicado para diabetes tipo 2; en obesidad los médicos valoran alternativas con indicación específica como Wegovy.",
+    active: "semaglutide",
+    dose: "weekly injection (0.25 → 1 mg)",
+    price: "£130–£180/month",
+    note: "Licensed for type 2 diabetes; for weight loss, doctors usually consider alternatives with a specific licence such as Wegovy.",
   },
   {
     name: "Wegovy",
     slug: "wegovy",
-    active: "semaglutida 2,4 mg",
-    dose: "inyección semanal con escalado en 5 pasos",
-    price: "200–300 €/mes",
-    note: "Es el GLP‑1 con indicación específica para pérdida de peso: el candidato habitual si tu objetivo es adelgazar.",
+    active: "semaglutide 2.4 mg",
+    dose: "weekly injection with a 5-step dose escalation",
+    price: "£150–£200/month",
+    note: "It is the GLP-1 specifically licensed for weight loss: the usual candidate if your goal is losing weight.",
   },
   {
     name: "Mounjaro",
     slug: "mounjaro",
-    active: "tirzepatida",
-    dose: "inyección semanal (2,5 → 15 mg)",
-    price: "200–350 €/mes",
-    note: "Doble agonista GIP/GLP‑1, el de mayor pérdida de peso media en ensayos clínicos (hasta ~20%).",
+    active: "tirzepatide",
+    dose: "weekly injection (2.5 → 15 mg)",
+    price: "£120–£250/month",
+    note: "A dual GIP/GLP-1 agonist, with the greatest average weight loss in clinical trials (up to ~20%).",
   },
 ];
 
 function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: SizeKey): Section[] {
-  const health = HEALTH[m.com] ?? "el servicio autonómico de salud";
+  const health = HEALTH[m.com] ?? "the NHS";
   const pop = fmt(m.pop);
-  const small = size === "pueblo" || size === "villa";
+  const small = size === "village" || size === "town";
 
   const s1: Section = {
-    h2: `Clínica ${d.name} en ${dName}: cómo empezar con valoración médica`,
+    h2: `${d.name} clinic in ${dName}: how to start with a medical assessment`,
     blocks: [
       {
         type: "p",
         text: small
-          ? `Si buscas una clínica que trabaje con ${d.name} en ${dName} (${m.prov}, ${pop} habitantes), lo más probable es que no encuentres consulta especializada sin desplazarte: los municipios de este tamaño rara vez cuentan con unidad de obesidad. La solución práctica es la vía online de ${BRAND}: videoconsulta con endocrino colegiado, y si ${d.name} es adecuado para ti, receta electrónica válida en tu farmacia de ${dName} o de toda la provincia.`
-          : `En ${dName} (${m.prov}, ${pop} habitantes) hay consultas privadas, pero pocas especializadas en tratamiento con ${d.name} (${d.active}) y las agendas van llenas. Con ${BRAND} no dependes de esperas: videoconsulta con endocrino colegiado y, si procede, receta electrónica de ${d.name} que puedes retirar en cualquier farmacia de la ciudad.`,
+          ? `If you are looking for a clinic that works with ${d.name} in ${dName} (${m.prov}, around ${pop} residents), you probably will not find a specialist service without travelling: towns this size rarely have an obesity unit. The practical solution is the online route with ${BRAND}: a video consultation with a GMC-registered doctor and, if ${d.name} is right for you, a private prescription valid at your pharmacy in ${dName} or anywhere in the county.`
+          : `In ${dName} (${m.prov}, around ${pop} residents) there is some private healthcare, but few clinics specialise in treatment with ${d.name} (${d.active}) and diaries fill up fast. With ${BRAND} you do not depend on waiting lists: a video consultation with a GMC-registered doctor and, if appropriate, a private ${d.name} prescription you can collect at any pharmacy in the city.`,
       },
       {
         type: "p",
         text: pick(
           [
-            `${d.name} exige receta médica en España: ninguna web que lo ofrezca "sin receta" a vecinos de ${dName} es legal ni segura. ${d.note}`,
-            `Recuerda: ${d.name} (${d.active}) solo se dispensa con prescripción. ${d.note} La valoración médica —online o presencial— es siempre el primer paso en ${dName}.`,
+            `${d.name} requires a prescription in the UK: no website offering it "without a prescription" to residents of ${dName} is legal or safe. ${d.note}`,
+            `Remember: ${d.name} (${d.active}) is only dispensed with a prescription. ${d.note} A medical assessment — online or in person — is always the first step in ${dName}.`,
           ],
           d.slug + m.name + m.prov,
         ),
@@ -330,23 +308,23 @@ function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: Size
   };
 
   const s2: Section = {
-    h2: `${d.name} en ${dName}: pauta, precio y farmacias`,
+    h2: `${d.name} in ${dName}: regimen, price and pharmacies`,
     blocks: [
       {
         type: "table",
-        caption: `Datos clave de ${d.name} para pacientes de ${dName} (${m.prov})`,
-        head: ["Dato", "Detalle"],
+        caption: `Key facts about ${d.name} for patients in ${dName} (${m.prov})`,
+        head: ["Detail", "Information"],
         rows: [
-          ["Principio activo", d.active],
-          ["Pauta", d.dose],
-          ["Precio orientativo", `${d.price} en farmacias de ${m.prov}`],
-          ["Receta", "Obligatoria (electrónica privada válida en toda España)"],
-          ["Primera consulta", `Gratis con ${BRAND}`],
+          ["Active ingredient", d.active],
+          ["Regimen", d.dose],
+          ["Indicative price", `${d.price} at pharmacies in ${m.prov}`],
+          ["Prescription", "Required (private prescription valid UK-wide)"],
+          ["First consultation", `Free with ${BRAND}`],
         ],
       },
       {
         type: "p",
-        text: `El precio de ${d.name} es prácticamente el mismo en las farmacias de ${dName} que en el resto de España. Si tu farmacia no lo tiene en stock, puede encargarlo y recibirlo normalmente en 24–48 h.`,
+        text: `The price of ${d.name} is broadly the same at pharmacies in ${dName} as in the rest of the UK. If your pharmacy does not have it in stock, they can usually order it in and receive it within 24–48 hours.`,
       },
     ],
   };
@@ -354,8 +332,8 @@ function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: Size
   const s3: Section = {
     h2: pick(
       [
-        `Cómo conseguir ${d.name} desde ${dName} paso a paso`,
-        `Empezar con ${d.name} viviendo en ${dName}: el proceso`,
+        `How to get ${d.name} from ${dName}, step by step`,
+        `Starting ${d.name} while living in ${dName}: the process`,
       ],
       d.slug + m.name + "s3",
     ),
@@ -363,17 +341,17 @@ function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: Size
       {
         type: "list",
         items: [
-          `Reserva la primera consulta gratis online: sin desplazamientos ni volante de ${health}.`,
-          `Videoconsulta con endocrino colegiado: historial, IMC, medicación actual y objetivos.`,
-          `Si ${d.name} es adecuado (o una alternativa mejor para tu caso), receta electrónica al momento.`,
-          `Retiras el medicamento en tu farmacia de ${dName} y sigues el escalado de dosis con la app.`,
+          `Book the first consultation free online: no travel and no GP referral from ${health}.`,
+          `Video consultation with a GMC-registered doctor: history, BMI, current medication and goals.`,
+          `If ${d.name} is right (or a better alternative for your case), a private prescription right away.`,
+          `Collect the medicine at your pharmacy in ${dName} and follow the dose escalation with the app.`,
         ],
       },
       {
         type: "p",
         text: small
-          ? `Para un municipio como ${dName}, la telemedicina elimina la barrera real: la distancia. Todo el tratamiento —valoración, receta, seguimiento y ajustes— se hace sin salir del pueblo.`
-          : `El seguimiento continuo por app (efectos secundarios, adherencia, ajuste de dosis) marca la diferencia frente a comprar el fármaco y usarlo sin control médico.`,
+          ? `For a town like ${dName}, telemedicine removes the real barrier: distance. The whole treatment — assessment, prescription, follow-up and adjustments — is done without leaving town.`
+          : `Continuous follow-up in the app (side effects, adherence, dose adjustment) is what makes the difference compared with buying the medicine and using it without medical supervision.`,
       },
     ],
   };
@@ -384,20 +362,20 @@ function buildDrugMuniSections(d: ClinicDrug, m: Muni, dName: string, size: Size
 function buildDrugMuniFaqs(d: ClinicDrug, m: Muni, dName: string): Faq[] {
   return [
     {
-      q: `¿Hay alguna clínica de ${d.name} en ${dName}?`,
-      a: `No necesitas una clínica física en ${dName}: la valoración para ${d.name} puede hacerse por videoconsulta con un endocrino colegiado de ${BRAND}, con receta electrónica válida en cualquier farmacia de ${m.prov}. La primera consulta es gratis.`,
+      q: `Is there a ${d.name} clinic in ${dName}?`,
+      a: `You do not need a physical clinic in ${dName}: the assessment for ${d.name} can be done by video consultation with a GMC-registered ${BRAND} doctor, with a private prescription valid at any pharmacy in ${m.prov}. The first consultation is free.`,
     },
     {
-      q: `¿Cuánto cuesta ${d.name} en ${dName}?`,
-      a: `${d.name} (${d.active}) cuesta ${d.price} orientativos en farmacia, igual que en el resto de España. La consulta de valoración en ${BRAND} es gratuita.`,
+      q: `How much does ${d.name} cost in ${dName}?`,
+      a: `${d.name} (${d.active}) costs around ${d.price} at the pharmacy, the same as in the rest of the UK. The assessment consultation at ${BRAND} is free.`,
     },
     {
-      q: `¿Puedo conseguir ${d.name} sin receta en ${dName}?`,
-      a: `No. ${d.name} exige prescripción médica en España. Cualquier web que ofrezca envío sin receta a ${dName} opera al margen de la ley y supone un riesgo real para tu salud.`,
+      q: `Can I get ${d.name} without a prescription in ${dName}?`,
+      a: `No. ${d.name} requires a prescription in the UK. Any website offering delivery without a prescription to ${dName} is operating outside the law and is a real risk to your health.`,
     },
     {
-      q: `¿La receta online vale en las farmacias de ${m.prov}?`,
-      a: `Sí. La receta electrónica privada de un médico colegiado español es válida en todas las farmacias de España, incluidas las de ${dName} y la provincia de ${m.prov}.`,
+      q: `Is the online prescription valid at pharmacies in ${m.prov}?`,
+      a: `Yes. A private prescription from a GMC-registered UK doctor is valid at every pharmacy in the UK, including those in ${dName} and the county of ${m.prov}.`,
     },
   ];
 }
@@ -407,30 +385,30 @@ function buildDrugMuniPost(d: ClinicDrug, m: Muni, index: number, slug: string):
   const size = sizeOf(m.pop);
   return {
     slug,
-    title: `Clínica ${d.name} en ${dName}`,
-    h1: `Clínica ${d.name} en ${dName}: valoración médica online y receta`,
-    metaTitle: `Clínica ${d.name} en ${dName} (${m.prov}): Médico Online y Receta`,
-    metaDescription: `¿Buscas clínica de ${d.name} en ${dName}? Endocrino colegiado por videoconsulta, receta electrónica válida en ${m.prov} y seguimiento por app. ¡Primera consulta gratis!`,
-    excerpt: `Cómo empezar con ${d.name} (${d.active}) desde ${dName}: valoración con endocrino online, receta electrónica y seguimiento clínico sin desplazamientos.`,
-    category: "Clínica",
-    keyword: `clinica ${d.slug} ${dName.toLowerCase()}`,
+    title: `${d.name} clinic in ${dName}`,
+    h1: `${d.name} clinic in ${dName}: online medical assessment and prescription`,
+    metaTitle: `${d.name} Clinic in ${dName} (${m.prov}): Online Doctor & Prescription`,
+    metaDescription: `Looking for a ${d.name} clinic in ${dName}? GMC-registered doctor by video consultation, a private prescription valid across ${m.prov} and app-based follow-up. First consultation free!`,
+    excerpt: `How to start ${d.name} (${d.active}) from ${dName}: assessment with an online doctor, a private prescription and clinical follow-up with no travel.`,
+    category: "Clinic",
+    keyword: `${d.slug} clinic ${dName.toLowerCase()}`,
     readMins: 5 + (hash(slug) % 3),
     date: isoDate(index),
     updated: "2026-07-01",
     cover: COVERS[hash(slug) % COVERS.length],
-    coverAlt: `Clínica online de ${d.name} (${d.active}) para ${dName} (${m.prov})`,
+    coverAlt: `Online ${d.name} clinic (${d.active}) for ${dName} (${m.prov})`,
     place: dName,
     sections: buildDrugMuniSections(d, m, dName, size),
     faqs: buildDrugMuniFaqs(d, m, dName),
   };
 }
 
-/** Prefijo de slug del cluster (usado también por el sitemap segmentado). */
-export const MUNICIPIO_SLUG_PREFIX = "clinica-perdida-de-peso-";
+/** Slug prefix of the town cluster (also used by the segmented sitemap). */
+export const MUNICIPIO_SLUG_PREFIX = "weight-loss-clinic-";
 
-/** Prefijos del cluster clínica×fármaco×municipio (para el sitemap). */
+/** Prefixes of the clinic×drug×town cluster (for the sitemap). */
 export const MUNICIPIO_DRUG_SLUG_PREFIXES = CLINIC_DRUGS.map(
-  (d) => `clinica-${d.slug}-`,
+  (d) => `${d.slug}-clinic-`,
 );
 
 export function generateMunicipioPosts(existing: Set<string>): Post[] {
@@ -439,22 +417,22 @@ export function generateMunicipioPosts(existing: Set<string>): Post[] {
   const munis = parseMunicipios();
   let index = 0;
   for (const m of munis) {
-    // Slug con el nombre natural: "Ejido (El)" → "el-ejido"
+    // Slug from the natural name: "Town (The)" → "the-town"
     const base = slugify(displayName(m.name));
     let slug = `${MUNICIPIO_SLUG_PREFIX}${base}`;
     if (seen.has(slug)) {
-      // Municipios homónimos en distintas provincias → sufijo de provincia
+      // Towns with the same name in different counties → county suffix
       slug = `${MUNICIPIO_SLUG_PREFIX}${base}-${slugify(m.prov)}`;
-      if (seen.has(slug)) continue; // duplicado exacto, se omite
+      if (seen.has(slug)) continue; // exact duplicate, skip
     }
     seen.add(slug);
     out.push(buildMunicipioPost(m, index++, slug));
 
-    // Cluster de máxima intención: clínica {fármaco} {municipio}
+    // High-intent cluster: clinic {drug} {town}
     for (const d of CLINIC_DRUGS) {
-      let dSlug = `clinica-${d.slug}-${base}`;
+      let dSlug = `${d.slug}-clinic-${base}`;
       if (seen.has(dSlug)) {
-        dSlug = `clinica-${d.slug}-${base}-${slugify(m.prov)}`;
+        dSlug = `${d.slug}-clinic-${base}-${slugify(m.prov)}`;
         if (seen.has(dSlug)) continue;
       }
       seen.add(dSlug);

@@ -50,8 +50,8 @@ export function GeoGreeting({
     >
       <span aria-hidden className="h-2 w-2 flex-shrink-0 rounded-full bg-sage" />
       <span className="text-pretty">
-        Atendemos en <span className="font-semibold">{location}</span> y toda la
-        zona — consulta médica online, sin desplazamientos.
+        We treat patients in <span className="font-semibold">{location}</span> and the
+        surrounding area — online medical consultations, no travel needed.
       </span>
     </div>
   );

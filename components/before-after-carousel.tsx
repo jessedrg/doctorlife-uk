@@ -6,21 +6,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const ALL_CASES = [
   {
     src: "/landing/before-after-1.png",
-    alt: "Antes y después de un caso de control de peso con tratamiento GLP-1",
+    alt: "Before and after of a weight management case with GLP-1 treatment",
     lost: "−14 kg",
-    weeks: "en 20 semanas",
+    weeks: "in 20 weeks",
   },
   {
     src: "/landing/before-after-2.png",
-    alt: "Antes y después de un caso de control de peso con tratamiento GLP-1",
+    alt: "Before and after of a weight management case with GLP-1 treatment",
     lost: "−18 kg",
-    weeks: "en 24 semanas",
+    weeks: "in 24 weeks",
   },
   {
     src: "/landing/before-after-3.png",
-    alt: "Antes y después de un caso de control de peso con tratamiento GLP-1",
+    alt: "Before and after of a weight management case with GLP-1 treatment",
     lost: "−16 kg",
-    weeks: "en 22 semanas",
+    weeks: "in 22 weeks",
   },
 ];
 
@@ -68,10 +68,10 @@ export function BeforeAfterCarousel({
         {/* Etiquetas antes / después */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] flex justify-between px-3 pt-3">
           <span className="rounded-full bg-ink/55 px-3 py-1 text-[11px] font-semibold uppercase tracking-[.12em] text-paper backdrop-blur-sm">
-            Antes
+            Before
           </span>
           <span className="rounded-full bg-sage px-3 py-1 text-[11px] font-semibold uppercase tracking-[.12em] text-ink">
-            Después
+            After
           </span>
         </div>
 
@@ -113,7 +113,7 @@ export function BeforeAfterCarousel({
           <button
             key={c.src}
             type="button"
-            aria-label={`Ver caso ${i + 1}`}
+            aria-label={`View case ${i + 1}`}
             onClick={() => go(i)}
             className={`h-2 rounded-full transition-all ${
               i === index
@@ -131,9 +131,9 @@ export function BeforeAfterCarousel({
           isLight ? "text-ink-mute" : "text-paper/60"
         }`}
       >
-        Resultados obtenidos con tratamiento médico basado en GLP-1. Imágenes
-        ilustrativas. Los resultados dependen de cada persona y de la valoración
-        médica; no están garantizados.
+        Results achieved with GLP-1-based medical treatment. Illustrative images.
+        Results depend on each individual and on the medical assessment; they are
+        not guaranteed.
       </p>
     </div>
   );

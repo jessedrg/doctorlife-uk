@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer";
 import { SITE_URL } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Política de cookies — DoctorLife",
+  title: "Cookie policy — DoctorLife",
   description:
-    "Qué cookies usa DoctorLife (técnicas, analíticas y de marketing), su duración y cómo gestionar tu consentimiento.",
+    "Which cookies DoctorLife uses (essential, analytics and marketing), how long they last and how to manage your consent.",
   alternates: { canonical: `${SITE_URL}/cookies` },
 };
 
@@ -19,24 +19,24 @@ type Section = {
 
 const sections: Section[] = [
   {
-    title: "Qué son las cookies",
-    body: "Pequeños archivos que se almacenan en tu navegador para recordar tus preferencias y medir el uso del sitio.",
+    title: "What cookies are",
+    body: "Small files stored in your browser to remember your preferences and measure how the site is used.",
   },
   {
-    title: "Qué cookies usamos",
+    title: "Which cookies we use",
     bullets: [
-      "Técnicas — imprescindibles para el funcionamiento del sitio (por ejemplo, recordar tu idioma). No requieren consentimiento.",
-      "Analíticas — nos ayudan a entender qué funciona y qué no. Solo con tu consentimiento.",
-      "Marketing — exclusivamente si aceptas. Nunca compartimos datos médicos con redes publicitarias.",
+      "Essential — required for the site to function (for example, remembering your language). No consent needed.",
+      "Analytics — help us understand what works and what doesn't. Only with your consent.",
+      "Marketing — only if you accept. We never share medical data with advertising networks.",
     ],
   },
   {
-    title: "Duración",
-    body: "Las cookies técnicas caducan al cerrar la sesión o, en su caso, al cabo de 12 meses. Las analíticas se retienen un máximo de 14 meses. Las de marketing, si aceptas, se retienen un máximo de 13 meses y se eliminan si revocas tu consentimiento.",
+    title: "Duration",
+    body: "Essential cookies expire when your session ends or, where applicable, after 12 months. Analytics cookies are retained for a maximum of 14 months. Marketing cookies, if you accept, are retained for a maximum of 13 months and are deleted if you withdraw your consent.",
   },
   {
-    title: "Gestión",
-    body: "Puedes cambiar tu elección en cualquier momento desde el banner de cookies o desde la configuración del navegador.",
+    title: "Managing cookies",
+    body: "You can change your choice at any time from the cookie banner or from your browser settings.",
   },
 ];
 
@@ -51,11 +51,11 @@ export default function CookiesPage() {
               Legal
             </span>
             <h1 className="mt-4 text-balance text-[clamp(32px,5vw,54px)] font-light leading-[1.05] tracking-[-.02em] text-ink">
-              Política de <span className="font-serif italic text-olive">cookies</span>
+              Cookie <span className="font-serif italic text-olive">policy</span>
             </h1>
             <p className="mt-5 max-w-[58ch] text-pretty text-[16px] leading-relaxed text-ink-soft">
-              Te explicamos qué cookies utilizamos, para qué sirven y cómo puedes
-              gestionar tu consentimiento en cualquier momento.
+              We explain which cookies we use, what they are for and how you can
+              manage your consent at any time.
             </p>
           </header>
 
@@ -89,20 +89,20 @@ export default function CookiesPage() {
 
           <aside className="mt-14 rounded-[24px] border border-ink/10 bg-sage/15 p-8">
             <span className="text-[12px] font-semibold uppercase tracking-[.16em] text-clay">
-              ¿Necesitas más información?
+              Need more information?
             </span>
             <h2 className="mt-3 text-[clamp(22px,3vw,30px)] font-light leading-[1.1] tracking-[-.02em] text-ink">
-              Hablamos contigo.
+              Let&apos;s talk.
             </h2>
             <p className="mt-3 max-w-[52ch] text-pretty text-[16px] leading-relaxed text-ink-soft">
-              Si un apartado de este documento no queda claro, o quieres ejercer algún
-              derecho, nuestro equipo de privacidad y legal responde directamente.
+              If any part of this document is unclear, or you want to exercise a
+              right, our privacy and legal team responds directly.
             </p>
             <a
-              href="mailto:hello@hi-doctor.ai"
+              href="mailto:hello@doctorlife.io"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-[12px] text-[15px] font-semibold text-paper no-underline"
             >
-              Contactar con el equipo
+              Contact the team
               <span className="text-[13px]">↗</span>
             </a>
           </aside>

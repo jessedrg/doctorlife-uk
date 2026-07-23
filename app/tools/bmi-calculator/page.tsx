@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Calculadora de IMC gratis | DoctorLife",
   description:
     "Calcula tu Índice de Masa Corporal en segundos. Conoce si tu peso es saludable y obtén recomendaciones médicas personalizadas de DoctorLife.",
-  alternates: { canonical: "https://doctorlife.io/tools/bmi-calculator" },
+  alternates: { canonical: "https://doctorlife-uk.com/tools/bmi-calculator" },
 };
 
 /* ── Overview cards ── */

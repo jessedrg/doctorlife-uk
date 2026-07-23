@@ -64,9 +64,9 @@ export function BlogCard({ post, large = false }: { post: Post; large?: boolean 
         </h3>
         <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-ink-soft">{post.excerpt}</p>
         <div className="mt-5 flex items-center gap-3 text-[13px] text-ink-mute">
-          <span>{post.readMins} min de lectura</span>
+          <span>{post.readMins} min read</span>
           <span aria-hidden>·</span>
-          <span className="font-medium text-clay group-hover:underline">Leer más →</span>
+          <span className="font-medium text-clay group-hover:underline">Read more →</span>
         </div>
       </div>
     </a>

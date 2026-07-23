@@ -177,20 +177,20 @@ export function ImmersiveProduct() {
         <div className="flex flex-col items-center gap-3 sm:gap-4">
           <Reveal>
             <h2 className="m-0 text-[clamp(28px,5vw,78px)] font-light leading-[.96] tracking-[-.03em]">
-              Una nueva era del
+              A new era of
               <br />
-              <span className="font-serif italic text-sage">cuidado del peso</span> ya está aquí
+              <span className="font-serif italic text-sage">weight care</span> is here
             </h2>
           </Reveal>
           <Reveal>
             <p className="max-w-[32ch] text-[clamp(14px,1.8vw,22px)] font-light leading-[1.35] text-paper/80">
-              <span className="text-sage">Pierde hasta un {LOSS_STAT}% de peso corporal</span>{" "}
-              con GLP‑1 respaldado clínicamente.
+              <span className="text-sage">Lose up to {LOSS_STAT}% of your body weight</span>{" "}
+              with clinically backed GLP‑1.
             </p>
           </Reveal>
           <Reveal>
             <QuizTrigger className="rounded-full bg-sage px-8 py-3 text-sm font-semibold text-ink sm:px-[38px] sm:py-[15px] sm:text-base">
-              Empezar
+              Get started
             </QuizTrigger>
           </Reveal>
         </div>

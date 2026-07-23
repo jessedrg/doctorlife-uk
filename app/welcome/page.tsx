@@ -4,7 +4,7 @@ import { BrandLogo } from "@/components/brand-logo"
 import { TrustpilotInvitation } from "@/components/trustpilot-invitation"
 
 export const metadata = {
-  title: "Bienvenido a DoctorLife",
+  title: "Welcome to DoctorLife",
   robots: { index: false },
 }
 
@@ -20,7 +20,7 @@ export default async function BienvenidoPage({
   let referenceId: string | null = null
   let ok = false
   if (session_id) {
-    // Flujo con pago (Stripe): provisionamos a partir de la sesión.
+    // Paid flow (Stripe): we provision from the session.
     try {
       const res = await provisionFromSession(session_id)
       if (res) {
@@ -33,7 +33,7 @@ export default async function BienvenidoPage({
       ok = false
     }
   } else if (ref && emailParam) {
-    // Flujo gratuito: la cuenta y la cita ya se crearon en startPublicCheckout.
+    // Free flow: the account and appointment were already created in startPublicCheckout.
     email = emailParam
     name = nameParam ?? null
     referenceId = ref
@@ -59,20 +59,20 @@ export default async function BienvenidoPage({
         </div>
 
         <h1 className="mt-6 text-balance text-[28px] font-light leading-tight tracking-[-.02em]">
-          {ok ? "¡Reserva confirmada!" : "Estamos procesando tu reserva"}
+          {ok ? "Booking confirmed!" : "We're processing your booking"}
         </h1>
 
         <p className="mx-auto mt-3 max-w-[42ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft">
           {ok ? (
             <>
-              Tu primera visita gratuita está reservada. Hemos enviado tus credenciales de acceso
-              {email ? <> a <span className="font-medium text-ink">{email}</span></> : ""}. Revisa
-              tu correo (incluida la carpeta de spam) para entrar a tu panel.
+              Your free first visit is booked. We&apos;ve sent your login details
+              {email ? <> to <span className="font-medium text-ink">{email}</span></> : ""}. Check
+              your email (including the spam folder) to access your dashboard.
             </>
           ) : (
             <>
-              En cuanto se confirme tu reserva te enviaremos por correo tus credenciales de acceso al
-              panel. Si ya lo recibiste, puedes iniciar sesión directamente.
+              As soon as your booking is confirmed we&apos;ll email you your login details for the
+              dashboard. If you&apos;ve already received them, you can sign in directly.
             </>
           )}
         </p>
@@ -82,7 +82,7 @@ export default async function BienvenidoPage({
             href="/sign-in"
             className="w-full rounded-full bg-ink py-3.5 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
           >
-            Ir a iniciar sesión
+            Go to sign in
           </Link>
           <Link href="/" className="text-sm text-ink-mute transition-colors hover:text-ink">
             Back to home

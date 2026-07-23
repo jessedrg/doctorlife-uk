@@ -5,12 +5,12 @@
    Úsalo con <JsonLd data={...} /> en cualquier página.
    ─────────────────────────────────────────────────────────── */
 
-export const SITE_URL = "https://doctorlife.io";
+export const SITE_URL = "https://doctorlife-uk.com";
 export const BRAND = "DoctorLife";
 export const CONTACT_EMAIL = "hello@doctorlife.io";
 
-/* Entidad de marca: organización médica. Ayuda a Google a entender
-   que DoctorLife es una empresa real (clave en nichos YMYL de salud). */
+/* Brand entity: medical organisation. Helps Google understand that
+   DoctorLife is a real company (key in YMYL health niches). */
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "MedicalOrganization",
@@ -19,35 +19,35 @@ export const organizationSchema = {
   url: SITE_URL,
   logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
   image: `${SITE_URL}/icon.png`,
-  slogan: "Tu cuerpo, por fin entendido",
-  // TODO(negocio): añadir el nº de registro sanitario real como `identifier`
-  // cuando esté disponible (refuerza E-E-A-T en salud). No inventar.
+  slogan: "Your body, finally understood",
+  // TODO(business): add the real healthcare registration number as `identifier`
+  // once available (reinforces E-E-A-T in health). Do not invent.
   email: CONTACT_EMAIL,
   description:
-    "Cuidado del peso y hormonal dirigido por médicos colegiados, con valoración médica y seguimiento real desde la app.",
+    "Doctor-led weight and hormonal care with a real medical assessment and ongoing follow-up from the app.",
   medicalSpecialty: ["Endocrinology", "Bariatrics"],
   knowsAbout: [
-    "Obesidad",
-    "Sobrepeso",
-    "Salud metabólica",
-    "Control de peso",
-    "Endocrinología",
+    "Obesity",
+    "Overweight",
+    "Metabolic health",
+    "Weight management",
+    "Endocrinology",
   ],
   address: {
     "@type": "PostalAddress",
-    addressCountry: "ES",
+    addressCountry: "GB",
   },
-  areaServed: { "@type": "Country", name: "España" },
+  areaServed: { "@type": "Country", name: "United Kingdom" },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer support",
     email: CONTACT_EMAIL,
-    availableLanguage: ["Spanish"],
-    areaServed: "ES",
+    availableLanguage: ["English"],
+    areaServed: "GB",
   },
-  /* Perfiles externos verificables (refuerza la entidad en YMYL). */
-  sameAs: ["https://es.trustpilot.com/review/doctorlife.io"],
-  availableLanguage: "es",
+  /* Verifiable external profiles (reinforces the entity in YMYL). */
+  sameAs: ["https://uk.trustpilot.com/review/doctorlife.io"],
+  availableLanguage: "en",
 } as const;
 
 /* Sitio + buscador interno (sitelinks searchbox en resultados de Google). */
@@ -57,7 +57,7 @@ export const websiteSchema = {
   "@id": `${SITE_URL}/#website`,
   name: BRAND,
   url: SITE_URL,
-  inLanguage: "es-ES",
+  inLanguage: "en-GB",
   publisher: { "@id": `${SITE_URL}/#organization` },
   potentialAction: {
     "@type": "SearchAction",
@@ -112,9 +112,9 @@ export function toolSchema(opts: {
     url: opts.url,
     applicationCategory: "HealthApplication",
     operatingSystem: "Web",
-    inLanguage: "es-ES",
+    inLanguage: "en-GB",
     isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    offers: { "@type": "Offer", price: "0", priceCurrency: "GBP" },
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
 }
@@ -139,7 +139,7 @@ export function drugSchema(opts: {
     ...(opts.description ? { description: opts.description } : {}),
     ...(opts.url ? { url: opts.url } : {}),
     prescriptionStatus: "PrescriptionOnly",
-    inLanguage: "es-ES",
+    inLanguage: "en-GB",
     publisher: { "@id": `${SITE_URL}/#organization` },
   };
 }

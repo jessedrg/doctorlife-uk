@@ -18,85 +18,85 @@ import { BeforeAfterCarousel } from "@/components/before-after-carousel";
 import { SITE_URL, BRAND } from "@/lib/articles";
 
 export type LandingConfig = {
-  /** Canonical route, e.g. "/weight-consultation-glp1" */
+  /** Ruta canónica, p. ej. "/consulta-peso-glp1" */
   path: string;
-  /** Prefix for analytics events, e.g. "ads-weight-glp1" */
+  /** Prefijo para los eventos de analítica, p. ej. "ads-peso-glp1" */
   planPrefix: string;
-  /** Top badge text */
+  /** Texto del badge superior */
   eyebrow: string;
-  /** Headline (accepts JSX for styling parts) */
+  /** Titular (acepta JSX para estilar partes) */
   headline: React.ReactNode;
-  /** Subtitle under the headline */
+  /** Subtítulo bajo el titular */
   subtitle: string;
-  /** Number of before/after cases to show (0 = no photos) */
+  /** Nº de casos antes/después a mostrar (0 = sin fotos) */
   photos: number;
 };
 
 const steps = [
   {
     icon: ClipboardList,
-    title: "Tell us your case",
-    text: "Complete a simple clinical questionnaire about your history, habits, and goals. Just a few minutes.",
+    title: "Tell us about your case",
+    text: "You complete a simple clinical questionnaire about your history, habits and goals. Just a few minutes.",
   },
   {
     icon: Video,
     title: "Video consultation with your doctor",
-    text: "A registered doctor assesses your situation via video call and answers your questions calmly.",
+    text: "A registered doctor reviews your situation over a video call and answers your questions calmly.",
   },
   {
     icon: HeartPulse,
     title: "Plan and follow-up",
-    text: "You receive a personalised plan and continuous follow-up via chat. If your doctor considers it clinically indicated, they can prescribe treatment and adjust it to your progress.",
+    text: "You receive a personalised plan and continuous support by chat. If your doctor considers it clinically appropriate, they can prescribe treatment and adjust it to your progress.",
   },
 ];
 
 const benefits = [
   {
     icon: Stethoscope,
-    title: "Endocrinologists and registered doctors",
-    text: "Specialists in endocrinology and nutrition, registered and listed in the State Registry of Health Professionals (REPS).",
+    title: "GMC-registered doctors and endocrinologists",
+    text: "Specialists in endocrinology and nutrition, registered with the General Medical Council (GMC).",
   },
   {
     icon: Video,
     title: "100% online, from home",
-    text: "No travel or waiting rooms. You choose the schedule that suits you best.",
+    text: "No travel and no waiting rooms. You choose the time that suits you best.",
   },
   {
     icon: CalendarCheck,
-    title: "Continuous follow-up",
-    text: "Not a one-off consultation: we accompany you month by month and adjust the plan to your pace.",
+    title: "Ongoing follow-up",
+    text: "This isn't a one-off appointment: we support you month by month and adjust the plan to your pace.",
   },
   {
     icon: ShieldCheck,
-    title: "No commitment",
-    text: "A single transparent subscription. You can pause or cancel whenever you want.",
+    title: "No lock-in",
+    text: "A single transparent subscription. You can pause or cancel whenever you like.",
   },
 ];
 
 const faqs = [
   {
     q: "What does the first visit include?",
-    a: "A complete clinical assessment with a registered doctor via video call, where your history and objectives are reviewed and the starting point is defined. The first visit is free, with no commitment.",
+    a: "A full clinical assessment with a registered doctor over video call, reviewing your history and goals and defining your starting point. The first visit is free, with no obligation.",
   },
   {
     q: "Are the doctors registered?",
-    a: "Yes. All our professionals are doctors registered in Spain and listed in the State Registry of Health Professionals (REPS), including specialists in endocrinology and nutrition. We verify their qualifications and registration before incorporating them.",
+    a: "Yes. All of our professionals are doctors registered with the General Medical Council (GMC) in the UK, including specialists in endocrinology and nutrition. We verify their qualifications and registration before onboarding them.",
   },
   {
     q: "Can the doctor prescribe treatment?",
-    a: "Yes. When the clinical assessment justifies it, the doctor or endocrinologist can prescribe the treatment they consider appropriate for your case and follow it up. The indication always depends on an individual medical assessment; not all cases require medication.",
+    a: "Yes. When the clinical assessment justifies it, the doctor or endocrinologist can prescribe the treatment they consider appropriate for your case and monitor it. Any prescription always depends on an individual medical assessment; not every case requires medication.",
   },
   {
     q: "How much does it cost?",
-    a: "The first assessment is free. If you decide to continue, you choose your plan: subscription of 139 €/month with no commitment, 5-month pack for 449 €, or nutritionist + GLP1 for 649 €. Includes follow-up via chat with your doctor and plan adjustment.",
+    a: "The first assessment is free. If you decide to continue, you choose your plan: a £139/month subscription with no lock-in, a 5-month pack for £449 or nutritionist + GLP-1 for £649. It includes chat follow-up with your doctor and plan adjustments.",
   },
   {
     q: "Do I need to attend in person?",
-    a: "It's not necessary: the service is 100% online. If at any point your doctor considers you need an in-person assessment or test, they will let you know and guide you on how to do it.",
+    a: "No: the service is 100% online. If at any point your doctor feels you need an in-person assessment or test, they will tell you and guide you on how to arrange it.",
   },
   {
-    q: "Are my data protected?",
-    a: "Yes. We process your health data in accordance with GDPR and LOPDGDD, with reinforced security measures and medical confidentiality.",
+    q: "Is my data protected?",
+    a: "Yes. We process your health data in line with UK GDPR and the Data Protection Act 2018, with enhanced security measures and medical confidentiality.",
   },
 ];
 
@@ -110,9 +110,9 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
     url: `${SITE_URL}${path}`,
     medicalSpecialty: "Endocrinology",
     description:
-      "Telemedicine service for weight control with doctors registered in Spain. Clinical assessment, personalised plan, and continuous follow-up.",
-    areaServed: "ES",
-    priceRange: "€€",
+      "Telemedicine service for weight management with GMC-registered doctors in the UK. Clinical assessment, personalised plan and continuous follow-up.",
+    areaServed: "GB",
+    priceRange: "££",
   };
 
   return (
@@ -150,10 +150,10 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       plan={planPrefix}
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
-                      Book free first visit
+                      Book your free first visit
                     </QuizTrigger>
                     <span className="text-[13.5px] text-paper/70">
-                      Free · no commitment
+                      Free · no obligation
                     </span>
                   </div>
 
@@ -171,7 +171,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   <div className="relative mx-auto aspect-[4/3] w-full max-w-[440px] overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-paper/15 lg:max-w-none">
                     <Image
                       src="/landing/consulta-online.png"
-                      alt="Médica colegiada durante una videoconsulta de control de peso"
+                      alt="Registered doctor during a weight management video consultation"
                       fill
                       priority
                       sizes="(max-width: 1024px) 90vw, 45vw"
@@ -188,10 +188,10 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Stethoscope, label: "Registered endocrinologists (REPS)" },
+                { icon: Stethoscope, label: "GMC-registered endocrinologists" },
                 { icon: ClipboardList, label: "Prescription if indicated" },
-                { icon: ShieldCheck, label: "No commitment" },
-                { icon: Lock, label: "Data protected (GDPR)" },
+                { icon: ShieldCheck, label: "No lock-in" },
+                { icon: Lock, label: "Data protected (UK GDPR)" },
               ].map(({ icon: Icon, label }) => (
                 <li
                   key={label}
@@ -218,7 +218,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
               id="como-funciona"
               className="mt-3 max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Three steps to start safely
+              Three steps to get started safely
             </h2>
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
               {steps.map(({ icon: Icon, title, text }, i) => (
@@ -254,7 +254,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                 id="beneficios"
                 className="mt-3 max-w-[24ch] text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.12]"
               >
-                Weight has physiological causes. Treating them requires medical judgement.
+                Weight has physiological causes. Treating them takes medical judgement.
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
                 {benefits.map(({ icon: Icon, title, text }) => (
@@ -288,20 +288,20 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   id="precio"
                   className="mt-3 text-balance text-[clamp(24px,3.2vw,38px)] font-light leading-[1.1] text-ink"
                 >
-                  Start free and decide calmly
+                  Start free and decide at your own pace
                 </h2>
                 <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-soft">
-                  The first assessment is free. If you decide to continue, you choose your
-                  plan: 139 €/month with no commitment, 5-month pack for 449 € or
-                  nutritionist + GLP1 for 649 €. Covers follow-up with your doctor
-                  and plan adjustment. No surprises.
+                  The first assessment is free. If you decide to continue, you choose
+                  your plan: £139/month with no lock-in, a 5-month pack for £449 or
+                  nutritionist + GLP-1 for £649. It covers follow-up with your doctor
+                  and adjustments to your plan. No surprises.
                 </p>
                 <ul className="mt-6 flex flex-col gap-2.5 text-[15px] text-ink">
                   {[
-                    "Assessment with registered doctor",
+                    "Assessment with a registered doctor",
                     "Plan personalised to your case",
                     "Follow-up chat with your doctor",
-                    "Cancel whenever you want",
+                    "Cancel whenever you like",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-2.5">
                       <BadgeCheck
@@ -319,7 +319,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                 <p className="mt-1 flex items-end gap-2">
                   <span className="text-[48px] font-light leading-none">Free</span>
                   <span className="mb-1 text-[14px] text-paper/70">
-                    no commitment
+                    no obligation
                   </span>
                 </p>
                 <div className="my-6 h-px bg-paper/15" />
@@ -327,19 +327,19 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   If you continue · choose your plan
                 </p>
                 <p className="mt-1 flex items-end gap-2">
-                  <span className="text-[32px] font-light leading-none">139 €</span>
+                  <span className="text-[32px] font-light leading-none">£139</span>
                   <span className="mb-1 text-[14px] text-paper/70">
-                    /month · or 5-month pack 449 €
+                    /month · or 5-month pack £449
                   </span>
                 </p>
                 <QuizTrigger
                   plan={`${planPrefix}-precio`}
                   className="mt-7 block w-full rounded-full bg-sage px-7 py-[15px] text-center text-[16px] font-semibold text-ink"
                 >
-                  Book first visit
+                  Book your first visit
                 </QuizTrigger>
                 <p className="mt-3 text-center text-[12.5px] text-paper/60">
-                  No commitment · cancel whenever you want
+                  No lock-in · cancel whenever you like
                 </p>
               </div>
             </div>
@@ -391,17 +391,17 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                     Take the first step today, with a doctor by your side
                   </h2>
                   <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-paper/75">
-                    Book your free first visit. No travel, no commitment,
-                    and with the rigour of registered doctors.
+                    Book your free first visit. No travel, no lock-in and the rigour
+                    of GMC-registered doctors.
                   </p>
                   <QuizTrigger
                     plan={`${planPrefix}-final`}
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
-                    Book free first visit
+                    Book your free first visit
                   </QuizTrigger>
                   <p className="mt-5 text-[14px] text-paper/70">
-                    Want to know us better?{" "}
+                    Want to get to know us better?{" "}
                     <a
                       href="/#product"
                       className="font-medium text-paper underline decoration-paper/40 underline-offset-4 transition-colors hover:decoration-paper"
@@ -413,7 +413,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                 <div className="relative min-h-[260px] md:min-h-full">
                   <Image
                     src="/landing/consulta-online.png"
-                    alt="Consulta médica online de control de peso"
+                    alt="Online medical consultation for weight management"
                     fill
                     sizes="(max-width: 768px) 100vw, 40vw"
                     className="object-cover"
@@ -429,25 +429,25 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
               </div>
             </div>
 
-            {/* Medical compliant notice (without drug names) */}
+            {/* Aviso médico compliant (sin nombres de fármacos) */}
             <p className="mx-auto mt-8 max-w-[70ch] text-center text-[12.5px] leading-relaxed text-ink-mute">
-              Telemedicine service provided by doctors registered in Spain.
-              The indication of any treatment always depends on an
-              individual medical assessment. This service does not guarantee specific
-              results and does not replace in-person care when necessary.
-              We process your data in accordance with GDPR and LOPDGDD.
+              Telemedicine service provided by GMC-registered doctors in the UK.
+              The prescription of any treatment always depends on an individual
+              medical assessment. This service does not guarantee specific results
+              and does not replace in-person care when needed. We process your data
+              in line with UK GDPR and the Data Protection Act 2018.
             </p>
           </section>
         </main>
 
-        {/* ── Clean and compliant footer (without drug names) ── */}
+        {/* ── Footer limpio y compliant (sin nombres de fármacos) ── */}
         <footer className="px-3 pb-6 pt-[40px] sm:px-4 lg:px-5">
           <div className="mx-auto max-w-none overflow-hidden rounded-[32px] bg-ink text-paper">
             <div className="grid grid-cols-1 gap-x-10 gap-y-8 px-8 pb-10 pt-12 md:grid-cols-[1.6fr_1fr_1fr] md:px-14">
               <div>
                 <a
                   href="/"
-                  aria-label="DoctorLife — home"
+                  aria-label="DoctorLife — inicio"
                   className="inline-flex no-underline"
                 >
                   <BrandLogo
@@ -458,14 +458,14 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   />
                 </a>
                 <p className="mt-5 max-w-[320px] text-[15px] leading-relaxed text-paper/65">
-                  Telemedicine platform that connects patients with independent
-                  registered doctors for weight control with medical supervision.
+                  A telemedicine platform connecting patients with independent
+                  GMC-registered doctors for medically supervised weight management.
                 </p>
                 <QuizTrigger
                   plan={`${planPrefix}-footer`}
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
-                  Book free first visit
+                  Book your free first visit
                   <span className="text-[13px]">↗</span>
                 </QuizTrigger>
                 <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
@@ -525,7 +525,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
             </div>
 
             <div className="flex flex-col gap-1 border-t border-paper/10 px-8 py-7 text-[12.5px] text-paper/45 md:flex-row md:items-center md:justify-between md:px-14">
-              <span>© 2026 DoctorLife · doctorlife.io</span>
+              <span>© 2026 DoctorLife · doctorlife-uk.com</span>
               <span>Service subject to individual medical assessment.</span>
             </div>
           </div>

@@ -26,7 +26,7 @@ export function Hero() {
         <div className="absolute inset-y-0 right-0 w-full md:w-[62%] lg:w-[58%] xl:w-[55%] 2xl:w-[52%]">
           <img
             src="/hero/woman.png"
-            alt="DoctorLife patient smiling"
+            alt="Smiling DoctorLife patient"
             className="h-full w-full object-cover"
             style={{ objectPosition: "65% top" }}
           />
@@ -44,8 +44,8 @@ export function Hero() {
               Your 100% online medical platform
             </div>
             <h1 className="mt-4 text-balance text-[clamp(30px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper sm:mt-6">
-              Medical treatment for{" "}
-              <span className="font-serif italic text-sage">weight loss</span>, adapted to your reality
+              The medical treatment for{" "}
+              <span className="font-serif italic text-sage">weight loss</span>, built around your reality
             </h1>
             <p className="mt-4 max-w-[40ch] text-balance text-[clamp(15px,1.4vw,24px)] font-light leading-[1.5] text-paper/80 sm:mt-7">
               Doctor-led care, designed around your body.

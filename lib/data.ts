@@ -25,7 +25,7 @@ export const products: Product[] = [
   {
     name: "Monthly subscription",
     subtitle: "Continuous medical follow-up, prescription and one call consultation per month. No commitment.",
-    price: "139€",
+    price: "£139",
     priceSuffix: "/month",
     tag: "Subscription",
     img: "/products/maren-pen.png",
@@ -42,7 +42,7 @@ export const products: Product[] = [
   {
     name: "5-month pack",
     subtitle: "The complete programme in a single payment. Best value for committed treatment.",
-    price: "449€",
+    price: "£449",
     priceSuffix: "· one-off payment · 5 months",
     tag: "Savings pack",
     img: "/products/maren-daily.png",
@@ -57,7 +57,7 @@ export const products: Product[] = [
   {
     name: "Nutritionist + GLP1",
     subtitle: "5-month programme with medical follow-up and nutritionist support.",
-    price: "649€",
+    price: "£649",
     priceSuffix: "· one-off payment · 5 months",
     tag: "Complete programme",
     img: "/products/maren-hd.png",
@@ -79,20 +79,20 @@ export type Expert = {
 };
 
 export const experts: Expert[] = [
-  { name: "Dra. Elena Ruiz", role: "Médica independiente en la plataforma", spec: "Salud femenina y hormonal", img: "/experts/elena-ruiz.png" },
-  { name: "Dr. Marcus Hale", role: "Médico independiente en la plataforma", spec: "Medicina metabólica", img: "/experts/marcus-hale.png" },
-  { name: "Dra. Priya Nair", role: "Médica independiente en la plataforma", spec: "Tiroides y hormonas", img: "/experts/priya-nair.png" },
-  { name: "Dr. James Okafor", role: "Médico independiente en la plataforma", spec: "Medicina interna", img: "/experts/james-okafor.png" },
-  { name: "Dra. Sofía Bergman", role: "Médica independiente en la plataforma", spec: "Salud cardiovascular", img: "/experts/sofia-bergman.png" },
+  { name: "Dr Elena Ruiz", role: "Independent doctor on the platform", spec: "Women's and hormonal health", img: "/experts/elena-ruiz.png" },
+  { name: "Dr Marcus Hale", role: "Independent doctor on the platform", spec: "Metabolic medicine", img: "/experts/marcus-hale.png" },
+  { name: "Dr Priya Nair", role: "Independent doctor on the platform", spec: "Thyroid and hormones", img: "/experts/priya-nair.png" },
+  { name: "Dr James Okafor", role: "Independent doctor on the platform", spec: "Internal medicine", img: "/experts/james-okafor.png" },
+  { name: "Dr Sofía Bergman", role: "Independent doctor on the platform", spec: "Cardiovascular health", img: "/experts/sofia-bergman.png" },
 ];
 
 export type Metric = { value: number; prefix?: string; suffix?: string; label: string };
 
 export const metrics: Metric[] = [
-  { value: 24, prefix: "−", suffix: "%", label: "peso corporal medio perdido*" },
-  { value: 92, suffix: "%", label: "siguió con su plan" },
-  { value: 50, suffix: "k+", label: "pacientes en seguimiento" },
-  { value: 4.9, suffix: "★", label: "valoración media" },
+  { value: 24, prefix: "−", suffix: "%", label: "average body weight lost*" },
+  { value: 92, suffix: "%", label: "stayed on their plan" },
+  { value: 50, suffix: "k+", label: "patients in follow-up" },
+  { value: 4.9, suffix: "★", label: "average rating" },
 ];
 
 export type QuizStep = { key: string; q: string; sub?: string; opts: string[] };
@@ -173,7 +173,7 @@ export const adsProducts: Product[] = [
     name: "Monthly subscription",
     subtitle:
       "Everything you need to manage your weight with real medical follow-up. First assessment free.",
-    price: "139€",
+    price: "£139",
     priceSuffix: "/month",
     tag: "Subscription",
     img: "/products/maren-pen.png",
