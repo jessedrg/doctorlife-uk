@@ -1,13 +1,13 @@
 import { headers } from "next/headers"
 
 /** Host canónico de producción. */
-const PROD_HOST = "doctorlife.io"
+const PROD_HOST = "doctorlife-uk.com"
 /** Host de desarrollo/staging. */
-const DEV_HOST = "dev.doctorlife.io"
+const DEV_HOST = "dev.doctorlife-uk.com"
 
 /**
  * Devuelve true si la petición actual viene del dominio de producción
- * (doctorlife.io). Los médicos marcados como isDevOnly NO aparecen en prod.
+ * (doctorlife-uk.com). Los médicos marcados como isDevOnly NO aparecen en prod.
  */
 export async function isProductionRequest(): Promise<boolean> {
   try {
@@ -55,7 +55,7 @@ export function getBaseUrl(): string {
  * o una URL de preview de Vercel), que dejaría de existir. Por eso esta cascada
  * prioriza un dominio fijo y explícito y omite los hosts temporales.
  *
- * Define NEXT_PUBLIC_APP_URL (p.ej. https://doctorlife.io) para forzar el dominio.
+ * Define NEXT_PUBLIC_APP_URL (p.ej. https://doctorlife-uk.com) para forzar el dominio.
  */
 export function getCanonicalBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL
@@ -69,7 +69,7 @@ export function getCanonicalBaseUrl(): string {
  * Base URL del dominio donde está navegando el usuario AHORA (dev, preview o
  * prod), leído de las cabeceras de la petición. Es lo que se debe usar para los
  * `success_url`/`return_url` de Stripe: así el usuario vuelve al mismo dominio
- * desde el que pagó (p.ej. dev.doctorlife.io) y no a producción, evitando que la
+ * desde el que pagó (p.ej. dev.doctorlife-uk.com) y no a producción, evitando que la
  * página de retorno (y el aprovisionamiento) acaben en un 404 de otro deploy.
  *
  * Cae de vuelta a getBaseUrl() si no hay contexto de petición.

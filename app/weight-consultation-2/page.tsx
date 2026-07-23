@@ -525,7 +525,7 @@ export default function LandingControlDePeso2() {
             </div>
 
             <div className="flex flex-col gap-1 border-t border-paper/10 px-8 py-7 text-[12.5px] text-paper/45 md:flex-row md:items-center md:justify-between md:px-14">
-              <span>© 2026 DoctorLife · doctorlife.io</span>
+              <span>© 2026 DoctorLife · doctorlife-uk.com</span>
               <span>Service subject to individual medical assessment.</span>
             </div>
           </div>

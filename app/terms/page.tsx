@@ -40,7 +40,7 @@ const sections: Section[] = [
   },
   {
     title: "6. Intellectual property",
-    body: "The content of doctorlife.io (text, images, code) is the property of DoctorLife unless otherwise stated.",
+    body: "The content of doctorlife-uk.com (text, images, code) is the property of DoctorLife unless otherwise stated.",
   },
   {
     title: "7. Right to cancel",
