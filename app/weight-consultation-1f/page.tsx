@@ -362,7 +362,7 @@ export default function LandingPeso1Foto() {
             </div>
           </section>
 
-          {/* ── CTA final ── */}
+          {/* ── Final CTA ── */}
           <section
             aria-labelledby="cta-final"
             className="mx-auto max-w-[1100px] px-5 py-16"
@@ -374,32 +374,32 @@ export default function LandingPeso1Foto() {
                     id="cta-final"
                     className="text-balance text-[clamp(24px,3.2vw,36px)] font-light leading-[1.1]"
                   >
-                    Da el primer paso hoy, con un médico de tu lado
+                    Take the first step today, with a doctor on your side
                   </h2>
                   <p className="mt-4 max-w-[46ch] text-[15.5px] leading-relaxed text-paper/75">
-                    Reserva tu primera visita gratis. Sin desplazamientos, sin
-                    permanencia y con el rigor de médicos colegiados.
+                    Book your free first visit. No travel, no lock-in and with the
+                    rigour of GMC-registered doctors.
                   </p>
                   <QuizTrigger
                     plan="ads-peso-1f-final"
                     className="mt-8 inline-block rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink"
                   >
-                    Reservar primera visita gratis
+                    Book your free first visit
                   </QuizTrigger>
                   <p className="mt-5 text-[14px] text-paper/70">
-                    ¿Quieres conocernos mejor?{" "}
+                    Want to get to know us better?{" "}
                     <a
                       href="/#product"
                       className="font-medium text-paper underline decoration-paper/40 underline-offset-4 transition-colors hover:decoration-paper"
                     >
-                      Descubre cómo funciona DoctorLife
+                      Discover how DoctorLife works
                     </a>
                   </p>
                 </div>
                 <div className="relative min-h-[260px] md:min-h-full">
                   <Image
                     src="/landing/consulta-online.png"
-                    alt="Consulta médica online de control de peso"
+                    alt="Online weight management doctor consultation"
                     fill
                     sizes="(max-width: 768px) 100vw, 40vw"
                     className="object-cover"
@@ -415,25 +415,25 @@ export default function LandingPeso1Foto() {
               </div>
             </div>
 
-            {/* Aviso médico compliant (sin nombres de fármacos) */}
+            {/* Compliant medical notice (no drug names) */}
             <p className="mx-auto mt-8 max-w-[70ch] text-center text-[12.5px] leading-relaxed text-ink-mute">
-              Servicio de telemedicina prestado por médicos colegiados en España.
-              La indicación de cualquier tratamiento depende siempre de una
-              valoración médica individual. Este servicio no garantiza resultados
-              concretos y no sustituye la atención presencial cuando sea necesaria.
-              Tratamos tus datos conforme al RGPD y la LOPDGDD.
+              Telemedicine service provided by GMC-registered doctors in the UK.
+              The prescription of any treatment always depends on an individual
+              medical assessment. This service does not guarantee specific results
+              and does not replace in-person care when needed. We process your data
+              in line with UK GDPR and the Data Protection Act 2018.
             </p>
           </section>
         </main>
 
-        {/* ── Footer limpio y compliant (sin nombres de fármacos) ── */}
+        {/* ── Clean, compliant footer (no drug names) ── */}
         <footer className="px-3 pb-6 pt-[40px] sm:px-4 lg:px-5">
           <div className="mx-auto max-w-none overflow-hidden rounded-[32px] bg-ink text-paper">
             <div className="grid grid-cols-1 gap-x-10 gap-y-8 px-8 pb-10 pt-12 md:grid-cols-[1.6fr_1fr_1fr] md:px-14">
               <div>
                 <a
                   href="/"
-                  aria-label="DoctorLife — inicio"
+                  aria-label="DoctorLife — home"
                   className="inline-flex no-underline"
                 >
                   <BrandLogo
@@ -444,15 +444,15 @@ export default function LandingPeso1Foto() {
                   />
                 </a>
                 <p className="mt-5 max-w-[320px] text-[15px] leading-relaxed text-paper/65">
-                  Plataforma de telemedicina que conecta a pacientes con médicos
-                  colegiados independientes para el control de peso con supervisión
-                  médica.
+                  A telemedicine platform connecting patients with independent
+                  GMC-registered doctors for medically supervised weight
+                  management.
                 </p>
                 <QuizTrigger
                   plan="ads-peso-1f-footer"
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
-                  Reservar primera visita gratis
+                  Book your free first visit
                   <span className="text-[13px]">↗</span>
                 </QuizTrigger>
                 <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
@@ -460,22 +460,22 @@ export default function LandingPeso1Foto() {
 
               <div>
                 <span className="text-xs uppercase tracking-[.14em] text-sage">
-                  Servicio
+                  Service
                 </span>
                 <ul className="mt-4 flex flex-col gap-3 text-[15px] text-paper/75">
                   <li>
                     <a href="#como-funciona" className="no-underline hover:text-paper">
-                      Cómo funciona
+                      How it works
                     </a>
                   </li>
                   <li>
                     <a href="#precio" className="no-underline hover:text-paper">
-                      Precio
+                      Pricing
                     </a>
                   </li>
                   <li>
                     <a href="#faq" className="no-underline hover:text-paper">
-                      Preguntas frecuentes
+                      Frequently asked questions
                     </a>
                   </li>
                 </ul>
@@ -491,7 +491,7 @@ export default function LandingPeso1Foto() {
                       href="/legal/privacy-policy"
                       className="no-underline hover:text-paper"
                     >
-                      Política de privacidad
+                      Privacy policy
                     </a>
                   </li>
                   <li>
@@ -499,12 +499,12 @@ export default function LandingPeso1Foto() {
                       href="/legal/terms-of-services"
                       className="no-underline hover:text-paper"
                     >
-                      Términos y condiciones
+                      Terms and conditions
                     </a>
                   </li>
                   <li>
                     <a href="/cookies" className="no-underline hover:text-paper">
-                      Política de cookies
+                      Cookie policy
                     </a>
                   </li>
                 </ul>
@@ -513,7 +513,7 @@ export default function LandingPeso1Foto() {
 
             <div className="flex flex-col gap-1 border-t border-paper/10 px-8 py-7 text-[12.5px] text-paper/45 md:flex-row md:items-center md:justify-between md:px-14">
               <span>© 2026 DoctorLife · doctorlife.io</span>
-              <span>Servicio sujeto a valoración médica individual.</span>
+              <span>Service subject to individual medical assessment.</span>
             </div>
           </div>
         </footer>

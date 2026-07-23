@@ -137,19 +137,19 @@ export default function LandingPeso3Fotos() {
                 <div className="max-w-[620px]">
                   <span className="inline-flex items-center gap-2 rounded-full bg-paper/12 px-3 py-1.5 text-[12.5px] font-semibold uppercase tracking-[.16em] text-sage backdrop-blur-sm">
                     <BadgeCheck aria-hidden className="h-4 w-4" />
-                    Endocrinos colegiados · 100% online
+                    GMC-registered endocrinologists · 100% online
                   </span>
                   <h1 className="mt-5 text-balance text-[clamp(30px,5vw,60px)] font-light leading-[1.04] tracking-[-.03em] text-paper">
-                    Tratamiento{" "}
-                    <span className="font-serif italic text-sage">GLP-1</span> con{" "}
+                    <span className="font-serif italic text-sage">GLP-1</span>{" "}
+                    treatment with{" "}
                     <span className="font-serif italic text-sage">
-                      supervisión médica
+                      medical supervision
                     </span>
-                    , desde casa
+                    , from home
                   </h1>
                   <p className="mt-4 text-[15px] font-medium text-paper/75">
-                    Tratamiento con GLP-1, si el endocrino lo cree adecuado para
-                    tu caso.
+                    GLP-1 treatment, if the endocrinologist considers it right for
+                    your case.
                   </p>
 
                   <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -157,10 +157,10 @@ export default function LandingPeso3Fotos() {
                       plan="ads-peso-3f"
                       className="rounded-full bg-sage px-8 py-[15px] text-[16px] font-semibold text-ink shadow-lg"
                     >
-                      Reservar primera visita gratis
+                      Book your free first visit
                     </QuizTrigger>
                     <span className="text-[13.5px] text-paper/70">
-                      Gratis · sin compromiso
+                      Free · no obligation
                     </span>
                   </div>
 
@@ -169,7 +169,7 @@ export default function LandingPeso3Fotos() {
                   </div>
                 </div>
 
-                {/* Carrusel de casos before/after (3 fotos) */}
+                {/* Before/after case carousel (3 photos) */}
                 <div className="mx-auto w-full max-w-[440px] lg:max-w-none">
                   <BeforeAfterCarousel count={3} />
                 </div>
@@ -177,14 +177,14 @@ export default function LandingPeso3Fotos() {
             </div>
           </section>
 
-          {/* ── Barra de confianza ── */}
+          {/* ── Trust bar ── */}
           <section className="mx-auto max-w-[1100px] px-5 pt-10">
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[
-                { icon: Stethoscope, label: "Endocrinos colegiados (REPS)" },
-                { icon: ClipboardList, label: "Prescripción si está indicada" },
-                { icon: ShieldCheck, label: "Sin permanencia" },
-                { icon: Lock, label: "Datos protegidos (RGPD)" },
+                { icon: Stethoscope, label: "GMC-registered endocrinologists" },
+                { icon: ClipboardList, label: "Prescription if indicated" },
+                { icon: ShieldCheck, label: "No lock-in" },
+                { icon: Lock, label: "Data protected (UK GDPR)" },
               ].map(({ icon: Icon, label }) => (
                 <li
                   key={label}
@@ -199,19 +199,19 @@ export default function LandingPeso3Fotos() {
             </ul>
           </section>
 
-          {/* ── Cómo funciona ── */}
+          {/* ── How it works ── */}
           <section
             aria-labelledby="como-funciona"
             className="mx-auto max-w-[1100px] px-5 pt-16"
           >
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Cómo funciona
+              How it works
             </span>
             <h2
               id="como-funciona"
               className="mt-3 max-w-[20ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Tres pasos para empezar con seguridad
+              Three steps to start safely
             </h2>
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
               {steps.map(({ icon: Icon, title, text }, i) => (
