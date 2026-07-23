@@ -382,7 +382,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </div>
         </section>
 
-        {/* ── Opiniones reales (estilo Trustpilot) ── */}
+        {/* ── Real reviews (Trustpilot style) ── */}
         {!config.hideReviews && (
         <section aria-labelledby="opiniones" className="mx-auto max-w-[1100px] px-5 pt-20">
           <div className="flex flex-col items-center text-center">
@@ -390,7 +390,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               id="opiniones"
               className="max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Lo que dicen nuestros pacientes
+              What our patients say
             </h2>
             <div className="mt-6 flex flex-col items-center gap-3">
               <div className="flex items-center gap-2">
@@ -399,15 +399,15 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               </div>
               <TrustpilotStars rating={4} size={30} />
               <p className="text-[14px] text-ink-soft">
-                <span className="font-semibold text-ink">Excelente</span> · TrustScore{" "}
-                <span className="font-semibold text-ink">4,1</span> · Basado en{" "}
+                <span className="font-semibold text-ink">Excellent</span> · TrustScore{" "}
+                <span className="font-semibold text-ink">4.1</span> · Based on{" "}
                 <a
                   href={TRUSTPILOT_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-ink underline underline-offset-2"
                 >
-                  opiniones reales
+                  real reviews
                 </a>
               </p>
             </div>
@@ -428,7 +428,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                   <span className="min-w-0">
                     <span className="flex items-center gap-1.5">
                       <span className="truncate text-[14.5px] font-semibold text-ink">{r.name}</span>
-                      <BadgeCheck aria-label="Verificada" className="h-4 w-4 flex-shrink-0" style={{ color: TRUSTPILOT_GREEN }} />
+                      <BadgeCheck aria-label="Verified" className="h-4 w-4 flex-shrink-0" style={{ color: TRUSTPILOT_GREEN }} />
                     </span>
                     <span className="block text-[12px] text-ink-mute">{r.timeAgo}</span>
                   </span>
@@ -447,7 +447,7 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
               className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-warm px-6 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:bg-ink/[.04]"
             >
               <Star aria-hidden className="h-4 w-4 fill-current" style={{ color: TRUSTPILOT_GREEN }} />
-              Ver todas las opiniones en Trustpilot
+              See all reviews on Trustpilot
             </a>
           </div>
         </section>
@@ -457,13 +457,13 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
         <section aria-labelledby="faq" className="mx-auto max-w-[760px] px-5 pt-20">
           <div className="text-center">
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Preguntas frecuentes
+              Frequently asked questions
             </span>
             <h2
               id="faq"
               className="mx-auto mt-3 max-w-[24ch] text-balance text-[clamp(26px,3.4vw,40px)] font-light leading-[1.1] text-ink"
             >
-              Resolvemos tus dudas
+              We answer your questions
             </h2>
           </div>
           <div className="mt-8 flex flex-col gap-3">
@@ -482,28 +482,28 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
           </div>
         </section>
 
-        {/* ── CTA final ── */}
+        {/* ── Final CTA ── */}
         <section className="mx-auto max-w-[1100px] px-5 py-20">
           <div className="overflow-hidden rounded-[32px] bg-espresso px-6 py-14 text-center text-paper sm:px-10">
             <h2 className="mx-auto max-w-[22ch] text-balance text-[clamp(26px,3.6vw,42px)] font-light leading-[1.08]">
-              Da el primer paso hoy, sin coste
+              Take the first step today, at no cost
             </h2>
             <p className="mx-auto mt-4 max-w-[48ch] text-[15.5px] leading-relaxed text-paper/80">
-              Tu primera valoración con un médico colegiado es gratuita y sin
-              compromiso. Empieza cuando quieras, desde donde quieras.
+              Your first assessment with a GMC-registered doctor is free and with
+              no obligation. Start whenever you like, from wherever you like.
             </p>
             {!config.hideCta && (
               <QuizTrigger
                 plan={`${planPrefix}-cta-final`}
                 className="mt-8 inline-block rounded-full bg-sage px-10 py-[16px] text-[16px] font-bold text-espresso"
               >
-                Empezar mi valoración gratuita
+                Start my free assessment
               </QuizTrigger>
             )}
           </div>
         </section>
 
-        {/* ── Footer mínimo ── */}
+        {/* ── Minimal footer ── */}
         <footer className="border-t border-ink/10 bg-warm">
           <div className="mx-auto max-w-[1100px] px-5 py-10">
             <div className="flex flex-col items-center gap-6 text-center">
@@ -517,14 +517,13 @@ export function ValoracionMedicaLanding({ config }: { config: ValoracionConfig }
                 <a href="/legal-notice" className="hover:text-ink">Legal notice</a>
               </nav>
               <p className="mx-auto max-w-[70ch] text-[12px] leading-relaxed text-ink-mute">
-                {BRAND} es un servicio de consulta médica online prestado por
-                médicos colegiados en España. La información de esta página tiene
-                carácter general y no sustituye el consejo médico profesional.
-                Cada caso se valora de forma individual. Consulta siempre con tu
-                médico.
+                {BRAND} is an online doctor consultation service provided by
+                GMC-registered doctors in the UK. The information on this page is
+                general in nature and does not replace professional medical advice.
+                Each case is assessed individually. Always consult your doctor.
               </p>
               <p className="text-[12px] text-ink-mute">
-                © {new Date().getFullYear()} {BRAND}. Todos los derechos reservados.
+                © {new Date().getFullYear()} {BRAND}. All rights reserved.
               </p>
             </div>
           </div>
