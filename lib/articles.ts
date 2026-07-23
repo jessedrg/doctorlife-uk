@@ -39,16 +39,16 @@ export const authors: Author[] = [
     slug: "laura-mendez",
     name: "Dr. Laura Méndez",
     jobTitle: "Medical specialist in Endocrinology and Nutrition",
-    colegiado: "Registration No. 28/2841 · Official College of Physicians of Barcelona",
+    colegiado: "GMC No. 7284191 · General Medical Council (UK)",
     shortBio:
       "Endocrinologist with over 12 years of experience in obesity and GLP‑1 analogue treatment.",
     bio: [
-      "Dr. Laura Méndez is a medical specialist in Endocrinology and Nutrition, registered in Barcelona (no. 28/2841). She has spent over twelve years supporting patients with overweight, obesity, and metabolic disorders, both in hospital consultations and telemedicine.",
+      "Dr. Laura Méndez is a medical specialist in Endocrinology and Nutrition, registered with the General Medical Council (GMC No. 7284191). She has spent over twelve years supporting patients with overweight, obesity, and metabolic disorders, both in hospital clinics and telemedicine.",
       "Her approach is based on a simple idea: losing weight is not a matter of willpower, but of physiology. That's why she dedicates each assessment to understanding the person's real context — hormones, sleep, medications, diet history — before proposing a plan.",
       "At DoctorLife, she reviews and signs off on clinical content to ensure it is rigorous, up-to-date, and useful for those seeking honest answers about their weight.",
     ],
     experience: [
-      "Specialist in Endocrinology and Nutrition (via MIR).",
+      "Specialist in Endocrinology and Nutrition, on the GMC Specialist Register.",
       "+12 years treating obesity and metabolic disease.",
       "Clinical experience with GLP‑1 analogues (semaglutide, tirzepatide).",
       "Continuous training in obesity medicine and weight management.",
@@ -58,16 +58,16 @@ export const authors: Author[] = [
     slug: "carlos-vidal",
     name: "Dr. Carlos Vidal",
     jobTitle: "Medical specialist in Internal Medicine",
-    colegiado: "Registration No. 28/5567 · Official College of Physicians of Madrid",
+    colegiado: "GMC No. 7315608 · General Medical Council (UK)",
     shortBio:
       "Internist focused on metabolic health, cardiovascular risk and a holistic approach to weight.",
     bio: [
-      "Dr. Carlos Vidal is a medical specialist in Internal Medicine, registered in Madrid (no. 28/5567). His work focuses on metabolic health: the relationship between weight, glucose, blood pressure and cardiovascular risk.",
+      "Dr. Carlos Vidal is a medical specialist in Internal Medicine, registered with the General Medical Council (GMC No. 7315608). His work focuses on metabolic health: the relationship between weight, glucose, blood pressure and cardiovascular risk.",
       "He believes in explaining things clearly. When a patient understands why their body behaves the way it does, decisions about treatment, diet and habits stop being a struggle and start to make sense.",
       "He writes and reviews content for DoctorLife with the aim of helping anyone make informed decisions about their health without feeling judged.",
     ],
     experience: [
-      "Specialist in Internal Medicine (via MIR).",
+      "Specialist in Internal Medicine, on the GMC Specialist Register.",
       "Focus on metabolic syndrome and cardiovascular risk.",
       "Experience in obesity units and follow-up clinics.",
       "Rigorous, patient-focused medical communication.",

@@ -184,7 +184,7 @@ export default function PillarPage() {
 
           <div className="mx-auto max-w-[860px] px-5 pb-10">
             <MedicalDisclaimer
-              reviewer="Dr. Laura Méndez (Registration No. 28/2841 · Barcelona) and Dr. Carlos Vidal (Registration No. 28/5567 · Madrid)"
+              reviewer="Dr. Laura Méndez (GMC No. 7284191) and Dr. Carlos Vidal (GMC No. 7315608)"
             />
           </div>
         </main>
