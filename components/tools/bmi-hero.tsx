@@ -5,10 +5,10 @@ import { QuizTrigger } from "@/components/quiz-trigger";
 
 /* ── BMI category definitions ── */
 const SEGMENTS = [
-  { id: "bajo",      label: "Bajo peso",    range: "< 18.5",      max: 18.5, color: "#5fb3a3" },
-  { id: "normal",    label: "Normopeso",    range: "18.5 – 24.9", max: 25,   color: "#cdd9a0" },
-  { id: "sobre",     label: "Sobrepeso",    range: "25 – 29.9",   max: 30,   color: "#e3b582" },
-  { id: "obesidad",  label: "Obesidad",     range: "> 30",        max: 999,  color: "#c98a4f" },
+  { id: "bajo",      label: "Underweight",     range: "< 18.5",      max: 18.5, color: "#5fb3a3" },
+  { id: "normal",    label: "Healthy weight",  range: "18.5 – 24.9", max: 25,   color: "#cdd9a0" },
+  { id: "sobre",     label: "Overweight",      range: "25 – 29.9",   max: 30,   color: "#e3b582" },
+  { id: "obesidad",  label: "Obesity",         range: "> 30",        max: 999,  color: "#c98a4f" },
 ] as const;
 
 /* ── Geometry helpers ── */
@@ -160,7 +160,7 @@ function Gauge({ bmi }: { bmi: number | null }) {
         fontFamily="system-ui, sans-serif"
         letterSpacing="0.12em"
       >
-        TU IMC
+        YOUR BMI
       </text>
       <text
         x={CX} y={CY + 68}
@@ -190,7 +190,7 @@ export function BmiHero() {
     const w = parseFloat(weightKg);
     const h = parseFloat(heightCm);
     if (!w || !h || w <= 0 || h <= 0) {
-      setError("Introduce tu altura y peso para calcular.");
+      setError("Enter your height and weight to calculate.");
       return;
     }
     let val: number;
@@ -227,16 +227,16 @@ export function BmiHero() {
         {/* ── LEFT: form ── */}
         <div>
           <span className="mb-5 inline-block rounded-full border border-sage/30 bg-sage/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[.15em] text-sage">
-            Herramienta gratuita
+            Free tool
           </span>
 
           <h1 className="text-balance text-[44px] font-bold leading-[1.05] text-paper md:text-5xl lg:text-[52px]">
-            Calculadora<br className="hidden sm:block" /> de IMC
+            BMI<br className="hidden sm:block" /> calculator
           </h1>
 
           <p className="mt-5 max-w-[460px] text-[16.5px] leading-relaxed text-paper/60">
-            El Índice de Masa Corporal usa tu altura y peso para estimar si tu
-            peso está en un rango saludable. Calcula el tuyo en segundos.
+            Body Mass Index uses your height and weight to estimate whether your
+            weight is in a healthy range. Work out yours in seconds.
           </p>
 
           {/* Unit toggle */}
@@ -261,7 +261,7 @@ export function BmiHero() {
             {/* Height */}
             <div className="flex flex-col gap-2">
               <label htmlFor="height" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                Altura ({unit === "metric" ? "cm" : "pulgadas"})
+                Height ({unit === "metric" ? "cm" : "inches"})
               </label>
               <input
                 id="height"
@@ -278,7 +278,7 @@ export function BmiHero() {
             {/* Weight */}
             <div className="flex flex-col gap-2">
               <label htmlFor="weight" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                Peso ({unit === "metric" ? "kg" : "libras"})
+                Weight ({unit === "metric" ? "kg" : "pounds"})
               </label>
               <input
                 id="weight"
@@ -302,7 +302,7 @@ export function BmiHero() {
             onClick={calculate}
             className="mt-7 w-full rounded-[16px] bg-sage py-[15px] text-[15.5px] font-semibold text-ink transition-all hover:brightness-[1.06] active:scale-[.985]"
           >
-            Calcular mi IMC
+            Calculate my BMI
           </button>
 
           {/* Inline result message */}
@@ -312,17 +312,17 @@ export function BmiHero() {
               style={{ backgroundColor: `${category.color}28`, border: `1px solid ${category.color}55` }}
             >
               <p className="font-semibold" style={{ color: category.color }}>
-                {category.label} — IMC {bmi}
+                {category.label} — BMI {bmi}
               </p>
               <p className="mt-1.5 text-paper/70">
-                {category.id === "bajo"     && "Tu IMC indica bajo peso. Consulta con un profesional de la salud."}
-                {category.id === "normal"   && "Tu peso está en el rango saludable. ¡Sigue con tus buenos hábitos!"}
-                {category.id === "sobre"    && "Tu IMC indica sobrepeso. Un médico puede ayudarte con un plan personalizado."}
-                {category.id === "obesidad" && "Tu IMC indica obesidad. Un especialista puede valorar el tratamiento más adecuado para ti."}
+                {category.id === "bajo"     && "Your BMI indicates you're underweight. Speak with a healthcare professional."}
+                {category.id === "normal"   && "Your weight is in the healthy range. Keep up your good habits!"}
+                {category.id === "sobre"    && "Your BMI indicates you're overweight. A doctor can help you with a personalised plan."}
+                {category.id === "obesidad" && "Your BMI indicates obesity. A specialist can assess the most suitable treatment for you."}
               </p>
               {(category.id === "sobre" || category.id === "obesidad") && (
                 <QuizTrigger className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sage py-3 text-[14px] font-semibold text-ink">
-                  Hablar con un médico — primera visita gratis
+                  Speak to a doctor — first visit free
                 </QuizTrigger>
               )}
             </div>
@@ -345,7 +345,7 @@ export function BmiHero() {
                   border: `1px solid ${category ? category.color + "44" : "rgba(246,240,230,0.1)"}`,
                 }}
               >
-                {category?.label ?? "Introduce tus datos"}
+                {category?.label ?? "Enter your details"}
               </span>
             </div>
 
@@ -372,7 +372,7 @@ export function BmiHero() {
 
       {/* Disclaimer */}
       <p className="relative mx-auto max-w-4xl px-6 pb-10 text-center text-[11.5px] leading-relaxed text-paper/28 lg:px-16">
-        El IMC no mide directamente la composición corporal y puede no reflejar con precisión la salud de personas con alta masa muscular, mujeres embarazadas, menores o adultos mayores. Consulta siempre con un profesional médico.
+        BMI does not directly measure body composition and may not accurately reflect the health of people with high muscle mass, pregnant women, children or older adults. Always consult a medical professional.
       </p>
     </section>
   );

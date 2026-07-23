@@ -60,7 +60,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="flex flex-col gap-1 text-[12.5px] text-paper/45 md:items-end">
-            <span>© 2026 DoctorLife · doctorlife.io</span>
+            <span>© 2026 DoctorLife · doctorlife.co.uk</span>
             <span>Treatment subject to medical assessment.</span>
           </div>
         </div>

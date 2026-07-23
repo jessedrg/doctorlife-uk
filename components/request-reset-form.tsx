@@ -13,10 +13,10 @@ export function RequestResetForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Better Auth no revela si el email existe: respondemos igual en ambos casos.
+    // Better Auth doesn't reveal whether the email exists: we respond the same in both cases.
     await authClient.requestPasswordReset({
       email,
-      redirectTo: "/restablecer",
+      redirectTo: "/reset",
     })
     setLoading(false)
     setSent(true)
@@ -36,26 +36,26 @@ export function RequestResetForm() {
           {sent ? (
             <>
               <h1 className="text-[26px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-                Revisa tu correo
+                Check your email
               </h1>
               <p className="mt-2 text-[14.5px] leading-relaxed text-ink-soft">
-                Si <span className="font-medium text-ink">{email}</span> tiene una cuenta, te hemos enviado un enlace
-                para restablecer tu contraseña. El enlace caduca en 1 hora.
+                If <span className="font-medium text-ink">{email}</span> has an account, we've sent you a link
+                to reset your password. The link expires in 1 hour.
               </p>
               <Link
                 href="/sign-in"
                 className="mt-6 inline-block w-full rounded-[13px] bg-ink py-3.5 text-center text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Volver a iniciar sesión
+                Back to sign in
               </Link>
             </>
           ) : (
             <>
               <h1 className="text-[26px] font-light leading-tight tracking-[-.02em] text-ink text-balance">
-                Recuperar contraseña
+                Reset password
               </h1>
               <p className="mt-1.5 text-[14.5px] leading-relaxed text-ink-soft">
-                Introduce tu correo y te enviaremos un enlace para crear una nueva contraseña.
+                Enter your email and we'll send you a link to create a new password.
               </p>
 
               <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
@@ -75,13 +75,13 @@ export function RequestResetForm() {
                   disabled={loading}
                   className="mt-1 w-full cursor-pointer rounded-[13px] bg-ink py-3.5 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-60"
                 >
-                  {loading ? "Enviando..." : "Enviar enlace"}
+                  {loading ? "Sending..." : "Send link"}
                 </button>
               </form>
 
               <p className="mt-6 text-center text-[13.5px] text-ink-soft">
                 <Link href="/sign-in" className="font-medium text-ink underline underline-offset-4">
-                  Volver a iniciar sesión
+                  Back to sign in
                 </Link>
               </p>
             </>

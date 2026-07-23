@@ -78,17 +78,17 @@ export function WegovyPenCard() {
         {/* badge */}
         <Reveal>
           <span className="inline-block rounded-full border border-amber px-4 py-1.5 text-[13px] font-medium tracking-wide text-amber">
-            Nueva dosis alta
+            New higher dose
           </span>
         </Reveal>
 
         {/* heading */}
         <Reveal>
           <h3 className="mt-5 text-[clamp(36px,5vw,64px)] font-light leading-[.95] tracking-[-0.03em]">
-            Pierde hasta un{" "}
+            Lose up to{" "}
             <span className="font-serif italic text-sage">25%</span>
             <br />
-            de peso corporal
+            of your body weight
             <sup className="text-[0.45em] align-super">*</sup>
           </h3>
         </Reveal>
@@ -97,7 +97,7 @@ export function WegovyPenCard() {
         <Reveal className="relative mt-6 h-[200px] w-full max-w-[360px]">
           <img
             src="/products/wegovy-hd-pen.webp"
-            alt="Wegovy HD 7.2 mg pluma inyectora semaglutide"
+            alt="Wegovy HD 7.2 mg semaglutide injector pen"
             className="anim-floatB absolute inset-0 h-full w-full object-contain drop-shadow-[0_8px_32px_rgba(201,138,79,.35)]"
           />
         </Reveal>
@@ -110,13 +110,13 @@ export function WegovyPenCard() {
         {/* CTA */}
         <Reveal className="mt-4">
           <QuizTrigger className="rounded-full bg-amber px-10 py-4 text-[15px] font-semibold text-ink transition-opacity hover:opacity-90">
-            Explorar Wegovy® Pen
+            Explore Wegovy® Pen
           </QuizTrigger>
         </Reveal>
 
         {/* disclaimer */}
         <p className="mt-5 max-w-[28ch] text-[11px] leading-relaxed text-paper/40">
-          *Basado en ensayo clínico SURMOUNT con tirzepatida. Resultados individuales pueden variar.
+          *Based on the SURMOUNT clinical trial with tirzepatide. Individual results may vary.
         </p>
       </div>
     </div>

@@ -5,11 +5,11 @@ import { QuizTrigger } from "@/components/quiz-trigger";
 
 /* ── Activity levels ── */
 const ACTIVITY_LEVELS = [
-  { id: "sedentary",    label: "Sedentario",                    desc: "Sin ejercicio o muy poco",           multiplier: 1.2 },
-  { id: "light",        label: "Ligero",                        desc: "Ejercicio 1–3 días/semana",          multiplier: 1.375 },
-  { id: "moderate",     label: "Moderado",                      desc: "Ejercicio 3–5 días/semana",          multiplier: 1.55 },
-  { id: "active",       label: "Activo",                        desc: "Ejercicio 6–7 días/semana",          multiplier: 1.725 },
-  { id: "very_active",  label: "Muy activo",                    desc: "Trabajo físico intenso + ejercicio", multiplier: 1.9 },
+  { id: "sedentary",    label: "Sedentary",   desc: "Little or no exercise",              multiplier: 1.2 },
+  { id: "light",        label: "Light",       desc: "Exercise 1–3 days/week",             multiplier: 1.375 },
+  { id: "moderate",     label: "Moderate",    desc: "Exercise 3–5 days/week",             multiplier: 1.55 },
+  { id: "active",       label: "Active",      desc: "Exercise 6–7 days/week",             multiplier: 1.725 },
+  { id: "very_active",  label: "Very active", desc: "Intense physical work + exercise",   multiplier: 1.9 },
 ] as const;
 
 type ActivityId = (typeof ACTIVITY_LEVELS)[number]["id"];
@@ -55,14 +55,14 @@ function ResultCard({
     <div className="flex w-full max-w-[400px] flex-col gap-3">
       {/* Maintenance card */}
       <div className="rounded-[24px] bg-espresso/80 px-7 py-6 ring-1 ring-paper/8 backdrop-blur-sm">
-        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-amber/70">Tu TDEE</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-amber/70">Your TDEE</span>
         <div className="mt-2 flex items-end justify-between gap-4">
           <p className="text-[22px] font-bold leading-tight text-paper">
-            Para mantener<br />tu peso actual
+            To maintain<br />your current weight
           </p>
           <div className="text-right">
-            <span className="text-4xl font-bold tabular-nums text-amber">{tdee.toLocaleString("es-ES")}</span>
-            <span className="ml-1.5 text-lg text-paper/60">kcal/día</span>
+            <span className="text-4xl font-bold tabular-nums text-amber">{tdee.toLocaleString("en-GB")}</span>
+            <span className="ml-1.5 text-lg text-paper/60">kcal/day</span>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ function ResultCard({
       {/* Deficit card */}
       <div className="rounded-[24px] bg-sage/20 px-7 py-6 ring-1 ring-sage/30">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-sage">Ajuste de calorías</span>
+          <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-sage">Calorie adjustment</span>
           {/* toggle */}
           <div className="flex overflow-hidden rounded-full border border-sage/30 bg-paper/5 p-0.5 text-[11px] font-semibold">
             {(["kg", "lb"] as const).map((u) => (
@@ -82,7 +82,7 @@ function ResultCard({
                   deficitMode === u ? "bg-sage text-ink" : "text-paper/50 hover:text-paper/80"
                 }`}
               >
-                {u === "kg" ? "0,5 kg/sem" : "1 lb/sem"}
+                {u === "kg" ? "0.5 kg/wk" : "1 lb/wk"}
               </button>
             ))}
           </div>
@@ -90,21 +90,21 @@ function ResultCard({
         <div className="mt-4 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <p className="text-[16px] font-semibold text-paper/90">
-              Perder {deficitMode === "kg" ? "0,5 kg" : "1 lb"} por semana
+              Lose {deficitMode === "kg" ? "0.5 kg" : "1 lb"} per week
             </p>
             <div className="text-right">
-              <span className="text-2xl font-bold tabular-nums text-sage">{deficitVal.toLocaleString("es-ES")}</span>
-              <span className="ml-1 text-sm text-paper/50">kcal/día</span>
+              <span className="text-2xl font-bold tabular-nums text-sage">{deficitVal.toLocaleString("en-GB")}</span>
+              <span className="ml-1 text-sm text-paper/50">kcal/day</span>
             </div>
           </div>
           <div className="h-px w-full bg-paper/10" />
           <div className="flex items-center justify-between">
             <p className="text-[16px] font-semibold text-paper/90">
-              Perder {deficitMode === "kg" ? "0,25 kg" : "0.5 lb"} por semana
+              Lose {deficitMode === "kg" ? "0.25 kg" : "0.5 lb"} per week
             </p>
             <div className="text-right">
-              <span className="text-2xl font-bold tabular-nums text-paper/70">{deficit2Val.toLocaleString("es-ES")}</span>
-              <span className="ml-1 text-sm text-paper/50">kcal/día</span>
+              <span className="text-2xl font-bold tabular-nums text-paper/70">{deficit2Val.toLocaleString("en-GB")}</span>
+              <span className="ml-1 text-sm text-paper/50">kcal/day</span>
             </div>
           </div>
         </div>
@@ -112,12 +112,12 @@ function ResultCard({
 
       {/* BMR breakdown */}
       <div className="rounded-[20px] bg-paper/5 px-6 py-4 ring-1 ring-paper/8">
-        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-paper/40">Composición de tu TDEE</span>
+        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-paper/40">What makes up your TDEE</span>
         <div className="mt-3 flex gap-2">
           {[
-            { label: "TMB", pct: 65, color: "#c98a4f" },
-            { label: "Actividad", pct: 28, color: "#cdd9a0" },
-            { label: "Digestión", pct: 7, color: "#5fb3a3" },
+            { label: "BMR", pct: 65, color: "#c98a4f" },
+            { label: "Activity", pct: 28, color: "#cdd9a0" },
+            { label: "Digestion", pct: 7, color: "#5fb3a3" },
           ].map((b) => (
             <div key={b.label} className="flex flex-col gap-1.5 text-center" style={{ flexBasis: `${b.pct}%` }}>
               <div
@@ -132,7 +132,7 @@ function ResultCard({
       </div>
 
       <QuizTrigger className="mt-1 w-full rounded-[16px] bg-sage py-4 text-[14.5px] font-semibold text-ink transition hover:brightness-[1.06]">
-        Obtener plan médico personalizado
+        Get a personalised medical plan
       </QuizTrigger>
     </div>
   );
