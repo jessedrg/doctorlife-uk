@@ -9,13 +9,13 @@ declare global {
   }
 }
 
-/** Dispara la conversión de Google Ads de "formulario completado". */
+/** Fires the "form completed" Google Ads conversion. */
 function fireGoogleAdsConversion() {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("event", "conversion", {
     send_to: GOOGLE_ADS_SEND_TO,
     value: 1.0,
-    currency: "EUR",
+    currency: "GBP",
   });
 }
 

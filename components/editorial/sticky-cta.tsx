@@ -4,24 +4,24 @@ import { useState } from "react";
 import { Check, X } from "lucide-react";
 import { analytics } from "@/lib/analytics";
 
-const INCLUYE = [
-  "Hasta un 22,5% de pérdida de peso",
-  "Receta médica en 3 horas laborables",
-  "Valoración y seguimiento con médico colegiado",
-  "Sin cita previa ni desplazamientos",
+const INCLUDES = [
+  "Up to 22.5% weight loss",
+  "Private prescription within 3 working hours",
+  "Assessment and follow-up with a GMC-registered doctor",
+  "No appointments or travel needed",
 ] as const;
 
-const PHONE = "711267223";
-const WA_URL = `https://wa.me/34${PHONE}?text=${encodeURIComponent(
-  "Me gustaría recibir más información sobre el tratamiento con GLP-1.",
+const PHONE = "7700900123";
+const WA_URL = `https://wa.me/44${PHONE}?text=${encodeURIComponent(
+  "I'd like more information about GLP-1 treatment.",
 )}`;
 
-function openWhatsApp(source: string) {
+function openWhatsApp(source: "sticky_bar") {
   analytics.whatsappClicked(source);
   window.open(WA_URL, "_blank");
 }
 
-/** Barra inferior sticky (siempre visible) con vídeo de fondo que abre WhatsApp. */
+/** Sticky bottom bar (always visible) with background video that opens WhatsApp. */
 export function StickyCTA() {
   const [dismissed, setDismissed] = useState(false);
 
@@ -51,7 +51,7 @@ export function StickyCTA() {
 
         <button
           type="button"
-          aria-label="Cerrar aviso"
+          aria-label="Close notice"
           onClick={() => setDismissed(true)}
           className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/20 text-paper/70 backdrop-blur-sm transition-colors hover:bg-black/40 hover:text-paper"
         >
@@ -62,20 +62,20 @@ export function StickyCTA() {
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
               <p className="text-[17px] font-semibold leading-tight sm:text-[21px]">
-                Consulta médica online para adelgazar
+                Online medical consultation for weight loss
               </p>
               <span className="rounded-full bg-[#6B774A] px-2.5 py-0.5 text-[14px] font-bold text-white sm:text-[15px]">
-                Gratis
+                Free
               </span>
             </div>
             <p className="mt-1 text-[13.5px] leading-snug text-paper/75 sm:text-[14px]">
-              <span className="font-semibold text-[#8fa663]">Pierde peso de forma segura</span>{" "}
-              · primera consulta gratis · respuesta en minutos
+              <span className="font-semibold text-[#8fa663]">Lose weight safely</span>{" "}
+              · first consultation free · reply in minutes
             </p>
 
-            {/* Qué incluye — grande en desktop */}
+            {/* What's included — large on desktop */}
             <ul className="mt-3 hidden gap-x-6 gap-y-2 sm:grid sm:grid-cols-2">
-              {INCLUYE.map((item) => (
+              {INCLUDES.map((item) => (
                 <li key={item} className="flex items-center gap-2 text-[15px] font-medium text-paper/95">
                   <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#6B774A]">
                     <Check aria-hidden className="h-3.5 w-3.5 text-white" />
@@ -91,13 +91,13 @@ export function StickyCTA() {
             onClick={() => openWhatsApp("sticky_bar")}
             className="flex-shrink-0 rounded-full bg-[#6B774A] px-4 py-3 text-[13.5px] font-semibold text-white shadow-lg shadow-[#6B774A]/30 transition-transform duration-200 hover:scale-[1.03] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B774A] focus-visible:ring-offset-2 focus-visible:ring-offset-ink sm:px-8 sm:py-4 sm:text-[16px]"
           >
-            Empieza ahora
+            Start now
           </button>
         </div>
 
-        {/* Qué incluye — chips en móvil */}
+        {/* What's included — chips on mobile */}
         <ul className="relative flex flex-wrap gap-1.5 px-3 pb-3 sm:hidden">
-          {INCLUYE.map((item) => (
+          {INCLUDES.map((item) => (
             <li
               key={item}
               className="flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1.5 text-[13px] font-medium leading-none text-paper/95 backdrop-blur-sm"

@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import { analytics } from "@/lib/analytics";
 
-const PHONE = "711267223";
-const WA_URL = `https://wa.me/34${PHONE}?text=${encodeURIComponent(
-  "Me gustaría recibir más información sobre el tratamiento con GLP-1."
+const PHONE = "7700900123";
+const WA_URL = `https://wa.me/44${PHONE}?text=${encodeURIComponent(
+  "I'd like more information about GLP-1 treatment."
 )}`;
 
 const MESSAGES = [
-  "¿Cómo empieza tu plan?",
-  "Consulta en 2 minutos",
-  "Médico responde hoy",
-  "Primera visita gratis",
+  "How does your plan start?",
+  "Consultation in 2 minutes",
+  "Doctor replies today",
+  "First visit free",
 ];
 
 export function WhatsAppBubble() {
@@ -81,13 +81,13 @@ export function WhatsAppBubble() {
                 setExpanded(false);
               }}
               className="mt-px flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-white/15 text-paper text-[11px] leading-none hover:bg-white/25 transition-colors"
-              aria-label="Cerrar"
+              aria-label="Close"
             >
               ×
             </button>
           </div>
           <p className="mt-1 text-[12px] opacity-60">
-            Respuesta en minutos
+            Reply in minutes
           </p>
           {/* Tail */}
           <span
@@ -111,7 +111,7 @@ export function WhatsAppBubble() {
             window.open(WA_URL, "_blank");
           }
         }}
-        aria-label="Contactar por WhatsApp"
+        aria-label="Contact us on WhatsApp"
         className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
       >
         <svg

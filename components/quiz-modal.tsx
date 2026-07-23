@@ -10,14 +10,14 @@ import { BrandLogo } from "./brand-logo";
 import { analytics } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// Teléfono español o internacional: 9-15 dígitos, admite +, espacios y guiones.
+// UK or international phone: 9-15 digits, allows +, spaces and dashes.
 const PHONE_RE = /^\+?[\d\s-]{9,17}$/;
 
-const WA_QUIZ_URL = `https://wa.me/34711267223?text=${encodeURIComponent(
-  "Me gustaría recibir más información sobre el tratamiento con GLP-1.",
+const WA_QUIZ_URL = `https://wa.me/447700900123?text=${encodeURIComponent(
+  "I'd like more information about GLP-1 treatment.",
 )}`;
 
-// Formulario de UNA sola página: datos mínimos → elegir cita → hecho.
+// SINGLE-page form: minimal details → choose appointment → done.
 type Phase = "form" | "submitting" | "slot" | "done";
 
 export function QuizModal() {
@@ -51,13 +51,13 @@ export function QuizModal() {
     setPaying(false);
   };
 
-  // Solo hay un plan contratable: el destacado. Va implícito, sin pantalla de selección.
+  // Only one plan is purchasable: the featured one. It's implicit, no selection screen.
   const mainPlan = useMemo(
     () => productList.find((p) => !p.comingSoon) ?? productList[0],
     [productList],
   );
 
-  // Agrupa los huecos por día para el selector de cita.
+  // Group slots by day for the appointment picker.
   const slotsByDate = useMemo(() => {
     const map = new Map<string, PooledSlot[]>();
     for (const s of slots ?? []) {
@@ -98,26 +98,26 @@ export function QuizModal() {
 
   const bmiCategory = (b: number) =>
     b < 18.5
-      ? { label: "Bajo peso", color: "text-amber" }
+      ? { label: "Underweight", color: "text-amber" }
       : b < 25
-        ? { label: "Peso saludable", color: "text-olive" }
+        ? { label: "Healthy weight", color: "text-olive" }
         : b < 30
-          ? { label: "Sobrepeso", color: "text-amber" }
-          : { label: "Obesidad", color: "text-clay" };
+          ? { label: "Overweight", color: "text-amber" }
+          : { label: "Obesity", color: "text-clay" };
 
   const submit = async () => {
     setError(null);
     if (!(h > 0 && w > 0)) {
-      setError("Introduce tu altura y peso.");
+      setError("Please enter your height and weight.");
       return;
     }
     if (!PHONE_RE.test(phone.trim())) {
-      setError("Introduce un teléfono válido.");
+      setError("Please enter a valid phone number.");
       phoneRef.current?.focus();
       return;
     }
     if (!EMAIL_RE.test(email.trim())) {
-      setError("Introduce un correo electrónico válido.");
+      setError("Please enter a valid email address.");
       return;
     }
     setPhase("submitting");
@@ -125,8 +125,8 @@ export function QuizModal() {
       name,
       email,
       phone,
-      goal: "Perder peso",
-      formatPreference: "Pluma semanal",
+      goal: "Lose weight",
+      formatPreference: "Weekly pen",
       plan: mainPlan?.name,
       heightCm: h > 0 ? h : null,
       weightKg: w > 0 ? w : null,
@@ -159,7 +159,7 @@ export function QuizModal() {
       }
       setError(result.error);
     } catch {
-      setError("No se pudo iniciar el pago. Inténtalo de nuevo.");
+      setError("Payment could not be started. Please try again.");
     }
     setPaying(false);
   };
@@ -176,7 +176,7 @@ export function QuizModal() {
       onClick={close}
       role="dialog"
       aria-modal="true"
-      aria-label="Reserva tu primera consulta gratis"
+      aria-label="Book your first free consultation"
     >
       <div
         className="quiz-card flex max-h-[92dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-t-[28px] bg-paper sm:max-h-[88dvh] sm:rounded-[26px]"
@@ -191,27 +191,27 @@ export function QuizModal() {
             <button
               type="button"
               onClick={close}
-              aria-label="Cerrar"
+              aria-label="Close"
               className="flex h-[40px] w-[40px] items-center justify-center rounded-full border border-ink/15 text-[15px] text-ink transition-colors hover:bg-warm active:bg-warm"
             >
               ✕
             </button>
           </div>
 
-          {/* FORM — todo en una sola página */}
+          {/* FORM — everything on a single page */}
           {(phase === "form" || phase === "submitting") && (
             <div className="quiz-fade">
               <h3 className="text-[24px] font-light leading-[1.14] tracking-[-.02em] text-balance sm:text-[27px]">
-                Tu primera consulta, gratis
+                Your first consultation, free
               </h3>
               <p className="mb-5 mt-2 text-[14.5px] leading-relaxed text-ink-soft">
-                Déjanos estos datos y elige tu cita con el médico. Sin esperas y sin compromiso.
+                Leave us these details and choose your appointment with the doctor. No waiting and no commitment.
               </p>
 
               <div className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-3">
                   <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                    Altura (cm)
+                    Height (cm)
                     <input
                       value={height}
                       onChange={(e) => setHeight(e.target.value.replace(/[^0-9]/g, ""))}
@@ -222,7 +222,7 @@ export function QuizModal() {
                     />
                   </label>
                   <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                    Peso (kg)
+                    Weight (kg)
                     <input
                       value={weight}
                       onChange={(e) => setWeight(e.target.value.replace(/[^0-9]/g, ""))}
@@ -236,7 +236,7 @@ export function QuizModal() {
 
                 {bmi && (
                   <div className="flex items-center justify-between rounded-[14px] border border-sage/40 bg-sage/10 px-[18px] py-3">
-                    <span className="text-[13.5px] text-ink-soft">Tu IMC</span>
+                    <span className="text-[13.5px] text-ink-soft">Your BMI</span>
                     <span className="flex items-baseline gap-2">
                       <span className="text-[19px] font-semibold text-ink">{bmi.toFixed(1)}</span>
                       <span className={`text-[13px] font-medium ${bmiCategory(bmi).color}`}>
@@ -247,7 +247,7 @@ export function QuizModal() {
                 )}
 
                 <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                  Teléfono
+                  Phone
                   <input
                     ref={phoneRef}
                     value={phone}
@@ -258,14 +258,14 @@ export function QuizModal() {
                     inputMode="tel"
                     type="tel"
                     autoComplete="tel"
-                    placeholder="600 000 000"
+                    placeholder="07700 900123"
                     disabled={phase === "submitting"}
                     className={inputClass}
                   />
                 </label>
 
                 <label className="flex flex-col gap-1.5 text-[13px] font-medium text-ink-soft">
-                  Correo electrónico
+                  Email address
                   <input
                     value={email}
                     onChange={(e) => {
@@ -277,7 +277,7 @@ export function QuizModal() {
                     }}
                     type="email"
                     autoComplete="email"
-                    placeholder="tu@email.com"
+                    placeholder="you@email.com"
                     disabled={phase === "submitting"}
                     aria-invalid={!!error}
                     className={inputClass}
@@ -287,7 +287,7 @@ export function QuizModal() {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Tu nombre (opcional)"
+                  placeholder="Your name (optional)"
                   autoComplete="name"
                   disabled={phase === "submitting"}
                   className={inputClass}
@@ -304,26 +304,26 @@ export function QuizModal() {
                   {phase === "submitting" ? (
                     <>
                       <span className="quiz-spinner h-[18px] w-[18px] rounded-full border-2 border-paper/30 border-t-paper" />
-                      Buscando tu cita…
+                      Finding your appointment…
                     </>
                   ) : (
-                    "Elegir mi cita gratis"
+                    "Choose my free appointment"
                   )}
                 </button>
               </div>
 
               <p className="mt-3.5 text-[12px] leading-relaxed text-ink-mute">
-                Al continuar aceptas nuestra{" "}
+                By continuing you accept our{" "}
                 <a href="/privacy" className="underline decoration-ink/25 underline-offset-2 hover:text-ink">
                   privacy policy
                 </a>
-                . Primera consulta gratis, sin tarjeta ni compromiso.
+                . First consultation free, no card and no commitment.
               </p>
 
-              {/* Atajo a WhatsApp */}
+              {/* WhatsApp shortcut */}
               <div className="mt-4 flex items-center gap-3">
                 <span className="h-px flex-1 bg-ink/10" />
-                <span className="text-[12px] text-ink-mute">o si lo prefieres</span>
+                <span className="text-[12px] text-ink-mute">or if you prefer</span>
                 <span className="h-px flex-1 bg-ink/10" />
               </div>
               <button
@@ -342,7 +342,7 @@ export function QuizModal() {
                 >
                   <path d="M24 4C13 4 4 13 4 24c0 3.6 1 7 2.7 9.9L4 44l10.4-2.7C17 43 20.4 44 24 44c11 0 20-9 20-20S35 4 24 4zm0 36c-3.1 0-6.1-.8-8.7-2.3l-.6-.4-6.2 1.6 1.7-6-.4-.6C8.3 30 7.5 27.1 7.5 24 7.5 14.8 15 7.5 24 7.5S40.5 15 40.5 24 33 40 24 40zm10.8-13.4c-.6-.3-3.4-1.7-3.9-1.9-.5-.2-.9-.3-1.2.3-.4.6-1.4 1.9-1.7 2.2-.3.4-.6.4-1.1.1-.6-.3-2.4-.9-4.6-2.8-1.7-1.5-2.8-3.4-3.2-3.9-.3-.6 0-.9.3-1.1l.9-1.1c.2-.3.3-.6.5-.9.2-.3.1-.6 0-.9-.1-.2-1.2-2.9-1.6-3.9-.4-1-.8-.9-1.2-.9h-1c-.3 0-.9.1-1.4.7-.5.5-1.8 1.8-1.8 4.3s1.9 5 2.1 5.4c.3.3 3.7 5.7 9 8 1.3.5 2.3.8 3 1.1 1.3.4 2.4.3 3.3.2 1-.2 3.1-1.3 3.5-2.5.4-1.2.4-2.2.3-2.5-.1-.3-.5-.4-1-.7z" />
                 </svg>
-                Habla con nosotros por WhatsApp
+                Chat to us on WhatsApp
               </button>
             </div>
           )}
@@ -350,28 +350,28 @@ export function QuizModal() {
           {/* SLOT: elegir hora */}
           {phase === "slot" && (
             <div className="quiz-fade">
-              <h3 className="text-[23px] font-light tracking-[-.02em] sm:text-[26px]">Elige tu primera cita</h3>
+              <h3 className="text-[23px] font-light tracking-[-.02em] sm:text-[26px]">Choose your first appointment</h3>
               <p className="mt-2 max-w-[46ch] text-[14.5px] leading-relaxed text-ink-soft">
-                Videollamada con un endocrino. Tu{" "}
-                <span className="font-medium text-ink">primera consulta es gratis</span> y crearemos
-                tu cuenta automáticamente al confirmar.
+                Video call with a doctor. Your{" "}
+                <span className="font-medium text-ink">first consultation is free</span> and we'll create
+                your account automatically when you confirm.
               </p>
 
               {slots === null ? (
                 <div className="flex items-center justify-center py-12 text-ink-mute">
                   <span className="quiz-spinner mr-2 inline-block h-5 w-5 rounded-full border-2 border-ink/20 border-t-ink/60" />
-                  Buscando huecos disponibles…
+                  Finding available slots…
                 </div>
               ) : slotsByDate.length === 0 ? (
                 <div className="mt-6 rounded-2xl border border-ink/10 bg-ink/[.04] p-6 text-center">
                   <p className="text-[15px] font-medium text-ink">
-                    No hay horas disponibles ahora mismo
+                    No appointments available right now
                   </p>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-ink-soft">
-                    Escríbenos por WhatsApp y te buscamos una disponibilidad en menos de 24&nbsp;h.
+                    Message us on WhatsApp and we'll find you availability within 24&nbsp;hours.
                   </p>
                   <a
-                    href={`https://wa.me/34711267223?text=${encodeURIComponent(`Hola, acabo de dejar mis datos en DoctorLife y no hay horas disponibles. Me gustaría reservar una cita. Mi nombre es ${name || "…"}.`)}`}
+                    href={`https://wa.me/447700900123?text=${encodeURIComponent(`Hi, I've just left my details on DoctorLife and there are no appointments available. I'd like to book a consultation. My name is ${name || "…"}.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-[14.5px] font-semibold text-white transition-opacity hover:opacity-90"
@@ -380,12 +380,12 @@ export function QuizModal() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="h-5 w-5 fill-white" aria-hidden="true">
                       <path d="M24 4C13 4 4 13 4 24c0 3.6 1 7 2.7 9.9L4 44l10.4-2.7C17 43 20.4 44 24 44c11 0 20-9 20-20S35 4 24 4zm0 36c-3.1 0-6.1-.8-8.7-2.3l-.6-.4-6.2 1.6 1.7-6-.4-.6C8.3 30 7.5 27.1 7.5 24 7.5 14.8 15 7.5 24 7.5S40.5 15 40.5 24 33 40 24 40zm10.8-13.4c-.6-.3-3.4-1.7-3.9-1.9-.5-.2-.9-.3-1.2.3-.4.6-1.4 1.9-1.7 2.2-.3.4-.6.4-1.1.1-.6-.3-2.4-.9-4.6-2.8-1.7-1.5-2.8-3.4-3.2-3.9-.3-.6 0-.9.3-1.1l.9-1.1c.2-.3.3-.6.5-.9.2-.3.1-.6 0-.9-.1-.2-1.2-2.9-1.6-3.9-.4-1-.8-.9-1.2-.9h-1c-.3 0-.9.1-1.4.7-.5.5-1.8 1.8-1.8 4.3s1.9 5 2.1 5.4c.3.3 3.7 5.7 9 8 1.3.5 2.3.8 3 1.1 1.3.4 2.4.3 3.3.2 1-.2 3.1-1.3 3.5-2.5.4-1.2.4-2.2.3-2.5-.1-.3-.5-.4-1-.7z" />
                     </svg>
-                    Escríbenos por WhatsApp
+                    Message us on WhatsApp
                   </a>
                   <p className="mt-3 text-[12px] text-ink-mute">
-                    También puedes escribirnos a{" "}
-                    <a href="mailto:hola@doctorlife.app" className="underline underline-offset-2 hover:text-ink">
-                      hola@doctorlife.app
+                    You can also email us at{" "}
+                    <a href="mailto:hello@doctorlife.co.uk" className="underline underline-offset-2 hover:text-ink">
+                      hello@doctorlife.co.uk
                     </a>
                   </p>
                 </div>
@@ -405,10 +405,10 @@ export function QuizModal() {
                           }`}
                         >
                           <span className="block text-[11px] uppercase tracking-wide opacity-70">
-                            {d.toLocaleDateString("es-ES", { weekday: "short" })}
+                            {d.toLocaleDateString("en-GB", { weekday: "short" })}
                           </span>
                           <span className="block text-[15px] font-medium">
-                            {d.toLocaleDateString("es-ES", { day: "numeric", month: "short" })}
+                            {d.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                           </span>
                         </button>
                       );
@@ -422,7 +422,7 @@ export function QuizModal() {
                         type="button"
                         disabled={paying}
                         onClick={() => {
-                          // Métrica: cita seleccionada
+                          // Metric: appointment selected
                           analytics.formPhaseSlot(s.startUtc);
                           payForSlot(s.startUtc);
                         }}
@@ -436,7 +436,7 @@ export function QuizModal() {
               )}
 
               {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-              {paying && <p className="mt-4 text-center text-sm text-ink-mute">Confirmando tu reserva…</p>}
+              {paying && <p className="mt-4 text-center text-sm text-ink-mute">Confirming your booking…</p>}
 
               <button
                 type="button"
@@ -444,7 +444,7 @@ export function QuizModal() {
                 disabled={paying}
                 className="mt-4 text-sm text-ink-mute hover:text-ink disabled:opacity-50"
               >
-                ← Atrás
+                ← Back
               </button>
             </div>
           )}
@@ -459,18 +459,18 @@ export function QuizModal() {
                 ✓
               </div>
               <h3 className="mb-[10px] mt-6 text-[27px] font-light tracking-[-.02em] sm:text-[30px]">
-                {name ? `Gracias, ${name.split(" ")[0]}` : "Todo listo"}
+                {name ? `Thank you, ${name.split(" ")[0]}` : "All set"}
               </h3>
               <p className="mx-auto mb-6 max-w-[40ch] text-[15.5px] leading-relaxed text-ink-soft">
-                Hemos recibido tus datos. Un médico colegiado revisará tu caso y te escribirá a{" "}
-                <span className="font-medium text-ink">{email}</span> en menos de 24 horas.
+                We've received your details. A GMC-registered doctor will review your case and write to you at{" "}
+                <span className="font-medium text-ink">{email}</span> within 24 hours.
               </p>
               <button
                 type="button"
                 onClick={close}
                 className="rounded-full bg-amber px-[38px] py-[15px] text-base font-semibold text-white transition-opacity hover:opacity-90"
               >
-                Hecho
+                Done
               </button>
             </div>
           )}

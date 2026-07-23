@@ -38,7 +38,7 @@ export function TrustBox({ alignment = "center", theme = "light", className }: P
     <div
       ref={ref}
       className={`trustpilot-widget ${className ?? ""}`}
-      data-locale="es-ES"
+      data-locale="en-GB"
       data-template-id="5419b6a8b0d04a076446a9ad"
       data-businessunit-id="6a31f5806ee9de82cda0a274"
       data-style-height="24px"
@@ -48,7 +48,7 @@ export function TrustBox({ alignment = "center", theme = "light", className }: P
       data-style-alignment={alignment}
       data-theme={theme}
     >
-      <a href="https://es.trustpilot.com/review/doctorlife.io" target="_blank" rel="noopener noreferrer">
+      <a href="https://uk.trustpilot.com/review/doctorlife.co.uk" target="_blank" rel="noopener noreferrer">
         Trustpilot
       </a>
     </div>

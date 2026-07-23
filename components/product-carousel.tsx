@@ -47,29 +47,29 @@ export function ProductCarousel() {
       <div className="mb-10 flex flex-col items-start gap-5 rounded-[28px] border border-sage/30 p-7 md:flex-row md:items-center md:justify-between" style={{ background: "rgba(205,217,160,.07)" }}>
         <div>
           <div className="text-[clamp(20px,2.2vw,26px)] font-light leading-[1.2]">
-            Tu primera consulta es{" "}
-            <span className="font-serif italic text-sage">gratis</span>
+            Your first consultation is{" "}
+            <span className="font-serif italic text-sage">free</span>
           </div>
           <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-paper/70">
-            Después, si decides empezar, eliges tu plan: suscripción de 139 €/mes
-            sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por
-            649 €. Todo tu seguimiento se gestiona desde la app de DoctorLife.
+            After that, if you decide to start, you choose your plan: £139/month
+            subscription with no commitment, a 5-month pack for £449 or nutritionist + GLP1 for
+            £649. All your follow-up is managed from the DoctorLife app.
           </p>
         </div>
         <QuizTrigger className="shrink-0 whitespace-nowrap rounded-full bg-sage px-7 py-[14px] text-[15px] font-semibold text-ink">
-          Reservar primera visita
+          Book first visit
         </QuizTrigger>
       </div>
 
       <div className="mb-6 flex items-end justify-between">
         <div className="text-[clamp(22px,2.4vw,30px)] font-light">
-          Elige tu plan, <span className="font-serif italic">todo incluido</span>
+          Choose your plan, <span className="font-serif italic">all included</span>
         </div>
         <div className="flex gap-[10px]">
-          <button type="button" onClick={prev} aria-label="Anterior" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={prev} aria-label="Previous" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
             ‹
           </button>
-          <button type="button" onClick={next} aria-label="Siguiente" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
+          <button type="button" onClick={next} aria-label="Next" className="flex h-[46px] w-[46px] cursor-pointer items-center justify-center rounded-full border border-paper/[.28] text-lg text-paper transition-all duration-200 hover:scale-105 hover:border-sage hover:bg-sage/15 active:scale-95" style={{ background: "rgba(246,240,230,.05)" }}>
             ›
           </button>
         </div>
@@ -95,7 +95,7 @@ export function ProductCarousel() {
                 {p.tag}
               </span>
               <span className="rounded-full border border-paper/20 px-[10px] py-[5px] text-[10.5px] uppercase tracking-[.12em] text-paper/70">
-                Médico colegiado
+                GMC-registered doctor
               </span>
             </div>
             <div className="mt-7 text-[22px] font-normal">{p.name}</div>
@@ -103,12 +103,12 @@ export function ProductCarousel() {
 
             {p.comingSoon ? (
               <div className="flex items-baseline gap-1">
-                <span className="text-[22px] font-light text-paper/60">Próximamente</span>
+                <span className="text-[22px] font-light text-paper/60">Coming soon</span>
               </div>
             ) : (
               <div className="flex items-baseline gap-1">
                 <span className="text-[28px] font-light text-sage">{p.price}</span>
-                <span className="text-sm text-paper/55">{p.priceSuffix ?? "/mes"}</span>
+                <span className="text-sm text-paper/55">{p.priceSuffix ?? "/month"}</span>
               </div>
             )}
 
