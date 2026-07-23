@@ -21,17 +21,17 @@ import { SITE_URL, BRAND } from "@/lib/articles";
 const PATH = "/consulta-peso-3f";
 
 export const metadata: Metadata = {
-  title: "Consulta médica online para el control de peso | DoctorLife",
+  title: "Online doctor consultation for weight management | DoctorLife",
   description:
-    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento continuo. Primera visita gratis, sin permanencia.",
+    "Assessment with GMC-registered doctors for weight management, 100% online. Personalised plan and continuous follow-up. First visit free, no lock-in.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
   openGraph: {
     type: "website",
     url: `${SITE_URL}${PATH}`,
-    title: "Consulta médica online para el control de peso | DoctorLife",
+    title: "Online doctor consultation for weight management | DoctorLife",
     description:
-      "Valoración con médicos colegiados, 100% online. Plan personalizado y seguimiento. Primera visita gratis, sin permanencia.",
+      "Assessment with GMC-registered doctors, 100% online. Personalised plan and follow-up. First visit free, no lock-in.",
   },
 };
 
@@ -42,76 +42,76 @@ const serviceLd = {
   url: `${SITE_URL}${PATH}`,
   medicalSpecialty: "Endocrinology",
   description:
-    "Servicio de telemedicina para el control de peso con médicos colegiados en España. Valoración clínica, plan personalizado y seguimiento continuo.",
-  areaServed: "ES",
-  priceRange: "€€",
+    "Telemedicine service for weight management with GMC-registered doctors in the UK. Clinical assessment, personalised plan and continuous follow-up.",
+  areaServed: "GB",
+  priceRange: "££",
 };
 
 const steps = [
   {
     icon: ClipboardList,
-    title: "Cuéntanos tu caso",
-    text: "Completas un cuestionario clínico sencillo sobre tu historia, hábitos y objetivos. Solo unos minutos.",
+    title: "Tell us about your case",
+    text: "You complete a simple clinical questionnaire about your history, habits and goals. Just a few minutes.",
   },
   {
     icon: Video,
-    title: "Videoconsulta con tu médico",
-    text: "Un médico colegiado valora tu situación por videollamada y resuelve tus dudas con calma.",
+    title: "Video consultation with your doctor",
+    text: "A GMC-registered doctor assesses your situation over video call and answers your questions calmly.",
   },
   {
     icon: HeartPulse,
-    title: "Plan y seguimiento",
-    text: "Recibes un plan personalizado y acompañamiento continuo por chat. Si tu médico lo considera clínicamente indicado, puede prescribir tratamiento y ajustarlo a tu evolución.",
+    title: "Plan and follow-up",
+    text: "You receive a personalised plan and continuous support via chat. If your doctor considers it clinically indicated, they can prescribe treatment and adjust it to your progress.",
   },
 ];
 
 const benefits = [
   {
     icon: Stethoscope,
-    title: "Endocrinos y médicos colegiados",
-    text: "Especialistas en endocrinología y nutrición, colegiados e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS).",
+    title: "GMC-registered doctors and endocrinologists",
+    text: "Specialists in endocrinology and nutrition, registered with the General Medical Council (GMC).",
   },
   {
     icon: Video,
-    title: "100% online, desde casa",
-    text: "Sin desplazamientos ni salas de espera. Tú eliges el horario que mejor te venga.",
+    title: "100% online, from home",
+    text: "No travel or waiting rooms. You choose the time that suits you best.",
   },
   {
     icon: CalendarCheck,
-    title: "Seguimiento continuo",
-    text: "No es una consulta suelta: te acompañamos mes a mes y ajustamos el plan a tu ritmo.",
+    title: "Continuous follow-up",
+    text: "It's not a one-off consultation: we support you month by month and adjust the plan to your pace.",
   },
   {
     icon: ShieldCheck,
-    title: "Sin permanencia",
-    text: "Una única suscripción transparente. Puedes pausar o cancelar cuando quieras.",
+    title: "No lock-in",
+    text: "A single transparent subscription. You can pause or cancel whenever you like.",
   },
 ];
 
 const faqs = [
   {
-    q: "¿Qué incluye la primera visita?",
-    a: "Una valoración clínica completa con un médico colegiado por videollamada, en la que se revisa tu historia y tus objetivos y se define el punto de partida. La primera visita es gratis, sin compromiso.",
+    q: "What does the first visit include?",
+    a: "A full clinical assessment with a GMC-registered doctor over video call, reviewing your history and goals and defining your starting point. The first visit is free, with no obligation.",
   },
   {
-    q: "¿Los médicos están colegiados?",
-    a: "Sí. Todos nuestros profesionales son médicos colegiados en España e inscritos en el Registro Estatal de Profesionales Sanitarios (REPS), incluidos especialistas en endocrinología y nutrición. Verificamos su titulación y colegiación antes de incorporarlos.",
+    q: "Are the doctors registered?",
+    a: "Yes. All our professionals are doctors registered with the General Medical Council (GMC), including specialists in endocrinology and nutrition. We verify their qualifications and registration before onboarding them.",
   },
   {
-    q: "¿El médico puede recetar tratamiento?",
-    a: "Sí. Cuando la valoración clínica lo justifica, el médico o endocrino puede prescribir el tratamiento que considere adecuado para tu caso y hacer su seguimiento. La indicación depende siempre de una valoración médica individual; no todos los casos requieren medicación.",
+    q: "Can the doctor prescribe treatment?",
+    a: "Yes. When the clinical assessment justifies it, the doctor or endocrinologist can prescribe the treatment they consider appropriate for your case and follow it up. The prescription always depends on an individual medical assessment; not every case requires medication.",
   },
   {
-    q: "¿Cuánto cuesta?",
-    a: "La primera valoración es gratis. Si decides continuar, eliges tu plan: suscripción de 139 €/mes sin permanencia, pack de 5 meses por 449 € o nutricionista + GLP1 por 649 €. Incluye seguimiento por chat con tu médico y ajuste del plan.",
+    q: "How much does it cost?",
+    a: "The first assessment is free. If you decide to continue, you choose your plan: a £139/month subscription with no lock-in, a 5-month pack for £449, or a nutritionist + GLP-1 for £649. It includes chat follow-up with your doctor and plan adjustments.",
   },
   {
-    q: "¿Necesito acudir presencialmente?",
-    a: "No es necesario: el servicio es 100% online. Si en algún momento tu médico considera que necesitas una valoración o prueba presencial, te lo indicará y te orientará sobre cómo hacerlo.",
+    q: "Do I need to attend in person?",
+    a: "It's not necessary: the service is 100% online. If at any point your doctor considers you need an in-person assessment or test, they will tell you and guide you on how to arrange it.",
   },
   {
-    q: "¿Mis datos están protegidos?",
-    a: "Sí. Tratamos tus datos de salud conforme al RGPD y la LOPDGDD, con medidas de seguridad reforzadas y confidencialidad médica.",
+    q: "Is my data protected?",
+    a: "Yes. We process your health data in line with UK GDPR and the Data Protection Act 2018, with enhanced security measures and medical confidentiality.",
   },
 ];
 
