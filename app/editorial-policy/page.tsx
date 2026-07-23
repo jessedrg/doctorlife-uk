@@ -6,14 +6,14 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbSchema, faqSchema, SITE_URL, BRAND } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: `Política editorial — Cómo creamos el contenido médico | ${BRAND}`,
+  title: `Editorial policy — How we create medical content | ${BRAND}`,
   description:
-    "Conoce cómo se crea, revisa y actualiza el contenido médico de DoctorLife: proceso editorial, criterios de evidencia científica, revisión por médicos colegiados y política de actualización.",
+    "Learn how DoctorLife's medical content is created, reviewed and updated: editorial process, scientific evidence criteria, review by GMC-registered doctors and update policy.",
   alternates: { canonical: `${SITE_URL}/editorial-policy` },
   openGraph: {
-    title: `Política editorial | ${BRAND}`,
+    title: `Editorial policy | ${BRAND}`,
     description:
-      "Proceso editorial, criterios de evidencia científica, revisión por médicos colegiados y política de actualización del contenido de DoctorLife.",
+      "Editorial process, scientific evidence criteria, review by GMC-registered doctors and update policy for DoctorLife content.",
     url: `${SITE_URL}/editorial-policy`,
     type: "website",
     locale: "en-GB",
@@ -23,24 +23,24 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    q: "¿Quién escribe el contenido médico de DoctorLife?",
-    a: "El contenido es redactado por profesionales de la comunicación sanitaria y revisado por médicos colegiados especializados (endocrinólogos, internistas, especialistas en salud metabólica). Cada artículo indica su autor y revisor médico.",
+    q: "Who writes DoctorLife's medical content?",
+    a: "Content is written by healthcare communication professionals and reviewed by specialist GMC-registered doctors (endocrinologists, internal medicine physicians, metabolic health specialists). Each article names its author and medical reviewer.",
   },
   {
-    q: "¿Con qué frecuencia se actualiza el contenido?",
-    a: "Revisamos todos los artículos al menos una vez al año, o antes si se publican nuevas guías clínicas relevantes (AACE, SEEN, NICE, ADA). La fecha de última actualización aparece visible en cada artículo.",
+    q: "How often is content updated?",
+    a: "We review every article at least once a year, or sooner if relevant new clinical guidelines are published (NICE, EASO, AACE, ADA). The date of the last update is shown on every article.",
   },
   {
-    q: "¿Qué fuentes científicas utilizáis?",
-    a: "Usamos exclusivamente guías clínicas de sociedades médicas reconocidas, estudios publicados en revistas indexadas (PubMed, Cochrane) y fichas técnicas de la EMA. No usamos fuentes sin revisar por pares.",
+    q: "Which scientific sources do you use?",
+    a: "We use only clinical guidelines from recognised medical bodies, studies published in indexed journals (PubMed, Cochrane) and official medicines information from the MHRA and EMA. We do not use non-peer-reviewed sources.",
   },
   {
-    q: "¿El contenido de DoctorLife sustituye a una consulta médica?",
-    a: "No. Todo el contenido del blog y de la web es informativo y educativo. Nunca sustituye el diagnóstico, tratamiento o consejo de un médico colegiado. Ante cualquier duda de salud, consulta con un profesional.",
+    q: "Does DoctorLife content replace a medical consultation?",
+    a: "No. All blog and website content is informational and educational. It never replaces diagnosis, treatment or advice from a GMC-registered doctor. For any health concern, consult a professional.",
   },
   {
-    q: "¿Cómo notificáis los errores?",
-    a: "Si detectas un error o información desactualizada, puedes escribirnos a hello@doctorlife.io con el asunto 'Corrección editorial'. Revisamos todas las notificaciones en un plazo de 5 días laborables.",
+    q: "How do you report errors?",
+    a: "If you spot an error or outdated information, you can write to us at hello@doctorlife.io with the subject 'Editorial correction'. We review all reports within 5 working days.",
   },
 ];
 
@@ -52,37 +52,37 @@ const breadcrumbs = breadcrumbSchema([
 const steps = [
   {
     num: "01",
-    title: "Identificación del tema",
-    body: "El equipo editorial selecciona temas basándose en las preguntas reales de los pacientes, las guías clínicas más recientes y las búsquedas con mayor intención informativa en salud metabólica y hormonal.",
+    title: "Topic identification",
+    body: "The editorial team selects topics based on real patient questions, the most recent clinical guidelines and the searches with the highest informational intent in metabolic and hormonal health.",
   },
   {
     num: "02",
-    title: "Documentación y redacción",
-    body: "Un redactor especializado en comunicación sanitaria investiga las fuentes primarias (guías clínicas, ensayos clínicos en PubMed/Cochrane) y redacta el artículo con lenguaje accesible, citando todas las referencias.",
+    title: "Research and writing",
+    body: "A writer specialising in healthcare communication researches primary sources (clinical guidelines, clinical trials on PubMed/Cochrane) and writes the article in accessible language, citing all references.",
   },
   {
     num: "03",
-    title: "Revisión médica",
-    body: "Un médico colegiado especializado en el área revisa la precisión clínica, corrige imprecisiones y valida que el contenido está alineado con las guías vigentes. Su nombre y número de colegiado se publican en el artículo.",
+    title: "Medical review",
+    body: "A GMC-registered doctor specialising in the area reviews clinical accuracy, corrects inaccuracies and validates that the content aligns with current guidelines. Their name and GMC registration number are published on the article.",
   },
   {
     num: "04",
-    title: "Edición y publicación",
-    body: "El equipo editorial hace una última revisión de claridad, estructura y cumplimiento de nuestras directrices de estilo médico. El artículo se publica con fecha de creación y fecha de última revisión visibles.",
+    title: "Editing and publication",
+    body: "The editorial team does a final review of clarity, structure and compliance with our medical style guidelines. The article is published with visible creation and last-review dates.",
   },
   {
     num: "05",
-    title: "Actualización periódica",
-    body: "Revisamos todos los artículos al menos una vez al año. Si se publican guías nuevas o cambia el consenso médico, actualizamos el artículo antes de esa revisión anual y marcamos la nueva fecha de modificación.",
+    title: "Regular updates",
+    body: "We review every article at least once a year. If new guidelines are published or medical consensus changes, we update the article before that annual review and mark the new modification date.",
   },
 ];
 
 const sources = [
-  { name: "SEEN — Sociedad Española de Endocrinología y Nutrición", url: "https://www.seen.es" },
-  { name: "AACE — American Association of Clinical Endocrinology", url: "https://www.aace.com" },
   { name: "NICE — National Institute for Health and Care Excellence", url: "https://www.nice.org.uk" },
+  { name: "EASO — European Association for the Study of Obesity", url: "https://easo.org" },
+  { name: "AACE — American Association of Clinical Endocrinology", url: "https://www.aace.com" },
   { name: "ADA — American Diabetes Association", url: "https://www.diabetes.org" },
-  { name: "EMA — Agencia Europea de Medicamentos", url: "https://www.ema.europa.eu" },
+  { name: "MHRA — Medicines and Healthcare products Regulatory Agency", url: "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency" },
   { name: "PubMed / MEDLINE — NLM", url: "https://pubmed.ncbi.nlm.nih.gov" },
   { name: "Cochrane Library", url: "https://www.cochranelibrary.com" },
 ];
@@ -96,24 +96,24 @@ export default function PoliticaEditorialPage() {
         <main>
           {/* ── Hero ── */}
           <section className="mx-auto max-w-[820px] px-5 pb-12 pt-14">
-            <nav aria-label="Migas de pan" className="mb-8 flex items-center gap-2 text-[13px] text-ink-mute">
+            <nav aria-label="Breadcrumbs" className="mb-8 flex items-center gap-2 text-[13px] text-ink-mute">
               <a href="/" className="hover:text-ink">Home</a>
               <span aria-hidden>/</span>
-              <span className="text-ink">Política editorial</span>
+              <span className="text-ink">Editorial policy</span>
             </nav>
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Transparencia editorial
+              Editorial transparency
             </span>
             <h1 className="mt-3 text-balance text-[clamp(30px,4.5vw,52px)] font-light leading-[1.05] tracking-[-0.03em] text-ink">
-              Cómo creamos y revisamos el contenido médico
+              How we create and review medical content
             </h1>
             <p className="mt-5 max-w-[62ch] text-[17.5px] leading-[1.7] text-ink-soft">
-              Todo el contenido de DoctorLife es redactado por especialistas en
-              comunicación sanitaria y revisado por médicos colegiados. Esta página
-              explica exactamente cómo funciona ese proceso y qué estándares seguimos.
+              All DoctorLife content is written by healthcare communication
+              specialists and reviewed by GMC-registered doctors. This page explains
+              exactly how that process works and which standards we follow.
             </p>
             <p className="mt-3 text-[14px] text-ink-mute">
-              Última revisión de esta política: julio de 2025
+              Last review of this policy: July 2025
             </p>
           </section>
 
@@ -121,27 +121,27 @@ export default function PoliticaEditorialPage() {
           <div className="mx-auto max-w-[820px] px-5 pb-10">
             <div className="rounded-[16px] border border-amber/30 bg-amber/8 px-6 py-5">
               <p className="text-[15px] leading-relaxed text-ink-soft">
-                <strong className="text-ink">Aviso importante:</strong> El contenido
-                del blog y de la web de DoctorLife tiene exclusivamente carácter
-                informativo y educativo. No constituye diagnóstico, consejo ni
-                prescripción médica. Ante cualquier síntoma o duda de salud,
-                consulta siempre con un médico colegiado.
+                <strong className="text-ink">Important notice:</strong> The content
+                of the DoctorLife blog and website is purely informational and
+                educational. It does not constitute diagnosis, advice or a medical
+                prescription. For any symptom or health concern, always consult a
+                GMC-registered doctor.
               </p>
             </div>
           </div>
 
-          {/* ── Proceso editorial ── */}
+          {/* ── Editorial process ── */}
           <section className="mx-auto max-w-[820px] px-5 py-10">
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-olive">
-              Nuestro proceso
+              Our process
             </span>
             <h2 className="mt-3 text-balance text-[clamp(20px,2.8vw,32px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-              Del borrador a la publicación: 5 pasos
+              From draft to publication: 5 steps
             </h2>
             <div className="mt-10 flex flex-col gap-0">
               {steps.map((s, i) => (
                 <div key={s.num} className="flex gap-6">
-                  {/* línea vertical */}
+                  {/* vertical line */}
                   <div className="flex flex-col items-center">
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-olive text-[13px] font-bold text-paper">
                       {s.num}
@@ -159,18 +159,18 @@ export default function PoliticaEditorialPage() {
             </div>
           </section>
 
-          {/* ── Fuentes ── */}
+          {/* ── Sources ── */}
           <section className="bg-cream">
             <div className="mx-auto max-w-[820px] px-5 py-14">
               <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Fuentes de referencia
+                Reference sources
               </span>
               <h2 className="mt-3 text-balance text-[clamp(20px,2.8vw,32px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-                Organizaciones y bases de datos que consultamos
+                Organisations and databases we consult
               </h2>
               <p className="mt-4 text-[16px] leading-[1.7] text-ink-soft">
-                Solo utilizamos fuentes de nivel primario: guías de sociedades médicas
-                reconocidas, estudios revisados por pares y fichas técnicas oficiales.
+                We use only primary-level sources: guidelines from recognised medical
+                bodies, peer-reviewed studies and official medicines information.
               </p>
               <ul className="mt-8 flex flex-col gap-3">
                 {sources.map((s) => (
@@ -193,10 +193,10 @@ export default function PoliticaEditorialPage() {
           {/* ── FAQ ── */}
           <section className="mx-auto max-w-[820px] px-5 py-14">
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-olive">
-              Preguntas frecuentes
+              Frequently asked questions
             </span>
             <h2 className="mt-3 mb-8 text-balance text-[clamp(20px,2.8vw,32px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-              Sobre nuestro contenido
+              About our content
             </h2>
             <div className="flex flex-col divide-y divide-ink/10">
               {faqs.map((f) => (
@@ -213,21 +213,21 @@ export default function PoliticaEditorialPage() {
             </div>
           </section>
 
-          {/* ── Contacto editorial ── */}
+          {/* ── Editorial contact ── */}
           <section className="bg-espresso">
             <div className="mx-auto flex max-w-[820px] flex-col items-center gap-5 px-5 py-14 text-center">
               <h2 className="text-balance text-[clamp(20px,2.8vw,32px)] font-light leading-tight tracking-[-0.025em] text-paper">
-                ¿Encontraste un error o información desactualizada?
+                Found an error or outdated information?
               </h2>
               <p className="max-w-[48ch] text-[16px] text-paper/70">
-                Escríbenos con el asunto "Corrección editorial". Revisamos todas las
-                notificaciones en un plazo de 5 días laborables.
+                Write to us with the subject &quot;Editorial correction&quot;. We
+                review all reports within 5 working days.
               </p>
               <a
-                href="mailto:hello@doctorlife.io?subject=Corrección editorial"
+                href="mailto:hello@doctorlife.io?subject=Editorial correction"
                 className="rounded-full bg-clay px-7 py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Notificar un error
+                Report an error
               </a>
             </div>
           </section>

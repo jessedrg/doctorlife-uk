@@ -54,7 +54,7 @@ export default function PillarPage() {
           <section className="mx-auto max-w-[860px] px-5 pb-2 pt-10">
             <Breadcrumbs
               items={[
-                { label: "Home", href: "/" },,
+                { label: "Home", href: "/" },
                 { label: PILLAR.title },
               ]}
             />

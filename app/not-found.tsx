@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer";
 import { ArrowRight } from "lucide-react";
 
 const suggestions = [
-  { label: "Cómo funciona el tratamiento", href: "/#product" },
-  { label: "Planes y precios", href: "/#planes" },
-  { label: "Blog médico", href: "/blog" },
+  { label: "How treatment works", href: "/#product" },
+  { label: "Plans and pricing", href: "/#planes" },
+  { label: "Medical blog", href: "/blog" },
   { label: "Our doctors", href: "/authors" },
   { label: "BMI Calculator", href: "/tools/bmi-calculator" },
 ];
@@ -22,11 +22,11 @@ export default function NotFound() {
             Error 404
           </span>
           <h1 className="mt-4 text-balance text-[clamp(30px,5vw,52px)] font-light leading-[1.05] tracking-[-.03em] text-ink">
-            No hemos encontrado esta página
+            We couldn&apos;t find this page
           </h1>
           <p className="mt-4 max-w-[46ch] text-pretty text-[16px] leading-relaxed text-ink-soft">
-            Puede que el enlace haya cambiado o que la página ya no exista. Te
-            dejamos algunos accesos útiles para seguir.
+            The link may have changed or the page may no longer exist. Here are a
+            few useful shortcuts to keep going.
           </p>
 
           <div className="mt-8">

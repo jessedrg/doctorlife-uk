@@ -27,33 +27,33 @@ export const metadata: Metadata = {
 const values = [
   {
     icon: Stethoscope,
-    title: "Medicina basada en evidencia",
-    body: "Cada recomendación que hacemos está respaldada por guías clínicas actualizadas y revisada por médicos colegiados.",
+    title: "Evidence-based medicine",
+    body: "Every recommendation we make is backed by up-to-date clinical guidelines and reviewed by GMC-registered doctors.",
   },
   {
     icon: ShieldCheck,
-    title: "Seguridad antes que velocidad",
-    body: "No prescribimos si no es lo correcto para ti. La valoración médica determina si el tratamiento es adecuado para tu caso.",
+    title: "Safety before speed",
+    body: "We don't prescribe if it isn't right for you. The medical assessment determines whether treatment is appropriate for your case.",
   },
   {
     icon: Users,
-    title: "Accesibilidad real",
-    body: "Consulta médica de calidad sin listas de espera, sin desplazamientos y con respuesta en horas, no semanas.",
+    title: "Real accessibility",
+    body: "Quality medical consultations with no waiting lists, no travel and a response in hours, not weeks.",
   },
   {
     icon: HeartPulse,
-    title: "Seguimiento continuo",
-    body: "No te dejamos sólo con una receta. Ajustamos el tratamiento con seguimiento médico real, mes a mes.",
+    title: "Continuous follow-up",
+    body: "We don't leave you alone with a prescription. We adjust treatment with real medical follow-up, month by month.",
   },
   {
     icon: Clock,
-    title: "Sin permanencia",
-    body: "Cancela cuando quieras. Creemos que la confianza se construye con resultados, no con contratos.",
+    title: "No lock-in",
+    body: "Cancel whenever you like. We believe trust is built on results, not contracts.",
   },
   {
     icon: BadgeCheck,
-    title: "Transparencia total",
-    body: "Conoces el precio, el médico que te valora y exactamente qué incluye cada visita antes de comenzar.",
+    title: "Total transparency",
+    body: "You know the price, the doctor assessing you and exactly what each visit includes before you start.",
   },
 ];
 
@@ -92,45 +92,45 @@ export default function SobreNosotrosPage() {
             </p>
           </section>
 
-          {/* ── Misión ── */}
+          {/* ── Mission ── */}
           <section className="bg-espresso">
             <div className="mx-auto max-w-[860px] px-5 py-16">
               <h2 className="text-balance text-[clamp(24px,3.5vw,38px)] font-light leading-[1.1] tracking-[-0.025em] text-paper">
-                Nuestra misión es devolverle a la medicina su función real:{" "}
+                Our mission is to give medicine back its real purpose:{" "}
                 <span className="font-serif italic text-sage">
-                  entender a la persona, no solo el síntoma.
+                  understanding the person, not just the symptom.
                 </span>
               </h2>
               <p className="mt-6 max-w-[64ch] text-[17px] leading-[1.7] text-paper/75">
-                El sistema sanitario actual dificulta el acceso a especialistas de
-                forma rápida y personalizada. DoctorLife nació para cubrir ese hueco:
-                ofrecer valoración médica especializada, tratamiento supervisado y
-                seguimiento continuo, todo desde una plataforma diseñada para que el
-                paciente esté siempre informado y en control.
+                Today&apos;s healthcare system makes it hard to access specialists
+                quickly and in a personalised way. DoctorLife was created to fill that
+                gap: to offer specialist medical assessment, supervised treatment and
+                continuous follow-up, all from a platform designed to keep the
+                patient always informed and in control.
               </p>
             </div>
           </section>
 
-          {/* ── Cómo seleccionamos médicos ── */}
+          {/* ── How we select doctors ── */}
           <section className="mx-auto max-w-[860px] px-5 py-16">
             <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-olive">
-              Nuestros estándares
+              Our standards
             </span>
             <h2 className="mt-3 text-balance text-[clamp(22px,3vw,34px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-              Cómo seleccionamos a los médicos de la plataforma
+              How we select the doctors on the platform
             </h2>
             <p className="mt-4 max-w-[62ch] text-[17px] leading-[1.7] text-ink-soft">
-              Todos los médicos que trabajan en DoctorLife pasan por un proceso de
-              verificación riguroso antes de atender su primer paciente:
+              Every doctor who works with DoctorLife goes through a rigorous
+              verification process before seeing their first patient:
             </p>
             <ul className="mt-8 flex flex-col gap-4">
               {[
-                "Colegiación activa y verificada en el Colegio Oficial de Médicos de España.",
-                "Especialización acreditada en endocrinología, medicina interna, salud hormonal o metabólica.",
-                "Revisión de formación continuada y actualización en guías clínicas vigentes (AACE, SEEN, NICE).",
-                "Entrevista de incorporación con el equipo médico de DoctorLife.",
-                "Supervisión periódica de la calidad de las valoraciones y el seguimiento a pacientes.",
-                "Cumplimiento de la normativa de telemedicina vigente en España (Ley 41/2002).",
+                "Active, verified registration with the General Medical Council (GMC).",
+                "Accredited specialisation in endocrinology, internal medicine, hormonal or metabolic health.",
+                "Review of continuing education and up-to-date knowledge of current clinical guidelines (NICE, EASO, AACE).",
+                "Onboarding interview with the DoctorLife medical team.",
+                "Regular quality monitoring of assessments and patient follow-up.",
+                "Compliance with current UK telemedicine regulations and GMC guidance.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-[16.5px] leading-relaxed text-ink-soft">
                   <BadgeCheck aria-hidden className="mt-0.5 h-5 w-5 flex-shrink-0 text-olive" />
@@ -140,14 +140,14 @@ export default function SobreNosotrosPage() {
             </ul>
           </section>
 
-          {/* ── Valores ── */}
+          {/* ── Values ── */}
           <section className="bg-cream">
             <div className="mx-auto max-w-[860px] px-5 py-16">
               <span className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-                Nuestros principios
+                Our principles
               </span>
               <h2 className="mt-3 text-balance text-[clamp(22px,3vw,34px)] font-light leading-[1.1] tracking-[-0.025em] text-ink">
-                Lo que guía cada decisión en DoctorLife
+                What guides every decision at DoctorLife
               </h2>
               <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {values.map(({ icon: Icon, title, body }) => (
@@ -163,23 +163,23 @@ export default function SobreNosotrosPage() {
             </div>
           </section>
 
-          {/* ── Equipo médico ── */}
+          {/* ── Medical team ── */}
           <MedicalTeamSection />
 
-          {/* ── Contacto ── */}
+          {/* ── Contact ── */}
           <section className="bg-espresso">
             <div className="mx-auto flex max-w-[860px] flex-col items-center gap-6 px-5 py-14 text-center">
               <h2 className="text-balance text-[clamp(22px,3vw,34px)] font-light leading-tight tracking-[-0.025em] text-paper">
-                ¿Tienes alguna pregunta sobre DoctorLife?
+                Have a question about DoctorLife?
               </h2>
               <p className="max-w-[48ch] text-[16px] text-paper/70">
-                Nuestro equipo responde en menos de 3 horas en días laborables.
+                Our team responds in under 3 hours on working days.
               </p>
               <a
                 href="mailto:hello@doctorlife.io"
                 className="rounded-full bg-clay px-7 py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Contactar con el equipo
+                Contact the team
               </a>
             </div>
           </section>
