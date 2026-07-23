@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/articles";
 const PATH = "/consulta-peso-glp1-1foto";
 
 export const metadata: Metadata = {
-  title: "Tratamiento GLP-1 con supervisión médica online | DoctorLife",
+  title: "GLP-1 treatment with online medical supervision | DoctorLife",
   description:
-    "Tratamiento GLP-1 con endocrinos colegiados, 100% online, si está clínicamente indicado. Plan personalizado y seguimiento. Primera visita gratis.",
+    "GLP-1 treatment with GMC-registered endocrinologists, 100% online, if clinically indicated. Personalised plan and follow-up. Free first visit.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
@@ -18,17 +18,16 @@ export default function Page() {
       config={{
         path: PATH,
         planPrefix: "ads-peso-glp1-1foto",
-        eyebrow: "Endocrinos colegiados · 100% online",
+        eyebrow: "GMC-registered endocrinologists · 100% online",
         headline: (
           <>
-            Tratamiento{" "}
-            <span className="font-serif italic text-sage">GLP-1</span> con{" "}
-            <span className="font-serif italic text-sage">supervisión médica</span>
-            , desde casa
+            <span className="font-serif italic text-sage">GLP-1</span> treatment with{" "}
+            <span className="font-serif italic text-sage">medical supervision</span>
+            , from home
           </>
         ),
         subtitle:
-          "Tratamiento con GLP-1, si el endocrino lo cree adecuado para tu caso.",
+          "Treatment with GLP-1, if the endocrinologist considers it appropriate for your case.",
         photos: 1,
       }}
     />

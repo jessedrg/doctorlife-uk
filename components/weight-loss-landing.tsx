@@ -458,15 +458,14 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                   />
                 </a>
                 <p className="mt-5 max-w-[320px] text-[15px] leading-relaxed text-paper/65">
-                  Plataforma de telemedicina que conecta a pacientes con médicos
-                  colegiados independientes para el control de peso con supervisión
-                  médica.
+                  A telemedicine platform connecting patients with independent
+                  GMC-registered doctors for medically supervised weight management.
                 </p>
                 <QuizTrigger
                   plan={`${planPrefix}-footer`}
                   className="mt-7 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-[12px] text-[15px] font-semibold text-ink"
                 >
-                  Reservar primera visita gratis
+                  Book your free first visit
                   <span className="text-[13px]">↗</span>
                 </QuizTrigger>
                 <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[260px]" />
@@ -474,22 +473,22 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
 
               <div>
                 <span className="text-xs uppercase tracking-[.14em] text-sage">
-                  Servicio
+                  Service
                 </span>
                 <ul className="mt-4 flex flex-col gap-3 text-[15px] text-paper/75">
                   <li>
                     <a href="#como-funciona" className="no-underline hover:text-paper">
-                      Cómo funciona
+                      How it works
                     </a>
                   </li>
                   <li>
                     <a href="#precio" className="no-underline hover:text-paper">
-                      Precio
+                      Pricing
                     </a>
                   </li>
                   <li>
                     <a href="#faq" className="no-underline hover:text-paper">
-                      Preguntas frecuentes
+                      FAQ
                     </a>
                   </li>
                 </ul>
@@ -505,7 +504,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       href="/legal/privacy-policy"
                       className="no-underline hover:text-paper"
                     >
-                      Política de privacidad
+                      Privacy policy
                     </a>
                   </li>
                   <li>
@@ -513,12 +512,12 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
                       href="/legal/terms-of-services"
                       className="no-underline hover:text-paper"
                     >
-                      Términos y condiciones
+                      Terms and conditions
                     </a>
                   </li>
                   <li>
                     <a href="/cookies" className="no-underline hover:text-paper">
-                      Política de cookies
+                      Cookie policy
                     </a>
                   </li>
                 </ul>
@@ -527,7 +526,7 @@ export function WeightLossLanding({ config }: { config: LandingConfig }) {
 
             <div className="flex flex-col gap-1 border-t border-paper/10 px-8 py-7 text-[12.5px] text-paper/45 md:flex-row md:items-center md:justify-between md:px-14">
               <span>© 2026 DoctorLife · doctorlife.io</span>
-              <span>Servicio sujeto a valoración médica individual.</span>
+              <span>Service subject to individual medical assessment.</span>
             </div>
           </div>
         </footer>

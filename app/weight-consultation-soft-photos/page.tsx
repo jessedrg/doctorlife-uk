@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/articles";
 const PATH = "/consulta-peso-suave-fotos";
 
 export const metadata: Metadata = {
-  title: "Consulta médica online para el control de peso | DoctorLife",
+  title: "Online doctor consultation for weight management | DoctorLife",
   description:
-    "Valoración con médicos colegiados para el control de peso, 100% online. Plan personalizado y seguimiento. Primera visita gratis, sin permanencia.",
+    "Assessment with GMC-registered doctors for weight management, 100% online. Personalised plan and follow-up. Free first visit, no lock-in.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
@@ -18,15 +18,15 @@ export default function Page() {
       config={{
         path: PATH,
         planPrefix: "ads-peso-suave-fotos",
-        eyebrow: "Médicos colegiados · 100% online",
+        eyebrow: "GMC-registered doctors · 100% online",
         headline: (
           <>
-            Consulta médica online para el{" "}
-            <span className="font-serif italic text-sage">control de peso</span>
+            Online doctor consultation for{" "}
+            <span className="font-serif italic text-sage">weight management</span>
           </>
         ),
         subtitle:
-          "Valoración con endocrino colegiado y plan personalizado, desde casa.",
+          "Assessment with a registered endocrinologist and a personalised plan, from home.",
         photos: 3,
       }}
     />

@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/articles";
 const PATH = "/consulta-peso-maxmax";
 
 export const metadata: Metadata = {
-  title: "Adelgaza con tratamiento médico e inyección indolora | DoctorLife",
+  title: "Lose weight with medical treatment and a painless injection | DoctorLife",
   description:
-    "Programa de control de peso con inyección indolora, supervisado por endocrinos colegiados 100% online. Resultados reales. Primera visita gratis.",
+    "Weight management programme with a painless injection, supervised by GMC-registered endocrinologists 100% online. Real results. Free first visit.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
@@ -18,16 +18,16 @@ export default function Page() {
       config={{
         path: PATH,
         planPrefix: "ads-peso-maxmax",
-        eyebrow: "Inyección indolora · Supervisión médica",
+        eyebrow: "Painless injection · Medical supervision",
         headline: (
           <>
-            Adelgaza de verdad con{" "}
-            <span className="font-serif italic text-sage">inyección indolora</span>{" "}
-            y seguimiento médico
+            Lose weight for real with a{" "}
+            <span className="font-serif italic text-sage">painless injection</span>{" "}
+            and medical follow-up
           </>
         ),
         subtitle:
-          "Programa de control de peso con inyección indolora semanal, supervisado por endocrinos colegiados. Resultados visibles con acompañamiento médico continuo.",
+          "Weight management programme with a weekly painless injection, supervised by GMC-registered endocrinologists. Visible results with continuous medical support.",
         photos: 3,
       }}
     />

@@ -11,10 +11,10 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ articulo: string }>;
+  params: Promise<{ article: string }>;
 }): Promise<Metadata> {
-  const { articulo } = await params;
-  const article = getArticle(articulo);
+  const { article: slug } = await params;
+  const article = getArticle(slug);
   if (!article) return {};
 
   const url = `${SITE_URL}/${article.slug}`;

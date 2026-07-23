@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/articles";
 const PATH = "/consulta-peso-max";
 
 export const metadata: Metadata = {
-  title: "Pierde peso con GLP-1 y seguimiento médico | DoctorLife",
+  title: "Lose weight with GLP-1 and medical follow-up | DoctorLife",
   description:
-    "Programa de control de peso con GLP-1 supervisado por endocrinos colegiados, 100% online. Empieza hoy tu valoración. Primera visita gratis.",
+    "Weight management programme with GLP-1 supervised by GMC-registered endocrinologists, 100% online. Start your assessment today. Free first visit.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
@@ -18,16 +18,16 @@ export default function Page() {
       config={{
         path: PATH,
         planPrefix: "ads-peso-max",
-        eyebrow: "Pierde peso con GLP-1 · Supervisión médica",
+        eyebrow: "Lose weight with GLP-1 · Medical supervision",
         headline: (
           <>
-            Pierde peso con{" "}
-            <span className="font-serif italic text-sage">GLP-1</span> y{" "}
-            <span className="font-serif italic text-sage">seguimiento médico</span>
+            Lose weight with{" "}
+            <span className="font-serif italic text-sage">GLP-1</span> and{" "}
+            <span className="font-serif italic text-sage">medical follow-up</span>
           </>
         ),
         subtitle:
-          "Programa de control de peso con GLP-1 supervisado por endocrinos colegiados. Empieza hoy tu valoración.",
+          "Weight management programme with GLP-1 supervised by GMC-registered endocrinologists. Start your assessment today.",
         photos: 3,
       }}
     />
