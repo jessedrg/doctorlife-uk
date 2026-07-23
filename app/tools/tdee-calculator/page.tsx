@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Calculadora TDEE | DoctorLife",
     description:
       "Calcula tu gasto energético diario total y descubre cuántas calorías necesitas para perder peso de forma sostenible.",
-    url: "https://doctorlife.io/tools/tdee-calculator",
+    url: "https://doctorlife-uk.com/tools/tdee-calculator",
   },
 };
 

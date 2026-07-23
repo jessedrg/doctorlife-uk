@@ -6,7 +6,7 @@
    internal linking) updates automatically.
    ─────────────────────────────────────────────────────────── */
 
-export const SITE_URL = "https://doctorlife.io";
+export const SITE_URL = "https://doctorlife-uk.com";
 export const BRAND = "DoctorLife";
 
 /* ── Typed content blocks ── */

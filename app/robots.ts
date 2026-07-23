@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { SITE_URL } from "@/lib/blog";
 
-const PRODUCTION_HOST = "doctorlife.io";
+const PRODUCTION_HOST = "doctorlife-uk.com";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const host = (await headers()).get("host")?.toLowerCase().split(":")[0] ?? "";

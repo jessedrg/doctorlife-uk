@@ -35,7 +35,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://doctorlife.io'),
+  metadataBase: new URL('https://doctorlife-uk.com'),
   title: 'DoctorLife — Your body, finally understood',
   description:
     'Weight and hormonal care led by doctors, designed around your body — not a one-size-fits-all protocol.',

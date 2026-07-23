@@ -83,7 +83,7 @@ export default function OpengraphImage() {
         {/* Footer */}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div style={{ height: 6, width: 64, borderRadius: 3, backgroundColor: CLAY }} />
-          <span style={{ color: "#8f8578", fontSize: 24 }}>doctorlife.io</span>
+          <span style={{ color: "#8f8578", fontSize: 24 }}>doctorlife-uk.com</span>
         </div>
       </div>
     ),

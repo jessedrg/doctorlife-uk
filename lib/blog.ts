@@ -1047,4 +1047,4 @@ export function getRelated(slug: string, limit = 3): Post[] {
   return [...sameCat, ...rest].slice(0, limit);
 }
 
-export const SITE_URL = "https://doctorlife.io";
+export const SITE_URL = "https://doctorlife-uk.com";
