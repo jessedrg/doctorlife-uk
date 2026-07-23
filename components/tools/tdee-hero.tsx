@@ -191,7 +191,7 @@ export function TdeeHero() {
     const bf = parseFloat(bodyFat) || 0;
 
     if (!ageN || !weightN || !heightN || ageN < 10 || ageN > 120) {
-      setError("Introduce edad, peso y altura válidos para calcular.");
+      setError("Enter a valid age, weight and height to calculate.");
       return;
     }
 
@@ -235,15 +235,15 @@ export function TdeeHero() {
         {/* ── LEFT: form ── */}
         <div>
           <span className="mb-5 inline-block rounded-full border border-sage/30 bg-sage/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[.15em] text-sage">
-            Herramienta gratuita
+            Free tool
           </span>
 
           <h1 className="text-balance text-[42px] font-bold leading-[1.05] text-paper md:text-5xl lg:text-[50px]">
-            Calculadora<br className="hidden sm:block" /> de TDEE
+            TDEE<br className="hidden sm:block" /> calculator
           </h1>
 
           <p className="mt-5 max-w-[460px] text-[16.5px] leading-relaxed text-paper/60">
-            Tu Gasto Energético Total Diario (TDEE) es una estimación de las calorías que quemas al día. Úsalo para saber cuánto deberías comer para perder, mantener o ganar peso.
+            Your Total Daily Energy Expenditure (TDEE) is an estimate of the calories you burn each day. Use it to work out how much you should eat to lose, maintain or gain weight.
           </p>
 
           {/* Unit toggle */}
@@ -265,7 +265,7 @@ export function TdeeHero() {
           <div className="flex flex-col gap-5">
             {/* Sex toggle */}
             <div className="flex flex-col gap-2">
-              <span className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">Sexo biológico</span>
+              <span className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">Biological sex</span>
               <div className="grid grid-cols-2 overflow-hidden rounded-[16px] border border-paper/12 bg-paper/5 p-1 text-[14.5px] font-semibold">
                 {(["male", "female"] as const).map((s) => (
                   <button
@@ -276,7 +276,7 @@ export function TdeeHero() {
                       sexo === s ? "bg-ink text-paper shadow-sm" : "text-paper/45 hover:text-paper/70"
                     }`}
                   >
-                    {s === "male" ? "Hombre" : "Mujer"}
+                    {s === "male" ? "Male" : "Female"}
                   </button>
                 ))}
               </div>
@@ -286,7 +286,7 @@ export function TdeeHero() {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
                 <label htmlFor="tdee-age" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                  Edad (años)
+                  Age (years)
                 </label>
                 <input
                   id="tdee-age"
@@ -300,7 +300,7 @@ export function TdeeHero() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="tdee-weight" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                  Peso ({unit === "metric" ? "kg" : "lb"})
+                  Weight ({unit === "metric" ? "kg" : "lb"})
                 </label>
                 <input
                   id="tdee-weight"
@@ -317,7 +317,7 @@ export function TdeeHero() {
             {/* Height */}
             <div className="flex flex-col gap-2">
               <label htmlFor="tdee-height" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                Altura ({unit === "metric" ? "cm" : "pulgadas"})
+                Height ({unit === "metric" ? "cm" : "inches"})
               </label>
               <input
                 id="tdee-height"
@@ -333,7 +333,7 @@ export function TdeeHero() {
             {/* Activity level */}
             <div className="flex flex-col gap-2">
               <label htmlFor="tdee-activity" className="text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                Nivel de actividad
+                Activity level
               </label>
               <select
                 id="tdee-activity"
@@ -352,9 +352,9 @@ export function TdeeHero() {
             {/* Body fat (optional) */}
             <div className="flex flex-col gap-2">
               <label htmlFor="tdee-bf" className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[.12em] text-paper/45">
-                % de grasa corporal
+                Body fat %
                 <span className="rounded bg-paper/8 px-2 py-0.5 text-[10px] normal-case tracking-normal text-paper/35">
-                  opcional — mejora la precisión
+                  optional — improves accuracy
                 </span>
               </label>
               <input
@@ -367,7 +367,7 @@ export function TdeeHero() {
                 className="w-full rounded-[16px] border border-paper/12 bg-paper/7 px-5 py-[14px] text-[16px] text-paper placeholder-paper/25 outline-none transition focus:border-sage/60 focus:bg-paper/10"
               />
               <p className="text-[11.5px] leading-relaxed text-paper/30">
-                Si introduces tu % de grasa, usamos la fórmula Katch-McArdle (más precisa para deportistas o personas con mucha o poca masa muscular).
+                If you enter your body fat %, we use the Katch-McArdle formula (more accurate for athletes or people with very high or low muscle mass).
               </p>
             </div>
           </div>
@@ -379,7 +379,7 @@ export function TdeeHero() {
             onClick={calculate}
             className="mt-7 w-full rounded-[16px] bg-sage py-[15px] text-[15.5px] font-semibold text-ink transition hover:brightness-[1.06] active:scale-[.985]"
           >
-            Calcular mi TDEE
+            Calculate my TDEE
           </button>
         </div>
 
@@ -400,7 +400,7 @@ export function TdeeHero() {
 
       {/* Disclaimer */}
       <p className="relative mx-auto max-w-4xl px-6 pb-10 text-center text-[11.5px] leading-relaxed text-paper/28 lg:px-16">
-        El TDEE es una estimación. El gasto real varía según la composición corporal, el metabolismo individual y el estado de salud. Consulta siempre con un profesional médico antes de hacer cambios dietéticos significativos.
+        TDEE is an estimate. Actual expenditure varies with body composition, individual metabolism and health status. Always consult a medical professional before making significant dietary changes.
       </p>
     </section>
   );

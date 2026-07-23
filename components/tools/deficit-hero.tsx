@@ -20,18 +20,18 @@ function calcBMR(
 }
 
 const ACTIVITY = [
-  { label: "Sedentario (poco o sin ejercicio)", value: 1.2 },
-  { label: "Ligero (1-3 días/semana)", value: 1.375 },
-  { label: "Moderado (3-5 días/semana)", value: 1.55 },
-  { label: "Activo (6-7 días/semana)", value: 1.725 },
-  { label: "Muy activo (trabajo físico + ejercicio)", value: 1.9 },
+  { label: "Sedentary (little or no exercise)", value: 1.2 },
+  { label: "Light (1-3 days/week)", value: 1.375 },
+  { label: "Moderate (3-5 days/week)", value: 1.55 },
+  { label: "Active (6-7 days/week)", value: 1.725 },
+  { label: "Very active (physical work + exercise)", value: 1.9 },
 ];
 
 const RATES = [
-  { label: "0,25 kg/semana (~275 kcal/día)", deficit: 275 },
-  { label: "0,5 kg/semana (~550 kcal/día)", deficit: 550 },
-  { label: "0,75 kg/semana (~825 kcal/día)", deficit: 825 },
-  { label: "1 kg/semana (~1 100 kcal/día)", deficit: 1100 },
+  { label: "0.25 kg/week (~275 kcal/day)", deficit: 275 },
+  { label: "0.5 kg/week (~550 kcal/day)", deficit: 550 },
+  { label: "0.75 kg/week (~825 kcal/day)", deficit: 825 },
+  { label: "1 kg/week (~1,100 kcal/day)", deficit: 1100 },
 ];
 
 interface Field {
@@ -121,7 +121,7 @@ export function DeficitHero() {
                   : "text-ink/50 hover:text-ink"
               }`}
             >
-              {u === "metric" ? "Métrico" : "Imperial"}
+              {u === "metric" ? "Metric" : "Imperial"}
             </button>
           ))}
         </div>
@@ -131,15 +131,15 @@ export function DeficitHero() {
         {/* ── LEFT: form ── */}
         <div>
           <h1 className="font-display text-[2.4rem] font-bold leading-tight text-ink text-balance">
-            Calculadora de déficit calórico
+            Calorie deficit calculator
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-ink/65">
-            Calcula cuántas calorías necesitas consumir al día para alcanzar tu peso objetivo. Obtén una estimación personalizada del déficit calórico en función de tus datos y ritmo de pérdida deseado.
+            Work out how many calories you need to eat each day to reach your target weight. Get a personalised calorie deficit estimate based on your details and desired rate of loss.
           </p>
 
           {/* sex toggle */}
           <div className="mt-7">
-            <label className="mb-2 block text-sm font-medium text-ink/70">Sexo biológico</label>
+            <label className="mb-2 block text-sm font-medium text-ink/70">Biological sex</label>
             <div className="flex rounded-2xl border border-ink/12 bg-white p-1 text-[14px] font-medium">
               {(["male", "female"] as const).map((s) => (
                 <button
@@ -151,7 +151,7 @@ export function DeficitHero() {
                       : "text-ink/50 hover:text-ink"
                   }`}
                 >
-                  {s === "male" ? "Hombre" : "Mujer"}
+                  {s === "male" ? "Male" : "Female"}
                 </button>
               ))}
             </div>
@@ -160,11 +160,11 @@ export function DeficitHero() {
           {/* age + weight */}
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-ink/70">Edad</label>
+              <label className="mb-1.5 block text-sm font-medium text-ink/70">Age</label>
               <input
                 type="number"
                 min="10" max="100"
-                placeholder="Años"
+                placeholder="Years"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
                 className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -172,7 +172,7 @@ export function DeficitHero() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink/70">
-                Peso {unit === "metric" ? "(kg)" : "(lb)"}
+                Weight {unit === "metric" ? "(kg)" : "(lb)"}
               </label>
               <input
                 type="number"
@@ -189,7 +189,7 @@ export function DeficitHero() {
           {/* height */}
           <div className="mt-4">
             <label className="mb-1.5 block text-sm font-medium text-ink/70">
-              Altura {unit === "metric" ? "(cm)" : "(ft / in)"}
+              Height {unit === "metric" ? "(cm)" : "(ft / in)"}
             </label>
             {unit === "metric" ? (
               <input
@@ -203,14 +203,14 @@ export function DeficitHero() {
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="number"
-                  placeholder="pies"
+                  placeholder="feet"
                   value={heightFt}
                   onChange={(e) => setHeightFt(e.target.value)}
                   className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-sage/50"
                 />
                 <input
                   type="number"
-                  placeholder="pulgadas"
+                  placeholder="inches"
                   value={heightIn}
                   onChange={(e) => setHeightIn(e.target.value)}
                   className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -221,7 +221,7 @@ export function DeficitHero() {
 
           {/* activity */}
           <div className="mt-4">
-            <label className="mb-1.5 block text-sm font-medium text-ink/70">Nivel de actividad</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink/70">Activity level</label>
             <select
               value={activity}
               onChange={(e) => setActivity(parseFloat(e.target.value))}
@@ -236,7 +236,7 @@ export function DeficitHero() {
           {/* goal weight */}
           <div className="mt-4">
             <label className="mb-1.5 block text-sm font-medium text-ink/70">
-              Peso objetivo {unit === "metric" ? "(kg)" : "(lb)"}
+              Target weight {unit === "metric" ? "(kg)" : "(lb)"}
             </label>
             <input
               type="number"
@@ -251,7 +251,7 @@ export function DeficitHero() {
 
           {/* weight loss rate */}
           <div className="mt-4">
-            <label className="mb-1.5 block text-sm font-medium text-ink/70">Ritmo de pérdida de peso</label>
+            <label className="mb-1.5 block text-sm font-medium text-ink/70">Rate of weight loss</label>
             <select
               value={rateDeficit}
               onChange={(e) => setRateDeficit(parseInt(e.target.value))}
@@ -266,11 +266,11 @@ export function DeficitHero() {
           {/* body fat (optional) */}
           <div className="mt-4">
             <label className="mb-1.5 block text-sm font-medium text-ink/70">
-              % grasa corporal <span className="font-normal text-ink/40">(opcional)</span>
+              Body fat % <span className="font-normal text-ink/40">(optional)</span>
             </label>
             <input
               type="number"
-              placeholder="Porcentaje"
+              placeholder="Percentage"
               value={bodyFat}
               onChange={(e) => setBodyFat(e.target.value)}
               className="w-full rounded-2xl border border-ink/12 bg-white px-4 py-3 text-[15px] placeholder:text-ink/30 focus:outline-none focus:ring-2 focus:ring-sage/50"
@@ -282,7 +282,7 @@ export function DeficitHero() {
             onClick={calculate}
             className="mt-6 w-full rounded-full bg-amber py-3.5 text-[15px] font-semibold text-espresso transition-opacity hover:opacity-90 active:scale-[.98]"
           >
-            Calcular
+            Calculate
           </button>
         </div>
 
@@ -290,16 +290,16 @@ export function DeficitHero() {
         <div className="flex flex-col gap-4">
           {/* maintenance */}
           <div className="rounded-3xl bg-espresso px-7 py-6 text-paper">
-            <p className="text-xs font-medium uppercase tracking-[.12em] text-amber">Tu resultado</p>
+            <p className="text-xs font-medium uppercase tracking-[.12em] text-amber">Your result</p>
             <div className="mt-2 flex items-end justify-between gap-4">
               <p className="text-[1.35rem] font-semibold leading-snug">
-                Para mantener el peso actual
+                To maintain your current weight
               </p>
               <p className="shrink-0 text-right">
                 <span className="block font-display text-[2.4rem] font-bold text-amber leading-none">
-                  {calculated && result ? result.tdee.toLocaleString("es-ES") : "—"}
+                  {calculated && result ? result.tdee.toLocaleString("en-GB") : "—"}
                 </span>
-                <span className="text-sm text-paper/60">kcal/día</span>
+                <span className="text-sm text-paper/60">kcal/day</span>
               </p>
             </div>
           </div>
@@ -308,52 +308,52 @@ export function DeficitHero() {
           <div className="rounded-3xl bg-amber px-7 py-6">
             <div className="grid grid-cols-2 gap-y-5 border-b border-espresso/15 pb-5">
               <div>
-                <p className="text-[13px] font-medium text-espresso/70">Para perder</p>
+                <p className="text-[13px] font-medium text-espresso/70">To lose</p>
                 <p className="mt-0.5 font-display text-[1.2rem] font-bold text-espresso">
-                  {RATES.find((r) => r.deficit === rateDeficit)?.label.split(" ")[0] ?? "0,5 kg"}/semana
+                  {RATES.find((r) => r.deficit === rateDeficit)?.label.split(" ")[0] ?? "0.5 kg"}/week
                 </p>
               </div>
               <div className="text-right">
                 <span className="font-display text-[2.2rem] font-bold text-espresso leading-none">
-                  {calculated && result ? result.deficit1.toLocaleString("es-ES") : "—"}
+                  {calculated && result ? result.deficit1.toLocaleString("en-GB") : "—"}
                 </span>
-                <span className="ml-1 text-sm text-espresso/60">kcal/día</span>
+                <span className="ml-1 text-sm text-espresso/60">kcal/day</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-y-5 pt-5">
               <div>
-                <p className="text-[13px] font-medium text-espresso/70">Para perder</p>
+                <p className="text-[13px] font-medium text-espresso/70">To lose</p>
                 <p className="mt-0.5 font-display text-[1.2rem] font-bold text-espresso">
-                  {RATES.find((r) => r.deficit === rateDeficit * 2) ? "" : "doble ritmo"} ×2/semana
+                  {RATES.find((r) => r.deficit === rateDeficit * 2) ? "" : "double rate"} ×2/week
                 </p>
               </div>
               <div className="text-right">
                 <span className="font-display text-[2.2rem] font-bold text-espresso leading-none">
-                  {calculated && result ? result.deficit2.toLocaleString("es-ES") : "—"}
+                  {calculated && result ? result.deficit2.toLocaleString("en-GB") : "—"}
                 </span>
-                <span className="ml-1 text-sm text-espresso/60">kcal/día</span>
+                <span className="ml-1 text-sm text-espresso/60">kcal/day</span>
               </div>
             </div>
           </div>
 
           {/* timeline */}
           <div className="rounded-3xl border border-ink/10 bg-white px-7 py-6">
-            <p className="text-xs font-medium uppercase tracking-[.12em] text-ink/40">Tu objetivo</p>
+            <p className="text-xs font-medium uppercase tracking-[.12em] text-ink/40">Your goal</p>
             <div className="mt-2 flex items-end justify-between gap-4">
               <p className="text-[1.15rem] font-semibold leading-snug text-ink">
-                Alcanzar {displayGoal}
+                Reach {displayGoal}
               </p>
               <p className="shrink-0 text-right">
                 <span className="block font-display text-[2.4rem] font-bold text-espresso leading-none">
                   {calculated && result?.weeks != null ? result.weeks : "—"}
                 </span>
-                <span className="text-sm text-ink/50">semanas</span>
+                <span className="text-sm text-ink/50">weeks</span>
               </p>
             </div>
             {!calculated && (
               <p className="mt-2 text-[13px] text-ink/40">
-                Introduce tu peso objetivo para ver el tiempo estimado.
+                Enter your target weight to see the estimated time.
               </p>
             )}
           </div>
@@ -361,10 +361,10 @@ export function DeficitHero() {
           {/* CTA */}
           <div className="rounded-3xl bg-espresso/5 px-7 py-5">
             <p className="text-[14px] text-ink/70 leading-relaxed">
-              ¿Quieres un plan de adelgazamiento supervisado por médicos? Empieza con una valoración gratuita.
+              Want a doctor-supervised weight loss plan? Start with a free assessment.
             </p>
             <QuizTrigger className="mt-4 inline-flex rounded-full bg-espresso px-6 py-2.5 text-[14px] font-semibold text-paper hover:opacity-90 transition-opacity">
-              Empezar valoración gratuita
+              Start free assessment
             </QuizTrigger>
           </div>
         </div>
