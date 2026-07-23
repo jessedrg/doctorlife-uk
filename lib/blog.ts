@@ -45,10 +45,10 @@ export type Post = {
 export const BRAND = "DoctorLife";
 
 export const MEDICAL_REVIEWER = {
-  name: "Dr Laura Bennett",
-  role: "GP and specialist in weight management",
-  credentials: "GMC reg. 7418293 · General Medical Council",
-  bio: "GMC-registered doctor with more than 12 years' experience in obesity and GLP-1 treatment. She reviews DoctorLife's clinical content.",
+  name: "Dr Miguel A. Guirola",
+  role: "Obesity specialist doctor · DoctorLife doctor",
+  credentials: "GMC-registered · General Medical Council",
+  bio: "GMC-registered obesity specialist with more than 12 years' experience in weight management and GLP-1 treatment. He reviews DoctorLife's clinical content.",
 };
 
 const PRICE_NOTE =

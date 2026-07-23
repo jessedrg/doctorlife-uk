@@ -1,23 +1,23 @@
 import type { LinkGroup } from "@/lib/blog-internal-links";
 
 /**
- * Bloque de enlazado interno geográfico. Renderiza silos de enlaces
- * (ciudades cercanas, otros tratamientos, guías nacionales) en columnas.
- * Son enlaces reales en el HTML: mejoran navegación y rastreo/indexación.
+ * Geographic internal-linking block. Renders link silos
+ * (nearby cities, other treatments, national guides) in columns.
+ * These are real links in the HTML: they improve navigation and crawling/indexing.
  */
 export function BlogInternalLinks({ groups }: { groups: LinkGroup[] }) {
   if (!groups.length) return null;
 
   return (
     <section
-      aria-label="Enlaces relacionados por ciudad y tratamiento"
+      aria-label="Related links by city and treatment"
       className="mx-auto mt-14 max-w-[760px] px-5 lg:max-w-[820px] 2xl:max-w-[900px]"
     >
       <div className="rounded-[24px] border border-ink/10 bg-warm/60 p-6 sm:p-8">
         <div className="mb-7 flex items-center gap-3">
           <span aria-hidden className="h-px flex-1 bg-ink/10" />
           <h2 className="text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-            Explora por ubicación
+Explore by location
           </h2>
           <span aria-hidden className="h-px flex-1 bg-ink/10" />
         </div>

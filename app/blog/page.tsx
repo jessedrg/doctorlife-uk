@@ -114,13 +114,13 @@ export default async function BlogIndex({
         <main className="mx-auto max-w-none px-3 pb-10 pt-10 sm:px-4 lg:px-5">
           <header className="mx-auto max-w-[760px] py-12 text-center sm:py-16">
             <span className="text-[13px] font-semibold uppercase tracking-[.18em] text-clay">
-              Blog DoctorLife
+              DoctorLife Blog
             </span>
             <h1 className="mt-4 text-balance text-[clamp(34px,5vw,58px)] font-light leading-[1.04] tracking-[-.02em] text-ink">
-              Todo sobre el <span className="font-serif italic text-olive">cuidado del peso</span> con GLP‑1
+              Everything about <span className="font-serif italic text-olive">weight care</span> with GLP-1
             </h1>
             <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-[17px] leading-relaxed text-ink-soft">
-              Wegovy, Mounjaro, semaglutida, tirzepatida: precios, recetas y cómo empezar de forma segura y con seguimiento médico real.
+              Wegovy, Mounjaro, semaglutide, tirzepatide: prices, prescriptions and how to start safely with real medical follow-up.
             </p>
           </header>
 
@@ -131,10 +131,10 @@ export default async function BlogIndex({
           {isFiltering && (
             <p className="mx-auto mt-8 max-w-[760px] text-center text-[14px] text-ink-mute">
               {pool.length === 0
-                ? "No hemos encontrado guías que coincidan."
-                : `${pool.length} ${pool.length === 1 ? "guía encontrada" : "guías encontradas"}`}
-              {cat && ` en ${cat}`}
-              {q && ` para «${q}»`}.
+                ? "We couldn't find any matching guides."
+                : `${pool.length} ${pool.length === 1 ? "guide found" : "guides found"}`}
+              {cat && ` in ${cat}`}
+              {q && ` for “${q}”`}.
             </p>
           )}
 
@@ -170,7 +170,7 @@ export default async function BlogIndex({
                 href="/blog"
                 className="inline-block rounded-full bg-ink px-7 py-[13px] text-[15px] font-semibold text-paper no-underline"
               >
-                Ver todas las guías
+                View all guides
               </Link>
             </div>
           )}
@@ -178,7 +178,7 @@ export default async function BlogIndex({
           {/* Paginación */}
           {totalPages > 1 && (
             <nav
-              aria-label="Paginación del blog"
+              aria-label="Blog pagination"
               className="mt-14 flex flex-wrap items-center justify-center gap-2"
             >
               {safePage > 1 ? (
@@ -187,11 +187,11 @@ export default async function BlogIndex({
                   className="rounded-full border border-ink/12 bg-warm px-4 py-[9px] text-[14px] font-medium text-ink no-underline transition-colors hover:border-ink/25"
                   rel="prev"
                 >
-                  ← Anterior
+                  ← Previous
                 </Link>
               ) : (
                 <span className="cursor-not-allowed rounded-full border border-ink/8 bg-warm px-4 py-[9px] text-[14px] font-medium text-ink-mute/50">
-                  ← Anterior
+                  ← Previous
                 </span>
               )}
 
@@ -240,11 +240,11 @@ export default async function BlogIndex({
                   className="rounded-full border border-ink/12 bg-warm px-4 py-[9px] text-[14px] font-medium text-ink no-underline transition-colors hover:border-ink/25"
                   rel="next"
                 >
-                  Siguiente →
+                  Next →
                 </Link>
               ) : (
                 <span className="cursor-not-allowed rounded-full border border-ink/8 bg-warm px-4 py-[9px] text-[14px] font-medium text-ink-mute/50">
-                  Siguiente →
+                  Next →
                 </span>
               )}
             </nav>
