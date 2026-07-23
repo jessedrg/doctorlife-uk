@@ -26,7 +26,7 @@ export function Hero() {
         <div className="absolute inset-y-0 right-0 w-full md:w-[62%] lg:w-[58%] xl:w-[55%] 2xl:w-[52%]">
           <img
             src="/hero/woman.png"
-            alt="Paciente de DoctorLife sonriendo"
+            alt="DoctorLife patient smiling"
             className="h-full w-full object-cover"
             style={{ objectPosition: "65% top" }}
           />
@@ -41,14 +41,14 @@ export function Hero() {
         <div className="relative z-[2] flex h-full flex-col justify-center px-5 pb-10 pt-10 sm:px-10 lg:px-14 2xl:px-20">
           <div className="max-w-[600px] 2xl:max-w-[720px]">
             <div className="text-[13px] font-semibold uppercase tracking-[.18em] text-sage 2xl:text-[15px]">
-              Tu plataforma médica 100% online
+              Your 100% online medical platform
             </div>
             <h1 className="mt-4 text-balance text-[clamp(30px,5vw,84px)] font-light leading-[1.02] tracking-[-.03em] text-paper sm:mt-6">
-              El tratamiento médico para la{" "}
-              <span className="font-serif italic text-sage">pérdida de peso</span>, adaptado a tu realidad
+              Medical treatment for{" "}
+              <span className="font-serif italic text-sage">weight loss</span>, adapted to your reality
             </h1>
             <p className="mt-4 max-w-[40ch] text-balance text-[clamp(15px,1.4vw,24px)] font-light leading-[1.5] text-paper/80 sm:mt-7">
-              Cuidado dirigido por médicos, diseñado en torno a tu cuerpo.
+              Doctor-led care, designed around your body.
             </p>
             <TrustBox theme="dark" alignment="left" className="mt-6 max-w-[280px]" />
           </div>
