@@ -10,9 +10,9 @@ const config: ClinicConfig = {
 };
 
 export const metadata: Metadata = {
-  title: "Tu médico online | Consulta médica online con médicos colegiados — DoctorLife",
+  title: "Your online doctor | Online doctor consultation with GMC-registered doctors — DoctorLife",
   description:
-    "Consulta médica online con médicos colegiados en España, sin esperas ni citas previas. Rellena un cuestionario y recibe una valoración clínica personalizada.",
+    "Online doctor consultation with GMC-registered doctors in the UK, with no waits or appointments. Complete a questionnaire and receive a personalised clinical assessment.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };

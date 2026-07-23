@@ -57,20 +57,20 @@ export const authors: Author[] = [
   {
     slug: "carlos-vidal",
     name: "Dr. Carlos Vidal",
-    jobTitle: "Médico especialista en Medicina Interna",
-    colegiado: "Nº de colegiado 28/5567 · Colegio Oficial de Médicos de Madrid",
+    jobTitle: "Medical specialist in Internal Medicine",
+    colegiado: "Registration No. 28/5567 · Official College of Physicians of Madrid",
     shortBio:
-      "Internista centrado en salud metabólica, riesgo cardiovascular y abordaje integral del peso.",
+      "Internist focused on metabolic health, cardiovascular risk and a holistic approach to weight.",
     bio: [
-      "El Dr. Carlos Vidal es médico especialista en Medicina Interna, colegiado en Madrid (nº 28/5567). Su trabajo se centra en la salud metabólica: la relación entre peso, glucosa, tensión arterial y riesgo cardiovascular.",
-      "Cree en explicar las cosas claras. Cuando un paciente entiende por qué su cuerpo se comporta como lo hace, las decisiones sobre tratamiento, alimentación y hábitos dejan de ser una lucha y pasan a tener sentido.",
-      "Escribe y revisa contenido para DoctorLife con el objetivo de que cualquier persona pueda tomar decisiones informadas sobre su salud sin sentirse juzgada.",
+      "Dr. Carlos Vidal is a medical specialist in Internal Medicine, registered in Madrid (no. 28/5567). His work focuses on metabolic health: the relationship between weight, glucose, blood pressure and cardiovascular risk.",
+      "He believes in explaining things clearly. When a patient understands why their body behaves the way it does, decisions about treatment, diet and habits stop being a struggle and start to make sense.",
+      "He writes and reviews content for DoctorLife with the aim of helping anyone make informed decisions about their health without feeling judged.",
     ],
     experience: [
-      "Especialista en Medicina Interna (vía MIR).",
-      "Enfoque en síndrome metabólico y riesgo cardiovascular.",
-      "Experiencia en unidades de obesidad y consulta de seguimiento.",
-      "Divulgación médica rigurosa orientada al paciente.",
+      "Specialist in Internal Medicine (via MIR).",
+      "Focus on metabolic syndrome and cardiovascular risk.",
+      "Experience in obesity units and follow-up clinics.",
+      "Rigorous, patient-focused medical communication.",
     ],
   },
 ];

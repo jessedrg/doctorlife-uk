@@ -34,7 +34,7 @@ const pillarLd = {
   "@type": "MedicalWebPage",
   headline: PILLAR.h1,
   description: PILLAR.metaDescription,
-  inLanguage: "es-ES",
+  inLanguage: "en-GB",
   publisher: {
     "@type": "MedicalOrganization",
     name: BRAND,
@@ -59,7 +59,7 @@ export default function PillarPage() {
               ]}
             />
             <span className="mt-6 inline-block text-[13px] font-semibold uppercase tracking-[.16em] text-clay">
-              Guía completa
+              Complete guide
             </span>
             <h1 className="mt-3 text-balance text-[clamp(32px,5vw,52px)] font-light leading-[1.06] tracking-[-0.025em] text-ink">
               {PILLAR.h1}
@@ -73,23 +73,23 @@ export default function PillarPage() {
             <KeyTakeaways items={PILLAR.keyTakeaways} />
           </section>
 
-          {/* Intro médica */}
+          {/* Medical intro */}
           <section className="mx-auto max-w-[860px] px-5 pt-10">
             <h2 className="text-balance text-[clamp(24px,3vw,34px)] font-light leading-[1.12] text-ink">
-              Por qué adelgazar solo con dietas no funciona
+              Why losing weight through diet alone doesn&apos;t work
             </h2>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-soft">
-              Cuando el peso no responde a los esfuerzos habituales, casi siempre hay una causa
-              fisiológica que ninguna dieta puede corregir sola: resistencia a la insulina,
-              hipotiroidismo, déficit de sueño, cortisol elevado o un metabolismo adaptado tras años
-              de restricción calórica. Identificar esa causa —y tratarla— es exactamente lo que hace
-              la supervisión médica.
+              When your weight doesn&apos;t respond to the usual efforts, there is almost always a
+              physiological cause that no diet can fix on its own: insulin resistance,
+              hypothyroidism, sleep deprivation, elevated cortisol or a metabolism that has adapted
+              after years of calorie restriction. Identifying that cause —and treating it— is exactly
+              what medical supervision does.
             </p>
             <p className="mt-5 text-[17.5px] leading-[1.7] text-ink-soft">
-              Los análogos del GLP‑1 (semaglutida como Ozempic o Wegovy; tirzepatida como Mounjaro)
-              han demostrado en ensayos clínicos pérdidas de entre el 10 % y el 22 % del peso
-              corporal. Pero son fármacos de prescripción que requieren valoración médica previa,
-              seguimiento y ajuste de dosis. Usarlos sin supervisión es arriesgado e ilegal.
+              GLP‑1 analogues (semaglutide such as Ozempic or Wegovy; tirzepatide such as Mounjaro)
+              have shown in clinical trials weight loss of between 10% and 22% of body weight. But
+              they are prescription medicines that require a prior medical assessment, follow-up and
+              dose adjustment. Using them without supervision is risky and illegal.
             </p>
           </section>
 
@@ -98,7 +98,7 @@ export default function PillarPage() {
             <CTABlock variant="compact" source="pilar" />
           </section>
 
-          {/* Artículos del cluster */}
+          {/* Cluster articles */}
           <section
             aria-labelledby="articles-heading"
             className="mx-auto max-w-[1100px] px-5 pb-6 pt-10"
@@ -107,7 +107,7 @@ export default function PillarPage() {
               id="articles-heading"
               className="mb-8 text-balance text-[clamp(24px,3vw,34px)] font-light text-ink"
             >
-              Todo lo que necesitas saber sobre adelgazar con ayuda médica
+              Everything you need to know about losing weight with medical help
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {articles.map((a) => (
@@ -136,7 +136,7 @@ export default function PillarPage() {
                       {a.answerFirst}
                     </p>
                     <span className="mt-4 text-[13.5px] font-medium text-olive">
-                      Leer artículo &rarr;
+                      Read article &rarr;
                     </span>
                   </div>
                 </a>
@@ -144,7 +144,7 @@ export default function PillarPage() {
             </div>
           </section>
 
-          {/* Equipo médico */}
+          {/* Medical team */}
           <section
             aria-labelledby="equipo-heading"
             className="mx-auto max-w-[860px] px-5 pb-4 pt-12"
@@ -153,7 +153,7 @@ export default function PillarPage() {
               id="equipo-heading"
               className="mb-7 text-balance text-[clamp(22px,2.8vw,30px)] font-light text-ink"
             >
-              Contenido revisado por médicos colegiados
+              Content reviewed by GMC-registered doctors
             </h2>
             <div className="flex flex-col gap-5 sm:flex-row">
               {authors.map((author) => (
@@ -170,21 +170,21 @@ export default function PillarPage() {
                     <p className="mt-0.5 text-[13px] leading-relaxed text-ink-soft">
                       {author.jobTitle}
                     </p>
-                    <p className="mt-1 text-[13px] text-olive">Ver perfil &rarr;</p>
+                    <p className="mt-1 text-[13px] text-olive">View profile &rarr;</p>
                   </div>
                 </a>
               ))}
             </div>
           </section>
 
-          {/* Final CTA con formulario */}
+          {/* Final CTA with form */}
           <div className="mx-auto max-w-[860px] px-5 pb-4">
             <CTABlock variant="form" source="pilar" />
           </div>
 
           <div className="mx-auto max-w-[860px] px-5 pb-10">
             <MedicalDisclaimer
-              reviewer="Dra. Laura Méndez (Nº de colegiada 28/2841 · Barcelona) y Dr. Carlos Vidal (Nº de colegiado 28/5567 · Madrid)"
+              reviewer="Dr. Laura Méndez (Registration No. 28/2841 · Barcelona) and Dr. Carlos Vidal (Registration No. 28/5567 · Madrid)"
             />
           </div>
         </main>

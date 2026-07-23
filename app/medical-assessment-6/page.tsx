@@ -10,18 +10,18 @@ const PATH = "/medical-assessment-6";
 const config: ValoracionConfig = {
   path: PATH,
   planPrefix: "ads-valoracion-6",
-  // Versión completa: reseñas, distintivo GLP-1 inyectable y botones de formulario activos.
+  // Full version: reviews, injectable GLP-1 badge and active form buttons.
   hideReviews: false,
   showGlpBadge: true,
   glpBadgeText:
-    "Tratamiento médico GLP-1 inyectable, si el médico lo considera adecuado",
+    "Injectable GLP-1 medical treatment, if the doctor considers it appropriate",
   hideCta: false,
 };
 
 export const metadata: Metadata = {
-  title: "Valoración médica online para el control de peso — DoctorLife",
+  title: "Online medical assessment for weight management — DoctorLife",
   description:
-    "Completa un cuestionario de salud y un médico colegiado en España valora tu caso en videoconsulta. Primera valoración gratis, con seguimiento continuo y sin desplazamientos.",
+    "Complete a health questionnaire and a GMC-registered doctor assesses your case in a video consultation. First assessment free, with continuous follow-up and no travel.",
   alternates: { canonical: `${SITE_URL}${PATH}` },
   robots: { index: false, follow: true },
 };
